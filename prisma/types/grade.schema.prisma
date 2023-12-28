@@ -4,7 +4,7 @@ model Grade {
   updatedAt DateTime @updatedAt
 
   classes  Class[]
-  level    Int
+  level    GradeLevel
   school   School  @relation(fields: [schoolId], references: [id])
   schoolId String @db.Uuid
 

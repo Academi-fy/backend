@@ -12,7 +12,6 @@ model Event {
   school      School        @relation(fields: [schoolId], references: [id])
   schoolId    String @db.Uuid
   startDate   DateTime
-  state       String
   subscribers User[]
   tickets     EventTicket[]
   title       String

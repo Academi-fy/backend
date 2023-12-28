@@ -10,14 +10,13 @@ model Club {
   events       Event[]
   leaders      User[]    @relation("ClubLeader")
   location     String?
-  meetingDay   String?
+  meetingDay   Day?
   meetingTime  String?
   members      User[]   @relation("ClubMember")
   name         String
   requirements Json[]
   school       School    @relation(fields: [schoolId], references: [id])
   schoolId     String @db.Uuid
-  state        String
   tags         ClubTag[]
 
   @@map("clubs")

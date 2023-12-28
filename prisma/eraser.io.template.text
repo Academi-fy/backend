@@ -1,43 +1,35 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+Blackboard {
+  id        String   @db.Uuid pk
+  createdAt DateTime
+  updatedAt DateTime
 
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-model Blackboard {
-  id        String   @id @default(uuid()) @db.Uuid
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  authors    User[]         @relation("BlackboardAuthor")
+  authors    User[]         fk
   coverImage String?
-  school     School          @relation("SchoolBlackboard", fields: [schoolId], references: [id])
+  school     School          fk
   schoolId   String @db.Uuid
-  tags       BlackboardTag[] @relation("BlackboardBlackboardTagTag")
-  targets    User[]         @relation("BlackboardTarget")
+  tags       BlackboardTag[] fk
+  targets    User[]         fk
   text       String?
   title      String
 
-  @@map("blackboards")
+  @@map blackboards
 }
 
-model BlackboardTag {
-  id        String   @id @default(uuid()) @db.Uuid
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+Blackboard.authors <> BlackboardAuthor.authorId
+Blackboard.school < School.blackboards
+Blackboard.tags   <> BlackboardTag.tagId
+Blackboard.targets <> BlackboardTarget.targetId
+
+BlackboardTag {
+  id        String   @db.Uuid pk
+  createdAt DateTime
+  updatedAt DateTime
 
   blackboards Blackboard[] @relation("BlackboardBlackboardTagTag")
   name        String
 
-  @@map("blackboard_tags")
+  @@map blackboard_tags
 }
-
 
 model Chat {
   id        String   @id @default(uuid()) @db.Uuid
