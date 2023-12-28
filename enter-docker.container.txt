@@ -1,0 +1,5 @@
+1. docker exec -it database psql -U postgres -d test
+2. \dt
+3. SELECT * FROM users;
+
+4. \q
