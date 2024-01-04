@@ -1,2 +1,2 @@
 export { AuthDto } from '../src/auth/dto';
-export { EditUserDto } from '../src/user/dto';
+export { EditUserDto } from '../src/user-account/dto';

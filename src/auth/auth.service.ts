@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthDto } from './dto';
 import * as argon from 'argon2';
-import { Prisma, User } from '@prisma/client';
+import { Prisma, UserAccount } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
@@ -15,17 +15,17 @@ export class AuthService {
   ) {}
 
   async signup(dto: AuthDto) {
-    let user: User;
+    let userAccount: UserAccount;
     try {
       const hashedPassword = await argon.hash(dto.password);
-      user = await this.prisma.user.create({
+      userAccount = await this.prisma.userAccount.create({
         data: {
-          email: dto.email,
-          hashedPassword,
+          username: dto.username,
+          password: hashedPassword,
         },
       });
 
-      return this.signToken(user.id, user.email);
+      return this.signToken(userAccount.id, userAccount.username);
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -34,25 +34,25 @@ export class AuthService {
       }
       throw error;
     } finally {
-      if (user) {
-        Logger.log(`User with id ${user.id} created`);
+      if (userAccount) {
+        Logger.log(`UserAccount with id ${userAccount.id} created`);
       }
     }
   }
 
   async signin(dto: AuthDto) {
-    const user = await this.prisma.user.findUnique({
+    const userAccount = await this.prisma.userAccount.findUnique({
       where: {
-        email: dto.email,
+        username: dto.username,
       },
     });
 
-    if (!user) {
+    if (!userAccount) {
       throw new ForbiddenException('Credentials incorrect');
     }
 
     const passwordMatches = await argon.verify(
-      user.hashedPassword,
+      userAccount.password,
       dto.password,
     );
 
@@ -60,14 +60,14 @@ export class AuthService {
       throw new ForbiddenException('Credentials incorrect');
     }
 
-    return this.signToken(user.id, user.email);
+    return this.signToken(userAccount.id, userAccount.username);
   }
 
   async signToken(
-    userId: number,
-    email: string,
+    userAccountId: string,
+    username: string,
   ): Promise<{ access_token: string }> {
-    const payload = { sub: userId, email };
+    const payload = { sub: userAccountId, username };
 
     return {
       access_token: await this.jwt.signAsync(payload, {
