@@ -1,7 +1,6 @@
 import { IsOptional, IsString } from 'class-validator';
 
 export class EditUserAccountDto {
-
   @IsString()
   @IsOptional()
   readonly password?: string;
@@ -13,5 +12,4 @@ export class EditUserAccountDto {
   @IsString()
   @IsOptional()
   readonly username?: string;
-
 }

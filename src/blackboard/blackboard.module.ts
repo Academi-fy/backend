@@ -4,6 +4,6 @@ import { BlackboardController } from './blackboard.controller';
 
 @Module({
   providers: [BlackboardService],
-  controllers: [BlackboardController]
+  controllers: [BlackboardController],
 })
 export class BlackboardModule {}

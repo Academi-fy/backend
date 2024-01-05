@@ -1,5 +1,0 @@
-enum UserType {
-  ADMIN
-  TEACHER
-  STUDENT
-}

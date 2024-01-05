@@ -4,11 +4,11 @@ import pactum from '../pactum';
 export const authTests = () => {
   describe('Auth', () => {
     const dto: dto.AuthDto = {
-      email: 'test@email.com',
+      username: 'test-username',
       password: 'test-password',
     };
     describe('POST /auth/signup', () => {
-      it('Should throw if email is empty', async () => {
+      it('Should throw if username is empty', async () => {
         return pactum
           .spec()
           .post(`/auth/signup`)
@@ -18,20 +18,12 @@ export const authTests = () => {
           .expectStatus(400);
       });
 
-      it('Should throw if email is not valid', async () => {
-        return pactum
-          .spec()
-          .post(`/auth/signup`)
-          .withBody({ ...dto, email: 'invalid-email' })
-          .expectStatus(400);
-      });
-
       it('Should throw if password is empty', async () => {
         return pactum
           .spec()
           .post(`/auth/signup`)
           .withBody({
-            email: dto.email,
+            username: dto.username,
           })
           .expectStatus(400);
       });
@@ -50,7 +42,7 @@ export const authTests = () => {
     });
 
     describe('POST /auth/signin', () => {
-      it('Should throw if email is empty', async () => {
+      it('Should throw if username is empty', async () => {
         return pactum
           .spec()
           .post(`/auth/signin`)
@@ -60,20 +52,12 @@ export const authTests = () => {
           .expectStatus(400);
       });
 
-      it('Should throw if email is not valid', async () => {
-        return pactum
-          .spec()
-          .post(`/auth/signin`)
-          .withBody({ ...dto, email: 'invalid-email' })
-          .expectStatus(400);
-      });
-
       it('Should throw if password is empty', async () => {
         return pactum
           .spec()
           .post(`/auth/signin`)
           .withBody({
-            email: dto.email,
+            username: dto.username,
           })
           .expectStatus(400);
       });

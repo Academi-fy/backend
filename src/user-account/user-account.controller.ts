@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtGuard } from '../auth/guard';
 import { GetUserAccount } from '../auth/decorator';
 import { UserAccount } from '@prisma/client';
@@ -6,7 +14,7 @@ import { CreateUserAccountDto, EditUserAccountDto } from './dto';
 import { UserAccountService } from './user-account.service';
 
 @UseGuards(JwtGuard)
-@Controller('users')
+@Controller('user-accounts')
 export class UserAccountController {
   constructor(private userAccountService: UserAccountService) {}
 
@@ -26,13 +34,15 @@ export class UserAccountController {
   }
 
   @Patch()
-  updateUserAccount(@GetUserAccount('id') userId: string, @Body() dto: EditUserAccountDto): Promise<UserAccount> {
+  updateUserAccount(
+    @GetUserAccount('id') userId: string,
+    @Body() dto: EditUserAccountDto,
+  ): Promise<UserAccount> {
     return this.userAccountService.editUserAccount(userId, dto);
   }
 
   @Delete()
-  deleteUserAccount(@GetUserAccount('id') userId: string): Promise<Boolean> {
+  deleteUserAccount(@GetUserAccount('id') userId: string): Promise<boolean> {
     return this.userAccountService.deleteUserAccount(userId);
   }
-
 }

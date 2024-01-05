@@ -1,8 +1,0 @@
-enum GradeLevel {
-  G5
-  G6
-  G7
-  G8
-  G9
-  G10
-}
