@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Patch,
   Post,
   UseGuards,
@@ -28,21 +29,26 @@ export class UserAccountController {
     return this.userAccountService.getAllUserAccounts();
   }
 
+  @Get(':id')
+  getById(@Param('id') userAccountId: string): Promise<UserAccount> {
+    return this.userAccountService.getUserAccountById(userAccountId);
+  }
+
   @Post()
   createUserAccount(@Body() dto: CreateUserAccountDto): Promise<UserAccount> {
     return this.userAccountService.createUserAccount(dto);
   }
 
-  @Patch()
+  @Patch(':id')
   updateUserAccount(
-    @GetUserAccount('id') userId: string,
+    @Param('id') userAccountId: string,
     @Body() dto: EditUserAccountDto,
   ): Promise<UserAccount> {
-    return this.userAccountService.editUserAccount(userId, dto);
+    return this.userAccountService.editUserAccount(userAccountId, dto);
   }
 
-  @Delete()
-  deleteUserAccount(@GetUserAccount('id') userId: string): Promise<boolean> {
-    return this.userAccountService.deleteUserAccount(userId);
+  @Delete(':id')
+  deleteUserAccount(@Param('id') userAccountId: string): Promise<boolean> {
+    return this.userAccountService.deleteUserAccount(userAccountId);
   }
 }

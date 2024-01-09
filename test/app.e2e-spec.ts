@@ -3,7 +3,8 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { PrismaService } from '../src/prisma/prisma.service';
 import { AppModule, Test } from './nestjs';
 import { authTests } from './tests/auth.test';
-import { userAccountTests } from './tests/user-account.test';
+import { userAccountTests } from './tests/models/user-account.test';
+import { setupAccountTests } from './tests/models/setup-account.test';
 
 describe('App e2e', () => {
   let app: INestApplication;
@@ -35,4 +36,5 @@ describe('App e2e', () => {
 
   authTests();
   userAccountTests();
+  setupAccountTests();
 });

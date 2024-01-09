@@ -1,19 +1,20 @@
 import * as dto from '../dto';
 import pactum from '../pactum';
 
+export const authDto: dto.AuthDto = {
+  username: 'test-username',
+  password: 'test-password',
+};
+
 export const authTests = () => {
   describe('Auth', () => {
-    const dto: dto.AuthDto = {
-      username: 'test-username',
-      password: 'test-password',
-    };
     describe('POST /auth/signup', () => {
       it('Should throw if username is empty', async () => {
         return pactum
           .spec()
           .post(`/auth/signup`)
           .withBody({
-            password: dto.password,
+            password: authDto.password,
           })
           .expectStatus(400);
       });
@@ -23,7 +24,7 @@ export const authTests = () => {
           .spec()
           .post(`/auth/signup`)
           .withBody({
-            username: dto.username,
+            username: authDto.username,
           })
           .expectStatus(400);
       });
@@ -36,7 +37,7 @@ export const authTests = () => {
         return pactum
           .spec()
           .post(`/auth/signup`)
-          .withBody(dto)
+          .withBody(authDto)
           .expectStatus(201);
       });
     });
@@ -47,7 +48,7 @@ export const authTests = () => {
           .spec()
           .post(`/auth/signin`)
           .withBody({
-            password: dto.password,
+            password: authDto.password,
           })
           .expectStatus(400);
       });
@@ -57,7 +58,7 @@ export const authTests = () => {
           .spec()
           .post(`/auth/signin`)
           .withBody({
-            username: dto.username,
+            username: authDto.username,
           })
           .expectStatus(400);
       });
@@ -70,7 +71,7 @@ export const authTests = () => {
         return pactum
           .spec()
           .post(`/auth/signin`)
-          .withBody(dto)
+          .withBody(authDto)
           .expectStatus(200)
           .stores('userAccessToken', 'access_token');
       });

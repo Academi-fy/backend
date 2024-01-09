@@ -19,7 +19,7 @@ model Blackboard {
   coverImage String?
   school     School          @relation("SchoolBlackboard", fields: [schoolId], references: [id])
   schoolId   String          @db.Uuid
-  tags       BlackboardTag[] @relation("BlackboardBlackboardTagTag")
+  tags       BlackboardTag[] @relation("BlackboardBlackboardTag")
   targets    User[]          @relation("BlackboardTarget")
   text       String?
   title      String
@@ -32,8 +32,8 @@ model BlackboardTag {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  blackboards Blackboard[] @relation("BlackboardBlackboardTagTag")
-  name        String
+  blackboards Blackboard[] @relation("BlackboardBlackboardTag")
+  name        String      @unique
 
   @@map("blackboard_tags")
 }
@@ -138,7 +138,7 @@ model Event {
   schoolId    String        @db.Uuid
   startDate   DateTime
   subscribers User[]        @relation("EventSubscriber")
-  tickets     EventTicket[] @relation("EventTicket") // mark
+  tickets     EventTicket[] @relation("EventEventTicket") // mark
   title       String
 
   @@map("events")
@@ -151,7 +151,7 @@ model EventTicket {
 
   buyer    User     @relation("EventTicketBuyer", fields: [buyerId], references: [id])
   buyerId  String   @db.Uuid
-  event    Event    @relation("EventTicket", fields: [eventId], references: [id])
+  event    Event    @relation("EventEventTicket", fields: [eventId], references: [id])
   eventId  String   @db.Uuid
   price    Int
   saleDate DateTime
@@ -202,10 +202,10 @@ model School {
   events         Event[]      @relation("EventSchool") // mark
   grades         Grade[]      @relation("SchoolGrade") // mark
   members        User[]       @relation("SchoolMember") // mark, double
-  name           String
+  name           String      @unique
   setupAccount   SetupAccount @relation("SchoolSetupAccount", fields: [setupAccountId], references: [id])
   setupAccountId String       @unique @db.Uuid
-  subjects       Subject[]
+  subjects       Subject[]    @relation("SubjectSchool") // mark
 
   @@map("schools")
 }
@@ -217,7 +217,7 @@ model SetupAccount {
 
   school     School? @relation("SchoolSetupAccount") // mark
   schoolId   String? @db.Uuid
-  schoolName String
+  schoolName String @unique
 
   @@map("setup_accounts")
 }
@@ -228,7 +228,7 @@ model Subject {
   updatedAt DateTime @updatedAt
 
   courses   Course[]    @relation("CourseSubject") // mark
-  school    School      @relation(fields: [schoolId], references: [id])
+  school    School      @relation("SubjectSchool", fields: [schoolId], references: [id])
   schoolId  String      @db.Uuid
   shortName String
   type      SubjectType
@@ -256,9 +256,9 @@ model User {
   messages            Message[]     @relation("MessageAuthor") // mark
   schools             School[]      @relation("SchoolMember") // mark, double
   type                UserType
-  userAccount         UserAccount   @relation(fields: [userAccountId], references: [id])
+  userAccount         UserAccount   @relation("UserUserAccount", fields: [userAccountId], references: [id])
   userAccountId       String        @unique @db.Uuid
-  userChats           UserChat[]
+  userChats           UserChat[]   @relation("UserUserChat") // mark
 
   @@map("users")
 }
@@ -269,7 +269,7 @@ model UserAccount {
   updatedAt DateTime @updatedAt
 
   password String
-  user     User?
+  user     User?   @relation("UserUserAccount") // mark
   userId   String? @db.Uuid
   username String  @unique
 
@@ -286,7 +286,7 @@ model UserChat {
   hidden Boolean @default(false)
   pinned Boolean @default(false)
   read   Boolean @default(true)
-  user   User    @relation(fields: [userId], references: [id])
+  user   User    @relation("UserUserChat", fields: [userId], references: [id])
   userId String  @db.Uuid
 
   @@map("user_chats")

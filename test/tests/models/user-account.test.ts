@@ -1,5 +1,6 @@
-import pactum from '../pactum';
-import * as dto from '../dto';
+import pactum from '../../pactum';
+import * as dto from '../../dto';
+import { authDto } from '../auth.test';
 
 export const userAccountTests = () => {
   describe('UserAccount', () => {
@@ -11,7 +12,8 @@ export const userAccountTests = () => {
           .withHeaders({
             Authorization: `Bearer $S{userAccessToken}`,
           })
-          .expectStatus(200);
+          .expectStatus(200)
+          .expectJsonLike(authDto);
       });
     });
 
@@ -40,7 +42,8 @@ export const userAccountTests = () => {
             Authorization: `Bearer $S{userAccessToken}`,
           })
           .withBody(dto)
-          .expectStatus(201);
+          .expectStatus(201)
+          .stores('userAccountId', 'id');
       });
     });
 
@@ -52,7 +55,7 @@ export const userAccountTests = () => {
         };
         return pactum
           .spec()
-          .patch(`/user-accounts/`)
+          .patch(`/user-accounts/$S{userAccountId}`)
           .withHeaders({
             Authorization: `Bearer $S{userAccessToken}`,
           })

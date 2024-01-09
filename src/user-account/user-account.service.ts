@@ -11,9 +11,17 @@ export class UserAccountService {
     return this.prisma.userAccount.findMany({});
   }
 
+  async getUserAccountById(userAccountId: string): Promise<UserAccount> {
+    return this.prisma.userAccount.findUnique({
+      where: { id: userAccountId },
+    });
+  }
+
   async createUserAccount(dto: CreateUserAccountDto): Promise<UserAccount> {
     return this.prisma.userAccount.create({
-      data: dto,
+      data: {
+        ...dto,
+      },
     });
   }
 
@@ -25,9 +33,7 @@ export class UserAccountService {
       where: { id: userAccountId },
       data: {
         ...dto,
-      },
-      include: {
-        user: true, //TODO check if works (if no user attribute is passed in dto)
+        user: dto.user ? { connect: { id: dto.user } } : undefined,
       },
     });
   }

@@ -1,15 +1,15 @@
 import { IsOptional, IsString } from 'class-validator';
 
-export class EditUserAccountDto {
+export class EditChatDto {
   @IsString()
   @IsOptional()
-  readonly password?: string;
+  readonly avatar?: string;
 
   @IsString()
   @IsOptional()
-  readonly user?: string;
+  readonly name?: string;
 
   @IsString()
   @IsOptional()
-  readonly username?: string;
+  readonly type?: string;
 }
