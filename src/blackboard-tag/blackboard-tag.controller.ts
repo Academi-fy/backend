@@ -19,7 +19,7 @@ export class BlackboardTagController {
   constructor(private blackboardTagService: BlackboardTagService) {}
 
   @Get()
-  getAll() {
+  getAll(): Promise<BlackboardTag[]> {
     return this.blackboardTagService.getAllBlackboardTags();
   }
 

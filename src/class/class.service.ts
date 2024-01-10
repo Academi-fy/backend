@@ -1,22 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateClassDto } from './dto';
+import { CreateClassDto, EditClassDto } from './dto';
+import { Class } from '@prisma/client';
 
 @Injectable()
 export class ClassService {
   constructor(private prisma: PrismaService) {}
 
-  async getAllClasses() {
+  async getAllClasses(): Promise<Class[]> {
     return this.prisma.class.findMany({});
   }
 
-  async getClassById(classId: string) {
+  async getClassById(classId: string): Promise<Class> {
     return this.prisma.class.findUnique({
       where: { id: classId },
     });
   }
 
-  async createClass(dto: CreateClassDto) {
+  async createClass(dto: CreateClassDto): Promise<Class> {
     return this.prisma.class.create({
       data: {
         ...dto,
@@ -26,7 +27,7 @@ export class ClassService {
     });
   }
 
-  async editClass(classId: string, dto: CreateClassDto) {
+  async editClass(classId: string, dto: EditClassDto): Promise<Class> {
     return this.prisma.class.update({
       where: { id: classId },
       data: {
@@ -37,7 +38,7 @@ export class ClassService {
     });
   }
 
-  async deleteClass(classId: string) {
+  async deleteClass(classId: string): Promise<boolean> {
     const deletedClass = await this.prisma.class.delete({
       where: { id: classId },
     });

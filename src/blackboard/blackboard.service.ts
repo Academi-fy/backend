@@ -2,22 +2,23 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateBlackboardDto } from './dto/create-blackboard.dto';
 import { EditBlackboardDto } from './dto/edit-blackboard.dto';
+import { Blackboard } from '@prisma/client';
 
 @Injectable()
 export class BlackboardService {
   constructor(private prisma: PrismaService) {}
 
-  async getAllBlackboards() {
+  async getAllBlackboards(): Promise<Blackboard[]> {
     return this.prisma.blackboard.findMany({});
   }
 
-  async getBlackboardById(blackboardId: string) {
+  async getBlackboardById(blackboardId: string): Promise<Blackboard> {
     return this.prisma.blackboard.findUnique({
       where: { id: blackboardId },
     });
   }
 
-  async createBlackboard(dto: CreateBlackboardDto) {
+  async createBlackboard(dto: CreateBlackboardDto): Promise<Blackboard> {
     return this.prisma.blackboard.create({
       data: {
         ...dto,
@@ -37,7 +38,7 @@ export class BlackboardService {
     });
   }
 
-  async editBlackboard(blackboardId: string, dto: EditBlackboardDto) {
+  async editBlackboard(blackboardId: string, dto: EditBlackboardDto): Promise<Blackboard> {
     return this.prisma.blackboard.update({
       where: { id: blackboardId },
       data: {
@@ -56,7 +57,7 @@ export class BlackboardService {
     });
   }
 
-  async deleteBlackboard(blackboardId: string) {
+  async deleteBlackboard(blackboardId: string): Promise<boolean> {
     const deletedBlackboard = await this.prisma.blackboard.delete({
       where: { id: blackboardId },
     });

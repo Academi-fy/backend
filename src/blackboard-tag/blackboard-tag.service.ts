@@ -2,28 +2,31 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateBlackboardTagDto } from './dto/create-blackboard-tag.dto';
 import { EditBlackboardTagDto } from './dto/edit-blackboard-tag.dto';
+import { BlackboardTag } from '@prisma/client';
 
 @Injectable()
 export class BlackboardTagService {
   constructor(private prisma: PrismaService) {}
 
-  async getAllBlackboardTags() {
+  async getAllBlackboardTags(): Promise<BlackboardTag[]> {
     return this.prisma.blackboardTag.findMany({});
   }
 
-  async getBlackboardTagById(blackboardTagId: string) {
+  async getBlackboardTagById(blackboardTagId: string): Promise<BlackboardTag> {
     return this.prisma.blackboardTag.findUnique({
       where: { id: blackboardTagId },
     });
   }
 
-  async getBlackboardTagByTag(tag: string) {
+  async getBlackboardTagByTag(tag: string): Promise<BlackboardTag> {
     return this.prisma.blackboardTag.findUnique({
       where: { name: tag },
     });
   }
 
-  async createBlackboardTag(dto: CreateBlackboardTagDto) {
+  async createBlackboardTag(
+    dto: CreateBlackboardTagDto,
+  ): Promise<BlackboardTag> {
     return this.prisma.blackboardTag.create({
       data: {
         ...dto,
@@ -34,7 +37,7 @@ export class BlackboardTagService {
   async editBlackboardTagById(
     blackboardTagId: string,
     dto: EditBlackboardTagDto,
-  ) {
+  ): Promise<BlackboardTag> {
     return this.prisma.blackboardTag.update({
       where: { id: blackboardTagId },
       data: {
@@ -43,7 +46,10 @@ export class BlackboardTagService {
     });
   }
 
-  async editBlackboardTagByTag(tag: string, dto: EditBlackboardTagDto) {
+  async editBlackboardTagByTag(
+    tag: string,
+    dto: EditBlackboardTagDto,
+  ): Promise<BlackboardTag> {
     return this.prisma.blackboardTag.update({
       where: { name: tag },
       data: {
@@ -52,7 +58,7 @@ export class BlackboardTagService {
     });
   }
 
-  async deleteBlackboardTag(blackboardTagId: string) {
+  async deleteBlackboardTag(blackboardTagId: string): Promise<boolean> {
     const deletedBlackboardTag = await this.prisma.blackboardTag.delete({
       where: { id: blackboardTagId },
     });

@@ -8,4 +8,8 @@ export class EditClassDto {
   @IsString()
   @IsOptional()
   readonly specifiedGrade?: string;
+
+  @IsString()
+  @IsOptional()
+  readonly school?: string;
 }
