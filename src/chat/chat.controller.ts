@@ -34,7 +34,10 @@ export class ChatController {
   }
 
   @Patch(':id')
-  async updateChat(@Param('id') chatId: string, @Body() dto: CreateChatDto): Promise<Chat> {
+  async updateChat(
+    @Param('id') chatId: string,
+    @Body() dto: CreateChatDto,
+  ): Promise<Chat> {
     return this.chatService.editChat(chatId, dto);
   }
 

@@ -1,7 +1,6 @@
 import { IsArray, IsOptional, IsString } from 'class-validator';
 
 export class CreateClassDto {
-
   @IsArray()
   @IsOptional()
   readonly courses?: string[];

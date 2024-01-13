@@ -7,18 +7,18 @@ export class EditChatDto {
 
   @IsArray()
   @IsOptional()
-  readonly clubs?: string[]
+  readonly clubs?: string[];
 
   @IsArray()
   @IsOptional()
-  readonly courses?: string[]
+  readonly courses?: string[];
 
   @IsOptional()
   readonly lastActivity?: any; // TODO add Activity type
 
   @IsArray()
   @IsOptional()
-  readonly messages?: string[]
+  readonly messages?: string[];
 
   @IsString()
   @IsOptional()
@@ -26,7 +26,7 @@ export class EditChatDto {
 
   @IsArray()
   @IsOptional()
-  readonly targets?: string[]
+  readonly targets?: string[];
 
   @IsString()
   @IsOptional()

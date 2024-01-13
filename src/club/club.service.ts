@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'test/nestjs';
-import { CreateClubDto } from './dto/create-club.dto';
-import { EditClubDto } from './dto/edit-club.dto';
+
 import { Club } from '@prisma/client';
+import { CreateClubDto, EditClubDto } from './dto';
+import { Service } from '../service';
 
 @Injectable()
-export class ClubService {
-  constructor(private prisma: PrismaService) {}
+export class ClubService extends Service {
+  constructor(private prisma: PrismaService) {
+    super();
+  }
 
   async getAllClubs(): Promise<Club[]> {
     return this.prisma.club.findMany({});
@@ -22,12 +25,12 @@ export class ClubService {
     return this.prisma.club.create({
       data: {
         ...dto,
-        chat: dto.chat? { connect: { id: dto.chat } } : undefined,
-        events: dto.events ? { connect: dto.events.map((event) => ({ id: event })) } : undefined,
-        leaders: { connect: dto.leaders.map((leader) => ({ id: leader })) },
-        members: { connect: dto.members.map((member) => ({ id: member })) },
-        school: { connect: { id: dto.school } },
-        tags: { connect: dto.tags.map((tag) => ({ id: tag })) },
+        chat: this.connectSingle(dto.chat),
+        events: this.connectArray(dto.events),
+        leaders: this.connectArray(dto.leaders),
+        members: this.connectArray(dto.members),
+        school: this.connectSingle(dto.school),
+        tags: this.connectArray(dto.tags),
       },
     });
   }
@@ -37,20 +40,12 @@ export class ClubService {
       where: { id: clubId },
       data: {
         ...dto,
-        chat: dto.chat ? { connect: { id: dto.chat } } : undefined,
-        events: dto.events
-          ? { connect: dto.events.map((event) => ({ id: event })) }
-          : undefined,
-        leaders: dto.leaders
-          ? { connect: dto.leaders.map((leader) => ({ id: leader })) }
-          : undefined,
-        members: dto.members
-          ? { connect: dto.members.map((member) => ({ id: member })) }
-          : undefined,
-        school: dto.school ? { connect: { id: dto.school } } : undefined,
-        tags: dto.tags
-          ? { connect: dto.tags.map((tag) => ({ id: tag })) }
-          : undefined,
+        chat: this.connectSingle(dto.chat),
+        events: this.connectArray(dto.events),
+        leaders: this.connectArray(dto.leaders),
+        members: this.connectArray(dto.members),
+        school: this.connectSingle(dto.school),
+        tags: this.connectArray(dto.tags),
       },
     });
   }

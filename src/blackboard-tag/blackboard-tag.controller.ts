@@ -60,7 +60,9 @@ export class BlackboardTagController {
   }
 
   @Delete(':id')
-  async deleteBlackboardTag(@Param('id') blackboardTagId: string): Promise<boolean> {
+  async deleteBlackboardTag(
+    @Param('id') blackboardTagId: string,
+  ): Promise<boolean> {
     return this.blackboardTagService.deleteBlackboardTag(blackboardTagId);
   }
 }

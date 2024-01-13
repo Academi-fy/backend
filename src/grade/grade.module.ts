@@ -2,6 +2,6 @@ import { Module } from '@nestjs/common';
 import { GradeService } from './grade.service';
 
 @Module({
-  providers: [GradeService]
+  providers: [GradeService],
 })
 export class GradeModule {}

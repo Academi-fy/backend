@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateBlackboardTagDto } from './dto/create-blackboard-tag.dto';
-import { EditBlackboardTagDto } from './dto/edit-blackboard-tag.dto';
 import { BlackboardTag } from '@prisma/client';
+import { CreateBlackboardTagDto, EditBlackboardTagDto } from './dto';
+import { Service } from '../service';
 
 @Injectable()
-export class BlackboardTagService {
-  constructor(private prisma: PrismaService) {}
+export class BlackboardTagService extends Service {
+  constructor(private prisma: PrismaService) {
+    super();
+  }
 
   async getAllBlackboardTags(): Promise<BlackboardTag[]> {
     return this.prisma.blackboardTag.findMany({});
@@ -30,13 +32,7 @@ export class BlackboardTagService {
     return this.prisma.blackboardTag.create({
       data: {
         ...dto,
-        blackboards: dto.blackboards
-          ? {
-              connect: dto.blackboards.map((blackboard) => ({
-                id: blackboard,
-              })),
-            }
-          : undefined,
+        blackboards: this.connectArray(dto.blackboards),
       },
     });
   }
@@ -49,11 +45,7 @@ export class BlackboardTagService {
       where: { id: blackboardTagId },
       data: {
         ...dto,
-        blackboards: {
-          connect: dto.blackboards
-            ? dto.blackboards.map((blackboard) => ({ id: blackboard }))
-            : undefined,
-        },
+        blackboards: this.connectArray(dto.blackboards),
       },
     });
   }
@@ -66,11 +58,7 @@ export class BlackboardTagService {
       where: { name: tag },
       data: {
         ...dto,
-        blackboards: {
-          connect: dto.blackboards
-            ? dto.blackboards.map((blackboard) => ({ id: blackboard }))
-            : undefined,
-        },
+        blackboards: this.connectArray(dto.blackboards),
       },
     });
   }

@@ -4,6 +4,6 @@ import { SetupAccountController } from './setup-account.controller';
 
 @Module({
   providers: [SetupAccountService],
-  controllers: [SetupAccountController]
+  controllers: [SetupAccountController],
 })
 export class SetupAccountModule {}

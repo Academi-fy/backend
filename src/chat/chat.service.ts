@@ -2,10 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateChatDto, EditChatDto } from './dto';
 import { Chat } from '@prisma/client';
+import { Service } from '../service';
 
 @Injectable()
-export class ChatService {
-  constructor(private prisma: PrismaService) {}
+export class ChatService extends Service {
+  constructor(private prisma: PrismaService) {
+    super();
+  }
 
   async getAllChats(): Promise<Chat[]> {
     return this.prisma.chat.findMany({});
@@ -21,26 +24,10 @@ export class ChatService {
     return this.prisma.chat.create({
       data: {
         ...dto,
-        clubs: dto.clubs
-          ? {
-              connect: dto.clubs.map((club) => ({ id: club })),
-            }
-          : undefined,
-        courses: dto.courses
-          ? {
-              connect: dto.courses.map((course) => ({ id: course })),
-            }
-          : undefined,
-        messages: dto.messages
-          ? {
-              connect: dto.messages.map((message) => ({ id: message })),
-            }
-          : undefined,
-        targets: dto.targets
-          ? {
-              connect: dto.targets.map((target) => ({ id: target })),
-            }
-          : undefined,
+        clubs: this.connectArray(dto.clubs),
+        courses: this.connectArray(dto.courses),
+        messages: this.connectArray(dto.messages),
+        targets: this.connectArray(dto.targets),
       },
     });
   }
@@ -50,18 +37,10 @@ export class ChatService {
       where: { id: chatId },
       data: {
         ...dto,
-        clubs: dto.clubs
-          ? { connect: dto.clubs.map((club) => ({ id: club })) }
-          : undefined,
-        courses: dto.courses
-          ? { connect: dto.courses.map((course) => ({ id: course })) }
-          : undefined,
-        messages: dto.messages
-          ? { connect: dto.messages.map((message) => ({ id: message })) }
-          : undefined,
-        targets: dto.targets
-          ? { connect: dto.targets.map((target) => ({ id: target })) }
-          : undefined,
+        clubs: this.connectArray(dto.clubs),
+        courses: this.connectArray(dto.courses),
+        messages: this.connectArray(dto.messages),
+        targets: this.connectArray(dto.targets),
       },
     });
   }

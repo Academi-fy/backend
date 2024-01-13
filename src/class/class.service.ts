@@ -2,10 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateClassDto, EditClassDto } from './dto';
 import { Class } from '@prisma/client';
+import { Service } from '../service';
 
 @Injectable()
-export class ClassService {
-  constructor(private prisma: PrismaService) {}
+export class ClassService extends Service {
+  constructor(private prisma: PrismaService) {
+    super();
+  }
 
   async getAllClasses(): Promise<Class[]> {
     return this.prisma.class.findMany({});
@@ -21,14 +24,10 @@ export class ClassService {
     return this.prisma.class.create({
       data: {
         ...dto,
-        courses: dto.courses
-          ? { connect: dto.courses.map((course) => ({ id: course })) }
-          : undefined,
-        grade: { connect: { id: dto.grade } },
-        members: dto.members
-          ? { connect: dto.members.map((member) => ({ id: member })) }
-          : undefined,
-        school: { connect: { id: dto.school } },
+        courses: this.connectArray(dto.courses),
+        grade: this.connectSingle(dto.grade),
+        members: this.connectArray(dto.members),
+        school: this.connectSingle(dto.school),
       },
     });
   }
@@ -38,14 +37,10 @@ export class ClassService {
       where: { id: classId },
       data: {
         ...dto,
-        courses: dto.courses
-          ? { connect: dto.courses.map((course) => ({ id: course })) }
-          : undefined,
-        grade: dto.grade ? { connect: { id: dto.grade } } : undefined,
-        members: dto.members
-          ? { connect: dto.members.map((member) => ({ id: member })) }
-          : undefined,
-        school: dto.school ? { connect: { id: dto.school } } : undefined,
+        courses: this.connectArray(dto.courses),
+        grade: this.connectSingle(dto.grade),
+        members: this.connectArray(dto.members),
+        school: this.connectSingle(dto.school),
       },
     });
   }

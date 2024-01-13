@@ -2,10 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'test/nestjs';
 import { CreateClubTagDto, EditClubTagDto } from './dto';
 import { ClubTag } from '@prisma/client';
+import { Service } from '../service';
 
 @Injectable()
-export class ClubTagService {
-  constructor(private prisma: PrismaService) {}
+export class ClubTagService extends Service {
+  constructor(private prisma: PrismaService) {
+    super();
+  }
 
   async getAllClubTags(): Promise<ClubTag[]> {
     return this.prisma.clubTag.findMany({});
@@ -21,9 +24,7 @@ export class ClubTagService {
     return this.prisma.clubTag.create({
       data: {
         ...dto,
-        clubs: dto.clubs
-          ? { connect: dto.clubs.map((club) => ({ id: club })) }
-          : undefined,
+        clubs: this.connectArray(dto.clubs),
       },
     });
   }
@@ -35,9 +36,7 @@ export class ClubTagService {
       },
       data: {
         ...dto,
-        clubs: dto.clubs
-          ? { connect: dto.clubs.map((club) => ({ id: club })) }
-          : undefined,
+        clubs: this.connectArray(dto.clubs),
       },
     });
   }

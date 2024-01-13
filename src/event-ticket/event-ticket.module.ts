@@ -4,6 +4,6 @@ import { EventTicketController } from './event-ticket.controller';
 
 @Module({
   providers: [EventTicketService],
-  controllers: [EventTicketController]
+  controllers: [EventTicketController],
 })
 export class EventTicketModule {}

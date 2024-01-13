@@ -1,10 +1,5 @@
 import { Day } from '@prisma/client';
-import {
-  IsArray,
-  IsEnum,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
 
 export class CreateClubDto {
   @IsString()

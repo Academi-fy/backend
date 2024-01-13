@@ -9,8 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ClubService } from './club.service';
-import { CreateClubDto } from './dto';
-import { EditClubDto } from './dto';
+import { CreateClubDto, EditClubDto } from './dto';
 import { Club } from '@prisma/client';
 import { JwtGuard } from 'src/auth/guard';
 
@@ -43,7 +42,7 @@ export class ClubController {
   }
 
   @Delete(':id')
-  async deleteClub(@Param() clubId: string): Promise<boolean> {
+  async deleteClub(@Param('id') clubId: string): Promise<boolean> {
     return this.clubService.deleteClub(clubId);
   }
 }
