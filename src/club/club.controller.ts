@@ -6,34 +6,36 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ClubService } from './club.service';
-import { CreateClubDto } from './dto/create-club.dto';
-import { dot } from 'node:test/reporters';
-import { EditClubDto } from './dto/edit-club.dto';
+import { CreateClubDto } from './dto';
+import { EditClubDto } from './dto';
 import { Club } from '@prisma/client';
+import { JwtGuard } from 'src/auth/guard';
 
+@UseGuards(JwtGuard)
 @Controller('clubs')
 export class ClubController {
   constructor(private clubService: ClubService) {}
 
   @Get()
-  getAll(): Promise<Club[]> {
+  async getAll(): Promise<Club[]> {
     return this.clubService.getAllClubs();
   }
 
   @Get(':id')
-  getById(@Param('id') clubId: string): Promise<Club> {
+  async getById(@Param('id') clubId: string): Promise<Club> {
     return this.clubService.getClubById(clubId);
   }
 
   @Post()
-  createClub(@Body() dto: CreateClubDto): Promise<Club> {
+  async createClub(@Body() dto: CreateClubDto): Promise<Club> {
     return this.clubService.createClub(dto);
   }
 
   @Patch(':id')
-  updateClub(
+  async updateClub(
     @Param('id') clubId: string,
     @Body() dto: EditClubDto,
   ): Promise<Club> {
@@ -41,7 +43,7 @@ export class ClubController {
   }
 
   @Delete(':id')
-  deleteClub(@Param() clubId: string): Promise<boolean> {
+  async deleteClub(@Param() clubId: string): Promise<boolean> {
     return this.clubService.deleteClub(clubId);
   }
 }

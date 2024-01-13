@@ -31,14 +31,17 @@ export class BlackboardService {
         authors: {
           connect: dto.authors.map((author) => ({ id: author })),
         },
-        targets: {
-          connect: dto.targets.map((target) => ({ id: target })),
-        },
+        targets: dto.targets
+          ? { connect: dto.targets.map((target) => ({ id: target })) }
+          : undefined,
       },
     });
   }
 
-  async editBlackboard(blackboardId: string, dto: EditBlackboardDto): Promise<Blackboard> {
+  async editBlackboard(
+    blackboardId: string,
+    dto: EditBlackboardDto,
+  ): Promise<Blackboard> {
     return this.prisma.blackboard.update({
       where: { id: blackboardId },
       data: {

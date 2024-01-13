@@ -30,6 +30,13 @@ export class BlackboardTagService {
     return this.prisma.blackboardTag.create({
       data: {
         ...dto,
+        blackboards: dto.blackboards
+          ? {
+              connect: dto.blackboards.map((blackboard) => ({
+                id: blackboard,
+              })),
+            }
+          : undefined,
       },
     });
   }
@@ -42,6 +49,11 @@ export class BlackboardTagService {
       where: { id: blackboardTagId },
       data: {
         ...dto,
+        blackboards: {
+          connect: dto.blackboards
+            ? dto.blackboards.map((blackboard) => ({ id: blackboard }))
+            : undefined,
+        },
       },
     });
   }
@@ -54,6 +66,11 @@ export class BlackboardTagService {
       where: { name: tag },
       data: {
         ...dto,
+        blackboards: {
+          connect: dto.blackboards
+            ? dto.blackboards.map((blackboard) => ({ id: blackboard }))
+            : undefined,
+        },
       },
     });
   }

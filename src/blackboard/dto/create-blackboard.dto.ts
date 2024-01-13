@@ -23,4 +23,5 @@ export class CreateBlackboardDto {
 
   @IsString()
   readonly text: string;
+
 }

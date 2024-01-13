@@ -1,11 +1,11 @@
 import { IsArray, IsOptional, IsString } from 'class-validator';
 
-export class CreateBlackboardTagDto {
-
+export class EditClubTagDto {
   @IsArray()
   @IsOptional()
-  readonly blackboards?: string[];
+  readonly clubs?: string[];
 
   @IsString()
-  readonly name: string;
+  @IsOptional()
+  readonly name?: string;
 }

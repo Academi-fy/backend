@@ -21,6 +21,26 @@ export class ChatService {
     return this.prisma.chat.create({
       data: {
         ...dto,
+        clubs: dto.clubs
+          ? {
+              connect: dto.clubs.map((club) => ({ id: club })),
+            }
+          : undefined,
+        courses: dto.courses
+          ? {
+              connect: dto.courses.map((course) => ({ id: course })),
+            }
+          : undefined,
+        messages: dto.messages
+          ? {
+              connect: dto.messages.map((message) => ({ id: message })),
+            }
+          : undefined,
+        targets: dto.targets
+          ? {
+              connect: dto.targets.map((target) => ({ id: target })),
+            }
+          : undefined,
       },
     });
   }
@@ -30,6 +50,18 @@ export class ChatService {
       where: { id: chatId },
       data: {
         ...dto,
+        clubs: dto.clubs
+          ? { connect: dto.clubs.map((club) => ({ id: club })) }
+          : undefined,
+        courses: dto.courses
+          ? { connect: dto.courses.map((course) => ({ id: course })) }
+          : undefined,
+        messages: dto.messages
+          ? { connect: dto.messages.map((message) => ({ id: message })) }
+          : undefined,
+        targets: dto.targets
+          ? { connect: dto.targets.map((target) => ({ id: target })) }
+          : undefined,
       },
     });
   }

@@ -6,32 +6,35 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ClassService } from './class.service';
 import { CreateClassDto, EditClassDto } from './dto';
 import { Class } from '@prisma/client';
+import { JwtGuard } from 'src/auth/guard';
 
+@UseGuards(JwtGuard)
 @Controller('classes')
 export class ClassController {
   constructor(private classService: ClassService) {}
 
   @Get()
-  getAll(): Promise<Class[]> {
+  async getAll(): Promise<Class[]> {
     return this.classService.getAllClasses();
   }
 
   @Get(':id')
-  getById(@Param('id') classId: string): Promise<Class> {
+  async getById(@Param('id') classId: string): Promise<Class> {
     return this.classService.getClassById(classId);
   }
 
   @Post()
-  createClass(@Body() dto: CreateClassDto): Promise<Class> {
+  async createClass(@Body() dto: CreateClassDto): Promise<Class> {
     return this.classService.createClass(dto);
   }
 
   @Patch(':id')
-  updateClass(
+  async updateClass(
     @Param() classId: string,
     @Body() dto: EditClassDto,
   ): Promise<Class> {
@@ -39,7 +42,7 @@ export class ClassController {
   }
 
   @Delete(':id')
-  deleteClass(@Param() classId: string): Promise<boolean> {
+  async deleteClass(@Param() classId: string): Promise<boolean> {
     return this.classService.deleteClass(classId);
   }
 }

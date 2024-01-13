@@ -19,29 +19,29 @@ export class BlackboardTagController {
   constructor(private blackboardTagService: BlackboardTagService) {}
 
   @Get()
-  getAll(): Promise<BlackboardTag[]> {
+  async getAll(): Promise<BlackboardTag[]> {
     return this.blackboardTagService.getAllBlackboardTags();
   }
 
   @Get(':id')
-  getById(@Param('id') blackboardTagId: string): Promise<BlackboardTag> {
+  async getById(@Param('id') blackboardTagId: string): Promise<BlackboardTag> {
     return this.blackboardTagService.getBlackboardTagById(blackboardTagId);
   }
 
   @Get('tag/:tag')
-  getByTag(@Param('tag') tag: string): Promise<BlackboardTag> {
+  async getByTag(@Param('tag') tag: string): Promise<BlackboardTag> {
     return this.blackboardTagService.getBlackboardTagByTag(tag);
   }
 
   @Post()
-  createBlackboardTag(
+  async createBlackboardTag(
     @Body() dto: CreateBlackboardTagDto,
   ): Promise<BlackboardTag> {
     return this.blackboardTagService.createBlackboardTag(dto);
   }
 
   @Patch(':id')
-  updateBlackboardTagById(
+  async updateBlackboardTagById(
     @Param('id') blackboardTagId: string,
     @Body() dto: EditBlackboardTagDto,
   ): Promise<BlackboardTag> {
@@ -52,7 +52,7 @@ export class BlackboardTagController {
   }
 
   @Patch('tag/:tag')
-  updateBlackboardTagByTag(
+  async updateBlackboardTagByTag(
     @Param('tag') tag: string,
     @Body() dto: EditBlackboardTagDto,
   ): Promise<BlackboardTag> {
@@ -60,7 +60,7 @@ export class BlackboardTagController {
   }
 
   @Delete(':id')
-  deleteBlackboardTag(@Param('id') blackboardTagId: string): Promise<boolean> {
+  async deleteBlackboardTag(@Param('id') blackboardTagId: string): Promise<boolean> {
     return this.blackboardTagService.deleteBlackboardTag(blackboardTagId);
   }
 }

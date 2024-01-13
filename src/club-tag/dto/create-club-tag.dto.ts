@@ -1,10 +1,9 @@
 import { IsArray, IsOptional, IsString } from 'class-validator';
 
-export class CreateBlackboardTagDto {
-
+export class CreateClubTagDto {
   @IsArray()
   @IsOptional()
-  readonly blackboards?: string[];
+  readonly clubs?: string[];
 
   @IsString()
   readonly name: string;

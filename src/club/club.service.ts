@@ -22,8 +22,8 @@ export class ClubService {
     return this.prisma.club.create({
       data: {
         ...dto,
-        chat: { connect: { id: dto.chat } },
-        events: { connect: dto.events.map((event) => ({ id: event })) },
+        chat: dto.chat? { connect: { id: dto.chat } } : undefined,
+        events: dto.events ? { connect: dto.events.map((event) => ({ id: event })) } : undefined,
         leaders: { connect: dto.leaders.map((leader) => ({ id: leader })) },
         members: { connect: dto.members.map((member) => ({ id: member })) },
         school: { connect: { id: dto.school } },
