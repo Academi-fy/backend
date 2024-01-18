@@ -1,36 +1,21 @@
-export { AuthModule } from './auth/auth.module';
-export { UserAccountModule } from './user-account/user-account.module';
-export { PrismaModule } from './prisma/prisma.module';
-export { BlackboardModule } from './blackboard/blackboard.module';
-export { BlackboardTagModule } from './blackboard-tag/blackboard-tag.module';
-export { ChatService } from './chat/chat.service';
-export { ChatModule } from './chat/chat.module';
-export { ClassController } from './class/class.controller';
-export { ClassService } from './class/class.service';
-export { ClassModule } from './class/class.module';
-export { ClubService } from './club/club.service';
-export { ClubModule } from './club/club.module';
-export { ClubTagController } from './club-tag/club-tag.controller';
-export { ClubTagService } from './club-tag/club-tag.service';
-export { ClubTagModule } from './club-tag/club-tag.module';
-export { CourseModule } from './course/course.module';
-export { EventController } from './event/event.controller';
-export { EventService } from './event/event.service';
-export { EventModule } from './event/event.module';
-export { EventTicketModule } from './event-ticket/event-ticket.module';
-export { GradeController } from './grade/grade.controller';
-export { GradeModule } from './grade/grade.module';
-export { MessageService } from './message/message.service';
-export { MessageController } from './message/message.controller';
-export { MessageModule } from './message/message.module';
-export { SchoolController } from './school/school.controller';
-export { SchoolService } from './school/school.service';
-export { SchoolModule } from './school/school.module';
-export { SetupAccountModule } from './setup-account/setup-account.module';
-export { SubjectController } from './subject/subject.controller';
-export { SubjectService } from './subject/subject.service';
-export { SubjectModule } from './subject/subject.module';
-export { UserModule } from './user/user.module';
-export { UserChatController } from './user-chat/user-chat.controller';
-export { UserChatService } from './user-chat/user-chat.service';
-export { UserChatModule } from './user-chat/user-chat.module';
+export {
+  BlackboardModule,
+  BlackboardTagModule,
+  ChatModule,
+  ClassModule,
+  ClubModule,
+  ClubTagModule,
+  CourseModule,
+  EventModule,
+  EventTicketModule,
+  GradeModule,
+  MessageModule,
+  SchoolModule,
+  SetupAccountModule,
+  SubjectModule,
+  UserModule,
+  UserAccountModule,
+  UserChatModule,
+} from './rest';
+
+export { AuthModule } from './auth';

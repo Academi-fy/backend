@@ -903,19 +903,27 @@ type UserChat {
 type Query {
   getAllBlackboards: [Blackboard!]!
   getBlackboard(id: String!): Blackboard!
+  getAllBlackboardTags: [BlackboardTag!]!
+  getBlackboardTagById(id: String!): BlackboardTag!
+  getBlackboardTagByTag(tag: String!): BlackboardTag!
 }
 
 type Mutation {
   createBlackboard(createBlackboardDto: CreateBlackboardDto!): Blackboard!
   updateBlackboard(id: String!, editBlackboardDto: EditBlackboardDto!): Blackboard!
   deleteBlackboard(id: String!): Blackboard!
+  createBlackboardTag(createBlackboardTagDto: CreateBlackboardTagDto!): BlackboardTag!
+  editBlackboardTagById(id: String!, editBlackboardTagDto: CreateBlackboardTagDto!): BlackboardTag!
+  editBlackboardTagByTag(tag: String!, editBlackboardTagDto: EditBlackboardTagDto!): BlackboardTag!
+  deleteBlackboardTagById(id: String!): Boolean!
+  deleteBlackboardTagByTag(tag: String!): Boolean!
 }
 
 input CreateBlackboardDto {
   authors: [String!]!
   coverImage: String
   school: String!
-  tags: [String!]!
+  tags: [String!]
   targets: [String!]
   title: String!
   text: String!
@@ -929,4 +937,14 @@ input EditBlackboardDto {
   targets: [String!]
   title: String
   text: String
+}
+
+input CreateBlackboardTagDto {
+  blackboards: [String!]
+  name: String!
+}
+
+input EditBlackboardTagDto {
+  blackboards: [String!]
+  name: String
 }

@@ -7,7 +7,7 @@
     "assets": [
       {
         "include": "@generated-types",
-        "outDir": "dist/src/",
+        "outDir": "dist/",
         "watchAssets": true
       }
     ],

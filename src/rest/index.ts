@@ -1,0 +1,17 @@
+export { BlackboardModule } from './blackboard';
+export { BlackboardTagModule } from './blackboard-tag';
+export { ChatModule } from './chat';
+export { ClassModule } from './class';
+export { ClubModule } from './club';
+export { ClubTagModule } from './club-tag';
+export { CourseModule } from './course';
+export { EventModule } from './event';
+export { EventTicketModule } from './event-ticket';
+export { GradeModule } from './grade';
+export { MessageModule } from './message';
+export { SchoolModule } from './school';
+export { SetupAccountModule } from './setup-account';
+export { SubjectModule } from './subject';
+export { UserModule } from './user';
+export { UserAccountModule } from './user-account';
+export { UserChatModule } from './user-chat';

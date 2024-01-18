@@ -1,0 +1,15 @@
+export const userRawNesting = {
+  blackboards: true,
+  blackboardsReceived: true,
+  classes: true,
+  clubs: true,
+  clubsAsLeader: true,
+  courses: true,
+  coursesAsTeacher: true,
+  events: true,
+  eventTickets: true,
+  messages: true,
+  schools: true,
+  userAccount: true,
+  userChats: true,
+};
