@@ -15,10 +15,12 @@ export class EditClubDto {
   readonly description?: string;
 
   @IsArray()
+  @IsString({ each: true })
   @IsOptional()
   readonly events?: string[];
 
   @IsArray()
+  @IsString({ each: true })
   @IsOptional()
   readonly leaders?: string[];
 
@@ -35,6 +37,7 @@ export class EditClubDto {
   readonly meetingTime?: string;
 
   @IsArray()
+  @IsString({ each: true })
   @IsOptional()
   readonly members?: string[];
 
@@ -51,6 +54,7 @@ export class EditClubDto {
   readonly school?: string;
 
   @IsArray()
+  @IsString({ each: true })
   @IsOptional()
   readonly tags?: string[];
 }

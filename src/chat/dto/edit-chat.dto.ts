@@ -6,10 +6,12 @@ export class EditChatDto {
   readonly avatar?: string;
 
   @IsArray()
+  @IsString({ each: true })
   @IsOptional()
   readonly clubs?: string[];
 
   @IsArray()
+  @IsString({ each: true })
   @IsOptional()
   readonly courses?: string[];
 
@@ -17,6 +19,7 @@ export class EditChatDto {
   readonly lastActivity?: any; // TODO add Activity type
 
   @IsArray()
+  @IsString({ each: true })
   @IsOptional()
   readonly messages?: string[];
 
@@ -25,6 +28,7 @@ export class EditChatDto {
   readonly name?: string;
 
   @IsArray()
+  @IsString({ each: true })
   @IsOptional()
   readonly targets?: string[];
 

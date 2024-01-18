@@ -1,0 +1,910 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type BlackboardCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  coverImage: Int!
+  schoolId: Int!
+  text: Int!
+  title: Int!
+  _all: Int!
+}
+
+type BlackboardCount {
+  authors: Int!
+  tags: Int!
+  targets: Int!
+}
+
+type BlackboardMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  coverImage: String
+  schoolId: String
+  text: String
+  title: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type BlackboardMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  coverImage: String
+  schoolId: String
+  text: String
+  title: String
+}
+
+type Blackboard {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  coverImage: String
+  schoolId: String!
+  text: String
+  title: String!
+  authors: [User!]
+  school: School!
+  tags: [BlackboardTag!]
+  targets: [User!]
+  _count: BlackboardCount!
+}
+
+type BlackboardTagCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  name: Int!
+  _all: Int!
+}
+
+type BlackboardTagCount {
+  blackboards: Int!
+}
+
+type BlackboardTagMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  name: String
+}
+
+type BlackboardTagMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  name: String
+}
+
+type BlackboardTag {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  blackboards: [Blackboard!]
+  _count: BlackboardTagCount!
+}
+
+type ChatCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  avatar: Int!
+  lastActivity: Int!
+  name: Int!
+  type: Int!
+  _all: Int!
+}
+
+type ChatCount {
+  clubs: Int!
+  courses: Int!
+  messages: Int!
+  targets: Int!
+}
+
+type ChatMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  avatar: String
+  name: String
+  type: String
+}
+
+type ChatMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  avatar: String
+  name: String
+  type: String
+}
+
+type Chat {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  avatar: String
+  lastActivity: [JSON!]
+  name: String!
+  type: String!
+  clubs: [Club!]
+  courses: [Course!]
+  messages: [Message!]
+  targets: [UserChat!]
+  _count: ChatCount!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type ClassCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  gradeId: Int!
+  schoolId: Int!
+  specifiedGrade: Int!
+  _all: Int!
+}
+
+type ClassCount {
+  courses: Int!
+  members: Int!
+}
+
+type ClassMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  gradeId: String
+  schoolId: String
+  specifiedGrade: String
+}
+
+type ClassMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  gradeId: String
+  schoolId: String
+  specifiedGrade: String
+}
+
+type Class {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  gradeId: String!
+  schoolId: String!
+  specifiedGrade: String
+  courses: [Course!]
+  grade: Grade!
+  members: [User!]
+  school: School!
+  _count: ClassCount!
+}
+
+type ClubCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  chatId: Int!
+  coverImage: Int!
+  description: Int!
+  location: Int!
+  meetingDay: Int!
+  meetingTime: Int!
+  name: Int!
+  requirements: Int!
+  schoolId: Int!
+  _all: Int!
+}
+
+type ClubCount {
+  events: Int!
+  leaders: Int!
+  members: Int!
+  tags: Int!
+}
+
+type ClubMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  chatId: String
+  coverImage: String
+  description: String
+  location: String
+  meetingDay: Day
+  meetingTime: String
+  name: String
+  schoolId: String
+}
+
+enum Day {
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Saturday
+  Sunday
+}
+
+type ClubMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  chatId: String
+  coverImage: String
+  description: String
+  location: String
+  meetingDay: Day
+  meetingTime: String
+  name: String
+  schoolId: String
+}
+
+type Club {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  chatId: String
+  coverImage: String
+  description: String
+  location: String
+  meetingDay: Day
+  meetingTime: String
+  name: String!
+  requirements: [JSON!]
+  schoolId: String!
+  chat: Chat
+  events: [Event!]
+  leaders: [User!]
+  members: [User!]
+  school: School!
+  tags: [ClubTag!]
+  _count: ClubCount!
+}
+
+type ClubTagCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  name: Int!
+  _all: Int!
+}
+
+type ClubTagCount {
+  clubs: Int!
+}
+
+type ClubTagMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  name: String
+}
+
+type ClubTagMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  name: String
+}
+
+type ClubTag {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  clubs: [Club!]
+  _count: ClubTagCount!
+}
+
+type CourseCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  chatId: Int!
+  subjectId: Int!
+  teacherId: Int!
+  _all: Int!
+}
+
+type CourseCount {
+  classes: Int!
+  members: Int!
+}
+
+type CourseMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  chatId: String
+  subjectId: String
+  teacherId: String
+}
+
+type CourseMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  chatId: String
+  subjectId: String
+  teacherId: String
+}
+
+type Course {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  chatId: String
+  subjectId: String!
+  teacherId: String!
+  chat: Chat
+  classes: [Class!]
+  members: [User!]
+  subject: Subject!
+  teacher: User!
+  _count: CourseCount!
+}
+
+type EventCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  description: Int!
+  endDate: Int!
+  host: Int!
+  information: Int!
+  location: Int!
+  schoolId: Int!
+  startDate: Int!
+  title: Int!
+  _all: Int!
+}
+
+type EventCount {
+  clubs: Int!
+  subscribers: Int!
+  tickets: Int!
+}
+
+type EventMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  description: String
+  endDate: DateTime
+  host: String
+  location: String
+  schoolId: String
+  startDate: DateTime
+  title: String
+}
+
+type EventMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  description: String
+  endDate: DateTime
+  host: String
+  location: String
+  schoolId: String
+  startDate: DateTime
+  title: String
+}
+
+type Event {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  description: String
+  endDate: DateTime!
+  host: String!
+  information: [JSON!]
+  location: String
+  schoolId: String!
+  startDate: DateTime!
+  title: String!
+  clubs: [Club!]
+  school: School!
+  subscribers: [User!]
+  tickets: [EventTicket!]
+  _count: EventCount!
+}
+
+type EventTicketAvgAggregate {
+  price: Float
+}
+
+type EventTicketCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  buyerId: Int!
+  eventId: Int!
+  price: Int!
+  saleDate: Int!
+  _all: Int!
+}
+
+type EventTicketMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  buyerId: String
+  eventId: String
+  price: Int
+  saleDate: DateTime
+}
+
+type EventTicketMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  buyerId: String
+  eventId: String
+  price: Int
+  saleDate: DateTime
+}
+
+type EventTicketSumAggregate {
+  price: Int
+}
+
+type EventTicket {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  buyerId: String!
+  eventId: String!
+  price: Int!
+  saleDate: DateTime!
+  buyer: User!
+  event: Event!
+}
+
+type GradeCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  level: Int!
+  schoolId: Int!
+  _all: Int!
+}
+
+type GradeCount {
+  classes: Int!
+}
+
+type GradeMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  level: GradeLevel
+  schoolId: String
+}
+
+enum GradeLevel {
+  G5
+  G6
+  G7
+  G8
+  G9
+  G10
+}
+
+type GradeMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  level: GradeLevel
+  schoolId: String
+}
+
+type Grade {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  level: GradeLevel!
+  schoolId: String!
+  classes: [Class!]
+  school: School!
+  _count: GradeCount!
+}
+
+type MessageCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  authorId: Int!
+  chatId: Int!
+  content: Int!
+  editHistory: Int!
+  reactions: Int!
+  replyToId: Int!
+  _all: Int!
+}
+
+type MessageCount {
+  replies: Int!
+}
+
+type MessageMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  authorId: String
+  chatId: String
+  replyToId: String
+}
+
+type MessageMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  authorId: String
+  chatId: String
+  replyToId: String
+}
+
+type Message {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  authorId: String!
+  chatId: String!
+  content: [JSON!]
+  editHistory: [JSON!]
+  reactions: [JSON!]
+  replyToId: String
+  author: User!
+  chat: Chat!
+  replies: [Message!]
+  replyTo: Message
+  _count: MessageCount!
+}
+
+type SchoolCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  name: Int!
+  setupAccountId: Int!
+  _all: Int!
+}
+
+type SchoolCount {
+  blackboards: Int!
+  classes: Int!
+  clubs: Int!
+  events: Int!
+  grades: Int!
+  members: Int!
+  subjects: Int!
+}
+
+type SchoolMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  name: String
+  setupAccountId: String
+}
+
+type SchoolMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  name: String
+  setupAccountId: String
+}
+
+type School {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  setupAccountId: String!
+  blackboards: [Blackboard!]
+  classes: [Class!]
+  clubs: [Club!]
+  events: [Event!]
+  grades: [Grade!]
+  members: [User!]
+  setupAccount: SetupAccount!
+  subjects: [Subject!]
+  _count: SchoolCount!
+}
+
+type SetupAccountCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  schoolId: Int!
+  schoolName: Int!
+  _all: Int!
+}
+
+type SetupAccountMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  schoolId: String
+  schoolName: String
+}
+
+type SetupAccountMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  schoolId: String
+  schoolName: String
+}
+
+type SetupAccount {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  schoolId: String
+  schoolName: String!
+  school: School
+}
+
+type SubjectCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  schoolId: Int!
+  shortName: Int!
+  type: Int!
+  _all: Int!
+}
+
+type SubjectCount {
+  courses: Int!
+}
+
+type SubjectMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  schoolId: String
+  shortName: String
+  type: SubjectType
+}
+
+enum SubjectType {
+  ART
+  BIOLOGY
+  CHEMISTRY
+  COMPUTER_SCIENCE
+  ECONOMICS
+  ENGLISH
+  ETHICS
+  FRENCH
+  GEOGRAPHY
+  GERMAN
+  HISTORY
+  IMP
+  ITALIAN
+  MATHS
+  MUSIC
+  NWT
+  PHYSICS
+  POLITICS
+  RELIGION
+  SPANISH
+  SPORT
+}
+
+type SubjectMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  schoolId: String
+  shortName: String
+  type: SubjectType
+}
+
+type Subject {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  schoolId: String!
+  shortName: String!
+  type: SubjectType!
+  courses: [Course!]
+  school: School!
+  _count: SubjectCount!
+}
+
+type UserCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  avatar: Int!
+  firstName: Int!
+  lastName: Int!
+  type: Int!
+  userAccountId: Int!
+  _all: Int!
+}
+
+type UserCount {
+  blackboards: Int!
+  blackboardsReceived: Int!
+  classes: Int!
+  clubs: Int!
+  clubsAsLeader: Int!
+  courses: Int!
+  coursesAsTeacher: Int!
+  events: Int!
+  eventTickets: Int!
+  messages: Int!
+  schools: Int!
+  userChats: Int!
+}
+
+type UserMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  avatar: String
+  firstName: String
+  lastName: String
+  type: UserType
+  userAccountId: String
+}
+
+enum UserType {
+  ADMIN
+  TEACHER
+  STUDENT
+}
+
+type UserMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  avatar: String
+  firstName: String
+  lastName: String
+  type: UserType
+  userAccountId: String
+}
+
+type User {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  avatar: String
+  firstName: String!
+  lastName: String!
+  type: UserType!
+  userAccountId: String!
+  blackboards: [Blackboard!]
+  blackboardsReceived: [Blackboard!]
+  classes: [Class!]
+  clubs: [Club!]
+  clubsAsLeader: [Club!]
+  courses: [Course!]
+  coursesAsTeacher: [Course!]
+  events: [Event!]
+  eventTickets: [EventTicket!]
+  messages: [Message!]
+  schools: [School!]
+  userAccount: UserAccount!
+  userChats: [UserChat!]
+  _count: UserCount!
+}
+
+type UserAccountCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  password: Int!
+  userId: Int!
+  username: Int!
+  _all: Int!
+}
+
+type UserAccountMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  password: String
+  userId: String
+  username: String
+}
+
+type UserAccountMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  password: String
+  userId: String
+  username: String
+}
+
+type UserAccount {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  password: String!
+  userId: String
+  username: String!
+  user: User
+}
+
+type UserChatCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  chatId: Int!
+  hidden: Int!
+  pinned: Int!
+  read: Int!
+  userId: Int!
+  _all: Int!
+}
+
+type UserChatMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  chatId: String
+  hidden: Boolean
+  pinned: Boolean
+  read: Boolean
+  userId: String
+}
+
+type UserChatMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  chatId: String
+  hidden: Boolean
+  pinned: Boolean
+  read: Boolean
+  userId: String
+}
+
+type UserChat {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  chatId: String!
+  hidden: Boolean!
+  pinned: Boolean!
+  read: Boolean!
+  userId: String!
+  chat: Chat!
+  user: User!
+}
+
+type Query {
+  blackboards: [Blackboard!]!
+  blackboard(id: String!): Blackboard!
+}
+
+type Mutation {
+  createBlackboard: Blackboard!
+}

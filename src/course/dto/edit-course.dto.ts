@@ -1,15 +1,17 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 
 export class EditCourseDto {
   @IsString()
   @IsOptional()
   readonly chat?: string;
 
-  @IsString()
+  @IsArray()
+  @IsString({ each: true })
   @IsOptional()
   readonly classes?: string[];
 
-  @IsString()
+  @IsArray()
+  @IsString({ each: true })
   @IsOptional()
   readonly members?: string[];
 

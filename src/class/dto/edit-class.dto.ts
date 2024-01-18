@@ -2,6 +2,7 @@ import { IsArray, IsOptional, IsString } from 'class-validator';
 
 export class EditClassDto {
   @IsArray()
+  @IsString({ each: true })
   @IsOptional()
   readonly courses?: string[];
 
@@ -10,6 +11,7 @@ export class EditClassDto {
   readonly grade: string;
 
   @IsArray()
+  @IsString({ each: true })
   @IsOptional()
   readonly members?: string[];
 

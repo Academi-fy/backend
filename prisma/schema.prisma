@@ -5,6 +5,18 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator nestgraphql {
+  provider                              = "node node_modules/prisma-nestjs-graphql"
+  output                                = "../src/@generated-types"
+  fields_Validator_from                 = "class-validator"
+  fields_Validator_input                = true
+  requireSingleFieldsInWhereUniqueInput = true
+  emitSingle                            = true
+  emitCompiled                          = true
+  purgeOutput                           = true
+  noTypeId                              = true
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
