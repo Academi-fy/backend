@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { Blackboard } from '@prisma/client';
 import { Service } from '../service';
 import { CreateBlackboardDto, EditBlackboardDto } from './dto';
+import blackboardNesting from './blackboard-nesting';
 
 @Injectable()
 export class BlackboardService extends Service {
@@ -11,12 +12,13 @@ export class BlackboardService extends Service {
   }
 
   async getAllBlackboards(): Promise<Blackboard[]> {
-    return this.prisma.blackboard.findMany({});
+    return this.prisma.blackboard.findMany(blackboardNesting);
   }
 
   async getBlackboardById(blackboardId: string): Promise<Blackboard> {
     return this.prisma.blackboard.findUnique({
       where: { id: blackboardId },
+      ...blackboardNesting,
     });
   }
 

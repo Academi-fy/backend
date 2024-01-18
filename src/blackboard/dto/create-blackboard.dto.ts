@@ -1,6 +1,7 @@
 import { IsOptional, IsString } from 'class-validator';
-import { Directive, Field } from '@nestjs/graphql';
+import { Directive, Field, InputType } from '@nestjs/graphql';
 
+@InputType()
 export class CreateBlackboardDto {
   @Field(() => [String])
   @IsString()
@@ -11,25 +12,25 @@ export class CreateBlackboardDto {
   @IsOptional()
   readonly coverImage?: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   @IsString()
   readonly school: string;
 
-  @Field()
+  @Field(() => [String])
   @Directive('@upper')
   @IsString()
   readonly tags: string[];
 
-  @Field()
+  @Field(() => [String], { nullable: true })
   @IsString()
   @IsOptional()
   readonly targets?: string[];
 
-  @Field()
+  @Field(() => String)
   @IsString()
   readonly title: string;
 
-  @Field()
+  @Field(() => String)
   @IsString()
   readonly text: string;
 }

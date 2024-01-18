@@ -901,10 +901,32 @@ type UserChat {
 }
 
 type Query {
-  blackboards: [Blackboard!]!
-  blackboard(id: String!): Blackboard!
+  getAllBlackboards: [Blackboard!]!
+  getBlackboard(id: String!): Blackboard!
 }
 
 type Mutation {
-  createBlackboard: Blackboard!
+  createBlackboard(createBlackboardDto: CreateBlackboardDto!): Blackboard!
+  updateBlackboard(id: String!, editBlackboardDto: EditBlackboardDto!): Blackboard!
+  deleteBlackboard(id: String!): Blackboard!
+}
+
+input CreateBlackboardDto {
+  authors: [String!]!
+  coverImage: String
+  school: String!
+  tags: [String!]!
+  targets: [String!]
+  title: String!
+  text: String!
+}
+
+input EditBlackboardDto {
+  authors: [String!]
+  coverImage: String
+  school: String
+  tags: [String!]
+  targets: [String!]
+  title: String
+  text: String
 }

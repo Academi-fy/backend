@@ -1,6 +1,7 @@
 import { IsOptional, IsString } from 'class-validator';
-import { Directive, Field } from '@nestjs/graphql';
+import { Directive, Field, InputType } from '@nestjs/graphql';
 
+@InputType()
 export class EditBlackboardDto {
   @Field(() => [String], { nullable: true })
   @IsString()
