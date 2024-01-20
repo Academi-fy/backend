@@ -25,13 +25,16 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { Gateway } from './socket/gateway';
 import { PrismaModule } from './prisma';
-import { ChatResolver } from './rest/chat/chat.resolver';
+import { GraphQLJSON } from 'graphql-type-json';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      buildSchemaOptions: {
+        scalarsMap: [{ type: () => GraphQLJSON, scalar: GraphQLJSON }],
+      },
     }),
     AuthModule,
     UserAccountModule,
@@ -58,7 +61,7 @@ import { ChatResolver } from './rest/chat/chat.resolver';
     UserAccountModule,
     UserChatModule,
   ],
-  providers: [Gateway, ChatResolver],
+  providers: [Gateway],
   controllers: [],
 })
 export class AppModule {}

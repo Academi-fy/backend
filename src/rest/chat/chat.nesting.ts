@@ -1,12 +1,34 @@
-import { userRawNesting } from '../user/user.nesting';
+import { clubRawNesting } from '../club';
+import { courseRawNesting } from '../course';
+import { messageRawNesting } from '../message';
+import { userChatRawNesting } from '../user-chat';
+
+export const chatRawNesting = {
+  clubs: true,
+  courses: true,
+  messages: true,
+  targets: true,
+} as const;
 
 export const chatNesting = {
-  clubs: {},
-  courses: {},
-  messages: {},
+  clubs: {
+    include: {
+      ...clubRawNesting,
+    },
+  },
+  courses: {
+    include: {
+      ...courseRawNesting,
+    },
+  },
+  messages: {
+    include: {
+      ...messageRawNesting,
+    },
+  },
   targets: {
     include: {
-      ...userRawNesting,
+      ...userChatRawNesting,
     },
   },
 } as const;

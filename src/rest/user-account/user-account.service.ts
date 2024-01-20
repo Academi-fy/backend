@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserAccountDto, EditUserAccountDto } from './dto';
 import { UserAccount } from '@prisma/client';
+import { Service } from '../../service';
 import { PrismaService } from '../../prisma';
 
 @Injectable()
-export class UserAccountService {
-  constructor(private prisma: PrismaService) {}
+export class UserAccountService extends Service {
+  constructor(private prisma: PrismaService) {
+    super();
+  }
 
   async getAllUserAccounts(): Promise<UserAccount[]> {
     return this.prisma.userAccount.findMany({});

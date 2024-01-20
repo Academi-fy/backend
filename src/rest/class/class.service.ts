@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateClassDto, EditClassDto } from './dto';
 import { Class } from '@prisma/client';
 import { Service } from '../../service';
+import { classNesting } from './';
 import { PrismaService } from '../../prisma';
 
 @Injectable()
@@ -11,23 +12,39 @@ export class ClassService extends Service {
   }
 
   async getAllClasses(): Promise<Class[]> {
-    return this.prisma.class.findMany({});
+    return this.prisma.class.findMany({
+      include: {
+        ...classNesting,
+      },
+    });
   }
 
   async getClassById(classId: string): Promise<Class> {
     return this.prisma.class.findUnique({
       where: { id: classId },
+      include: {
+        ...classNesting,
+      },
     });
+  }
+
+  private mapDtoToData(dto: CreateClassDto | EditClassDto) {
+    return {
+      ...dto,
+      courses: this.connectArray(dto.courses),
+      grade: this.connectSingle(dto.grade),
+      members: this.connectArray(dto.members),
+      school: this.connectSingle(dto.school),
+    };
   }
 
   async createClass(dto: CreateClassDto): Promise<Class> {
     return this.prisma.class.create({
       data: {
-        ...dto,
-        courses: this.connectArray(dto.courses),
-        grade: this.connectSingle(dto.grade),
-        members: this.connectArray(dto.members),
-        school: this.connectSingle(dto.school),
+        ...this.mapDtoToData(dto),
+      },
+      include: {
+        ...classNesting,
       },
     });
   }
@@ -36,11 +53,10 @@ export class ClassService extends Service {
     return this.prisma.class.update({
       where: { id: classId },
       data: {
-        ...dto,
-        courses: this.connectArray(dto.courses),
-        grade: this.connectSingle(dto.grade),
-        members: this.connectArray(dto.members),
-        school: this.connectSingle(dto.school),
+        ...this.mapDtoToData(dto),
+      },
+      include: {
+        ...classNesting,
       },
     });
   }

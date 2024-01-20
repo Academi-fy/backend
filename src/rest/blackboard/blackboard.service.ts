@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Blackboard } from '@prisma/client';
 import { Service } from '../../service';
 import { CreateBlackboardDto, EditBlackboardDto } from './dto';
+import { blackboardNesting } from './';
 import { PrismaService } from '../../prisma';
-import { blackboardNesting } from './blackboard.nesting';
 
 @Injectable()
 export class BlackboardService extends Service {
@@ -19,6 +19,21 @@ export class BlackboardService extends Service {
     });
   }
 
+  async getLastBlackboards(
+    sort: 'createdAt' | 'updatedAt',
+    limit: number,
+    lastId?: string,
+  ) {
+    return this.prisma.blackboard.findMany({
+      orderBy: {
+        [sort]: 'desc',
+      },
+      take: limit,
+      cursor: lastId ? { id: lastId } : undefined,
+      skip: lastId ? 1 : 0,
+    });
+  }
+
   async getBlackboardById(blackboardId: string): Promise<Blackboard> {
     return this.prisma.blackboard.findUnique({
       where: { id: blackboardId },
@@ -31,11 +46,7 @@ export class BlackboardService extends Service {
   async createBlackboard(dto: CreateBlackboardDto): Promise<Blackboard> {
     return this.prisma.blackboard.create({
       data: {
-        ...dto,
-        school: this.connectSingle(dto.school),
-        tags: this.connectArray(dto.tags),
-        authors: this.connectArray(dto.authors),
-        targets: this.connectArray(dto.targets),
+        ...this.mapDtoToData(dto),
       },
       include: {
         ...blackboardNesting,
@@ -50,11 +61,7 @@ export class BlackboardService extends Service {
     return this.prisma.blackboard.update({
       where: { id: blackboardId },
       data: {
-        ...dto,
-        school: this.connectSingle(dto.school),
-        tags: this.connectArray(dto.tags),
-        authors: this.connectArray(dto.authors),
-        targets: this.connectArray(dto.targets),
+        ...this.mapDtoToData(dto),
       },
       include: {
         ...blackboardNesting,
@@ -67,5 +74,16 @@ export class BlackboardService extends Service {
       where: { id: blackboardId },
     });
     return Boolean(deletedBlackboard);
+  }
+
+  private mapDtoToData(dto: CreateBlackboardDto | EditBlackboardDto) {
+    return {
+      ...dto,
+      school: this.connectSingle(dto.school),
+      tags: this.connectArray(dto.tags),
+      authors: this.connectArray(dto.authors),
+      targets: this.connectArray(dto.targets),
+      title: dto.title ? dto.title : undefined,
+    };
   }
 }

@@ -9,7 +9,23 @@ export const userRawNesting = {
   events: true,
   eventTickets: true,
   messages: true,
-  schools: true,
+  schools: false,
   userAccount: true,
   userChats: true,
+};
+
+export const userNesting = {
+  blackboards: {},
+  blackboardsReceived: {},
+  classes: {},
+  clubs: {},
+  clubsAsLeader: {},
+  courses: {},
+  coursesAsTeacher: {},
+  events: {},
+  eventTickets: {},
+  messages: {},
+  schools: false,
+  userAccount: {},
+  userChats: {},
 };

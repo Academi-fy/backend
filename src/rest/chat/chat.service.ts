@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateChatDto, EditChatDto } from './dto';
 import { Chat } from '@prisma/client';
 import { Service } from '../../service';
+import { chatNesting } from './';
 import { PrismaService } from '../../prisma';
 
 @Injectable()
@@ -11,23 +12,42 @@ export class ChatService extends Service {
   }
 
   async getAllChats(): Promise<Chat[]> {
-    return this.prisma.chat.findMany({});
+    return this.prisma.chat.findMany({
+      include: {
+        ...chatNesting,
+      },
+    });
   }
 
   async getChatById(chatId: string): Promise<Chat> {
     return this.prisma.chat.findUnique({
       where: { id: chatId },
+      include: {
+        ...chatNesting,
+      },
     });
+  }
+
+  private mapDtoToData(dto: CreateChatDto | EditChatDto) {
+    return {
+      ...dto,
+      clubs: this.connectArray(dto.clubs),
+      courses: this.connectArray(dto.courses),
+      messages: this.connectArray(dto.messages),
+      targets: this.connectArray(dto.targets),
+      lastActivity: this.stringifySingle(dto.lastActivity),
+      name: dto.name ? dto.name : undefined,
+      type: dto.type ? dto.type : undefined,
+    };
   }
 
   async createChat(dto: CreateChatDto): Promise<Chat> {
     return this.prisma.chat.create({
       data: {
-        ...dto,
-        clubs: this.connectArray(dto.clubs),
-        courses: this.connectArray(dto.courses),
-        messages: this.connectArray(dto.messages),
-        targets: this.connectArray(dto.targets),
+        ...this.mapDtoToData(dto),
+      },
+      include: {
+        ...chatNesting,
       },
     });
   }
@@ -36,11 +56,10 @@ export class ChatService extends Service {
     return this.prisma.chat.update({
       where: { id: chatId },
       data: {
-        ...dto,
-        clubs: this.connectArray(dto.clubs),
-        courses: this.connectArray(dto.courses),
-        messages: this.connectArray(dto.messages),
-        targets: this.connectArray(dto.targets),
+        ...this.mapDtoToData(dto),
+      },
+      include: {
+        ...chatNesting,
       },
     });
   }

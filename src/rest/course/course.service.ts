@@ -20,15 +20,21 @@ export class CourseService extends Service {
     });
   }
 
+  private mapDtoToData(dto: CreateCourseDto | EditCourseDto) {
+    return {
+      ...dto,
+      chat: this.connectSingle(dto.chat),
+      classes: this.connectArray(dto.classes),
+      members: this.connectArray(dto.members),
+      subject: this.connectSingle(dto.subject),
+      teacher: this.connectSingle(dto.teacher),
+    };
+  }
+
   async createCourse(dto: CreateCourseDto): Promise<Course> {
     return this.prisma.course.create({
       data: {
-        ...dto,
-        chat: this.connectSingle(dto.chat),
-        classes: this.connectArray(dto.classes),
-        members: this.connectArray(dto.members),
-        subject: this.connectSingle(dto.subject),
-        teacher: this.connectSingle(dto.teacher),
+        ...this.mapDtoToData(dto),
       },
     });
   }
@@ -39,12 +45,7 @@ export class CourseService extends Service {
         id: courseId,
       },
       data: {
-        ...dto,
-        chat: this.connectSingle(dto.chat),
-        classes: this.connectArray(dto.classes),
-        members: this.connectArray(dto.members),
-        subject: this.connectSingle(dto.subject),
-        teacher: this.connectSingle(dto.teacher),
+        ...this.mapDtoToData(dto),
       },
     });
   }

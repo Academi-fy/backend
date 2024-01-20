@@ -1,17 +1,18 @@
-import { userRawNesting } from '../user/user.nesting';
+import { userRawNesting } from '../user';
+import { blackboardTagRawNesting } from '../blackboard-tag';
 
 export const blackboardRawNesting = {
   authors: true,
-  school: true,
+  school: false,
   tags: true,
   targets: true,
 };
 
 export const blackboardNesting = {
-  school: true,
+  school: false,
   tags: {
     include: {
-      blackboards: true,
+      ...blackboardTagRawNesting,
     },
   },
   authors: {

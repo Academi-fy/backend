@@ -1,11 +1,14 @@
 import { IsArray, IsOptional, IsString } from 'class-validator';
+import { Field, InputType } from '@nestjs/graphql';
 
+@InputType()
 export class EditClubTagDto {
+  @Field(() => [String], { nullable: true })
   @IsArray()
-  @IsString({ each: true })
   @IsOptional()
   readonly clubs?: string[];
 
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
   readonly name?: string;

@@ -135,7 +135,7 @@ type Chat {
   createdAt: DateTime!
   updatedAt: DateTime!
   avatar: String
-  lastActivity: [JSON!]
+  lastActivity: JSON!
   name: String!
   type: String!
   clubs: [Club!]
@@ -234,6 +234,7 @@ type ClubMaxAggregate {
   schoolId: String
 }
 
+"""Week day"""
 enum Day {
   Monday
   Tuesday
@@ -501,6 +502,7 @@ type GradeMaxAggregate {
   schoolId: String
 }
 
+"""Leve of the grade"""
 enum GradeLevel {
   G5
   G6
@@ -902,21 +904,76 @@ type UserChat {
 
 type Query {
   getAllBlackboards: [Blackboard!]!
+  getLastBlackboards(sort: SortOrder!, limit: Float!, lastId: String): [Blackboard!]!
   getBlackboard(id: String!): Blackboard!
   getAllBlackboardTags: [BlackboardTag!]!
   getBlackboardTagById(id: String!): BlackboardTag!
-  getBlackboardTagByTag(tag: String!): BlackboardTag!
+  getBlackboardTagByTag(tagName: String!): BlackboardTag!
+  getAllChats: [Chat!]!
+  getChatById(id: String!): Chat!
+  getAllClasses: [Class!]!
+  getClassById(id: String!): Class!
+  getAllClubs: [Club!]!
+  getClubById(id: String!): Club!
+  getAllClubTags: [ClubTag!]!
+  getClubTagById(id: String!): ClubTag!
+  getAllCourses: [Course!]!
+  getCourseById: Course!
+  getAllEvents: [Event!]!
+  getEventById(id: String!): Event!
+  getAllEventTickets(
+    """optional"""
+    eventId: String
+  ): [EventTicket!]!
+  getEventTicket(id: String!): EventTicket!
+  getAllGrades: [Grade!]!
+  getGradeById(id: String!): Grade!
+  getAllMessages: [Message!]!
+  getMessageById: Message!
+}
+
+"""The sort order (createdAt, updatedAt)"""
+enum SortOrder {
+  createdAt
+  updatedAt
 }
 
 type Mutation {
-  createBlackboard(createBlackboardDto: CreateBlackboardDto!): Blackboard!
-  updateBlackboard(id: String!, editBlackboardDto: EditBlackboardDto!): Blackboard!
-  deleteBlackboard(id: String!): Blackboard!
-  createBlackboardTag(createBlackboardTagDto: CreateBlackboardTagDto!): BlackboardTag!
-  editBlackboardTagById(id: String!, editBlackboardTagDto: CreateBlackboardTagDto!): BlackboardTag!
+  createBlackboard(blackboard: CreateBlackboardDto!): Blackboard!
+  editBlackboard(id: String!, blackboard: EditBlackboardDto!): Blackboard!
+  deleteBlackboard(id: String!): Boolean!
+  createBlackboardTag(blackboardTag: CreateBlackboardTagDto!): BlackboardTag!
+  editBlackboardTagById(id: String!, blackboardTag: CreateBlackboardTagDto!): BlackboardTag!
   editBlackboardTagByTag(tag: String!, editBlackboardTagDto: EditBlackboardTagDto!): BlackboardTag!
   deleteBlackboardTagById(id: String!): Boolean!
   deleteBlackboardTagByTag(tag: String!): Boolean!
+  createChat(chat: CreateChatDto!): Chat!
+  editChat(id: String!, chat: EditChatDto!): Chat!
+  deleteChat(id: String!): Boolean!
+  createClass(class: CreateClassDto!): Class!
+  editClass(id: String!, class: EditClassDto!): Class!
+  deleteClass(id: String!): Boolean!
+  createClub(club: CreateClubDto!): Club!
+  editClub(id: String!, club: EditClubDto!): Club!
+  deleteClub(id: String!): Boolean!
+  createClubTag(clubTag: CreateClubTagDto!): ClubTag!
+  editClubTag(id: String!, clubTag: EditClubTagDto!): ClubTag!
+  deleteClubTag(id: String!): Boolean!
+  createCourse(course: CreateCourseDto!): Course!
+  editCourse(id: String!, course: EditCourseDto!): Course!
+  deleteCourse(id: String!): Boolean!
+  createEvent(event: CreateEventDto!): Event!
+  editEvent(id: String!, event: EditEventDto!): Event!
+  deleteEvent(id: String!): Boolean!
+  createEventTicket(eventTicket: CreateEventTicketDto!): EventTicket!
+  editEventTicket(id: String!, eventTicket: CreateEventTicketDto!): EventTicket!
+  deleteEventTicket(id: String!): Boolean!
+  createGrade(grade: CreateGradeDto!): Grade!
+  editGrade(id: String!, grade: EditGradeDto!): Grade!
+  deleteGrade(id: String!): Boolean!
+  createMessage(message: CreateMessageDto!): Message!
+  editMessage(id: String!, message: CreateMessageDto!): Message!
+  deleteMessage(id: String!): Message!
 }
 
 input CreateBlackboardDto {
@@ -947,4 +1004,186 @@ input CreateBlackboardTagDto {
 input EditBlackboardTagDto {
   blackboards: [String!]
   name: String
+}
+
+input CreateChatDto {
+  avatar: String
+  clubs: [String!]!
+  courses: [String!]
+  lastActivity: Activity
+  messages: [String!]
+  name: String!
+  targets: [String!]
+  type: String!
+}
+
+input Activity {
+  type: String!
+  value: JSON!
+}
+
+input EditChatDto {
+  avatar: String
+  clubs: [String!]
+  courses: [String!]
+  lastActivity: Activity
+  messages: [String!]
+  name: String
+  targets: [String!]
+  type: String
+}
+
+input CreateClassDto {
+  courses: [String!]
+  grade: String!
+  members: [String!]
+  school: String!
+  specifiedGrade: String!
+}
+
+input EditClassDto {
+  courses: [String!]
+  grade: String
+  members: [String!]
+  specifiedGrade: String
+  school: String
+}
+
+input CreateClubDto {
+  chat: String
+  coverImage: String!
+  description: String!
+  events: [String!]
+  leaders: [String!]!
+  location: String!
+  meetingDay: Day!
+  meetingTime: String!
+  members: [String!]!
+  name: String!
+  requirements: [ClubRequirement!]!
+  school: String!
+  tags: [String!]!
+}
+
+input ClubRequirement {
+  emoji: String!
+  description: String!
+}
+
+input EditClubDto {
+  chat: String
+  coverImage: String
+  description: String
+  events: [String!]
+  leaders: [String!]
+  location: String
+  meetingDay: Day
+  meetingTime: String
+  members: [String!]
+  name: String
+  requirements: [ClubRequirement!]
+  school: String
+  tags: [String!]
+}
+
+input CreateClubTagDto {
+  clubs: [String!]
+  name: String!
+}
+
+input EditClubTagDto {
+  clubs: [String!]
+  name: String
+}
+
+input CreateCourseDto {
+  chat: String
+  classes: [String!]!
+  members: [String!]!
+  subject: String!
+  teacher: String!
+}
+
+input EditCourseDto {
+  chat: String
+  classes: [String!]
+  members: [String!]
+  subject: String
+  teacher: String
+}
+
+input CreateEventDto {
+  clubs: [String!]!
+  description: String!
+  endDate: DateTime!
+  host: String!
+  information: [EventInformation!]!
+  location: String!
+  school: String!
+  startDate: DateTime!
+  subscribers: [String!]!
+  tickets: [String!]!
+  title: String!
+}
+
+input EventInformation {
+  title: String!
+  items: [EventInformationItem!]!
+}
+
+input EventInformationItem {
+  emoji: String!
+  description: String!
+}
+
+input EditEventDto {
+  clubs: [String!]
+  description: String
+  endDate: DateTime
+  host: String
+  information: [EventInformation!]
+  location: String
+  school: String
+  startDate: DateTime
+  subscribers: [String!]
+  tickets: [String!]
+  title: String
+}
+
+input CreateEventTicketDto {
+  buyer: String!
+  event: String!
+  price: Float!
+  saleDate: DateTime!
+}
+
+input CreateGradeDto {
+  classes: [String!]
+  level: GradeLevel!
+  school: String!
+}
+
+input EditGradeDto {
+  classes: [String!]
+  level: GradeLevel
+  school: String
+}
+
+input CreateMessageDto {
+  author: String!
+  chat: String!
+  content: [ContentType!]!
+  reactions: [Reaction!]!
+  replies: [String!]
+  replyTo: String
+}
+
+input ContentType {
+  type: String!
+  value: String!
+}
+
+input Reaction {
+  emoji: String!
+  count: Float!
 }

@@ -1,60 +1,72 @@
-import { Day } from '@prisma/client';
 import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
+import { Field, InputType } from '@nestjs/graphql';
+import { Day } from '../../../@generated-types';
+import { ClubRequirement } from '../entities/club-requirement.entity';
 
+@InputType()
 export class EditClubDto {
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
   readonly chat?: string;
 
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
   readonly coverImage?: string;
 
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
   readonly description?: string;
 
+  @Field(() => [String], { nullable: true })
   @IsArray()
-  @IsString({ each: true })
   @IsOptional()
   readonly events?: string[];
 
+  @Field(() => [String], { nullable: true })
   @IsArray()
-  @IsString({ each: true })
   @IsOptional()
   readonly leaders?: string[];
 
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
   readonly location?: string;
 
+  @Field(() => Day, { nullable: true })
   @IsEnum(Day)
   @IsOptional()
   readonly meetingDay?: Day;
 
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
   readonly meetingTime?: string;
 
+  @Field(() => [String], { nullable: true })
   @IsArray()
-  @IsString({ each: true })
   @IsOptional()
   readonly members?: string[];
 
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
   readonly name?: string;
 
+  @Field(() => [ClubRequirement], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly requirements?: any[]; // TODO change to ClubRequirement Object
+  readonly requirements?: ClubRequirement[];
 
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
   readonly school?: string;
 
+  @Field(() => [String], { nullable: true })
   @IsArray()
-  @IsString({ each: true })
   @IsOptional()
   readonly tags?: string[];
 }

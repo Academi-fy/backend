@@ -20,11 +20,18 @@ export class ClubTagService extends Service {
     });
   }
 
+  private mapDtoToData(dto: CreateClubTagDto | EditClubTagDto) {
+    return {
+      ...dto,
+      clubs: this.connectArray(dto.clubs),
+      name: dto.name ? dto.name : undefined,
+    };
+  }
+
   async createClubTag(dto: CreateClubTagDto): Promise<ClubTag> {
     return this.prisma.clubTag.create({
       data: {
-        ...dto,
-        clubs: this.connectArray(dto.clubs),
+        ...this.mapDtoToData(dto),
       },
     });
   }
@@ -35,8 +42,7 @@ export class ClubTagService extends Service {
         id: clubTagId,
       },
       data: {
-        ...dto,
-        clubs: this.connectArray(dto.clubs),
+        ...this.mapDtoToData(dto),
       },
     });
   }

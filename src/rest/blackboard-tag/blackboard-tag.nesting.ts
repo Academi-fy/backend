@@ -1,4 +1,8 @@
-import { blackboardRawNesting } from '../blackboard/blackboard.nesting';
+import { blackboardRawNesting } from '../blackboard';
+
+export const blackboardTagRawNesting = {
+  blackboards: true,
+} as const;
 
 export const blackboardTagNesting = {
   blackboards: {

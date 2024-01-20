@@ -21,14 +21,14 @@ export class BlackboardTagResolver {
 
   @Query(() => BlackboardTag)
   async getBlackboardTagByTag(
-    @Args('tag', { type: () => String }) tag: string,
+    @Args('tagName', { type: () => String }) tagName: string,
   ): Promise<BlackboardTag> {
-    return this.blackboardTagService.getBlackboardTagByTag(tag);
+    return this.blackboardTagService.getBlackboardTagByTag(tagName);
   }
 
   @Mutation(() => BlackboardTag)
   async createBlackboardTag(
-    @Args('createBlackboardTagDto')
+    @Args('blackboardTag')
     createBlackboardTagDto: CreateBlackboardTagDto,
   ): Promise<BlackboardTag> {
     return this.blackboardTagService.createBlackboardTag(
@@ -39,7 +39,7 @@ export class BlackboardTagResolver {
   @Mutation(() => BlackboardTag)
   async editBlackboardTagById(
     @Args('id', { type: () => String }) id: string,
-    @Args('editBlackboardTagDto') editBlackboardTagDto: CreateBlackboardTagDto,
+    @Args('blackboardTag') editBlackboardTagDto: CreateBlackboardTagDto,
   ): Promise<BlackboardTag> {
     return this.blackboardTagService.editBlackboardTagById(
       id,

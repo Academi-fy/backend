@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { BlackboardTag } from '@prisma/client';
 import { CreateBlackboardTagDto, EditBlackboardTagDto } from './dto';
 import { Service } from '../../service';
+import { blackboardTagNesting } from './';
 import { PrismaService } from '../../prisma';
-import { blackboardTagNesting } from './blackboard-tag.nesting';
 
 @Injectable()
 export class BlackboardTagService extends Service {
@@ -28,13 +28,21 @@ export class BlackboardTagService extends Service {
     });
   }
 
-  async getBlackboardTagByTag(tag: string): Promise<BlackboardTag> {
+  async getBlackboardTagByTag(tagName: string): Promise<BlackboardTag> {
     return this.prisma.blackboardTag.findUnique({
-      where: { name: tag },
+      where: { name: tagName },
       include: {
         ...blackboardTagNesting,
       },
     });
+  }
+
+  private mapDtoToData(dto: CreateBlackboardTagDto | EditBlackboardTagDto) {
+    return {
+      ...dto,
+      blackboards: this.connectArray(dto.blackboards),
+      name: dto.name ? dto.name.toLowerCase() : undefined,
+    };
   }
 
   async createBlackboardTag(
@@ -42,8 +50,7 @@ export class BlackboardTagService extends Service {
   ): Promise<BlackboardTag> {
     return this.prisma.blackboardTag.create({
       data: {
-        ...dto,
-        blackboards: this.connectArray(dto.blackboards),
+        ...this.mapDtoToData(dto),
       },
       include: {
         ...blackboardTagNesting,
@@ -58,8 +65,7 @@ export class BlackboardTagService extends Service {
     return this.prisma.blackboardTag.update({
       where: { id: blackboardTagId },
       data: {
-        ...dto,
-        blackboards: this.connectArray(dto.blackboards),
+        ...this.mapDtoToData(dto),
       },
       include: {
         ...blackboardTagNesting,

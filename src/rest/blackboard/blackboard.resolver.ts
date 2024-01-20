@@ -2,6 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { BlackboardService } from './blackboard.service';
 import { Blackboard } from '../../@generated-types';
 import { CreateBlackboardDto, EditBlackboardDto } from './dto';
+import { SortOrder } from '../../prisma';
 
 @Resolver(() => Blackboard)
 export class BlackboardResolver {
@@ -10,6 +11,16 @@ export class BlackboardResolver {
   @Query(() => [Blackboard])
   async getAllBlackboards(): Promise<Blackboard[]> {
     return this.blackboardService.getAllBlackboards();
+  }
+
+  @Query(() => [Blackboard])
+  async getLastBlackboards(
+    @Args('sort', { type: () => SortOrder }) sort: SortOrder,
+    @Args('limit', { type: () => Number }) limit: number,
+    @Args('lastId', { type: () => String, nullable: true })
+    lastId?: string,
+  ): Promise<Blackboard[]> {
+    return this.blackboardService.getLastBlackboards(sort, limit, lastId);
   }
 
   @Query(() => Blackboard)
@@ -21,20 +32,20 @@ export class BlackboardResolver {
 
   @Mutation(() => Blackboard)
   async createBlackboard(
-    @Args('createBlackboardDto') createBlackboardDto: CreateBlackboardDto,
+    @Args('blackboard') createBlackboardDto: CreateBlackboardDto,
   ): Promise<Blackboard> {
     return this.blackboardService.createBlackboard(createBlackboardDto);
   }
 
   @Mutation(() => Blackboard)
-  async updateBlackboard(
+  async editBlackboard(
     @Args('id', { type: () => String }) id: string,
-    @Args('editBlackboardDto') editBlackboardDto: EditBlackboardDto,
+    @Args('blackboard') editBlackboardDto: EditBlackboardDto,
   ): Promise<Blackboard> {
     return this.blackboardService.editBlackboard(id, editBlackboardDto);
   }
 
-  @Mutation(() => Blackboard)
+  @Mutation(() => Boolean)
   async deleteBlackboard(
     @Args('id', { type: () => String }) id: string,
   ): Promise<boolean> {

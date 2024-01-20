@@ -58,7 +58,7 @@ model Chat {
   avatar       String?
   clubs        Club[]     @relation("ClubChat") // mark
   courses      Course[]   @relation("CourseChat") // mark
-  lastActivity Json[]
+  lastActivity Json
   messages     Message[]  @relation("ChatMessage") // mark
   name         String
   targets      UserChat[] @relation("ChatTarget") // mark

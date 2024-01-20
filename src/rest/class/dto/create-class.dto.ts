@@ -1,22 +1,27 @@
 import { IsArray, IsOptional, IsString } from 'class-validator';
+import { Field, InputType } from '@nestjs/graphql';
 
+@InputType()
 export class CreateClassDto {
+  @Field(() => [String], { nullable: true })
   @IsArray()
-  @IsString({ each: true })
   @IsOptional()
   readonly courses?: string[];
 
+  @Field(() => String)
   @IsString()
   readonly grade: string;
 
+  @Field(() => [String], { nullable: true })
   @IsArray()
-  @IsString({ each: true })
   @IsOptional()
   readonly members?: string[];
 
+  @Field(() => String)
   @IsString()
   readonly school: string;
 
+  @Field(() => String)
   @IsString()
   readonly specifiedGrade: string;
 }
