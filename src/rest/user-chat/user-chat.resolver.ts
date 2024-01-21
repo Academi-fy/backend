@@ -24,6 +24,7 @@ export class UserChatResolver {
     return this.userChatService.createUserChat(createUserChatDto);
   }
 
+  @Mutation(() => UserChat)
   async editUserChat(
     @Args('id') id: string,
     @Args('userChat') editUserChatDto: EditUserChatDto,
@@ -31,6 +32,37 @@ export class UserChatResolver {
     return this.userChatService.editUserChat(id, editUserChatDto);
   }
 
+  @Mutation(() => UserChat)
+  async hideUserChat(
+    @Args('id') id: string,
+    @Args('hide') hide: boolean,
+  ): Promise<UserChat> {
+    return this.userChatService.editUserChat(id, {
+      hidden: hide,
+    });
+  }
+
+  @Mutation(() => UserChat)
+  async pinUserChat(
+    @Args('id') id: string,
+    @Args('pin') pin: boolean,
+  ): Promise<UserChat> {
+    return this.userChatService.editUserChat(id, {
+      pinned: pin,
+    });
+  }
+
+  @Mutation(() => UserChat)
+  async readUserChat(
+    @Args('id') id: string,
+    @Args('read') read: boolean,
+  ): Promise<UserChat> {
+    return this.userChatService.editUserChat(id, {
+      read,
+    });
+  }
+
+  @Mutation(() => Boolean)
   async deleteUserChat(@Args('id') id: string): Promise<boolean> {
     return this.userChatService.deleteUserChat(id);
   }

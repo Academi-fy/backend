@@ -905,8 +905,6 @@ type UserChat {
 }
 
 type Query {
-  getAllUserAccounts: [UserAccount!]!
-  getUserAccount(id: String, username: String): UserAccount!
   getAllBlackboards: [Blackboard!]!
   getLastBlackboards(sort: SortOrder!, limit: Float!, lastId: String): [Blackboard!]!
   getBlackboard(id: String!): Blackboard!
@@ -947,6 +945,8 @@ type Query {
   getSubject(id: String, type: SubjectType): Subject!
   getAllUsers: [User!]!
   getUserById(id: String!): User!
+  getAllUserAccounts: [UserAccount!]!
+  getUserAccount(id: String, username: String): UserAccount!
   getAllUserChats: [UserChat!]!
   getUserChat(id: String!): UserChat!
 }
@@ -958,9 +958,6 @@ enum SortOrder {
 }
 
 type Mutation {
-  createUserAccount(userAccount: CreateUserAccountDto!): UserAccount!
-  editUseraccount(id: String!, userAccount: CreateUserAccountDto!): UserAccount!
-  deleteUserAccount(id: String!): Boolean!
   createBlackboard(blackboard: CreateBlackboardDto!): Blackboard!
   editBlackboard(id: String!, blackboard: EditBlackboardDto!): Blackboard!
   deleteBlackboard(id: String!): Boolean!
@@ -1008,13 +1005,15 @@ type Mutation {
   createUser(user: CreateUserDto!): User!
   editUser(id: String!, user: EditUserDto!): User!
   deleteUser(id: String!): User!
+  createUserAccount(userAccount: CreateUserAccountDto!): UserAccount!
+  editUseraccount(id: String!, userAccount: CreateUserAccountDto!): UserAccount!
+  deleteUserAccount(id: String!): Boolean!
   createUserChat(userChat: CreateUserChatDto!): UserChat!
-}
-
-input CreateUserAccountDto {
-  password: String!
-  user: String
-  username: String!
+  editUserChat(id: String!, userChat: EditUserChatDto!): UserChat!
+  hideUserChat(id: String!, hide: Boolean!): UserChat!
+  pinUserChat(id: String!, pin: Boolean!): UserChat!
+  readUserChat(id: String!, read: Boolean!): UserChat!
+  deleteUserChat(id: String!): Boolean!
 }
 
 input CreateBlackboardDto {
@@ -1326,10 +1325,24 @@ input EditUserDto {
   userChats: [String!]
 }
 
+input CreateUserAccountDto {
+  password: String!
+  user: String
+  username: String!
+}
+
 input CreateUserChatDto {
   chat: String!
   hidden: Boolean
   pinned: Boolean
   read: Boolean
   user: String!
+}
+
+input EditUserChatDto {
+  chat: String
+  hidden: Boolean
+  pinned: Boolean
+  read: Boolean
+  user: String
 }

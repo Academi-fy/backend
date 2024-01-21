@@ -1,31 +1,14 @@
 import { Module } from '@nestjs/common';
-import {
-  AuthModule,
-  BlackboardModule,
-  BlackboardTagModule,
-  ChatModule,
-  ClassModule,
-  ClubModule,
-  ClubTagModule,
-  CourseModule,
-  EventModule,
-  EventTicketModule,
-  GradeModule,
-  MessageModule,
-  SchoolModule,
-  SetupAccountModule,
-  SubjectModule,
-  UserAccountModule,
-  UserChatModule,
-  UserModule,
-} from './';
+import { AuthModule } from './';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
-import { Gateway } from './socket/gateway';
+import { Gateway } from './socket/gateways/gateway';
 import { PrismaModule } from './prisma';
 import { GraphQLJSON } from 'graphql-type-json';
+import { SocketModule } from './socket/socket.module';
+import { RestModule } from './rest/rest.module';
 
 @Module({
   imports: [
@@ -37,29 +20,12 @@ import { GraphQLJSON } from 'graphql-type-json';
       },
     }),
     AuthModule,
-    UserAccountModule,
     PrismaModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    BlackboardModule,
-    BlackboardTagModule,
-    ChatModule,
-    ClassModule,
-    ClubModule,
-    ClubTagModule,
-    CourseModule,
-    EventModule,
-    EventTicketModule,
-    GradeModule,
-    MessageModule,
-    PrismaModule,
-    SchoolModule,
-    SetupAccountModule,
-    SubjectModule,
-    UserModule,
-    UserAccountModule,
-    UserChatModule,
+    RestModule,
+    SocketModule,
   ],
   providers: [Gateway],
   controllers: [],
