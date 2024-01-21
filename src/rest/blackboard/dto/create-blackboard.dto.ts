@@ -5,33 +5,33 @@ import { Directive, Field, InputType } from '@nestjs/graphql';
 export class CreateBlackboardDto {
   @Field(() => [String])
   @IsArray()
-  readonly authors: string[];
+  authors: string[];
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly coverImage?: string;
+  coverImage?: string;
 
   @Field(() => String)
   @IsString()
-  readonly school: string;
+  school: string;
 
   @Field(() => [String], { nullable: true })
   @Directive('@upper')
   @IsArray()
   @IsOptional()
-  readonly tags?: string[];
+  tags?: string[];
 
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly targets?: string[];
+  targets?: string[];
 
   @Field(() => String)
   @IsString()
-  readonly title: string;
+  title: string;
 
   @Field(() => String)
   @IsString()
-  readonly text: string;
+  text: string;
 }

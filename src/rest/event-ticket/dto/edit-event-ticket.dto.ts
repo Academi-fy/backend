@@ -6,20 +6,20 @@ export class EditEventTicketDto {
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly buyer?: string;
+  buyer?: string;
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly event?: string;
+  event?: string;
 
   @Field(() => Number, { nullable: true })
   @IsNumber()
   @IsOptional()
-  readonly price?: number;
+  price?: number;
 
   @Field(() => Date, { nullable: true })
   @IsDate()
   @IsOptional()
-  readonly saleDate?: Date;
+  saleDate?: Date;
 }

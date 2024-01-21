@@ -9,7 +9,10 @@ export class EventTicketResolver {
 
   @Query(() => [EventTicket])
   async getAllEventTickets(
-    @Args('eventId', { nullable: true, description: 'optional' })
+    @Args('eventId', {
+      nullable: true,
+      description: 'Get all event tickets matching the eventId. OPTIONAL',
+    })
     eventId?: string,
   ): Promise<EventTicket[]> {
     if (eventId) {

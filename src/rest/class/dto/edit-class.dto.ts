@@ -6,25 +6,25 @@ export class EditClassDto {
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly courses?: string[];
+  courses?: string[];
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly grade: string;
+  grade: string;
 
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly members?: string[];
+  members?: string[];
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly specifiedGrade?: string;
+  specifiedGrade?: string;
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly school?: string;
+  school?: string;
 }

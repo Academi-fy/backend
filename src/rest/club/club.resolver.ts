@@ -13,7 +13,7 @@ export class ClubResolver {
   }
 
   @Query(() => Club)
-  async getClubById(@Args('id') id: string): Promise<Club> {
+  async getClub(@Args('id') id: string): Promise<Club> {
     return this.clubService.getClubById(id);
   }
 

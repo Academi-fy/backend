@@ -13,7 +13,7 @@ export class ClassResolver {
   }
 
   @Query(() => Class)
-  async getClassById(@Args('id') id: string): Promise<Class> {
+  async getClass(@Args('id') id: string): Promise<Class> {
     return this.classService.getClassById(id);
   }
 

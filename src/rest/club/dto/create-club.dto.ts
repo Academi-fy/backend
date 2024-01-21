@@ -8,54 +8,54 @@ export class CreateClubDto {
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly chat?: string;
+  chat?: string;
 
   @Field(() => String)
   @IsString()
-  readonly coverImage: string;
+  coverImage: string;
 
   @Field(() => String)
   @IsString()
-  readonly description: string;
+  description: string;
 
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly events?: string[];
+  events?: string[];
 
   @Field(() => [String])
   @IsArray()
-  readonly leaders: string[];
+  leaders: string[];
 
   @Field(() => String)
   @IsString()
-  readonly location: string;
+  location: string;
 
   @Field(() => Day)
   @IsEnum(Day)
-  readonly meetingDay: Day;
+  meetingDay: Day;
 
   @Field(() => String)
   @IsString()
-  readonly meetingTime: string;
+  meetingTime: string;
 
   @Field(() => [String])
   @IsArray()
-  readonly members: string[];
+  members: string[];
 
   @Field(() => String)
   @IsString()
-  readonly name: string;
+  name: string;
 
   @Field(() => [ClubRequirement])
   @IsArray()
-  readonly requirements: ClubRequirement[];
+  requirements: ClubRequirement[];
 
   @Field(() => String)
   @IsString()
-  readonly school: string;
+  school: string;
 
   @Field(() => [String])
   @IsArray()
-  readonly tags: string[];
+  tags: string[];
 }

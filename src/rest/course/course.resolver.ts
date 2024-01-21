@@ -13,7 +13,7 @@ export class CourseResolver {
   }
 
   @Query(() => Course)
-  async getCourseById(id: string): Promise<Course> {
+  async getCourse(@Args('id') id: string): Promise<Course> {
     return this.courseService.getCourseById(id);
   }
 

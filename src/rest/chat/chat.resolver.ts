@@ -13,9 +13,7 @@ export class ChatResolver {
   }
 
   @Query(() => Chat)
-  async getChatById(
-    @Args('id', { type: () => String }) id: string,
-  ): Promise<Chat> {
+  async getChat(@Args('id') id: string): Promise<Chat> {
     return this.chatService.getChatById(id);
   }
 

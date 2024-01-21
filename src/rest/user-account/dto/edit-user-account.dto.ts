@@ -1,15 +1,20 @@
 import { IsOptional, IsString } from 'class-validator';
+import { Field, InputType } from '@nestjs/graphql';
 
+@InputType()
 export class EditUserAccountDto {
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly password?: string;
+  password?: string;
 
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly user?: string;
+  user?: string;
 
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly username?: string;
+  username?: string;
 }

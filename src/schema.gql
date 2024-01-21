@@ -502,7 +502,7 @@ type GradeMaxAggregate {
   schoolId: String
 }
 
-"""Leve of the grade"""
+"""Level of the grade"""
 enum GradeLevel {
   G5
   G6
@@ -692,6 +692,7 @@ type SubjectMaxAggregate {
   type: SubjectType
 }
 
+"""Type of the subject"""
 enum SubjectType {
   ART
   BIOLOGY
@@ -775,6 +776,7 @@ type UserMaxAggregate {
   userAccountId: String
 }
 
+"""Type of a user"""
 enum UserType {
   ADMIN
   TEACHER
@@ -903,33 +905,50 @@ type UserChat {
 }
 
 type Query {
+  getAllUserAccounts: [UserAccount!]!
+  getUserAccount(id: String, username: String): UserAccount!
   getAllBlackboards: [Blackboard!]!
   getLastBlackboards(sort: SortOrder!, limit: Float!, lastId: String): [Blackboard!]!
   getBlackboard(id: String!): Blackboard!
   getAllBlackboardTags: [BlackboardTag!]!
-  getBlackboardTagById(id: String!): BlackboardTag!
-  getBlackboardTagByTag(tagName: String!): BlackboardTag!
+  getBlackboardTag(
+    """OPTIONAL"""
+    id: String
+
+    """OPTIONAL"""
+    tagName: String
+  ): BlackboardTag!
   getAllChats: [Chat!]!
-  getChatById(id: String!): Chat!
+  getChat(id: String!): Chat!
   getAllClasses: [Class!]!
-  getClassById(id: String!): Class!
+  getClass(id: String!): Class!
   getAllClubs: [Club!]!
-  getClubById(id: String!): Club!
+  getClub(id: String!): Club!
   getAllClubTags: [ClubTag!]!
-  getClubTagById(id: String!): ClubTag!
+  getClubTag(id: String!): ClubTag!
   getAllCourses: [Course!]!
-  getCourseById: Course!
+  getCourse(id: String!): Course!
   getAllEvents: [Event!]!
-  getEventById(id: String!): Event!
+  getEvent(id: String!): Event!
   getAllEventTickets(
-    """optional"""
+    """Get all event tickets matching the eventId. OPTIONAL"""
     eventId: String
   ): [EventTicket!]!
   getEventTicket(id: String!): EventTicket!
   getAllGrades: [Grade!]!
-  getGradeById(id: String!): Grade!
+  getGrade(id: String!): Grade!
   getAllMessages: [Message!]!
-  getMessageById: Message!
+  getMessage(id: String!): Message!
+  getAllSchools: [School!]!
+  getSchool(id: String, name: String): School!
+  getAllSetupAccounts: [SetupAccount!]!
+  getSetupAccount(id: String!, schoolName: String!): SetupAccount!
+  getAllSubjects: [Subject!]!
+  getSubject(id: String, type: SubjectType): Subject!
+  getAllUsers: [User!]!
+  getUserById(id: String!): User!
+  getAllUserChats: [UserChat!]!
+  getUserChat(id: String!): UserChat!
 }
 
 """The sort order (createdAt, updatedAt)"""
@@ -939,6 +958,9 @@ enum SortOrder {
 }
 
 type Mutation {
+  createUserAccount(userAccount: CreateUserAccountDto!): UserAccount!
+  editUseraccount(id: String!, userAccount: CreateUserAccountDto!): UserAccount!
+  deleteUserAccount(id: String!): Boolean!
   createBlackboard(blackboard: CreateBlackboardDto!): Blackboard!
   editBlackboard(id: String!, blackboard: EditBlackboardDto!): Blackboard!
   deleteBlackboard(id: String!): Boolean!
@@ -972,8 +994,27 @@ type Mutation {
   editGrade(id: String!, grade: EditGradeDto!): Grade!
   deleteGrade(id: String!): Boolean!
   createMessage(message: CreateMessageDto!): Message!
-  editMessage(id: String!, message: CreateMessageDto!): Message!
+  editMessage(id: String!, message: EditMessageDto!): Message!
   deleteMessage(id: String!): Message!
+  createSchool(school: CreateSchoolDto!): School!
+  editSchool(id: String!, school: EditSchoolDto!): School!
+  deleteSchool(id: String!): School!
+  createSetupAccount(setupAccount: CreateSetupAccountDto!): SetupAccount!
+  editSetupAccount(id: String!, setupAccount: EditSetupAccountDto!): SetupAccount!
+  deleteSetupAccount(id: String!): SetupAccount!
+  createSubject(subject: CreateSubjectDto!): Subject!
+  editSubject(id: String!, subject: EditSubjectDto!): Subject!
+  deleteSubject(id: String!): Subject!
+  createUser(user: CreateUserDto!): User!
+  editUser(id: String!, user: EditUserDto!): User!
+  deleteUser(id: String!): User!
+  createUserChat(userChat: CreateUserChatDto!): UserChat!
+}
+
+input CreateUserAccountDto {
+  password: String!
+  user: String
+  username: String!
 }
 
 input CreateBlackboardDto {
@@ -1186,4 +1227,109 @@ input ContentType {
 input Reaction {
   emoji: String!
   count: Float!
+}
+
+input EditMessageDto {
+  author: String
+  chat: String
+  content: [ContentType!]
+  reactions: [Reaction!]!
+  replies: [String!]
+  replyTo: String
+}
+
+input CreateSchoolDto {
+  blackboards: [String!]
+  classes: [String!]
+  clubs: [String!]
+  events: [String!]
+  grades: [String!]
+  members: [String!]
+  name: String!
+  setupAccount: String!
+  subjects: [String!]
+}
+
+input EditSchoolDto {
+  blackboards: [String!]
+  classes: [String!]
+  clubs: [String!]
+  events: [String!]
+  grades: [String!]
+  members: [String!]
+  name: String
+  setupAccount: String
+  subjects: [String!]
+}
+
+input CreateSetupAccountDto {
+  school: String
+  schoolName: String!
+}
+
+input EditSetupAccountDto {
+  school: String
+  schoolName: String
+}
+
+input CreateSubjectDto {
+  courses: [String!]
+  school: String!
+  shortName: String!
+  type: SubjectType!
+}
+
+input EditSubjectDto {
+  courses: [String!]
+  school: String
+  shortName: String
+  type: SubjectType
+}
+
+input CreateUserDto {
+  avatar: String
+  blackboards: [String!]
+  blackboardsReceived: [String!]
+  classes: [String!]
+  clubs: [String!]
+  clubsAsLeader: [String!]
+  courses: [String!]
+  coursesAsTeacher: [String!]
+  events: [String!]
+  eventTickets: [String!]
+  firstName: String
+  lastName: String!
+  messages: [String!]
+  schools: [String!]!
+  type: String!
+  userAccount: String!
+  userChats: [String!]
+}
+
+input EditUserDto {
+  avatar: String
+  blackboards: [String!]
+  blackboardsReceived: [String!]
+  classes: [String!]
+  clubs: [String!]
+  clubsAsLeader: [String!]
+  courses: [String!]
+  coursesAsTeacher: [String!]
+  events: [String!]
+  eventTickets: [String!]
+  firstName: String
+  lastName: String!
+  messages: [String!]
+  schools: [String!]!
+  type: String!
+  userAccount: String!
+  userChats: [String!]
+}
+
+input CreateUserChatDto {
+  chat: String!
+  hidden: Boolean
+  pinned: Boolean
+  read: Boolean
+  user: String!
 }

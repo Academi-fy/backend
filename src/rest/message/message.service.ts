@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma';
 import { messageNesting } from './message.nesting';
 import { Message } from '../../@generated-types';
-import { CreateMessageDto } from './dto/create-message.dto';
 import { Service } from '../../service';
-import { EditMessageDto } from './dto/edit-message.dto';
+import { CreateMessageDto, EditMessageDto } from './dto';
 
 @Injectable()
 export class MessageService extends Service {

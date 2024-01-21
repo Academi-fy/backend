@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Message } from '../../@generated-types';
 import { MessageService } from './message.service';
-import { CreateMessageDto } from './dto/create-message.dto';
+import { CreateMessageDto, EditMessageDto } from './dto';
 
 @Resolver(() => Message)
 export class MessageResolver {
@@ -13,7 +13,7 @@ export class MessageResolver {
   }
 
   @Query(() => Message)
-  async getMessageById(id: string): Promise<Message> {
+  async getMessage(@Args('id') id: string): Promise<Message> {
     return this.messageService.getMessageById(id);
   }
 
@@ -27,7 +27,7 @@ export class MessageResolver {
   @Mutation(() => Message)
   async editMessage(
     @Args('id') id: string,
-    @Args('message') editMessageDto: CreateMessageDto,
+    @Args('message') editMessageDto: EditMessageDto,
   ): Promise<Message> {
     return this.messageService.editMessage(id, editMessageDto);
   }

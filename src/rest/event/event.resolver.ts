@@ -13,7 +13,7 @@ export class EventResolver {
   }
 
   @Query(() => Event)
-  async getEventById(@Args('id') id: string): Promise<Event> {
+  async getEvent(@Args('id') id: string): Promise<Event> {
     return this.eventService.getEventById(id);
   }
 

@@ -7,38 +7,38 @@ export class CreateChatDto {
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly avatar?: string;
+  avatar?: string;
 
   @Field(() => [String])
   @IsArray()
   @IsOptional()
-  readonly clubs?: string[];
+  clubs?: string[];
 
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly courses?: string[];
+  courses?: string[];
 
   @Field(() => Activity, { nullable: true })
   @IsInstance(Activity)
   @IsOptional()
-  readonly lastActivity?: Activity;
+  lastActivity?: Activity;
 
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly messages?: string[];
+  messages?: string[];
 
   @Field(() => String)
   @IsString()
-  readonly name: string;
+  name: string;
 
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly targets?: string[];
+  targets?: string[];
 
   @Field(() => String)
   @IsString()
-  readonly type: string;
+  type: string;
 }

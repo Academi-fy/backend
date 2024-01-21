@@ -8,65 +8,65 @@ export class EditClubDto {
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly chat?: string;
+  chat?: string;
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly coverImage?: string;
+  coverImage?: string;
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly description?: string;
+  description?: string;
 
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly events?: string[];
+  events?: string[];
 
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly leaders?: string[];
+  leaders?: string[];
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly location?: string;
+  location?: string;
 
   @Field(() => Day, { nullable: true })
   @IsEnum(Day)
   @IsOptional()
-  readonly meetingDay?: Day;
+  meetingDay?: Day;
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly meetingTime?: string;
+  meetingTime?: string;
 
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly members?: string[];
+  members?: string[];
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly name?: string;
+  name?: string;
 
   @Field(() => [ClubRequirement], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly requirements?: ClubRequirement[];
+  requirements?: ClubRequirement[];
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly school?: string;
+  school?: string;
 
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly tags?: string[];
+  tags?: string[];
 }

@@ -3,6 +3,7 @@ import { CreateUserAccountDto, EditUserAccountDto } from './dto';
 import { UserAccount } from '@prisma/client';
 import { Service } from '../../service';
 import { PrismaService } from '../../prisma';
+import { userAccountNesting } from './user-account.nesting';
 
 @Injectable()
 export class UserAccountService extends Service {
@@ -11,19 +12,47 @@ export class UserAccountService extends Service {
   }
 
   async getAllUserAccounts(): Promise<UserAccount[]> {
-    return this.prisma.userAccount.findMany({});
+    return this.prisma.userAccount.findMany({
+      include: {
+        ...userAccountNesting,
+      },
+    });
   }
 
   async getUserAccountById(userAccountId: string): Promise<UserAccount> {
     return this.prisma.userAccount.findUnique({
       where: { id: userAccountId },
+      include: {
+        ...userAccountNesting,
+      },
     });
+  }
+
+  async getUserAccountByUsername(username: string): Promise<UserAccount> {
+    return this.prisma.userAccount.findUnique({
+      where: { username },
+      include: {
+        ...userAccountNesting,
+      },
+    });
+  }
+
+  private mapDtoToData(dto: CreateUserAccountDto | EditUserAccountDto) {
+    return {
+      ...dto,
+      user: dto.user ? { connect: { id: dto.user } } : undefined,
+      password: dto.password ? dto.password : undefined,
+      username: dto.username ? dto.username : undefined,
+    };
   }
 
   async createUserAccount(dto: CreateUserAccountDto): Promise<UserAccount> {
     return this.prisma.userAccount.create({
       data: {
-        ...dto,
+        ...this.mapDtoToData(dto),
+      },
+      include: {
+        ...userAccountNesting,
       },
     });
   }
@@ -35,8 +64,10 @@ export class UserAccountService extends Service {
     return this.prisma.userAccount.update({
       where: { id: userAccountId },
       data: {
-        ...dto,
-        user: dto.user ? { connect: { id: dto.user } } : undefined,
+        ...this.mapDtoToData(dto),
+      },
+      include: {
+        ...userAccountNesting,
       },
     });
   }

@@ -16,17 +16,15 @@ export class BlackboardResolver {
   @Query(() => [Blackboard])
   async getLastBlackboards(
     @Args('sort', { type: () => SortOrder }) sort: SortOrder,
-    @Args('limit', { type: () => Number }) limit: number,
-    @Args('lastId', { type: () => String, nullable: true })
+    @Args('limit') limit: number,
+    @Args('lastId', { nullable: true })
     lastId?: string,
   ): Promise<Blackboard[]> {
     return this.blackboardService.getLastBlackboards(sort, limit, lastId);
   }
 
   @Query(() => Blackboard)
-  async getBlackboard(
-    @Args('id', { type: () => String }) id: string,
-  ): Promise<Blackboard> {
+  async getBlackboard(@Args('id') id: string): Promise<Blackboard> {
     return this.blackboardService.getBlackboardById(id);
   }
 
@@ -39,16 +37,14 @@ export class BlackboardResolver {
 
   @Mutation(() => Blackboard)
   async editBlackboard(
-    @Args('id', { type: () => String }) id: string,
+    @Args('id') id: string,
     @Args('blackboard') editBlackboardDto: EditBlackboardDto,
   ): Promise<Blackboard> {
     return this.blackboardService.editBlackboard(id, editBlackboardDto);
   }
 
   @Mutation(() => Boolean)
-  async deleteBlackboard(
-    @Args('id', { type: () => String }) id: string,
-  ): Promise<boolean> {
+  async deleteBlackboard(@Args('id') id: string): Promise<boolean> {
     return this.blackboardService.deleteBlackboard(id);
   }
 }

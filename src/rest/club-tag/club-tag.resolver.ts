@@ -13,7 +13,7 @@ export class ClubTagResolver {
   }
 
   @Query(() => ClubTag)
-  async getClubTagById(@Args('id') id: string): Promise<ClubTag> {
+  async getClubTag(@Args('id') id: string): Promise<ClubTag> {
     return this.clubTagService.getClubTagById(id);
   }
 

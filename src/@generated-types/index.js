@@ -32600,6 +32600,9 @@ __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
 ], SubjectWhereUniqueInput.prototype, "id", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => SubjectType, { nullable: true })
+], SubjectWhereUniqueInput.prototype, "type", void 0);
+__decorate([
     (0, graphql_1.Field)(() => [SubjectWhereInput], { nullable: true })
 ], SubjectWhereUniqueInput.prototype, "AND", void 0);
 __decorate([
@@ -32620,9 +32623,6 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => StringFilter, { nullable: true })
 ], SubjectWhereUniqueInput.prototype, "shortName", void 0);
-__decorate([
-    (0, graphql_1.Field)(() => EnumSubjectTypeFilter, { nullable: true })
-], SubjectWhereUniqueInput.prototype, "type", void 0);
 __decorate([
     (0, graphql_1.Field)(() => CourseListRelationFilter, { nullable: true })
 ], SubjectWhereUniqueInput.prototype, "courses", void 0);

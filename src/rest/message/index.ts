@@ -1,6 +1,9 @@
 export { MessageController } from './message.controller';
 export { MessageModule } from './message.module';
 export { MessageService } from './message.service';
+export { MessageResolver } from './message.resolver';
+
+export { CreateMessageDto, EditMessageDto } from './dto';
 
 export {
   Reaction,

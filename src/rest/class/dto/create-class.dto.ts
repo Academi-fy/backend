@@ -6,22 +6,22 @@ export class CreateClassDto {
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly courses?: string[];
+  courses?: string[];
 
   @Field(() => String)
   @IsString()
-  readonly grade: string;
+  grade: string;
 
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly members?: string[];
+  members?: string[];
 
   @Field(() => String)
   @IsString()
-  readonly school: string;
+  school: string;
 
   @Field(() => String)
   @IsString()
-  readonly specifiedGrade: string;
+  specifiedGrade: string;
 }

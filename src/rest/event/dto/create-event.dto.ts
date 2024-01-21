@@ -7,47 +7,47 @@ import { Type } from 'class-transformer';
 export class CreateEventDto {
   @Field(() => [String])
   @IsArray()
-  readonly clubs: string[];
+  clubs: string[];
 
   @Field(() => String)
   @IsString()
-  readonly description: string;
+  description: string;
 
   @Field(() => Date)
   @IsDate()
-  readonly endDate: Date;
+  endDate: Date;
 
   @Field(() => String)
   @IsString()
-  readonly host: string;
+  host: string;
 
   @Field(() => [EventInformation])
   @IsArray()
   @Type(() => EventInformation)
-  readonly information: EventInformation[];
+  information: EventInformation[];
 
   @Field(() => String)
   @IsString()
-  readonly location: string;
+  location: string;
 
   @Field(() => String)
   @IsString()
-  readonly school: string;
+  school: string;
 
   @Field(() => Date)
   @IsDate()
-  readonly startDate: Date;
+  startDate: Date;
 
   @Field(() => [String])
   @IsArray()
-  readonly subscribers: string[];
+  subscribers: string[];
 
   @Field(() => [String])
   @IsArray()
   @IsOptional()
-  readonly tickets?: string[];
+  tickets?: string[];
 
   @Field(() => String)
   @IsString()
-  readonly title: string;
+  title: string;
 }

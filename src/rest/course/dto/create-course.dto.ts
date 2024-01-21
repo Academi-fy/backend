@@ -6,21 +6,21 @@ export class CreateCourseDto {
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly chat?: string;
+  chat?: string;
 
   @Field(() => [String])
   @IsArray()
-  readonly classes: string[];
+  classes: string[];
 
   @Field(() => [String])
   @IsArray()
-  readonly members: string[];
+  members: string[];
 
   @Field(() => String)
   @IsString()
-  readonly subject: string;
+  subject: string;
 
   @Field(() => String)
   @IsString()
-  readonly teacher: string;
+  teacher: string;
 }

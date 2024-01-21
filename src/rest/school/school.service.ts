@@ -3,6 +3,7 @@ import { School } from '@prisma/client';
 import { CreateSchoolDto, EditSchoolDto } from './dto';
 import { Service } from '../../service';
 import { PrismaService } from '../../prisma';
+import { schoolNesting } from './school.nesting';
 
 @Injectable()
 export class SchoolService extends Service {
@@ -11,26 +12,53 @@ export class SchoolService extends Service {
   }
 
   async getAllSchools(): Promise<School[]> {
-    return this.prisma.school.findMany({});
+    return this.prisma.school.findMany({
+      include: {
+        ...schoolNesting,
+      },
+    });
   }
 
   async getSchoolById(schoolId: string): Promise<School> {
     return this.prisma.school.findUnique({
       where: { id: schoolId },
+      include: {
+        ...schoolNesting,
+      },
     });
   }
 
   async getSchoolByName(schoolName: string): Promise<School> {
     return this.prisma.school.findUnique({
       where: { name: schoolName },
+      include: {
+        ...schoolNesting,
+      },
     });
+  }
+
+  private mapDtoToData(dto: CreateSchoolDto | EditSchoolDto) {
+    return {
+      ...dto,
+      setupAccount: this.connectSingle(dto.setupAccount),
+      blackboards: this.connectArray(dto.blackboards),
+      classes: this.connectArray(dto.classes),
+      clubs: this.connectArray(dto.clubs),
+      events: this.connectArray(dto.events),
+      grades: this.connectArray(dto.grades),
+      members: this.connectArray(dto.members),
+      subjects: this.connectArray(dto.subjects),
+      name: dto.name ? dto.name : undefined,
+    };
   }
 
   async createSchool(dto: CreateSchoolDto): Promise<School> {
     return this.prisma.school.create({
       data: {
-        ...dto,
-        setupAccount: { connect: { id: dto.setupAccount } },
+        ...this.mapDtoToData(dto),
+      },
+      include: {
+        ...schoolNesting,
       },
     });
   }
@@ -39,10 +67,10 @@ export class SchoolService extends Service {
     return this.prisma.school.update({
       where: { id: schoolId },
       data: {
-        ...dto,
-        setupAccount: dto.setupAccount
-          ? { connect: { id: dto.setupAccount } }
-          : undefined,
+        ...this.mapDtoToData(dto),
+      },
+      include: {
+        ...schoolNesting,
       },
     });
   }

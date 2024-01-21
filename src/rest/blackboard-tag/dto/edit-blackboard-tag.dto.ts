@@ -6,10 +6,10 @@ export class EditBlackboardTagDto {
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly blackboards?: string[];
+  blackboards?: string[];
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly name?: string;
+  name?: string;
 }

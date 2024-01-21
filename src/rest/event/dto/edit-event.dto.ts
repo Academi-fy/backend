@@ -8,56 +8,56 @@ export class EditEventDto {
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly clubs?: string[];
+  clubs?: string[];
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly description?: string;
+  description?: string;
 
   @Field(() => Date, { nullable: true })
   @IsDate()
   @IsOptional()
-  readonly endDate?: Date;
+  endDate?: Date;
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly host?: string;
+  host?: string;
 
   @Field(() => [EventInformation], { nullable: true })
   @IsArray()
   @Type(() => EventInformation)
   @IsOptional()
-  readonly information?: EventInformation[];
+  information?: EventInformation[];
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly location?: string;
+  location?: string;
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly school?: string;
+  school?: string;
 
   @Field(() => Date, { nullable: true })
   @IsDate()
   @IsOptional()
-  readonly startDate?: Date;
+  startDate?: Date;
 
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly subscribers?: string[];
+  subscribers?: string[];
 
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly tickets?: string[];
+  tickets?: string[];
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly title?: string;
+  title?: string;
 }

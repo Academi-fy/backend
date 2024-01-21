@@ -13,17 +13,16 @@ export class BlackboardTagResolver {
   }
 
   @Query(() => BlackboardTag)
-  async getBlackboardTagById(
-    @Args('id', { type: () => String }) id: string,
+  async getBlackboardTag(
+    @Args('id', { nullable: true, description: 'OPTIONAL' }) id?: string,
+    @Args('tagName', { nullable: true, description: 'OPTIONAL' })
+    tagName?: string,
   ): Promise<BlackboardTag> {
-    return this.blackboardTagService.getBlackboardTagById(id);
-  }
-
-  @Query(() => BlackboardTag)
-  async getBlackboardTagByTag(
-    @Args('tagName', { type: () => String }) tagName: string,
-  ): Promise<BlackboardTag> {
-    return this.blackboardTagService.getBlackboardTagByTag(tagName);
+    if (id) {
+      return this.blackboardTagService.getBlackboardTagById(id);
+    } else if (tagName) {
+      return this.blackboardTagService.getBlackboardTagByTag(tagName);
+    } else throw new Error('No id or tagName provided');
   }
 
   @Mutation(() => BlackboardTag)
@@ -38,7 +37,7 @@ export class BlackboardTagResolver {
 
   @Mutation(() => BlackboardTag)
   async editBlackboardTagById(
-    @Args('id', { type: () => String }) id: string,
+    @Args('id') id: string,
     @Args('blackboardTag') editBlackboardTagDto: CreateBlackboardTagDto,
   ): Promise<BlackboardTag> {
     return this.blackboardTagService.editBlackboardTagById(
@@ -49,7 +48,7 @@ export class BlackboardTagResolver {
 
   @Mutation(() => BlackboardTag)
   async editBlackboardTagByTag(
-    @Args('tag', { type: () => String }) tag: string,
+    @Args('tag') tag: string,
     @Args('editBlackboardTagDto') editBlackboardTagDto: EditBlackboardTagDto,
   ): Promise<BlackboardTag> {
     return this.blackboardTagService.editBlackboardTagByTag(
@@ -59,16 +58,12 @@ export class BlackboardTagResolver {
   }
 
   @Mutation(() => Boolean)
-  async deleteBlackboardTagById(
-    @Args('id', { type: () => String }) id: string,
-  ): Promise<boolean> {
+  async deleteBlackboardTagById(@Args('id') id: string): Promise<boolean> {
     return this.blackboardTagService.deleteBlackboardTagById(id);
   }
 
   @Mutation(() => Boolean)
-  async deleteBlackboardTagByTag(
-    @Args('tag', { type: () => String }) tag: string,
-  ): Promise<boolean> {
+  async deleteBlackboardTagByTag(@Args('tag') tag: string): Promise<boolean> {
     return this.blackboardTagService.deleteBlackboardTagByTag(tag);
   }
 }

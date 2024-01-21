@@ -243,7 +243,7 @@ model Subject {
   school    School      @relation("SubjectSchool", fields: [schoolId], references: [id])
   schoolId  String      @db.Uuid
   shortName String
-  type      SubjectType
+  type      SubjectType @unique
 
   @@map("subjects")
 }

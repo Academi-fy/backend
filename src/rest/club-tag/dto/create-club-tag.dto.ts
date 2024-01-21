@@ -6,9 +6,9 @@ export class CreateClubTagDto {
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly clubs?: string[];
+  clubs?: string[];
 
   @Field(() => String)
   @IsString()
-  readonly name: string;
+  name: string;
 }

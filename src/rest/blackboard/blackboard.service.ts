@@ -3,7 +3,7 @@ import { Blackboard } from '@prisma/client';
 import { Service } from '../../service';
 import { CreateBlackboardDto, EditBlackboardDto } from './dto';
 import { blackboardNesting } from './';
-import { PrismaService } from '../../prisma';
+import { PrismaService, SortOrder } from '../../prisma';
 
 @Injectable()
 export class BlackboardService extends Service {
@@ -19,11 +19,7 @@ export class BlackboardService extends Service {
     });
   }
 
-  async getLastBlackboards(
-    sort: 'createdAt' | 'updatedAt',
-    limit: number,
-    lastId?: string,
-  ) {
+  async getLastBlackboards(sort: SortOrder, limit: number, lastId?: string) {
     return this.prisma.blackboard.findMany({
       orderBy: {
         [sort]: 'desc',

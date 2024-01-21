@@ -6,10 +6,10 @@ export class EditClubTagDto {
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly clubs?: string[];
+  clubs?: string[];
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly name?: string;
+  name?: string;
 }

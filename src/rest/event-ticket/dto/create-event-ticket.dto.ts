@@ -5,17 +5,17 @@ import { IsDate, IsNumber, IsString } from 'class-validator';
 export class CreateEventTicketDto {
   @Field(() => String)
   @IsString()
-  readonly buyer: string;
+  buyer: string;
 
   @Field(() => String)
   @IsString()
-  readonly event: string;
+  event: string;
 
   @Field(() => Number)
   @IsNumber()
-  readonly price: number;
+  price: number;
 
   @Field(() => Date)
   @IsDate()
-  readonly saleDate: Date;
+  saleDate: Date;
 }

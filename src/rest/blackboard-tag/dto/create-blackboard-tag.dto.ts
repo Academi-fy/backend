@@ -6,9 +6,9 @@ export class CreateBlackboardTagDto {
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  readonly blackboards?: string[];
+  blackboards?: string[];
 
   @Field(() => String)
   @IsString()
-  readonly name: string;
+  name: string;
 }

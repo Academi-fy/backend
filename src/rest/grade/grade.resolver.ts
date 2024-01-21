@@ -14,7 +14,7 @@ export class GradeResolver {
   }
 
   @Query(() => Grade)
-  async getGradeById(@Args('id') id: string): Promise<Grade> {
+  async getGrade(@Args('id') id: string): Promise<Grade> {
     return this.gradeService.getGradeById(id);
   }
 

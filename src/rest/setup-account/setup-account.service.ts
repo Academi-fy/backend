@@ -3,6 +3,7 @@ import { SetupAccount } from '@prisma/client';
 import { CreateSetupAccountDto, EditSetupAccountDto } from './dto';
 import { Service } from '../../service';
 import { PrismaService } from '../../prisma';
+import { setupAccountNesting } from './setup-account.nesting';
 
 @Injectable()
 export class SetupAccountService extends Service {
@@ -11,25 +12,46 @@ export class SetupAccountService extends Service {
   }
 
   async getAllSetupAccounts(): Promise<SetupAccount[]> {
-    return this.prisma.setupAccount.findMany({});
+    return this.prisma.setupAccount.findMany({
+      include: {
+        ...setupAccountNesting,
+      },
+    });
   }
 
   async getSetupAccountById(setupAccountId: string): Promise<SetupAccount> {
     return this.prisma.setupAccount.findUnique({
       where: { id: setupAccountId },
+      include: {
+        ...setupAccountNesting,
+      },
     });
   }
 
   async getSetupAccountBySchoolName(schoolName: string): Promise<SetupAccount> {
     return this.prisma.setupAccount.findUnique({
       where: { schoolName: schoolName },
+      include: {
+        ...setupAccountNesting,
+      },
     });
+  }
+
+  private mapDtoToData(dto: CreateSetupAccountDto | EditSetupAccountDto) {
+    return {
+      ...dto,
+      school: this.connectSingle(dto.school),
+      schoolName: dto.schoolName ? dto.schoolName : undefined,
+    };
   }
 
   async createSetupAccount(dto: CreateSetupAccountDto): Promise<SetupAccount> {
     return this.prisma.setupAccount.create({
       data: {
-        ...dto,
+        ...this.mapDtoToData(dto),
+      },
+      include: {
+        ...setupAccountNesting,
       },
     });
   }
@@ -41,7 +63,10 @@ export class SetupAccountService extends Service {
     return this.prisma.setupAccount.update({
       where: { id: setupAccountId },
       data: {
-        ...dto,
+        ...this.mapDtoToData(dto),
+      },
+      include: {
+        ...setupAccountNesting,
       },
     });
   }

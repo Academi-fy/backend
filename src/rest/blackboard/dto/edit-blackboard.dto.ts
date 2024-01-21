@@ -6,36 +6,36 @@ export class EditBlackboardDto {
   @Field(() => [String], { nullable: true })
   @IsString()
   @IsOptional()
-  readonly authors?: string[];
+  authors?: string[];
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly coverImage?: string;
+  coverImage?: string;
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly school?: string;
+  school?: string;
 
   @Field(() => [String], { nullable: true })
   @Directive('@upper')
   @IsString()
   @IsOptional()
-  readonly tags?: string[];
+  tags?: string[];
 
   @Field(() => [String], { nullable: true })
   @IsString()
   @IsOptional()
-  readonly targets?: string[];
+  targets?: string[];
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly title?: string;
+  title?: string;
 
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  readonly text?: string;
+  text?: string;
 }
