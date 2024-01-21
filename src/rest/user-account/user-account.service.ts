@@ -37,15 +37,6 @@ export class UserAccountService extends Service {
     });
   }
 
-  private mapDtoToData(dto: CreateUserAccountDto | EditUserAccountDto) {
-    return {
-      ...dto,
-      user: dto.user ? { connect: { id: dto.user } } : undefined,
-      password: dto.password ? dto.password : undefined,
-      username: dto.username ? dto.username : undefined,
-    };
-  }
-
   async createUserAccount(dto: CreateUserAccountDto): Promise<UserAccount> {
     return this.prisma.userAccount.create({
       data: {
@@ -77,5 +68,14 @@ export class UserAccountService extends Service {
       where: { id: userAccountId },
     });
     return Boolean(deletedUserAccount);
+  }
+
+  private mapDtoToData(dto: CreateUserAccountDto | EditUserAccountDto) {
+    return {
+      ...dto,
+      user: dto.user ? { connect: { id: dto.user } } : undefined,
+      password: dto.password ? dto.password : undefined,
+      username: dto.username ? dto.username : undefined,
+    };
   }
 }

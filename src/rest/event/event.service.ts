@@ -21,21 +21,6 @@ export class EventService extends Service {
     });
   }
 
-  private mapDtoToData(dto: CreateEventDto | EditEventDto) {
-    return {
-      ...dto,
-      clubs: this.connectArray(dto.clubs),
-      school: this.connectSingle(dto.school),
-      subscribers: this.connectArray(dto.subscribers),
-      tickets: this.connectArray(dto.tickets),
-      information: this.stringifyArray(dto.information),
-      endDate: dto.endDate ? new Date(dto.endDate) : undefined,
-      host: this.stringifySingle(dto.host),
-      startDate: dto.startDate ? new Date(dto.startDate) : undefined,
-      title: dto.title ? dto.title : undefined,
-    };
-  }
-
   async createEvent(dto: CreateEventDto): Promise<Event> {
     return this.prisma.event.create({
       data: {
@@ -64,5 +49,20 @@ export class EventService extends Service {
       where: { id: eventId },
     });
     return Boolean(deleted);
+  }
+
+  private mapDtoToData(dto: CreateEventDto | EditEventDto) {
+    return {
+      ...dto,
+      clubs: this.connectArray(dto.clubs),
+      school: this.connectSingle(dto.school),
+      subscribers: this.connectArray(dto.subscribers),
+      tickets: this.connectArray(dto.tickets),
+      information: this.stringifyArray(dto.information),
+      endDate: dto.endDate ? new Date(dto.endDate) : undefined,
+      host: this.stringifySingle(dto.host),
+      startDate: dto.startDate ? new Date(dto.startDate) : undefined,
+      title: dto.title ? dto.title : undefined,
+    };
   }
 }

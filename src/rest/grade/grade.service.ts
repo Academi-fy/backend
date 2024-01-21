@@ -28,15 +28,6 @@ export class GradeService extends Service {
     });
   }
 
-  private mapDtoToData(dto: CreateGradeDto | EditGradeDto) {
-    return {
-      ...dto,
-      classes: this.connectArray(dto.classes),
-      school: this.connectSingle(dto.school),
-      level: dto.level ? dto.level : undefined,
-    };
-  }
-
   async createGrade(dto: CreateGradeDto): Promise<Grade> {
     return this.prisma.grade.create({
       data: {
@@ -65,5 +56,14 @@ export class GradeService extends Service {
       where: { id },
     });
     return Boolean(deleted);
+  }
+
+  private mapDtoToData(dto: CreateGradeDto | EditGradeDto) {
+    return {
+      ...dto,
+      classes: this.connectArray(dto.classes),
+      school: this.connectSingle(dto.school),
+      level: dto.level ? dto.level : undefined,
+    };
   }
 }

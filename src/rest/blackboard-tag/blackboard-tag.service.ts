@@ -37,14 +37,6 @@ export class BlackboardTagService extends Service {
     });
   }
 
-  private mapDtoToData(dto: CreateBlackboardTagDto | EditBlackboardTagDto) {
-    return {
-      ...dto,
-      blackboards: this.connectArray(dto.blackboards),
-      name: dto.name ? dto.name.toLowerCase() : undefined,
-    };
-  }
-
   async createBlackboardTag(
     dto: CreateBlackboardTagDto,
   ): Promise<BlackboardTag> {
@@ -101,5 +93,13 @@ export class BlackboardTagService extends Service {
       where: { name: tag },
     });
     return Boolean(deletedBlackboardTag);
+  }
+
+  private mapDtoToData(dto: CreateBlackboardTagDto | EditBlackboardTagDto) {
+    return {
+      ...dto,
+      blackboards: this.connectArray(dto.blackboards),
+      name: dto.name ? dto.name.toLowerCase() : undefined,
+    };
   }
 }

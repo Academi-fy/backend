@@ -29,17 +29,6 @@ export class UserChatService extends Service {
     });
   }
 
-  private mapDtoToData(dto: CreateUserChatDto | EditUserChatDto) {
-    return {
-      ...dto,
-      chat: this.connectSingle(dto.chat),
-      hidden: dto.hidden ? dto.hidden : undefined,
-      pinned: dto.pinned ? dto.pinned : undefined,
-      read: dto.read ? dto.read : undefined,
-      user: this.connectSingle(dto.user),
-    };
-  }
-
   async createUserChat(dto: CreateUserChatDto): Promise<UserChat> {
     return this.prisma.userChat.create({
       data: {
@@ -71,5 +60,16 @@ export class UserChatService extends Service {
       },
     });
     return Boolean(deleted);
+  }
+
+  private mapDtoToData(dto: CreateUserChatDto | EditUserChatDto) {
+    return {
+      ...dto,
+      chat: this.connectSingle(dto.chat),
+      hidden: dto.hidden ? dto.hidden : undefined,
+      pinned: dto.pinned ? dto.pinned : undefined,
+      read: dto.read ? dto.read : undefined,
+      user: this.connectSingle(dto.user),
+    };
   }
 }

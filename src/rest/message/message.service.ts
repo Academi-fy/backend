@@ -28,19 +28,6 @@ export class MessageService extends Service {
     });
   }
 
-  private mapDtoToData(dto: CreateMessageDto | EditMessageDto) {
-    return {
-      ...dto,
-      author: this.connectSingle(dto.author),
-      chat: this.connectSingle(dto.chat),
-      replies: this.connectArray(dto.replies),
-      replyTo: this.connectSingle(dto.replyTo),
-      content: this.stringifyArray(dto.content),
-      editHistory: this.stringifyArray(dto.editHistory),
-      reactions: this.stringifyArray(dto.reactions),
-    };
-  }
-
   async createMessage(dto: CreateMessageDto): Promise<Message> {
     return this.prisma.message.create({
       data: {
@@ -69,5 +56,18 @@ export class MessageService extends Service {
       where: { id },
     });
     return Boolean(deleted);
+  }
+
+  private mapDtoToData(dto: CreateMessageDto | EditMessageDto) {
+    return {
+      ...dto,
+      author: this.connectSingle(dto.author),
+      chat: this.connectSingle(dto.chat),
+      replies: this.connectArray(dto.replies),
+      replyTo: this.connectSingle(dto.replyTo),
+      content: this.stringifyArray(dto.content),
+      editHistory: this.stringifyArray(dto.editHistory),
+      reactions: this.stringifyArray(dto.reactions),
+    };
   }
 }

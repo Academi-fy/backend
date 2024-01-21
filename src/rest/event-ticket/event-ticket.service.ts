@@ -41,16 +41,6 @@ export class EventTicketService extends Service {
     });
   }
 
-  private mapDtoToData(dto: CreateEventTicketDto | EditEventTicketDto) {
-    return {
-      ...dto,
-      buyer: this.connectSingle(dto.buyer),
-      event: this.connectSingle(dto.event),
-      price: dto.price ? dto.price : undefined,
-      saleDate: dto.saleDate ? new Date(dto.saleDate) : undefined,
-    };
-  }
-
   async createEventTicket(dto: CreateEventTicketDto): Promise<EventTicket> {
     return this.prisma.eventTicket.create({
       data: {
@@ -83,5 +73,15 @@ export class EventTicketService extends Service {
     });
 
     return Boolean(deleted);
+  }
+
+  private mapDtoToData(dto: CreateEventTicketDto | EditEventTicketDto) {
+    return {
+      ...dto,
+      buyer: this.connectSingle(dto.buyer),
+      event: this.connectSingle(dto.event),
+      price: dto.price ? dto.price : undefined,
+      saleDate: dto.saleDate ? new Date(dto.saleDate) : undefined,
+    };
   }
 }

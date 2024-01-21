@@ -33,16 +33,6 @@ export class SubjectService extends Service {
     });
   }
 
-  private mapDtoToData(dto: CreateSubjectDto | EditSubjectDto) {
-    return {
-      ...dto,
-      courses: this.connectArray(dto.courses),
-      school: this.connectSingle(dto.school),
-      shortName: dto.shortName ? dto.shortName : undefined,
-      type: dto.type ? dto.type : undefined,
-    };
-  }
-
   async createSubject(dto: CreateSubjectDto): Promise<Subject> {
     return this.prisma.subject.create({
       data: {
@@ -71,5 +61,15 @@ export class SubjectService extends Service {
       where: { id },
     });
     return Boolean(deleted);
+  }
+
+  private mapDtoToData(dto: CreateSubjectDto | EditSubjectDto) {
+    return {
+      ...dto,
+      courses: this.connectArray(dto.courses),
+      school: this.connectSingle(dto.school),
+      shortName: dto.shortName ? dto.shortName : undefined,
+      type: dto.type ? dto.type : undefined,
+    };
   }
 }

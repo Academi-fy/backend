@@ -28,19 +28,6 @@ export class ChatService extends Service {
     });
   }
 
-  private mapDtoToData(dto: CreateChatDto | EditChatDto) {
-    return {
-      ...dto,
-      clubs: this.connectArray(dto.clubs),
-      courses: this.connectArray(dto.courses),
-      messages: this.connectArray(dto.messages),
-      targets: this.connectArray(dto.targets),
-      lastActivity: this.stringifySingle(dto.lastActivity),
-      name: dto.name ? dto.name : undefined,
-      type: dto.type ? dto.type : undefined,
-    };
-  }
-
   async createChat(dto: CreateChatDto): Promise<Chat> {
     return this.prisma.chat.create({
       data: {
@@ -69,5 +56,18 @@ export class ChatService extends Service {
       where: { id: chatId },
     });
     return Boolean(deletedChat);
+  }
+
+  private mapDtoToData(dto: CreateChatDto | EditChatDto) {
+    return {
+      ...dto,
+      clubs: this.connectArray(dto.clubs),
+      courses: this.connectArray(dto.courses),
+      messages: this.connectArray(dto.messages),
+      targets: this.connectArray(dto.targets),
+      lastActivity: this.stringifySingle(dto.lastActivity),
+      name: dto.name ? dto.name : undefined,
+      type: dto.type ? dto.type : undefined,
+    };
   }
 }

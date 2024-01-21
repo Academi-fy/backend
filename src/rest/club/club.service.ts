@@ -28,21 +28,6 @@ export class ClubService extends Service {
     });
   }
 
-  private mapDtoToData(dto: CreateClubDto | EditClubDto) {
-    return {
-      ...dto,
-      requirements: this.stringifyArray(dto.requirements),
-      chat: this.connectSingle(dto.chat),
-      events: this.connectArray(dto.events),
-      leaders: this.connectArray(dto.leaders),
-      members: this.connectArray(dto.members),
-      school: this.connectSingle(dto.school),
-      tags: this.connectArray(dto.tags),
-
-      name: dto.name ? dto.name : undefined,
-    };
-  }
-
   async createClub(dto: CreateClubDto): Promise<Club> {
     return this.prisma.club.create({
       data: {
@@ -71,5 +56,20 @@ export class ClubService extends Service {
       where: { id: clubId },
     });
     return Boolean(deleted);
+  }
+
+  private mapDtoToData(dto: CreateClubDto | EditClubDto) {
+    return {
+      ...dto,
+      requirements: this.stringifyArray(dto.requirements),
+      chat: this.connectSingle(dto.chat),
+      events: this.connectArray(dto.events),
+      leaders: this.connectArray(dto.leaders),
+      members: this.connectArray(dto.members),
+      school: this.connectSingle(dto.school),
+      tags: this.connectArray(dto.tags),
+
+      name: dto.name ? dto.name : undefined,
+    };
   }
 }

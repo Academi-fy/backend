@@ -10,8 +10,7 @@ import {
 } from '@nestjs/common';
 import { JwtGuard } from '../../auth/guard';
 import { UserChatService } from './user-chat.service';
-import { CreateUserChatDto } from './dto/create-user-chat.dto';
-import { EditUserChatDto } from './dto/edit-user-chat.dto';
+import { CreateUserChatDto, EditUserChatDto } from './dto';
 
 @UseGuards(JwtGuard)
 @Controller('user-chats')

@@ -28,16 +28,6 @@ export class ClassService extends Service {
     });
   }
 
-  private mapDtoToData(dto: CreateClassDto | EditClassDto) {
-    return {
-      ...dto,
-      courses: this.connectArray(dto.courses),
-      grade: this.connectSingle(dto.grade),
-      members: this.connectArray(dto.members),
-      school: this.connectSingle(dto.school),
-    };
-  }
-
   async createClass(dto: CreateClassDto): Promise<Class> {
     return this.prisma.class.create({
       data: {
@@ -66,5 +56,15 @@ export class ClassService extends Service {
       where: { id: classId },
     });
     return Boolean(deletedClass);
+  }
+
+  private mapDtoToData(dto: CreateClassDto | EditClassDto) {
+    return {
+      ...dto,
+      courses: this.connectArray(dto.courses),
+      grade: this.connectSingle(dto.grade),
+      members: this.connectArray(dto.members),
+      school: this.connectSingle(dto.school),
+    };
   }
 }

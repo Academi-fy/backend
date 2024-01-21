@@ -37,14 +37,6 @@ export class SetupAccountService extends Service {
     });
   }
 
-  private mapDtoToData(dto: CreateSetupAccountDto | EditSetupAccountDto) {
-    return {
-      ...dto,
-      school: this.connectSingle(dto.school),
-      schoolName: dto.schoolName ? dto.schoolName : undefined,
-    };
-  }
-
   async createSetupAccount(dto: CreateSetupAccountDto): Promise<SetupAccount> {
     return this.prisma.setupAccount.create({
       data: {
@@ -76,5 +68,13 @@ export class SetupAccountService extends Service {
       where: { id: setupAccountId },
     });
     return Boolean(deletedSetupAccount);
+  }
+
+  private mapDtoToData(dto: CreateSetupAccountDto | EditSetupAccountDto) {
+    return {
+      ...dto,
+      school: this.connectSingle(dto.school),
+      schoolName: dto.schoolName ? dto.schoolName : undefined,
+    };
   }
 }

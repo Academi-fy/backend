@@ -37,21 +37,6 @@ export class SchoolService extends Service {
     });
   }
 
-  private mapDtoToData(dto: CreateSchoolDto | EditSchoolDto) {
-    return {
-      ...dto,
-      setupAccount: this.connectSingle(dto.setupAccount),
-      blackboards: this.connectArray(dto.blackboards),
-      classes: this.connectArray(dto.classes),
-      clubs: this.connectArray(dto.clubs),
-      events: this.connectArray(dto.events),
-      grades: this.connectArray(dto.grades),
-      members: this.connectArray(dto.members),
-      subjects: this.connectArray(dto.subjects),
-      name: dto.name ? dto.name : undefined,
-    };
-  }
-
   async createSchool(dto: CreateSchoolDto): Promise<School> {
     return this.prisma.school.create({
       data: {
@@ -80,5 +65,20 @@ export class SchoolService extends Service {
       where: { id: schoolId },
     });
     return Boolean(deletedSchool);
+  }
+
+  private mapDtoToData(dto: CreateSchoolDto | EditSchoolDto) {
+    return {
+      ...dto,
+      setupAccount: this.connectSingle(dto.setupAccount),
+      blackboards: this.connectArray(dto.blackboards),
+      classes: this.connectArray(dto.classes),
+      clubs: this.connectArray(dto.clubs),
+      events: this.connectArray(dto.events),
+      grades: this.connectArray(dto.grades),
+      members: this.connectArray(dto.members),
+      subjects: this.connectArray(dto.subjects),
+      name: dto.name ? dto.name : undefined,
+    };
   }
 }
