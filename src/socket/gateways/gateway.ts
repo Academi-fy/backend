@@ -1,19 +1,13 @@
-import {
-  MessageBody,
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
-} from '@nestjs/websockets';
-import * as process from 'process';
+export interface EventResponse {
+  event: string;
+  data: { event: string; body: any };
+}
 
-const port = Number(process.env.SOCKET_PORT) || 8080;
-@WebSocketGateway(port)
 export class Gateway {
-  @WebSocketServer()
-  server: any;
-
-  @SubscribeMessage('MESSAGE_SEND')
-  handleMessage(@MessageBody() body: string): void {
-    this.server.emit('MESSAGE_SEND', body);
+  respond(event: string, body: any): EventResponse {
+    return {
+      event: 'SUCCESS',
+      data: { event, body },
+    };
   }
 }

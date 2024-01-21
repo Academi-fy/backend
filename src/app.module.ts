@@ -4,7 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
-import { Gateway } from './socket/gateways/gateway';
+import { MessageGateway } from './socket/gateways/message/message.gateway';
 import { PrismaModule } from './prisma';
 import { GraphQLJSON } from 'graphql-type-json';
 import { SocketModule } from './socket/socket.module';
@@ -27,7 +27,7 @@ import { RestModule } from './rest/rest.module';
     RestModule,
     SocketModule,
   ],
-  providers: [Gateway],
+  providers: [MessageGateway],
   controllers: [],
 })
 export class AppModule {}
