@@ -11,7 +11,7 @@ import {
 import { JwtGuard } from '../../auth/guard';
 import { BlackboardService } from './blackboard.service';
 import { CreateBlackboardDto, EditBlackboardDto } from './dto';
-import { Blackboard } from '@prisma/client';
+import { Blackboard } from '../../@generated-types';
 
 @UseGuards(JwtGuard)
 @Controller('blackboard')
@@ -19,12 +19,12 @@ export class BlackboardController {
   constructor(private blackboardService: BlackboardService) {}
 
   @Get()
-  getAll(): Promise<Blackboard[]> {
+  getAllBlackboards(): Promise<Blackboard[]> {
     return this.blackboardService.getAllBlackboards();
   }
 
   @Get(':id')
-  getById(@Param('id') blackboardId: string): Promise<Blackboard> {
+  getBlackboardById(@Param('id') blackboardId: string): Promise<Blackboard> {
     return this.blackboardService.getBlackboardById(blackboardId);
   }
 
@@ -34,7 +34,7 @@ export class BlackboardController {
   }
 
   @Patch(':id')
-  updateBlackboard(
+  editBlackboard(
     @Param('id') blackboardId: string,
     @Body() dto: EditBlackboardDto,
   ): Promise<Blackboard> {
@@ -42,7 +42,7 @@ export class BlackboardController {
   }
 
   @Delete(':id')
-  deleteBlackboard(@Param('id') blackboardId: string): Promise<boolean> {
+  deleteBlackboard(@Param('id') blackboardId: string): Promise<Blackboard> {
     return this.blackboardService.deleteBlackboard(blackboardId);
   }
 }

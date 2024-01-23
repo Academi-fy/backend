@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { JwtGuard } from '../../auth/guard';
 import { SetupAccountService } from './setup-account.service';
-import { SetupAccount } from '@prisma/client';
 import { CreateSetupAccountDto, EditSetupAccountDto } from './dto';
+import { SetupAccount } from '../../@generated-types';
 
 @UseGuards(JwtGuard)
 @Controller('setup-accounts')
@@ -19,17 +19,19 @@ export class SetupAccountController {
   constructor(private setupAccountService: SetupAccountService) {}
 
   @Get()
-  getAll(): Promise<SetupAccount[]> {
+  getAllSetupAccounts(): Promise<SetupAccount[]> {
     return this.setupAccountService.getAllSetupAccounts();
   }
 
   @Get(':id')
-  getById(@Param('id') setupAccountId: string): Promise<SetupAccount> {
+  getSetupAccountById(
+    @Param('id') setupAccountId: string,
+  ): Promise<SetupAccount> {
     return this.setupAccountService.getSetupAccountById(setupAccountId);
   }
 
   @Get('school/:schoolName')
-  getBySchoolName(
+  getSetupAccountBySchoolName(
     @Param('schoolName') schoolName: string,
   ): Promise<SetupAccount> {
     return this.setupAccountService.getSetupAccountBySchoolName(schoolName);
@@ -43,7 +45,7 @@ export class SetupAccountController {
   }
 
   @Patch(':id')
-  updateSetupAccount(
+  editSetupAccount(
     @Param('id') setupAccountId: string,
     @Body() dto: EditSetupAccountDto,
   ): Promise<SetupAccount> {
@@ -51,7 +53,9 @@ export class SetupAccountController {
   }
 
   @Delete(':id')
-  deleteSetupAccount(@Param('id') setupAccountId: string): Promise<boolean> {
+  deleteSetupAccount(
+    @Param('id') setupAccountId: string,
+  ): Promise<SetupAccount> {
     return this.setupAccountService.deleteSetupAccount(setupAccountId);
   }
 }

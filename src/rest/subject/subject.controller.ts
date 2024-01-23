@@ -42,7 +42,7 @@ export class SubjectController {
   }
 
   @Delete(':id')
-  async deleteSubject(@Param('id') id: string): Promise<boolean> {
+  async deleteSubject(@Param('id') id: string): Promise<Subject> {
     return await this.subjectService.deleteSubject(id);
   }
 }

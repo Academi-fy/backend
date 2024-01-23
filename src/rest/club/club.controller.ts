@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { ClubService } from './club.service';
 import { CreateClubDto, EditClubDto } from './dto';
-import { Club } from '@prisma/client';
 import { JwtGuard } from 'src/auth/guard';
+import { Club } from '../../@generated-types';
 
 @UseGuards(JwtGuard)
 @Controller('clubs')
@@ -19,12 +19,12 @@ export class ClubController {
   constructor(private clubService: ClubService) {}
 
   @Get()
-  async getAll(): Promise<Club[]> {
+  async getAllClubs(): Promise<Club[]> {
     return this.clubService.getAllClubs();
   }
 
   @Get(':id')
-  async getById(@Param('id') clubId: string): Promise<Club> {
+  async getClubById(@Param('id') clubId: string): Promise<Club> {
     return this.clubService.getClubById(clubId);
   }
 
@@ -42,7 +42,7 @@ export class ClubController {
   }
 
   @Delete(':id')
-  async deleteClub(@Param('id') clubId: string): Promise<boolean> {
+  async deleteClub(@Param('id') clubId: string): Promise<Club> {
     return this.clubService.deleteClub(clubId);
   }
 }

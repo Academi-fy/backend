@@ -9,10 +9,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtGuard } from '../../auth/guard';
-import { UserAccount } from '@prisma/client';
 import { CreateUserAccountDto, EditUserAccountDto } from './dto';
 import { UserAccountService } from './user-account.service';
 import { GetUserAccount } from '../../auth/decorator';
+import { UserAccount } from '../../@generated-types';
 
 @UseGuards(JwtGuard)
 @Controller('user-accounts')
@@ -25,12 +25,12 @@ export class UserAccountController {
   }
 
   @Get()
-  getAll(): Promise<UserAccount[]> {
+  getAllUserAccounts(): Promise<UserAccount[]> {
     return this.userAccountService.getAllUserAccounts();
   }
 
   @Get(':id')
-  getById(@Param('id') userAccountId: string): Promise<UserAccount> {
+  getUserAccountById(@Param('id') userAccountId: string): Promise<UserAccount> {
     return this.userAccountService.getUserAccountById(userAccountId);
   }
 
@@ -40,7 +40,7 @@ export class UserAccountController {
   }
 
   @Patch(':id')
-  updateUserAccount(
+  editUserAccount(
     @Param('id') userAccountId: string,
     @Body() dto: EditUserAccountDto,
   ): Promise<UserAccount> {
@@ -48,7 +48,7 @@ export class UserAccountController {
   }
 
   @Delete(':id')
-  deleteUserAccount(@Param('id') userAccountId: string): Promise<boolean> {
+  deleteUserAccount(@Param('id') userAccountId: string): Promise<UserAccount> {
     return this.userAccountService.deleteUserAccount(userAccountId);
   }
 }

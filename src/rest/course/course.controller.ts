@@ -11,6 +11,7 @@ import {
 import { JwtGuard } from '../../auth/guard';
 import { CourseService } from './course.service';
 import { CreateCourseDto, EditCourseDto } from './dto';
+import { Course } from '../../@generated-types';
 
 @UseGuards(JwtGuard)
 @Controller('courses')
@@ -18,17 +19,17 @@ export class CourseController {
   constructor(private courseService: CourseService) {}
 
   @Get()
-  async getAll() {
+  async getAllCourses(): Promise<Course[]> {
     return this.courseService.getAllCourses();
   }
 
   @Get(':id')
-  async getById(@Param('id') courseId: string) {
+  async getCourseById(@Param('id') courseId: string): Promise<Course> {
     return this.courseService.getCourseById(courseId);
   }
 
   @Post()
-  async createCourse(@Body() dto: CreateCourseDto) {
+  async createCourse(@Body() dto: CreateCourseDto): Promise<Course> {
     return this.courseService.createCourse(dto);
   }
 
@@ -36,12 +37,12 @@ export class CourseController {
   async updateCourse(
     @Param('id') courseId: string,
     @Body() dto: EditCourseDto,
-  ) {
+  ): Promise<Course> {
     return this.courseService.editCourse(courseId, dto);
   }
 
   @Delete(':id')
-  async deleteCourse(@Param('id') courseId: string) {
+  async deleteCourse(@Param('id') courseId: string): Promise<Course> {
     return this.courseService.deleteCourse(courseId);
   }
 }

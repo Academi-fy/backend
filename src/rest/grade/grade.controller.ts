@@ -19,12 +19,12 @@ export class GradeController {
   constructor(private gradeService: GradeService) {}
 
   @Get()
-  async getAll(): Promise<Grade[]> {
+  async getAllGrades(): Promise<Grade[]> {
     return this.gradeService.getAllGrades();
   }
 
   @Get(':id')
-  async getById(id: string): Promise<Grade> {
+  async getGradeById(id: string): Promise<Grade> {
     return this.gradeService.getGradeById(id);
   }
 
@@ -42,7 +42,7 @@ export class GradeController {
   }
 
   @Delete(':id')
-  async deleteGrade(@Param('id') id: string): Promise<boolean> {
+  async deleteGrade(@Param('id') id: string): Promise<Grade> {
     return this.gradeService.deleteGrade(id);
   }
 }

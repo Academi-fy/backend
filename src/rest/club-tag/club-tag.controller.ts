@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
 import { ClubTagService } from './club-tag.service';
-import { ClubTag } from '@prisma/client';
 import { CreateClubTagDto, EditClubTagDto } from './dto';
+import { ClubTag } from '../../@generated-types';
 
 @UseGuards(JwtGuard)
 @Controller('club-tags')
@@ -19,12 +19,12 @@ export class ClubTagController {
   constructor(private clubTagService: ClubTagService) {}
 
   @Get()
-  async getAll(): Promise<ClubTag[]> {
+  async getAllClubTags(): Promise<ClubTag[]> {
     return this.clubTagService.getAllClubTags();
   }
 
   @Get(':id')
-  async getById(@Param('id') clubTagId: string): Promise<ClubTag> {
+  async getClubTagById(@Param('id') clubTagId: string): Promise<ClubTag> {
     return this.clubTagService.getClubTagById(clubTagId);
   }
 
@@ -42,7 +42,7 @@ export class ClubTagController {
   }
 
   @Delete(':id')
-  async deleteClubTag(@Param('id') clubTagId: string): Promise<boolean> {
+  async deleteClubTag(@Param('id') clubTagId: string): Promise<ClubTag> {
     return this.clubTagService.deleteClubTag(clubTagId);
   }
 }

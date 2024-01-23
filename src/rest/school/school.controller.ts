@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { JwtGuard } from '../../auth/guard';
 import { SchoolService } from './school.service';
-import { School } from '@prisma/client';
 import { CreateSchoolDto, EditSchoolDto } from './dto';
+import { School } from '../../@generated-types';
 
 @UseGuards(JwtGuard)
 @Controller('schools')
@@ -19,17 +19,17 @@ export class SchoolController {
   constructor(private schoolService: SchoolService) {}
 
   @Get()
-  getAll(): Promise<School[]> {
+  getAllSchools(): Promise<School[]> {
     return this.schoolService.getAllSchools();
   }
 
   @Get(':id')
-  getById(id: string): Promise<School> {
+  getSchoolById(id: string): Promise<School> {
     return this.schoolService.getSchoolById(id);
   }
 
   @Get('name/:name')
-  getByName(name: string): Promise<School> {
+  getSchoolByName(name: string): Promise<School> {
     return this.schoolService.getSchoolByName(name);
   }
 
@@ -39,7 +39,7 @@ export class SchoolController {
   }
 
   @Patch(':id')
-  updateSchool(
+  editSchool(
     @Param('id') schoolId: string,
     @Body() dto: EditSchoolDto,
   ): Promise<School> {
@@ -47,7 +47,7 @@ export class SchoolController {
   }
 
   @Delete(':id')
-  deleteSchool(@Param('id') schoolId: string): Promise<boolean> {
+  deleteSchool(@Param('id') schoolId: string): Promise<School> {
     return this.schoolService.deleteSchool(schoolId);
   }
 }

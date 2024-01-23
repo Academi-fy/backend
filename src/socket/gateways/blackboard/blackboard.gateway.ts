@@ -24,13 +24,14 @@ export class BlackboardGateway extends Gateway {
   async handleBlackboardCreate(
     @MessageBody() body: GatewayMessage<CreateBlackboardDto>,
   ): Promise<EventResponse> {
-    const createdBlackboard = await this.blackboardService.createBlackboard(
+    /*const createdBlackboard = await this.blackboardService.createBlackboard(
       body.value,
     );
 
     createdBlackboard.school.members.forEach((member) => {
       this.clients.get(member.id)?.emit('BLACKBOARD_CREATE', createdBlackboard);
-    });
+    });*/
+    const createdBlackboard = { test: 'test' };
 
     return this.respond('BLACKBOARD_CREATE', createdBlackboard);
   }

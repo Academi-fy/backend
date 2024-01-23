@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { JwtGuard } from '../../auth/guard';
 import { BlackboardTagService } from './blackboard-tag.service';
-import { BlackboardTag } from '@prisma/client';
 import { CreateBlackboardTagDto, EditBlackboardTagDto } from './dto';
+import { BlackboardTag } from '../../@generated-types';
 
 @UseGuards(JwtGuard)
 @Controller('blackboard-tags')
@@ -19,17 +19,21 @@ export class BlackboardTagController {
   constructor(private blackboardTagService: BlackboardTagService) {}
 
   @Get()
-  async getAll(): Promise<BlackboardTag[]> {
+  async getAllBlackboardTags(): Promise<BlackboardTag[]> {
     return this.blackboardTagService.getAllBlackboardTags();
   }
 
   @Get(':id')
-  async getById(@Param('id') blackboardTagId: string): Promise<BlackboardTag> {
+  async getBlackboardTagById(
+    @Param('id') blackboardTagId: string,
+  ): Promise<BlackboardTag> {
     return this.blackboardTagService.getBlackboardTagById(blackboardTagId);
   }
 
   @Get('tag/:tag')
-  async getByTag(@Param('tag') tag: string): Promise<BlackboardTag> {
+  async getBlackboardTagByTag(
+    @Param('tag') tag: string,
+  ): Promise<BlackboardTag> {
     return this.blackboardTagService.getBlackboardTagByTag(tag);
   }
 
@@ -62,12 +66,14 @@ export class BlackboardTagController {
   @Delete(':id')
   async deleteBlackboardTag(
     @Param('id') blackboardTagId: string,
-  ): Promise<boolean> {
+  ): Promise<BlackboardTag> {
     return this.blackboardTagService.deleteBlackboardTagById(blackboardTagId);
   }
 
   @Delete('tag/:tag')
-  async deleteBlackboardTagByTag(@Param('tag') tag: string): Promise<boolean> {
+  async deleteBlackboardTagByTag(
+    @Param('tag') tag: string,
+  ): Promise<BlackboardTag> {
     return this.blackboardTagService.deleteBlackboardTagByTag(tag);
   }
 }

@@ -19,12 +19,12 @@ export class EventController {
   constructor(private eventService: EventService) {}
 
   @Get()
-  async getAll(): Promise<Event[]> {
+  async getAllEvents(): Promise<Event[]> {
     return this.eventService.getAllEvents();
   }
 
   @Get(':id')
-  async getById(@Param('id') id: string): Promise<Event> {
+  async getEventById(@Param('id') id: string): Promise<Event> {
     return this.eventService.getEventById(id);
   }
 
@@ -42,7 +42,7 @@ export class EventController {
   }
 
   @Delete(':id')
-  async deleteEvent(@Param('id') id: string): Promise<boolean> {
+  async deleteEvent(@Param('id') id: string): Promise<Event> {
     return this.eventService.deleteEvent(id);
   }
 }

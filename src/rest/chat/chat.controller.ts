@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { CreateChatDto } from './dto';
-import { Chat } from '@prisma/client';
 import { JwtGuard } from 'src/auth/guard';
+import { Chat } from '@prisma/client';
 
 @UseGuards(JwtGuard)
 @Controller('chats')
@@ -19,12 +19,12 @@ export class ChatController {
   constructor(private chatService: ChatService) {}
 
   @Get()
-  async getAll(): Promise<Chat[]> {
+  async getAllChats(): Promise<Chat[]> {
     return this.chatService.getAllChats();
   }
 
   @Get(':id')
-  async getById(@Param('id') chatId: string): Promise<Chat> {
+  async getChatById(@Param('id') chatId: string): Promise<Chat> {
     return this.chatService.getChatById(chatId);
   }
 
@@ -42,7 +42,7 @@ export class ChatController {
   }
 
   @Delete(':id')
-  async deleteChat(@Param('id') chatId: string): Promise<boolean> {
+  async deleteChat(@Param('id') chatId: string): Promise<Chat> {
     return this.chatService.deleteChat(chatId);
   }
 }

@@ -960,36 +960,34 @@ enum SortOrder {
 type Mutation {
   createBlackboard(blackboard: CreateBlackboardDto!): Blackboard!
   editBlackboard(id: String!, blackboard: EditBlackboardDto!): Blackboard!
-  deleteBlackboard(id: String!): Boolean!
+  deleteBlackboard(id: String!): Blackboard!
   createBlackboardTag(blackboardTag: CreateBlackboardTagDto!): BlackboardTag!
-  editBlackboardTagById(id: String!, blackboardTag: CreateBlackboardTagDto!): BlackboardTag!
-  editBlackboardTagByTag(tag: String!, editBlackboardTagDto: EditBlackboardTagDto!): BlackboardTag!
-  deleteBlackboardTagById(id: String!): Boolean!
-  deleteBlackboardTagByTag(tag: String!): Boolean!
+  editBlackboardTagById(blackboardTag: CreateBlackboardTagDto!, id: String, tag: String): BlackboardTag!
+  deleteBlackboardTagById(id: String, tag: String): BlackboardTag!
   createChat(chat: CreateChatDto!): Chat!
   editChat(id: String!, chat: EditChatDto!): Chat!
-  deleteChat(id: String!): Boolean!
+  deleteChat(id: String!): Chat!
   createClass(class: CreateClassDto!): Class!
   editClass(id: String!, class: EditClassDto!): Class!
-  deleteClass(id: String!): Boolean!
+  deleteClass(id: String!): Class!
   createClub(club: CreateClubDto!): Club!
   editClub(id: String!, club: EditClubDto!): Club!
-  deleteClub(id: String!): Boolean!
+  deleteClub(id: String!): Club!
   createClubTag(clubTag: CreateClubTagDto!): ClubTag!
   editClubTag(id: String!, clubTag: EditClubTagDto!): ClubTag!
-  deleteClubTag(id: String!): Boolean!
+  deleteClubTag(id: String!): ClubTag!
   createCourse(course: CreateCourseDto!): Course!
   editCourse(id: String!, course: EditCourseDto!): Course!
-  deleteCourse(id: String!): Boolean!
+  deleteCourse(id: String!): Course!
   createEvent(event: CreateEventDto!): Event!
   editEvent(id: String!, event: EditEventDto!): Event!
-  deleteEvent(id: String!): Boolean!
+  deleteEvent(id: String!): Event!
   createEventTicket(eventTicket: CreateEventTicketDto!): EventTicket!
   editEventTicket(id: String!, eventTicket: CreateEventTicketDto!): EventTicket!
-  deleteEventTicket(id: String!): Boolean!
+  deleteEventTicket(id: String!): EventTicket!
   createGrade(grade: CreateGradeDto!): Grade!
   editGrade(id: String!, grade: EditGradeDto!): Grade!
-  deleteGrade(id: String!): Boolean!
+  deleteGrade(id: String!): Grade!
   createMessage(message: CreateMessageDto!): Message!
   editMessage(id: String!, message: EditMessageDto!): Message!
   deleteMessage(id: String!): Message!
@@ -1007,13 +1005,13 @@ type Mutation {
   deleteUser(id: String!): User!
   createUserAccount(userAccount: CreateUserAccountDto!): UserAccount!
   editUseraccount(id: String!, userAccount: CreateUserAccountDto!): UserAccount!
-  deleteUserAccount(id: String!): Boolean!
+  deleteUserAccount(id: String!): UserAccount!
   createUserChat(userChat: CreateUserChatDto!): UserChat!
   editUserChat(id: String!, userChat: EditUserChatDto!): UserChat!
   hideUserChat(id: String!, hide: Boolean!): UserChat!
   pinUserChat(id: String!, pin: Boolean!): UserChat!
   readUserChat(id: String!, read: Boolean!): UserChat!
-  deleteUserChat(id: String!): Boolean!
+  deleteUserChat(id: String!): UserChat!
 }
 
 input CreateBlackboardDto {
@@ -1039,11 +1037,6 @@ input EditBlackboardDto {
 input CreateBlackboardTagDto {
   blackboards: [String!]
   name: String!
-}
-
-input EditBlackboardTagDto {
-  blackboards: [String!]
-  name: String
 }
 
 input CreateChatDto {

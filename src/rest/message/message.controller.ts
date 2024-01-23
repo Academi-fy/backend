@@ -11,6 +11,7 @@ import {
 import { JwtGuard } from '../../auth/guard';
 import { MessageService } from './message.service';
 import { CreateMessageDto } from './dto/create-message.dto';
+import { Message } from '../../@generated-types';
 
 @UseGuards(JwtGuard)
 @Controller('messages')
@@ -18,17 +19,17 @@ export class MessageController {
   constructor(private messageService: MessageService) {}
 
   @Get()
-  async getAll() {
+  async getAllMessages(): Promise<Message[]> {
     return this.messageService.getAllMessages();
   }
 
   @Get(':id')
-  async getById(@Param('id') messageId: string) {
+  async getMessageById(@Param('id') messageId: string): Promise<Message> {
     return this.messageService.getMessageById(messageId);
   }
 
   @Post()
-  async createMessage(@Body() dto: CreateMessageDto) {
+  async createMessage(@Body() dto: CreateMessageDto): Promise<Message> {
     return this.messageService.createMessage(dto);
   }
 
@@ -36,12 +37,12 @@ export class MessageController {
   async editMessage(
     @Param('id') messageId: string,
     @Body() dto: CreateMessageDto,
-  ) {
+  ): Promise<Message> {
     return this.messageService.editMessage(messageId, dto);
   }
 
   @Delete(':id')
-  async deleteMessage(@Param('id') messageId: string) {
+  async deleteMessage(@Param('id') messageId: string): Promise<Message> {
     return this.messageService.deleteMessage(messageId);
   }
 }

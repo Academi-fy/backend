@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { ClassService } from './class.service';
 import { CreateClassDto, EditClassDto } from './dto';
-import { Class } from '@prisma/client';
 import { JwtGuard } from 'src/auth/guard';
+import { Class } from '../../@generated-types';
 
 @UseGuards(JwtGuard)
 @Controller('classes')
@@ -19,12 +19,12 @@ export class ClassController {
   constructor(private classService: ClassService) {}
 
   @Get()
-  async getAll(): Promise<Class[]> {
+  async getAllClasses(): Promise<Class[]> {
     return this.classService.getAllClasses();
   }
 
   @Get(':id')
-  async getById(@Param('id') classId: string): Promise<Class> {
+  async getClassById(@Param('id') classId: string): Promise<Class> {
     return this.classService.getClassById(classId);
   }
 
@@ -42,7 +42,7 @@ export class ClassController {
   }
 
   @Delete(':id')
-  async deleteClass(@Param() classId: string): Promise<boolean> {
+  async deleteClass(@Param() classId: string): Promise<Class> {
     return this.classService.deleteClass(classId);
   }
 }
