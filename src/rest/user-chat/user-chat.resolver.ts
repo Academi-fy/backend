@@ -62,8 +62,8 @@ export class UserChatResolver {
     });
   }
 
-  @Mutation(() => Boolean)
-  async deleteUserChat(@Args('id') id: string): Promise<boolean> {
+  @Mutation(() => UserChat)
+  async deleteUserChat(@Args('id') id: string): Promise<UserChat> {
     return this.userChatService.deleteUserChat(id);
   }
 }

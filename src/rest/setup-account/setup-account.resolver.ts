@@ -40,7 +40,7 @@ export class SetupAccountResolver {
   }
 
   @Mutation(() => SetupAccount)
-  async deleteSetupAccount(@Args('id') id: string): Promise<boolean> {
+  async deleteSetupAccount(@Args('id') id: string): Promise<SetupAccount> {
     return this.setupAccountService.deleteSetupAccount(id);
   }
 }

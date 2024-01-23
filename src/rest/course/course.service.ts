@@ -3,6 +3,7 @@ import { Course } from '@prisma/client';
 import { Service } from '../../service';
 import { CreateCourseDto, EditCourseDto } from './dto';
 import { PrismaService } from '../../prisma';
+import { clubNesting } from '../club';
 
 @Injectable()
 export class CourseService extends Service {
@@ -11,12 +12,19 @@ export class CourseService extends Service {
   }
 
   async getAllCourses(): Promise<Course[]> {
-    return this.prisma.course.findMany({});
+    return this.prisma.course.findMany({
+      include: {
+        ...clubNesting,
+      },
+    });
   }
 
   async getCourseById(courseId: string): Promise<Course> {
     return this.prisma.course.findUnique({
       where: { id: courseId },
+      include: {
+        ...clubNesting,
+      },
     });
   }
 
@@ -24,6 +32,9 @@ export class CourseService extends Service {
     return this.prisma.course.create({
       data: {
         ...this.mapDtoToData(dto),
+      },
+      include: {
+        ...clubNesting,
       },
     });
   }
@@ -36,15 +47,19 @@ export class CourseService extends Service {
       data: {
         ...this.mapDtoToData(dto),
       },
+      include: {
+        ...clubNesting,
+      },
     });
   }
 
-  async deleteCourse(courseId: string): Promise<boolean> {
-    const deleted = this.prisma.course.delete({
+  async deleteCourse(courseId: string): Promise<Course> {
+    return this.prisma.course.delete({
       where: { id: courseId },
+      include: {
+        ...clubNesting,
+      },
     });
-
-    return Boolean(deleted);
   }
 
   private mapDtoToData(dto: CreateCourseDto | EditCourseDto) {

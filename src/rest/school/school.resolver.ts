@@ -25,7 +25,9 @@ export class SchoolResolver {
   }
 
   @Mutation(() => School)
-  async createSchool(@Args('school') createSchoolDto: CreateSchoolDto) {
+  async createSchool(
+    @Args('school') createSchoolDto: CreateSchoolDto,
+  ): Promise<School> {
     return await this.schoolService.createSchool(createSchoolDto);
   }
 
@@ -33,12 +35,12 @@ export class SchoolResolver {
   async editSchool(
     @Args('id') id: string,
     @Args('school') editSchoolDto: EditSchoolDto,
-  ) {
+  ): Promise<School> {
     return await this.schoolService.editSchool(id, editSchoolDto);
   }
 
   @Mutation(() => School)
-  async deleteSchool(@Args('id') id: string) {
+  async deleteSchool(@Args('id') id: string): Promise<School> {
     return await this.schoolService.deleteSchool(id);
   }
 }

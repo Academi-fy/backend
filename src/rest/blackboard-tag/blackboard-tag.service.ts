@@ -81,18 +81,24 @@ export class BlackboardTagService extends Service {
     });
   }
 
-  async deleteBlackboardTagById(blackboardTagId: string): Promise<boolean> {
-    const deletedBlackboardTag = await this.prisma.blackboardTag.delete({
+  async deleteBlackboardTagById(
+    blackboardTagId: string,
+  ): Promise<BlackboardTag> {
+    return this.prisma.blackboardTag.delete({
       where: { id: blackboardTagId },
+      include: {
+        ...blackboardTagNesting,
+      },
     });
-    return Boolean(deletedBlackboardTag);
   }
 
-  async deleteBlackboardTagByTag(tag: string): Promise<boolean> {
-    const deletedBlackboardTag = await this.prisma.blackboardTag.delete({
+  async deleteBlackboardTagByTag(tag: string): Promise<BlackboardTag> {
+    return this.prisma.blackboardTag.delete({
       where: { name: tag },
+      include: {
+        ...blackboardTagNesting,
+      },
     });
-    return Boolean(deletedBlackboardTag);
   }
 
   private mapDtoToData(dto: CreateBlackboardTagDto | EditBlackboardTagDto) {

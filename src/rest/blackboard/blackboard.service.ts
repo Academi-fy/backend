@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Blackboard } from '@prisma/client';
 import { Service } from '../../service';
 import { CreateBlackboardDto, EditBlackboardDto } from './dto';
 import { blackboardNesting } from './';
 import { PrismaService, SortOrder } from '../../prisma';
+import { Blackboard } from '../../@generated-types';
 
 @Injectable()
 export class BlackboardService extends Service {
@@ -65,11 +65,13 @@ export class BlackboardService extends Service {
     });
   }
 
-  async deleteBlackboard(blackboardId: string): Promise<boolean> {
-    const deletedBlackboard = await this.prisma.blackboard.delete({
+  async deleteBlackboard(blackboardId: string): Promise<Blackboard> {
+    return this.prisma.blackboard.delete({
       where: { id: blackboardId },
+      include: {
+        ...blackboardNesting,
+      },
     });
-    return Boolean(deletedBlackboard);
   }
 
   private mapDtoToData(dto: CreateBlackboardDto | EditBlackboardDto) {

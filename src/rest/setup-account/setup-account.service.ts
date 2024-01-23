@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { SetupAccount } from '@prisma/client';
 import { CreateSetupAccountDto, EditSetupAccountDto } from './dto';
 import { Service } from '../../service';
 import { PrismaService } from '../../prisma';
 import { setupAccountNesting } from './setup-account.nesting';
+import { SetupAccount } from '../../@generated-types';
 
 @Injectable()
 export class SetupAccountService extends Service {
@@ -63,11 +63,13 @@ export class SetupAccountService extends Service {
     });
   }
 
-  async deleteSetupAccount(setupAccountId: string): Promise<boolean> {
-    const deletedSetupAccount = await this.prisma.setupAccount.delete({
+  async deleteSetupAccount(setupAccountId: string): Promise<SetupAccount> {
+    return this.prisma.setupAccount.delete({
       where: { id: setupAccountId },
+      include: {
+        ...setupAccountNesting,
+      },
     });
-    return Boolean(deletedSetupAccount);
   }
 
   private mapDtoToData(dto: CreateSetupAccountDto | EditSetupAccountDto) {

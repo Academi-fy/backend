@@ -51,11 +51,13 @@ export class MessageService extends Service {
     });
   }
 
-  async deleteMessage(id: string): Promise<boolean> {
-    const deleted = await this.prisma.message.delete({
+  async deleteMessage(id: string): Promise<Message> {
+    return this.prisma.message.delete({
       where: { id },
+      include: {
+        ...messageNesting,
+      },
     });
-    return Boolean(deleted);
   }
 
   private mapDtoToData(dto: CreateMessageDto | EditMessageDto) {

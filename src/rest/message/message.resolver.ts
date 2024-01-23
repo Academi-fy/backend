@@ -33,7 +33,7 @@ export class MessageResolver {
   }
 
   @Mutation(() => Message)
-  async deleteMessage(@Args('id') id: string): Promise<boolean> {
+  async deleteMessage(@Args('id') id: string): Promise<Message> {
     return this.messageService.deleteMessage(id);
   }
 }

@@ -32,8 +32,8 @@ export class ClubTagResolver {
     return this.clubTagService.editClubTag(id, editClubTagDto);
   }
 
-  @Mutation(() => Boolean)
-  async deleteClubTag(@Args('id') id: string): Promise<boolean> {
+  @Mutation(() => ClubTag)
+  async deleteClubTag(@Args('id') id: string): Promise<ClubTag> {
     return this.clubTagService.deleteClubTag(id);
   }
 }

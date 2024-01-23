@@ -26,7 +26,9 @@ export class SubjectResolver {
   }
 
   @Mutation(() => Subject)
-  async createSubject(@Args('subject') createSubjectDto: CreateSubjectDto) {
+  async createSubject(
+    @Args('subject') createSubjectDto: CreateSubjectDto,
+  ): Promise<Subject> {
     return await this.subjectService.createSubject(createSubjectDto);
   }
 
@@ -34,12 +36,12 @@ export class SubjectResolver {
   async editSubject(
     @Args('id') id: string,
     @Args('subject') editSubjectDto: EditSubjectDto,
-  ) {
+  ): Promise<Subject> {
     return await this.subjectService.editSubject(id, editSubjectDto);
   }
 
   @Mutation(() => Subject)
-  async deleteSubject(@Args('id') id: string) {
+  async deleteSubject(@Args('id') id: string): Promise<Subject> {
     return await this.subjectService.deleteSubject(id);
   }
 }

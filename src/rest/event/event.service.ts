@@ -12,12 +12,19 @@ export class EventService extends Service {
   }
 
   async getAllEvents(): Promise<Event[]> {
-    return this.prisma.event.findMany({});
+    return this.prisma.event.findMany({
+      include: {
+        ...eventNesting,
+      },
+    });
   }
 
   async getEventById(id: string): Promise<Event> {
     return this.prisma.event.findUnique({
       where: { id: id },
+      include: {
+        ...eventNesting,
+      },
     });
   }
 
@@ -44,11 +51,13 @@ export class EventService extends Service {
     });
   }
 
-  async deleteEvent(eventId: string): Promise<boolean> {
-    const deleted = this.prisma.event.delete({
+  async deleteEvent(eventId: string): Promise<Event> {
+    return this.prisma.event.delete({
       where: { id: eventId },
+      include: {
+        ...eventNesting,
+      },
     });
-    return Boolean(deleted);
   }
 
   private mapDtoToData(dto: CreateEventDto | EditEventDto) {

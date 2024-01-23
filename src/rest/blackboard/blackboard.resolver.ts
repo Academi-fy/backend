@@ -43,8 +43,8 @@ export class BlackboardResolver {
     return this.blackboardService.editBlackboard(id, editBlackboardDto);
   }
 
-  @Mutation(() => Boolean)
-  async deleteBlackboard(@Args('id') id: string): Promise<boolean> {
+  @Mutation(() => Blackboard)
+  async deleteBlackboard(@Args('id') id: string): Promise<Blackboard> {
     return this.blackboardService.deleteBlackboard(id);
   }
 }

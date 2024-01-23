@@ -64,10 +64,12 @@ export class UserAccountService extends Service {
   }
 
   async deleteUserAccount(userAccountId: string) {
-    const deletedUserAccount = await this.prisma.userAccount.delete({
+    return this.prisma.userAccount.delete({
       where: { id: userAccountId },
+      include: {
+        ...userAccountNesting,
+      },
     });
-    return Boolean(deletedUserAccount);
   }
 
   private mapDtoToData(dto: CreateUserAccountDto | EditUserAccountDto) {

@@ -41,8 +41,8 @@ export class EventTicketResolver {
     return this.eventTicketService.editEventTicket(id, dto);
   }
 
-  @Mutation(() => Boolean)
-  async deleteEventTicket(@Args('id') id: string): Promise<boolean> {
+  @Mutation(() => EventTicket)
+  async deleteEventTicket(@Args('id') id: string): Promise<EventTicket> {
     return this.eventTicketService.deleteEventTicket(id);
   }
 }

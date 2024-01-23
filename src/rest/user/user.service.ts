@@ -51,14 +51,13 @@ export class UserService extends Service {
     });
   }
 
-  async deleteUser(id: string): Promise<boolean> {
-    const deleted = this.prisma.user.delete({
+  async deleteUser(id: string): Promise<User> {
+    return this.prisma.user.delete({
       where: { id },
       include: {
         ...userNesting,
       },
     });
-    return Boolean(deleted);
   }
 
   private mapDtoToData(dto: CreateUserDto | EditUserDto) {

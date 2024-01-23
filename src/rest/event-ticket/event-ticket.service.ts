@@ -67,12 +67,13 @@ export class EventTicketService extends Service {
     });
   }
 
-  async deleteEventTicket(id: string): Promise<boolean> {
-    const deleted = this.prisma.eventTicket.delete({
+  async deleteEventTicket(id: string): Promise<EventTicket> {
+    return this.prisma.eventTicket.delete({
       where: { id: id },
+      include: {
+        ...eventTicketNesting,
+      },
     });
-
-    return Boolean(deleted);
   }
 
   private mapDtoToData(dto: CreateEventTicketDto | EditEventTicketDto) {

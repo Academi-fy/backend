@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { BlackboardTagService } from './blackboard-tag.service';
 import { BlackboardTag } from '../../@generated-types';
-import { CreateBlackboardTagDto, EditBlackboardTagDto } from './dto';
+import { CreateBlackboardTagDto } from './dto';
 
 @Resolver()
 export class BlackboardTagResolver {
@@ -37,33 +37,32 @@ export class BlackboardTagResolver {
 
   @Mutation(() => BlackboardTag)
   async editBlackboardTagById(
-    @Args('id') id: string,
     @Args('blackboardTag') editBlackboardTagDto: CreateBlackboardTagDto,
+    @Args('id', { nullable: true }) id?: string,
+    @Args('tag', { nullable: true }) tag?: string,
   ): Promise<BlackboardTag> {
-    return this.blackboardTagService.editBlackboardTagById(
-      id,
-      editBlackboardTagDto,
-    );
+    if (id) {
+      return this.blackboardTagService.editBlackboardTagById(
+        id,
+        editBlackboardTagDto,
+      );
+    } else if (tag) {
+      return this.blackboardTagService.editBlackboardTagByTag(
+        tag,
+        editBlackboardTagDto,
+      );
+    } else throw new Error('No id or tag provided');
   }
 
   @Mutation(() => BlackboardTag)
-  async editBlackboardTagByTag(
-    @Args('tag') tag: string,
-    @Args('editBlackboardTagDto') editBlackboardTagDto: EditBlackboardTagDto,
+  async deleteBlackboardTagById(
+    @Args('id', { nullable: true }) id?: string,
+    @Args('tag', { nullable: true }) tag?: string,
   ): Promise<BlackboardTag> {
-    return this.blackboardTagService.editBlackboardTagByTag(
-      tag,
-      editBlackboardTagDto,
-    );
-  }
-
-  @Mutation(() => Boolean)
-  async deleteBlackboardTagById(@Args('id') id: string): Promise<boolean> {
-    return this.blackboardTagService.deleteBlackboardTagById(id);
-  }
-
-  @Mutation(() => Boolean)
-  async deleteBlackboardTagByTag(@Args('tag') tag: string): Promise<boolean> {
-    return this.blackboardTagService.deleteBlackboardTagByTag(tag);
+    if (id) {
+      return this.blackboardTagService.deleteBlackboardTagById(id);
+    } else if (tag) {
+      return this.blackboardTagService.deleteBlackboardTagByTag(tag);
+    } else throw new Error('No id or tag provided');
   }
 }

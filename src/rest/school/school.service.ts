@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { School } from '@prisma/client';
 import { CreateSchoolDto, EditSchoolDto } from './dto';
 import { Service } from '../../service';
 import { PrismaService } from '../../prisma';
 import { schoolNesting } from './school.nesting';
+import { School } from '../../@generated-types';
 
 @Injectable()
 export class SchoolService extends Service {
@@ -60,11 +60,13 @@ export class SchoolService extends Service {
     });
   }
 
-  async deleteSchool(schoolId: string) {
-    const deletedSchool = await this.prisma.school.delete({
+  async deleteSchool(schoolId: string): Promise<School> {
+    return this.prisma.school.delete({
       where: { id: schoolId },
+      include: {
+        ...schoolNesting,
+      },
     });
-    return Boolean(deletedSchool);
   }
 
   private mapDtoToData(dto: CreateSchoolDto | EditSchoolDto) {

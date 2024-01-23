@@ -33,8 +33,8 @@ export class GradeResolver {
     return this.gradeService.editGrade(id, editGradeDto);
   }
 
-  @Mutation(() => Boolean)
-  async deleteGrade(@Args('id') id: string): Promise<boolean> {
+  @Mutation(() => Grade)
+  async deleteGrade(@Args('id') id: string): Promise<Grade> {
     return this.gradeService.deleteGrade(id);
   }
 }

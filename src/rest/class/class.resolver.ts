@@ -32,8 +32,8 @@ export class ClassResolver {
     return this.classService.editClass(id, editClassDto);
   }
 
-  @Mutation(() => Boolean)
-  async deleteClass(@Args('id') id: string): Promise<boolean> {
+  @Mutation(() => Class)
+  async deleteClass(@Args('id') id: string): Promise<Class> {
     return this.classService.deleteClass(id);
   }
 }

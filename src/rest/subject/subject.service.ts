@@ -12,7 +12,11 @@ export class SubjectService extends Service {
   }
 
   async getAllSubjects(): Promise<Subject[]> {
-    return this.prisma.subject.findMany({});
+    return this.prisma.subject.findMany({
+      include: {
+        ...subjectNesting,
+      },
+    });
   }
 
   async getSubjectById(id: string): Promise<Subject> {
@@ -56,11 +60,13 @@ export class SubjectService extends Service {
     });
   }
 
-  async deleteSubject(id: string): Promise<boolean> {
-    const deleted = await this.prisma.subject.delete({
+  async deleteSubject(id: string): Promise<Subject> {
+    return this.prisma.subject.delete({
       where: { id },
+      include: {
+        ...subjectNesting,
+      },
     });
-    return Boolean(deleted);
   }
 
   private mapDtoToData(dto: CreateSubjectDto | EditSubjectDto) {

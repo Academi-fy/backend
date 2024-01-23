@@ -24,6 +24,6 @@ import { BlackboardModule } from 'src/rest';
     MessageGateway,
     UserGateway,
   ],
-  imports: [BlackboardModule]
+  imports: [BlackboardModule],
 })
 export class SocketModule {}

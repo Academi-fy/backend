@@ -30,8 +30,8 @@ export class ChatResolver {
     return this.chatService.editChat(id, editChatDto);
   }
 
-  @Mutation(() => Boolean)
-  async deleteChat(@Args('id') id: string): Promise<boolean> {
+  @Mutation(() => Chat)
+  async deleteChat(@Args('id') id: string): Promise<Chat> {
     return this.chatService.deleteChat(id);
   }
 }

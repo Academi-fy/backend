@@ -1,3 +1,5 @@
+import { clubRawNesting } from '../club';
+
 export const clubTagRawNesting = {
   clubs: true,
 };
@@ -5,7 +7,7 @@ export const clubTagRawNesting = {
 export const clubTagNesting = {
   clubs: {
     include: {
-      ...clubTagRawNesting,
+      ...clubRawNesting,
     },
   },
 };

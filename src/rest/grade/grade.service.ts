@@ -51,11 +51,13 @@ export class GradeService extends Service {
     });
   }
 
-  async deleteGrade(id: string): Promise<boolean> {
-    const deleted = await this.prisma.grade.delete({
+  async deleteGrade(id: string): Promise<Grade> {
+    return this.prisma.grade.delete({
       where: { id },
+      include: {
+        ...gradeNesting,
+      },
     });
-    return Boolean(deleted);
   }
 
   private mapDtoToData(dto: CreateGradeDto | EditGradeDto) {

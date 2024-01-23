@@ -51,11 +51,10 @@ export class ClassService extends Service {
     });
   }
 
-  async deleteClass(classId: string): Promise<boolean> {
-    const deletedClass = await this.prisma.class.delete({
+  async deleteClass(classId: string): Promise<Class> {
+    return this.prisma.class.delete({
       where: { id: classId },
     });
-    return Boolean(deletedClass);
   }
 
   private mapDtoToData(dto: CreateClassDto | EditClassDto) {

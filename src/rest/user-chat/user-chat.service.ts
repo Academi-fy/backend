@@ -3,8 +3,7 @@ import { Service } from '../../service';
 import { PrismaService } from '../../prisma';
 import { userChatNesting } from './user-chat.nesting';
 import { UserChat } from '../../@generated-types';
-import { CreateUserChatDto } from './dto/create-user-chat.dto';
-import { EditUserChatDto } from './dto/edit-user-chat.dto';
+import { CreateUserChatDto, EditUserChatDto } from './dto';
 
 @Injectable()
 export class UserChatService extends Service {
@@ -52,14 +51,13 @@ export class UserChatService extends Service {
     });
   }
 
-  async deleteUserChat(id: string): Promise<boolean> {
-    const deleted = this.prisma.userChat.delete({
+  async deleteUserChat(id: string): Promise<UserChat> {
+    return this.prisma.userChat.delete({
       where: { id },
       include: {
         ...userChatNesting,
       },
     });
-    return Boolean(deleted);
   }
 
   private mapDtoToData(dto: CreateUserChatDto | EditUserChatDto) {

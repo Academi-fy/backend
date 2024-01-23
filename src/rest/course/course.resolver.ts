@@ -32,8 +32,8 @@ export class CourseResolver {
     return this.courseService.editCourse(id, editCourseDto);
   }
 
-  @Mutation(() => Boolean)
-  async deleteCourse(@Args('id') id: string): Promise<boolean> {
+  @Mutation(() => Course)
+  async deleteCourse(@Args('id') id: string): Promise<Course> {
     return this.courseService.deleteCourse(id);
   }
 }

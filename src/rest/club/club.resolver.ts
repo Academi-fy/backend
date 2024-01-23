@@ -30,8 +30,8 @@ export class ClubResolver {
     return this.clubService.editClub(id, editClubDto);
   }
 
-  @Mutation(() => Boolean)
-  async deleteClub(@Args('id') id: string): Promise<boolean> {
+  @Mutation(() => Club)
+  async deleteClub(@Args('id') id: string): Promise<Club> {
     return this.clubService.deleteClub(id);
   }
 }

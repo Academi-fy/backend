@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CreateClubTagDto, EditClubTagDto } from './dto';
-import { ClubTag } from '@prisma/client';
 import { Service } from '../../service';
 import { PrismaService } from '../../prisma';
+import { clubTagNesting } from './club-tag.nesting';
+import { ClubTag } from '../../@generated-types';
 
 @Injectable()
 export class ClubTagService extends Service {
@@ -11,12 +12,19 @@ export class ClubTagService extends Service {
   }
 
   async getAllClubTags(): Promise<ClubTag[]> {
-    return this.prisma.clubTag.findMany({});
+    return this.prisma.clubTag.findMany({
+      include: {
+        ...clubTagNesting,
+      },
+    });
   }
 
   async getClubTagById(clubTagId: string): Promise<ClubTag> {
     return this.prisma.clubTag.findUnique({
       where: { id: clubTagId },
+      include: {
+        ...clubTagNesting,
+      },
     });
   }
 
@@ -24,6 +32,9 @@ export class ClubTagService extends Service {
     return this.prisma.clubTag.create({
       data: {
         ...this.mapDtoToData(dto),
+      },
+      include: {
+        ...clubTagNesting,
       },
     });
   }
@@ -36,15 +47,19 @@ export class ClubTagService extends Service {
       data: {
         ...this.mapDtoToData(dto),
       },
+      include: {
+        ...clubTagNesting,
+      },
     });
   }
 
-  async deleteClubTag(clubTagId: string): Promise<boolean> {
-    const deleted = this.prisma.clubTag.delete({
+  async deleteClubTag(clubTagId: string): Promise<ClubTag> {
+    return this.prisma.clubTag.delete({
       where: { id: clubTagId },
+      include: {
+        ...clubTagNesting,
+      },
     });
-
-    return Boolean(deleted);
   }
 
   private mapDtoToData(dto: CreateClubTagDto | EditClubTagDto) {

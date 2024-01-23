@@ -39,8 +39,8 @@ export class UserAccountResolver {
     return this.userAccountService.editUserAccount(id, createUserAccountDto);
   }
 
-  @Mutation(() => Boolean)
-  async deleteUserAccount(@Args('id') id: string): Promise<boolean> {
+  @Mutation(() => UserAccount)
+  async deleteUserAccount(@Args('id') id: string): Promise<UserAccount> {
     return this.userAccountService.deleteUserAccount(id);
   }
 }

@@ -51,11 +51,13 @@ export class ClubService extends Service {
     });
   }
 
-  async deleteClub(clubId: string): Promise<boolean> {
-    const deleted = this.prisma.club.delete({
+  async deleteClub(clubId: string): Promise<Club> {
+    return this.prisma.club.delete({
       where: { id: clubId },
+      include: {
+        ...clubNesting,
+      },
     });
-    return Boolean(deleted);
   }
 
   private mapDtoToData(dto: CreateClubDto | EditClubDto) {

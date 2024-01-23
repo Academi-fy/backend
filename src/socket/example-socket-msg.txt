@@ -1,0 +1,16 @@
+{
+  "event": "BLACKBOARD_UPDATE",
+  "data": {
+    "sender": "user1",
+    "modifyId": "456",
+    "value": {
+      "authors": ["author1", "author2"],
+      "coverImage": "newCoverImage.jpg",
+      "school": "newSchool",
+      "tags": ["tag1", "tag2"],
+      "targets": ["target1", "target2"],
+      "title": "New Title",
+      "text": "New Text"
+    }
+  }
+}

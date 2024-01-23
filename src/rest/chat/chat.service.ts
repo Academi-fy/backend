@@ -51,11 +51,13 @@ export class ChatService extends Service {
     });
   }
 
-  async deleteChat(chatId: string): Promise<boolean> {
-    const deletedChat = await this.prisma.chat.delete({
+  async deleteChat(chatId: string): Promise<Chat> {
+    return this.prisma.chat.delete({
       where: { id: chatId },
+      include: {
+        ...chatNesting,
+      },
     });
-    return Boolean(deletedChat);
   }
 
   private mapDtoToData(dto: CreateChatDto | EditChatDto) {
