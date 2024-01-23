@@ -6,5 +6,6 @@ import { BlackboardResolver } from './blackboard.resolver';
 @Module({
   providers: [BlackboardService, BlackboardResolver],
   controllers: [BlackboardController],
+  exports: [BlackboardService],
 })
 export class BlackboardModule {}
