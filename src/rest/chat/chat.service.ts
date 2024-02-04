@@ -70,6 +70,12 @@ export class ChatService extends Service {
       lastActivity: this.stringifySingle(dto.lastActivity),
       name: dto.name ? dto.name : undefined,
       type: dto.type ? dto.type : undefined,
+      chatHistory: dto.chatHistory
+        ? this.stringifyArray(dto.chatHistory)
+        : undefined,
+      activities: dto.activities
+        ? this.stringifyArray(dto.activities)
+        : undefined,
     };
   }
 }

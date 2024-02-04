@@ -38,4 +38,9 @@ export class EditMessageDto {
   @IsString()
   @IsOptional()
   replyTo?: string;
+
+  @Field(() => [String], { nullable: true })
+  @IsArray()
+  @IsOptional()
+  userMessages?: string[];
 }

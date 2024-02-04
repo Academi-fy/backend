@@ -29,4 +29,5 @@ export const messageNesting = {
       ...messageRawNesting,
     },
   },
+  userMessages: false,
 } as const;

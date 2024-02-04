@@ -34,4 +34,9 @@ export class CreateMessageDto {
   @IsString()
   @IsOptional()
   replyTo?: string;
+
+  @Field(() => [String], { nullable: true })
+  @IsArray()
+  @IsOptional()
+  userMessages?: string[];
 }

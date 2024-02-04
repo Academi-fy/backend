@@ -4,7 +4,7 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { SOCKET_PORT } from '../../../constants';
+import { SOCKET_PORT } from '../../constants';
 
 @WebSocketGateway(SOCKET_PORT)
 export class MessageGateway {

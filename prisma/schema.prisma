@@ -55,13 +55,15 @@ model Chat {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  activities   Json[]
   avatar       String?
-  clubs        Club[]     @relation("ClubChat") // mark
-  courses      Course[]   @relation("CourseChat") // mark
+  chatHistory  Json[]
+  clubs        Club[]     @relation("ClubChat")
+  courses      Course[]   @relation("CourseChat")
   lastActivity Json
-  messages     Message[]  @relation("ChatMessage") // mark
+  messages     Message[]  @relation("ChatMessage")
   name         String
-  targets      UserChat[] @relation("ChatTarget") // mark
+  targets      UserChat[] @relation("ChatTarget")
   type         String
 
   @@map("chats")
@@ -150,7 +152,7 @@ model Event {
   schoolId    String        @db.Uuid
   startDate   DateTime
   subscribers User[]        @relation("EventSubscriber")
-  tickets     EventTicket[] @relation("EventEventTicket") // mark
+  tickets     EventTicket[] @relation("EventEventTicket")
   title       String
 
   @@map("events")
@@ -176,7 +178,7 @@ model Grade {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  classes  Class[]    @relation("ClassGrade") // mark
+  classes  Class[]    @relation("ClassGrade")
   level    GradeLevel
   school   School     @relation("SchoolGrade", fields: [schoolId], references: [id])
   schoolId String     @db.Uuid
@@ -191,7 +193,7 @@ model Message {
 
   author      User      @relation("MessageAuthor", fields: [authorId], references: [id])
   authorId    String    @db.Uuid
-  chat        Chat      @relation("ChatMessage", fields: [chatId], references: [id]) // mark
+  chat        Chat      @relation("ChatMessage", fields: [chatId], references: [id])
   chatId      String    @db.Uuid
   content     Json[]
   editHistory Json[]
@@ -199,6 +201,7 @@ model Message {
   replies     Message[] @relation("ReplyTo")
   replyTo     Message?  @relation("ReplyTo", fields: [replyToId], references: [id])
   replyToId   String?   @db.Uuid
+  userMessages UserMessage[] @relation("UserMessage")
 
   @@map("messages")
 }
@@ -208,16 +211,16 @@ model School {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  blackboards    Blackboard[] @relation("SchoolBlackboard") // mark
-  classes        Class[]      @relation("ClassSchool") // mark
-  clubs          Club[]       @relation("ClubSchool") // mark
-  events         Event[]      @relation("EventSchool") // mark
-  grades         Grade[]      @relation("SchoolGrade") // mark
-  members        User[]       @relation("SchoolMember") // mark, double
+  blackboards    Blackboard[] @relation("SchoolBlackboard")
+  classes        Class[]      @relation("ClassSchool")
+  clubs          Club[]       @relation("ClubSchool")
+  events         Event[]      @relation("EventSchool")
+  grades         Grade[]      @relation("SchoolGrade")
+  members        User[]       @relation("SchoolMember")
   name           String      @unique
   setupAccount   SetupAccount @relation("SchoolSetupAccount", fields: [setupAccountId], references: [id])
   setupAccountId String       @unique @db.Uuid
-  subjects       Subject[]    @relation("SubjectSchool") // mark
+  subjects       Subject[]    @relation("SubjectSchool")
 
   @@map("schools")
 }
@@ -227,7 +230,7 @@ model SetupAccount {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  school     School? @relation("SchoolSetupAccount") // mark
+  school     School? @relation("SchoolSetupAccount")
   schoolId   String? @db.Uuid
   schoolName String @unique
 
@@ -239,7 +242,7 @@ model Subject {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  courses   Course[]    @relation("CourseSubject") // mark
+  courses   Course[]    @relation("CourseSubject")
   school    School      @relation("SubjectSchool", fields: [schoolId], references: [id])
   schoolId  String      @db.Uuid
   shortName String
@@ -260,17 +263,18 @@ model User {
   clubs               Club[]        @relation("ClubMember")
   clubsAsLeader       Club[]        @relation("ClubLeader")
   courses             Course[]      @relation("CourseMember")
-  coursesAsTeacher    Course[]      @relation("CourseTeacher") // mark
+  coursesAsTeacher    Course[]      @relation("CourseTeacher")
   events              Event[]       @relation("EventSubscriber")
-  eventTickets        EventTicket[] @relation("EventTicketBuyer") // mark
+  eventTickets        EventTicket[] @relation("EventTicketBuyer")
   firstName           String
   lastName            String
-  messages            Message[]     @relation("MessageAuthor") // mark
-  schools             School[]      @relation("SchoolMember") // mark, double
+  messages            Message[]     @relation("MessageAuthor")
+  schools             School[]      @relation("SchoolMember")
   type                UserType
   userAccount         UserAccount   @relation("UserUserAccount", fields: [userAccountId], references: [id])
   userAccountId       String        @unique @db.Uuid
-  userChats           UserChat[]   @relation("UserUserChat") // mark
+  userChats           UserChat[]   @relation("UserUserChat")
+  userMessages        UserMessage[] @relation("UserUserMessage")
 
   @@map("users")
 }
@@ -281,7 +285,7 @@ model UserAccount {
   updatedAt DateTime @updatedAt
 
   password String
-  user     User?   @relation("UserUserAccount") // mark
+  user     User?   @relation("UserUserAccount")
   userId   String? @db.Uuid
   username String  @unique
 
@@ -302,6 +306,20 @@ model UserChat {
   userId String  @db.Uuid
 
   @@map("user_chats")
+}
+
+model UserMessage {
+  id        String   @id @default(uuid()) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  message   Message @relation("UserMessage", fields: [messageId], references: [id])
+  messageId String  @db.Uuid
+  read      Boolean @default(true)
+  user      User    @relation("UserUserMessage", fields: [userId], references: [id])
+  userId    String  @db.Uuid
+
+  @@map("user_messages")
 }
 
 enum Day {

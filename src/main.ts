@@ -14,6 +14,7 @@ async function bootstrap() {
   );
 
   registerEnums();
+  app.enableCors();
 
   await app.listen(port);
 }

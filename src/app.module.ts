@@ -4,7 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
-import { MessageGateway } from './socket/gateways/message/message.gateway';
+import { MessageGateway } from './socket/gateways/message.gateway';
 import { PrismaModule } from './prisma';
 import { GraphQLJSON } from 'graphql-type-json';
 import { SocketModule } from './socket/socket.module';

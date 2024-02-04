@@ -4,10 +4,20 @@ import { Activity } from '../entities/activity.entity';
 
 @InputType()
 export class EditChatDto {
+  @Field(() => [String], { nullable: true })
+  @IsArray()
+  @IsOptional()
+  activities?: any[]; //TODO activity entity
+
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
   avatar?: string;
+
+  @Field(() => [String], { nullable: true })
+  @IsString()
+  @IsOptional()
+  chatHistory?: string[];
 
   @Field(() => [String], { nullable: true })
   @IsArray()

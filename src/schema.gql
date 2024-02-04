@@ -98,7 +98,9 @@ type ChatCountAggregate {
   id: Int!
   createdAt: Int!
   updatedAt: Int!
+  activities: Int!
   avatar: Int!
+  chatHistory: Int!
   lastActivity: Int!
   name: Int!
   type: Int!
@@ -134,7 +136,9 @@ type Chat {
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  activities: [JSON!]
   avatar: String
+  chatHistory: [JSON!]
   lastActivity: JSON!
   name: String!
   type: String!
@@ -546,6 +550,7 @@ type MessageCountAggregate {
 
 type MessageCount {
   replies: Int!
+  userMessages: Int!
 }
 
 type MessageMaxAggregate {
@@ -580,6 +585,7 @@ type Message {
   chat: Chat!
   replies: [Message!]
   replyTo: Message
+  userMessages: [UserMessage!]
   _count: MessageCount!
 }
 
@@ -763,6 +769,7 @@ type UserCount {
   messages: Int!
   schools: Int!
   userChats: Int!
+  userMessages: Int!
 }
 
 type UserMaxAggregate {
@@ -816,6 +823,7 @@ type User {
   schools: [School!]
   userAccount: UserAccount!
   userChats: [UserChat!]
+  userMessages: [UserMessage!]
   _count: UserCount!
 }
 
@@ -901,6 +909,45 @@ type UserChat {
   read: Boolean!
   userId: String!
   chat: Chat!
+  user: User!
+}
+
+type UserMessageCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  messageId: Int!
+  read: Int!
+  userId: Int!
+  _all: Int!
+}
+
+type UserMessageMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  messageId: String
+  read: Boolean
+  userId: String
+}
+
+type UserMessageMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  messageId: String
+  read: Boolean
+  userId: String
+}
+
+type UserMessage {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  messageId: String!
+  read: Boolean!
+  userId: String!
+  message: Message!
   user: User!
 }
 
@@ -1040,7 +1087,9 @@ input CreateBlackboardTagDto {
 }
 
 input CreateChatDto {
+  activities: [String!]!
   avatar: String
+  chatHistory: [String!]
   clubs: [String!]!
   courses: [String!]
   lastActivity: Activity
@@ -1056,7 +1105,9 @@ input Activity {
 }
 
 input EditChatDto {
+  activities: [String!]
   avatar: String
+  chatHistory: [String!]
   clubs: [String!]
   courses: [String!]
   lastActivity: Activity
@@ -1209,6 +1260,7 @@ input CreateMessageDto {
   reactions: [Reaction!]!
   replies: [String!]
   replyTo: String
+  userMessages: [String!]
 }
 
 input ContentType {
@@ -1228,6 +1280,7 @@ input EditMessageDto {
   reactions: [Reaction!]!
   replies: [String!]
   replyTo: String
+  userMessages: [String!]
 }
 
 input CreateSchoolDto {

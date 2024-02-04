@@ -70,6 +70,7 @@ export class MessageService extends Service {
       content: this.stringifyArray(dto.content),
       editHistory: this.stringifyArray(dto.editHistory),
       reactions: this.stringifyArray(dto.reactions),
+      userMessages: this.connectArray(dto.userMessages),
     };
   }
 }

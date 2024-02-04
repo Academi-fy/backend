@@ -6,5 +6,6 @@ import { UserChatService } from './user-chat.service';
 @Module({
   providers: [UserChatResolver, UserChatService],
   controllers: [UserChatController],
+  exports: [UserChatService],
 })
 export class UserChatModule {}
