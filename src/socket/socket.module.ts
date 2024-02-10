@@ -8,7 +8,12 @@ import { CourseGateway } from './gateways/course.gateway';
 import { ErrorGateway } from './gateways/error.gateway';
 import { EventGateway } from './gateways/event.gateway';
 import { UserGateway } from './gateways/user.gateway';
-import { BlackboardModule, ChatModule, UserChatModule } from 'src/rest';
+import {
+  BlackboardModule,
+  ChatModule,
+  ClassModule,
+  UserChatModule,
+} from 'src/rest';
 
 //TODO index.ts for gateways
 
@@ -24,6 +29,6 @@ import { BlackboardModule, ChatModule, UserChatModule } from 'src/rest';
     MessageGateway,
     UserGateway,
   ],
-  imports: [BlackboardModule, ChatModule, UserChatModule],
+  imports: [BlackboardModule, ChatModule, UserChatModule, ClassModule],
 })
 export class SocketModule {}

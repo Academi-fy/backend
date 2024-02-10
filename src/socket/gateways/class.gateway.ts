@@ -1,7 +1,13 @@
-import { MessageBody, SubscribeMessage } from '@nestjs/websockets';
+import {
+  MessageBody,
+  SubscribeMessage,
+  WebSocketGateway,
+} from '@nestjs/websockets';
 import { ClassService } from 'src/rest/class';
 import { Gateway } from '../entities';
+import { SOCKET_PORT } from '../../constants';
 
+@WebSocketGateway(SOCKET_PORT)
 export class ClassGateway extends Gateway {
   constructor(private classService: ClassService) {
     super();

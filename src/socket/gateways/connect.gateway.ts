@@ -6,7 +6,6 @@ import {
 } from '@nestjs/websockets';
 import { SOCKET_PORT } from 'src/constants';
 import { Gateway } from '../entities';
-import { GatewayClient } from '../entities/gateway';
 import { Logger } from '@nestjs/common';
 
 @WebSocketGateway(SOCKET_PORT)
@@ -25,12 +24,13 @@ export class ConnectGateway
     this.logger.log('Initialized!');
   }
 
-  handleConnection(client: GatewayClient) {
+  handleConnection(client) {
     console.log('Connected!');
-    this.clients.set(client.id, client.socket);
+    // this.clients.set(client.id, client.socket);
   }
 
-  handleDisconnect(client: GatewayClient) {
-    this.clients.delete(client.id);
+  handleDisconnect(client) {
+    console.log('Disconnected!');
+    // this.clients.delete(client.id);
   }
 }

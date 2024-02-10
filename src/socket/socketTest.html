@@ -1,34 +1,31 @@
 <!DOCTYPE html>
-<html lang="de">
+<html>
 <head>
-  <title>Socket Test</title>
+  <script src="https://cdn.socket.io/4.3.2/socket.io.min.js" integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs" crossorigin="anonymous"></script>
+  <script>
+    const socket = io('http://localhost:8080');
+    socket.on('connect', function() {
+      console.log('Connected');
+
+      
+
+    });
+    socket.on('test-event', function(data) {
+      console.log('event', data);
+    });
+    socket.on('exception', function(data) {
+      console.log('event', data);
+    });
+    socket.on('disconnect', function() {
+      console.log('Disconnected');
+    });
+  </script>
+  <style>
+    * {
+      background-color: black;
+    }
+  </style>
 </head>
-<body>
-<script type="module">
-  const ws = new WebSocket(`ws://localhost:8080/`);
 
-  ws.onopen = function() {
-    console.log('Connection opened');
-  };
-
-  ws.onmessage = function(event) {
-    console.log('Received: ' + event.data);
-  };
-
-  ws.onerror = function(error) {
-    console.log('Error occurred: ', error);
-  };
-
-  ws.onclose = function() {
-    console.log('Connection closed');
-  };
-</script>
-<style>
-  body {
-    background-color: #000;
-    color: #fff;
-
-  }
-</style>
-</body>
+<body></body>
 </html>
