@@ -78,8 +78,10 @@ model ChatActivity {
 
   readBy User[] @relation("ReadChatActivity")
 
-  target User? @relation("TargetActivity", fields: [targetId], references: [id])
-  targetId String? @db.Uuid
+  answerTo ChatActivity? @relation("ChatActivityAnswer", fields: [answerToId], references: [id])
+  answerToId String? @db.Uuid
+
+  answeredBy ChatActivity[] @relation("ChatActivityAnswer")
 
   type   ChatActivityType
   value  Json[]
@@ -271,7 +273,6 @@ model User {
   lastName            String
   readActivities      ChatActivity[] @relation("ReadChatActivity")
   schools             School[]      @relation("SchoolMember")
-  targetActivities    ChatActivity[]    @relation("TargetActivity")
   type                UserType
   userAccount         UserAccount   @relation("UserUserAccount", fields: [userAccountId], references: [id])
   userAccountId       String        @unique @db.Uuid

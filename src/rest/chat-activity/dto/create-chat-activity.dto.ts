@@ -4,6 +4,16 @@ import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class CreateChatActivityDto {
+  @Field(() => String, { nullable: true })
+  @IsString()
+  @IsOptional()
+  answeredBy?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsString()
+  @IsOptional()
+  answerTo?: string;
+
   @Field(() => String)
   @IsString()
   chat: string;
@@ -16,11 +26,6 @@ export class CreateChatActivityDto {
   @IsString({ each: true })
   @IsOptional()
   readBy?: string[];
-
-  @Field(() => String, { nullable: true })
-  @IsString()
-  @IsOptional()
-  target?: string;
 
   @Field(() => ChatActivityType)
   @IsString()
