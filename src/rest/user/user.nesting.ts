@@ -1,4 +1,5 @@
 export const userRawNesting = {
+  activities: true,
   blackboards: true,
   blackboardsReceived: true,
   classes: true,
@@ -8,13 +9,15 @@ export const userRawNesting = {
   coursesAsTeacher: true,
   events: true,
   eventTickets: true,
-  messages: true,
+  readActivities: true,
   schools: false,
+  targetActivities: true,
   userAccount: true,
   userChats: true,
 };
 
 export const userNesting = {
+  activities: {},
   blackboards: {},
   blackboardsReceived: {},
   classes: {},
@@ -24,8 +27,9 @@ export const userNesting = {
   coursesAsTeacher: {},
   events: {},
   eventTickets: {},
-  messages: {},
+  readActivities: {},
   schools: false,
+  targetActivities: {},
   userAccount: {},
   userChats: {},
 };

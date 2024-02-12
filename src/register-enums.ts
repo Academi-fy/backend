@@ -1,6 +1,12 @@
 import { registerEnumType } from '@nestjs/graphql';
 import { SortOrder } from './prisma';
-import { Day, GradeLevel, SubjectType, UserType } from './@generated-types';
+import {
+  ChatActivityType,
+  Day,
+  GradeLevel,
+  SubjectType,
+  UserType,
+} from './@generated-types';
 
 export function registerEnums() {
   registerEnumType(SortOrder, {
@@ -26,5 +32,10 @@ export function registerEnums() {
   registerEnumType(UserType, {
     name: 'UserType',
     description: 'Type of a user',
+  });
+
+  registerEnumType(ChatActivityType, {
+    name: 'ChatActivityType',
+    description: 'Type of a chat activity',
   });
 }

@@ -63,19 +63,13 @@ export class ChatService extends Service {
   private mapDtoToData(dto: CreateChatDto | EditChatDto) {
     return {
       ...dto,
+      activities: this.connectArray(dto.activities),
       clubs: this.connectArray(dto.clubs),
       courses: this.connectArray(dto.courses),
-      messages: this.connectArray(dto.messages),
       targets: this.connectArray(dto.targets),
-      lastActivity: this.stringifySingle(dto.lastActivity),
       name: dto.name ? dto.name : undefined,
       type: dto.type ? dto.type : undefined,
-      chatHistory: dto.chatHistory
-        ? this.stringifyArray(dto.chatHistory)
-        : undefined,
-      activities: dto.activities
-        ? this.stringifyArray(dto.activities)
-        : undefined,
+      avatar: dto.avatar ? dto.avatar : undefined,
     };
   }
 }

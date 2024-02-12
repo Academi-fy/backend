@@ -9,7 +9,6 @@ import { CourseModule } from './course';
 import { EventModule } from './event';
 import { EventTicketModule } from './event-ticket';
 import { GradeModule } from './grade';
-import { MessageModule } from './message';
 import { PrismaModule } from '../prisma';
 import { SchoolModule } from './school';
 import { SetupAccountModule } from './setup-account';
@@ -30,7 +29,6 @@ import { UserChatModule } from './user-chat';
     EventModule,
     EventTicketModule,
     GradeModule,
-    MessageModule,
     PrismaModule,
     SchoolModule,
     SetupAccountModule,

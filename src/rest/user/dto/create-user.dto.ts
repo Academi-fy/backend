@@ -4,6 +4,11 @@ import { IsArray, IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class CreateUserDto {
+  @Field(() => [String], { nullable: true })
+  @IsArray()
+  @IsOptional()
+  activities?: string[];
+
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
@@ -65,11 +70,16 @@ export class CreateUserDto {
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  messages?: string[];
+  readActivities?: string[];
 
   @Field(() => [String])
   @IsArray()
   schools: string[];
+
+  @Field(() => [String], { nullable: true })
+  @IsArray()
+  @IsOptional()
+  targetActivities?: string[];
 
   @Field(() => String)
   @IsString()

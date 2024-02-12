@@ -31,8 +31,16 @@ export class ChatGateway extends Gateway {
   @UsePipes(new ValidateBodyInstancePipe(() => ChatTargetMutation))
   async handleChatTargetAdd(
     @MessageBody() body: GatewayMessage<ChatTargetMutation>,
-  ): Promise<EventResponse<Chat>> {
-    const chat: Chat = await this.chatService.getChatById(body.value.chatId);
+  ): Promise<GatewayMessage<ChatTargetMutation> | Error> {
+    const data: Error | GatewayMessage<ChatTargetMutation> =
+      await this.validateData<GatewayMessage<ChatTargetMutation>>(
+        body,
+        GatewayMessage<ChatTargetMutation>,
+      );
+
+    if (data instanceof Error) return data;
+
+    const chat: Chat = await this.chatService.getChatById(data.value.chatId);
 
     const modifiedChat: Chat = await this.chatService.editChat(body.modifyId, {
       targets: chat.targets
@@ -46,15 +54,23 @@ export class ChatGateway extends Gateway {
         .emit('RECEIVED_CHAT_TARGET_ADD', modifiedChat);
     }
 
-    return this.respond('EXECUTED_CHAT_TARGET_ADD', modifiedChat);
+    return data;
   }
 
   @SubscribeMessage('CHAT_TARGET_REMOVE')
   @UsePipes(new ValidateBodyInstancePipe(() => ChatTargetMutation))
   async handleChatTargetRemove(
     @MessageBody() body: GatewayMessage<ChatTargetMutation>,
-  ): Promise<EventResponse<Chat>> {
-    const chat: Chat = await this.chatService.getChatById(body.value.chatId);
+  ): Promise<GatewayMessage<ChatTargetMutation> | Error> {
+    const data: Error | GatewayMessage<ChatTargetMutation> =
+      await this.validateData<GatewayMessage<ChatTargetMutation>>(
+        body,
+        GatewayMessage<ChatTargetMutation>,
+      );
+
+    if (data instanceof Error) return data;
+
+    const chat: Chat = await this.chatService.getChatById(data.value.chatId);
 
     const modifiedChat: Chat = await this.chatService.editChat(body.modifyId, {
       targets: chat.targets
@@ -68,7 +84,7 @@ export class ChatGateway extends Gateway {
         .emit('RECEIVED_CHAT_TARGET_REMOVE', modifiedChat);
     }
 
-    return this.respond('EXECUTED_CHAT_TARGET_REMOVE', modifiedChat);
+    return data;
   }
 
   @SubscribeMessage('CHAT_COURSE_ADD')

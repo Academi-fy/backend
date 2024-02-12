@@ -1,13 +1,12 @@
-import { IsArray, IsInstance, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 import { Field, InputType } from '@nestjs/graphql';
-import { Activity } from '../entities/activity.entity';
 
 @InputType()
 export class CreateChatDto {
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  activities?: any[]; //TODO activity entity
+  activities?: string[];
 
   @Field(() => String, { nullable: true })
   @IsString()
@@ -15,11 +14,6 @@ export class CreateChatDto {
   avatar?: string;
 
   @Field(() => [String], { nullable: true })
-  @IsString()
-  @IsOptional()
-  chatHistory?: string[];
-
-  @Field(() => [String])
   @IsArray()
   @IsOptional()
   clubs?: string[];
@@ -28,16 +22,6 @@ export class CreateChatDto {
   @IsArray()
   @IsOptional()
   courses?: string[];
-
-  @Field(() => Activity, { nullable: true })
-  @IsInstance(Activity)
-  @IsOptional()
-  lastActivity?: Activity;
-
-  @Field(() => [String], { nullable: true })
-  @IsArray()
-  @IsOptional()
-  messages?: string[];
 
   @Field(() => String)
   @IsString()

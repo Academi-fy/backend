@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { MessageGateway } from './gateways/message.gateway';
 import { BlackboardGateway } from './gateways/blackboard.gateway';
 import { ChatGateway } from './gateways/chat.gateway';
 import { ClassGateway } from './gateways/class.gateway';
@@ -14,6 +13,7 @@ import {
   ClassModule,
   UserChatModule,
 } from 'src/rest';
+import { ConnectGateway } from './gateways/connect.gateway';
 
 //TODO index.ts for gateways
 
@@ -26,8 +26,8 @@ import {
     CourseGateway,
     ErrorGateway,
     EventGateway,
-    MessageGateway,
     UserGateway,
+    ConnectGateway,
   ],
   imports: [BlackboardModule, ChatModule, UserChatModule, ClassModule],
 })

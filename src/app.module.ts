@@ -4,11 +4,11 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
-import { MessageGateway } from './socket/gateways/message.gateway';
 import { PrismaModule } from './prisma';
 import { GraphQLJSON } from 'graphql-type-json';
 import { SocketModule } from './socket/socket.module';
 import { RestModule } from './rest/rest.module';
+import { ChatActivityController } from './rest/chat-activity/chat-activity.controller';
 
 @Module({
   imports: [
@@ -27,7 +27,7 @@ import { RestModule } from './rest/rest.module';
     RestModule,
     SocketModule,
   ],
-  providers: [MessageGateway],
-  controllers: [],
+  providers: [],
+  controllers: [ChatActivityController],
 })
 export class AppModule {}

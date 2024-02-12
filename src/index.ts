@@ -9,7 +9,6 @@ export {
   EventModule,
   EventTicketModule,
   GradeModule,
-  MessageModule,
   SchoolModule,
   SetupAccountModule,
   SubjectModule,

@@ -98,19 +98,16 @@ type ChatCountAggregate {
   id: Int!
   createdAt: Int!
   updatedAt: Int!
-  activities: Int!
   avatar: Int!
-  chatHistory: Int!
-  lastActivity: Int!
   name: Int!
   type: Int!
   _all: Int!
 }
 
 type ChatCount {
+  activities: Int!
   clubs: Int!
   courses: Int!
-  messages: Int!
   targets: Int!
 }
 
@@ -136,17 +133,81 @@ type Chat {
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  activities: [JSON!]
   avatar: String
-  chatHistory: [JSON!]
-  lastActivity: JSON!
   name: String!
   type: String!
+  activities: [ChatActivity!]
   clubs: [Club!]
   courses: [Course!]
-  messages: [Message!]
   targets: [UserChat!]
   _count: ChatCount!
+}
+
+type ChatActivityCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  chatId: Int!
+  targetId: Int!
+  type: Int!
+  value: Int!
+  pinned: Int!
+  _all: Int!
+}
+
+type ChatActivityCount {
+  executor: Int!
+}
+
+type ChatActivityMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  chatId: String
+  targetId: String
+  type: ChatActivityType
+  pinned: Boolean
+}
+
+enum ChatActivityType {
+  ACTIVITY_SEND
+  ACTIVITY_EDIT
+  ACTIVITY_DELETE
+  ACTIVITY_PIN
+  ACTIVITY_UNPIN
+  CHAT_TARGET_ADD
+  CHAT_TARGET_REMOVE
+  CHAT_COURSE_ADD
+  CHAT_COURSE_REMOVE
+  CHAT_CLUB_ADD
+  CHAT_CLUB_REMOVE
+  CHAT_NAME_CHANGE
+  CHAT_AVATAR_CHANGE
+}
+
+type ChatActivityMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  chatId: String
+  targetId: String
+  type: ChatActivityType
+  pinned: Boolean
+}
+
+type ChatActivity {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  chatId: String!
+  targetId: String
+  type: ChatActivityType!
+  value: [JSON!]
+  pinned: Boolean!
+  chat: Chat!
+  executor: [UserChatActivity!]
+  target: User
+  _count: ChatActivityCount!
 }
 
 """
@@ -535,60 +596,6 @@ type Grade {
   _count: GradeCount!
 }
 
-type MessageCountAggregate {
-  id: Int!
-  createdAt: Int!
-  updatedAt: Int!
-  authorId: Int!
-  chatId: Int!
-  content: Int!
-  editHistory: Int!
-  reactions: Int!
-  replyToId: Int!
-  _all: Int!
-}
-
-type MessageCount {
-  replies: Int!
-  userMessages: Int!
-}
-
-type MessageMaxAggregate {
-  id: String
-  createdAt: DateTime
-  updatedAt: DateTime
-  authorId: String
-  chatId: String
-  replyToId: String
-}
-
-type MessageMinAggregate {
-  id: String
-  createdAt: DateTime
-  updatedAt: DateTime
-  authorId: String
-  chatId: String
-  replyToId: String
-}
-
-type Message {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  authorId: String!
-  chatId: String!
-  content: [JSON!]
-  editHistory: [JSON!]
-  reactions: [JSON!]
-  replyToId: String
-  author: User!
-  chat: Chat!
-  replies: [Message!]
-  replyTo: Message
-  userMessages: [UserMessage!]
-  _count: MessageCount!
-}
-
 type SchoolCountAggregate {
   id: Int!
   createdAt: Int!
@@ -757,6 +764,7 @@ type UserCountAggregate {
 }
 
 type UserCount {
+  activities: Int!
   blackboards: Int!
   blackboardsReceived: Int!
   classes: Int!
@@ -766,10 +774,9 @@ type UserCount {
   coursesAsTeacher: Int!
   events: Int!
   eventTickets: Int!
-  messages: Int!
   schools: Int!
+  targetActivities: Int!
   userChats: Int!
-  userMessages: Int!
 }
 
 type UserMaxAggregate {
@@ -810,6 +817,7 @@ type User {
   lastName: String!
   type: UserType!
   userAccountId: String!
+  activities: [UserChatActivity!]
   blackboards: [Blackboard!]
   blackboardsReceived: [Blackboard!]
   classes: [Class!]
@@ -819,11 +827,10 @@ type User {
   coursesAsTeacher: [Course!]
   events: [Event!]
   eventTickets: [EventTicket!]
-  messages: [Message!]
   schools: [School!]
+  targetActivities: [ChatActivity!]
   userAccount: UserAccount!
   userChats: [UserChat!]
-  userMessages: [UserMessage!]
   _count: UserCount!
 }
 
@@ -912,42 +919,46 @@ type UserChat {
   user: User!
 }
 
-type UserMessageCountAggregate {
+type UserChatActivityCountAggregate {
   id: Int!
   createdAt: Int!
   updatedAt: Int!
-  messageId: Int!
-  read: Int!
+  chatActivityId: Int!
   userId: Int!
+  read: Int!
+  starred: Int!
   _all: Int!
 }
 
-type UserMessageMaxAggregate {
+type UserChatActivityMaxAggregate {
   id: String
   createdAt: DateTime
   updatedAt: DateTime
-  messageId: String
-  read: Boolean
+  chatActivityId: String
   userId: String
+  read: Boolean
+  starred: Boolean
 }
 
-type UserMessageMinAggregate {
+type UserChatActivityMinAggregate {
   id: String
   createdAt: DateTime
   updatedAt: DateTime
-  messageId: String
-  read: Boolean
+  chatActivityId: String
   userId: String
+  read: Boolean
+  starred: Boolean
 }
 
-type UserMessage {
+type UserChatActivity {
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  messageId: String!
-  read: Boolean!
+  chatActivityId: String!
   userId: String!
-  message: Message!
+  read: Boolean!
+  starred: Boolean!
+  chatActivity: ChatActivity!
   user: User!
 }
 
@@ -982,8 +993,6 @@ type Query {
   getEventTicket(id: String!): EventTicket!
   getAllGrades: [Grade!]!
   getGrade(id: String!): Grade!
-  getAllMessages: [Message!]!
-  getMessage(id: String!): Message!
   getAllSchools: [School!]!
   getSchool(id: String, name: String): School!
   getAllSetupAccounts: [SetupAccount!]!
@@ -1035,9 +1044,6 @@ type Mutation {
   createGrade(grade: CreateGradeDto!): Grade!
   editGrade(id: String!, grade: EditGradeDto!): Grade!
   deleteGrade(id: String!): Grade!
-  createMessage(message: CreateMessageDto!): Message!
-  editMessage(id: String!, message: EditMessageDto!): Message!
-  deleteMessage(id: String!): Message!
   createSchool(school: CreateSchoolDto!): School!
   editSchool(id: String!, school: EditSchoolDto!): School!
   deleteSchool(id: String!): School!
@@ -1087,31 +1093,20 @@ input CreateBlackboardTagDto {
 }
 
 input CreateChatDto {
-  activities: [String!]!
+  activities: [String!]
   avatar: String
-  chatHistory: [String!]
-  clubs: [String!]!
+  clubs: [String!]
   courses: [String!]
-  lastActivity: Activity
-  messages: [String!]
   name: String!
   targets: [String!]
   type: String!
 }
 
-input Activity {
-  type: String!
-  value: JSON!
-}
-
 input EditChatDto {
   activities: [String!]
   avatar: String
-  chatHistory: [String!]
   clubs: [String!]
   courses: [String!]
-  lastActivity: Activity
-  messages: [String!]
   name: String
   targets: [String!]
   type: String
@@ -1251,36 +1246,6 @@ input EditGradeDto {
   classes: [String!]
   level: GradeLevel
   school: String
-}
-
-input CreateMessageDto {
-  author: String!
-  chat: String!
-  content: [ContentType!]!
-  reactions: [Reaction!]!
-  replies: [String!]
-  replyTo: String
-  userMessages: [String!]
-}
-
-input ContentType {
-  type: String!
-  value: String!
-}
-
-input Reaction {
-  emoji: String!
-  count: Float!
-}
-
-input EditMessageDto {
-  author: String
-  chat: String
-  content: [ContentType!]
-  reactions: [Reaction!]!
-  replies: [String!]
-  replyTo: String
-  userMessages: [String!]
 }
 
 input CreateSchoolDto {
