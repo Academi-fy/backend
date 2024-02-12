@@ -1,7 +1,5 @@
 # Academi.fy Backend
 
-## Description
-
 The backend part of the Academi.fy app. Here, data is transmitted to the clients via both REST API and GraphQL interface as well as Websockets. The backend is built with Node.js, Express, Prisma, and PostgreSQL.
 
 ![backend-tech-stack.png](.resources%2Fbackend-tech-stack.png)
