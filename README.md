@@ -65,7 +65,8 @@ npx prisma studio
 ## Retrieving Data
 
 The backend provides two interfaces for retrieving data: REST API and GraphQL. \
-The REST API is available at `http://localhost:port` and the GraphQL interface is available at `http://localhost:port/graphql`.
+- REST API at `http://localhost:port`
+- GraphQL at `http://localhost:port/graphql`.
 
 ### WebSocket
 
