@@ -25,7 +25,7 @@ Follow these steps to install the project:
     SOCKET_PORT=8080
     REST_PORT=3000
     POSTGRES_PASSWORD=password
-    DATABASE_URL="postgresql://username:password@localhost:0000/database?schema=public"
+    DATABASE_URL='postgresql://username:password@localhost:0000/database?schema=public'
     JWT_SECRET='jwt_secret'
     ```
 
