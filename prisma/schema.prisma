@@ -76,7 +76,7 @@ model ChatActivity {
 
   executor User[] @relation("UserChatActivity")
 
-  read User[] @relation("ReadChatActivity")
+  readBy User[] @relation("ReadChatActivity")
 
   target User? @relation("TargetActivity", fields: [targetId], references: [id])
   targetId String? @db.Uuid

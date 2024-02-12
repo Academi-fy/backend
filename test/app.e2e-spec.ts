@@ -1,6 +1,6 @@
 import pactum from './pactum';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { PrismaService } from '../src/prisma/prisma.service';
+import { PrismaService } from '../src/prisma';
 import { AppModule, Test } from './nestjs';
 import { authTests } from './tests/auth.test';
 import { userAccountTests } from './tests/models/user-account.test';

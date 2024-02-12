@@ -1,13 +1,4 @@
 import { Prisma } from '@prisma/client';
-export declare enum UserChatActivityScalarFieldEnum {
-    id = "id",
-    createdAt = "createdAt",
-    updatedAt = "updatedAt",
-    chatActivityId = "chatActivityId",
-    userId = "userId",
-    read = "read",
-    starred = "starred"
-}
 export declare enum UserChatScalarFieldEnum {
     id = "id",
     createdAt = "createdAt",
@@ -122,11 +113,20 @@ export declare enum Day {
     Sunday = "Sunday"
 }
 export declare enum ChatActivityType {
-    ACTIVITY_SEND = "ACTIVITY_SEND",
-    ACTIVITY_EDIT = "ACTIVITY_EDIT",
-    ACTIVITY_DELETE = "ACTIVITY_DELETE",
-    ACTIVITY_PIN = "ACTIVITY_PIN",
-    ACTIVITY_UNPIN = "ACTIVITY_UNPIN",
+    MESSAGE_SEND = "MESSAGE_SEND",
+    MESSAGE_EDIT = "MESSAGE_EDIT",
+    MESSAGE_DELETE = "MESSAGE_DELETE",
+    MESSAGE_ANSWER = "MESSAGE_ANSWER",
+    ACTIVITY_STAR = "ACTIVITY_STAR",
+    ACTIVITY_UNSTAR = "ACTIVITY_UNSTAR",
+    POLL_SEND = "POLL_SEND",
+    POLL_EDIT = "POLL_EDIT",
+    POLL_DELETE = "POLL_DELETE",
+    POLL_VOTE = "POLL_VOTE",
+    POLL_UNVOTE = "POLL_UNVOTE",
+    POLL_CLOSE = "POLL_CLOSE",
+    POLL_REOPEN = "POLL_REOPEN",
+    POLL_RESULT = "POLL_RESULT",
     CHAT_TARGET_ADD = "CHAT_TARGET_ADD",
     CHAT_TARGET_REMOVE = "CHAT_TARGET_REMOVE",
     CHAT_COURSE_ADD = "CHAT_COURSE_ADD",
@@ -209,7 +209,7 @@ export declare enum ChatActivityScalarFieldEnum {
     targetId = "targetId",
     type = "type",
     value = "value",
-    pinned = "pinned"
+    starred = "starred"
 }
 export declare enum ChatScalarFieldEnum {
     id = "id",
@@ -2004,7 +2004,7 @@ export declare class ChatActivityCountAggregateInput {
     targetId?: true;
     type?: true;
     value?: true;
-    pinned?: true;
+    starred?: true;
     _all?: true;
 }
 export declare class ChatActivityCountAggregate {
@@ -2015,7 +2015,7 @@ export declare class ChatActivityCountAggregate {
     targetId: number;
     type: number;
     value: number;
-    pinned: number;
+    starred: number;
     _all: number;
 }
 export declare class ChatActivityCountOrderByAggregateInput {
@@ -2026,10 +2026,11 @@ export declare class ChatActivityCountOrderByAggregateInput {
     targetId?: keyof typeof SortOrder;
     type?: keyof typeof SortOrder;
     value?: keyof typeof SortOrder;
-    pinned?: keyof typeof SortOrder;
+    starred?: keyof typeof SortOrder;
 }
 export declare class ChatActivityCount {
     executor?: number;
+    readBy?: number;
 }
 export declare class ChatActivityCreateManyChatInputEnvelope {
     data: Array<ChatActivityCreateManyChatInput>;
@@ -2042,7 +2043,7 @@ export declare class ChatActivityCreateManyChatInput {
     targetId?: string;
     type: keyof typeof ChatActivityType;
     value?: InstanceType<typeof ChatActivityCreatevalueInput>;
-    pinned?: boolean;
+    starred?: boolean;
 }
 export declare class ChatActivityCreateManyTargetInputEnvelope {
     data: Array<ChatActivityCreateManyTargetInput>;
@@ -2055,7 +2056,7 @@ export declare class ChatActivityCreateManyTargetInput {
     chatId: string;
     type: keyof typeof ChatActivityType;
     value?: InstanceType<typeof ChatActivityCreatevalueInput>;
-    pinned?: boolean;
+    starred?: boolean;
 }
 export declare class ChatActivityCreateManyInput {
     id?: string;
@@ -2065,12 +2066,22 @@ export declare class ChatActivityCreateManyInput {
     targetId?: string;
     type: keyof typeof ChatActivityType;
     value?: InstanceType<typeof ChatActivityCreatevalueInput>;
-    pinned?: boolean;
+    starred?: boolean;
 }
 export declare class ChatActivityCreateNestedManyWithoutChatInput {
     create?: Array<ChatActivityCreateWithoutChatInput>;
     connectOrCreate?: Array<ChatActivityCreateOrConnectWithoutChatInput>;
     createMany?: InstanceType<typeof ChatActivityCreateManyChatInputEnvelope>;
+    connect?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+}
+export declare class ChatActivityCreateNestedManyWithoutExecutorInput {
+    create?: Array<ChatActivityCreateWithoutExecutorInput>;
+    connectOrCreate?: Array<ChatActivityCreateOrConnectWithoutExecutorInput>;
+    connect?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+}
+export declare class ChatActivityCreateNestedManyWithoutReadByInput {
+    create?: Array<ChatActivityCreateWithoutReadByInput>;
+    connectOrCreate?: Array<ChatActivityCreateOrConnectWithoutReadByInput>;
     connect?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
 }
 export declare class ChatActivityCreateNestedManyWithoutTargetInput {
@@ -2079,11 +2090,6 @@ export declare class ChatActivityCreateNestedManyWithoutTargetInput {
     createMany?: InstanceType<typeof ChatActivityCreateManyTargetInputEnvelope>;
     connect?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
 }
-export declare class ChatActivityCreateNestedOneWithoutExecutorInput {
-    create?: InstanceType<typeof ChatActivityCreateWithoutExecutorInput>;
-    connectOrCreate?: InstanceType<typeof ChatActivityCreateOrConnectWithoutExecutorInput>;
-    connect?: Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>;
-}
 export declare class ChatActivityCreateOrConnectWithoutChatInput {
     where: Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>;
     create: InstanceType<typeof ChatActivityCreateWithoutChatInput>;
@@ -2091,6 +2097,10 @@ export declare class ChatActivityCreateOrConnectWithoutChatInput {
 export declare class ChatActivityCreateOrConnectWithoutExecutorInput {
     where: Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>;
     create: InstanceType<typeof ChatActivityCreateWithoutExecutorInput>;
+}
+export declare class ChatActivityCreateOrConnectWithoutReadByInput {
+    where: Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>;
+    create: InstanceType<typeof ChatActivityCreateWithoutReadByInput>;
 }
 export declare class ChatActivityCreateOrConnectWithoutTargetInput {
     where: Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>;
@@ -2102,8 +2112,9 @@ export declare class ChatActivityCreateWithoutChatInput {
     updatedAt?: Date | string;
     type: keyof typeof ChatActivityType;
     value?: InstanceType<typeof ChatActivityCreatevalueInput>;
-    pinned?: boolean;
-    executor?: InstanceType<typeof UserChatActivityCreateNestedManyWithoutChatActivityInput>;
+    starred?: boolean;
+    executor?: InstanceType<typeof UserCreateNestedManyWithoutActivitiesInput>;
+    readBy?: InstanceType<typeof UserCreateNestedManyWithoutReadActivitiesInput>;
     target?: InstanceType<typeof UserCreateNestedOneWithoutTargetActivitiesInput>;
 }
 export declare class ChatActivityCreateWithoutExecutorInput {
@@ -2112,8 +2123,20 @@ export declare class ChatActivityCreateWithoutExecutorInput {
     updatedAt?: Date | string;
     type: keyof typeof ChatActivityType;
     value?: InstanceType<typeof ChatActivityCreatevalueInput>;
-    pinned?: boolean;
+    starred?: boolean;
     chat: InstanceType<typeof ChatCreateNestedOneWithoutActivitiesInput>;
+    readBy?: InstanceType<typeof UserCreateNestedManyWithoutReadActivitiesInput>;
+    target?: InstanceType<typeof UserCreateNestedOneWithoutTargetActivitiesInput>;
+}
+export declare class ChatActivityCreateWithoutReadByInput {
+    id?: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    type: keyof typeof ChatActivityType;
+    value?: InstanceType<typeof ChatActivityCreatevalueInput>;
+    starred?: boolean;
+    chat: InstanceType<typeof ChatCreateNestedOneWithoutActivitiesInput>;
+    executor?: InstanceType<typeof UserCreateNestedManyWithoutActivitiesInput>;
     target?: InstanceType<typeof UserCreateNestedOneWithoutTargetActivitiesInput>;
 }
 export declare class ChatActivityCreateWithoutTargetInput {
@@ -2122,9 +2145,10 @@ export declare class ChatActivityCreateWithoutTargetInput {
     updatedAt?: Date | string;
     type: keyof typeof ChatActivityType;
     value?: InstanceType<typeof ChatActivityCreatevalueInput>;
-    pinned?: boolean;
+    starred?: boolean;
     chat: InstanceType<typeof ChatCreateNestedOneWithoutActivitiesInput>;
-    executor?: InstanceType<typeof UserChatActivityCreateNestedManyWithoutChatActivityInput>;
+    executor?: InstanceType<typeof UserCreateNestedManyWithoutActivitiesInput>;
+    readBy?: InstanceType<typeof UserCreateNestedManyWithoutReadActivitiesInput>;
 }
 export declare class ChatActivityCreateInput {
     id?: string;
@@ -2132,9 +2156,10 @@ export declare class ChatActivityCreateInput {
     updatedAt?: Date | string;
     type: keyof typeof ChatActivityType;
     value?: InstanceType<typeof ChatActivityCreatevalueInput>;
-    pinned?: boolean;
+    starred?: boolean;
     chat: InstanceType<typeof ChatCreateNestedOneWithoutActivitiesInput>;
-    executor?: InstanceType<typeof UserChatActivityCreateNestedManyWithoutChatActivityInput>;
+    executor?: InstanceType<typeof UserCreateNestedManyWithoutActivitiesInput>;
+    readBy?: InstanceType<typeof UserCreateNestedManyWithoutReadActivitiesInput>;
     target?: InstanceType<typeof UserCreateNestedOneWithoutTargetActivitiesInput>;
 }
 export declare class ChatActivityCreatevalueInput {
@@ -2159,7 +2184,7 @@ export declare class ChatActivityGroupBy {
     targetId?: string;
     type: keyof typeof ChatActivityType;
     value?: Array<any>;
-    pinned: boolean;
+    starred: boolean;
     _count?: InstanceType<typeof ChatActivityCountAggregate>;
     _min?: InstanceType<typeof ChatActivityMinAggregate>;
     _max?: InstanceType<typeof ChatActivityMaxAggregate>;
@@ -2176,7 +2201,7 @@ export declare class ChatActivityMaxAggregateInput {
     chatId?: true;
     targetId?: true;
     type?: true;
-    pinned?: true;
+    starred?: true;
 }
 export declare class ChatActivityMaxAggregate {
     id?: string;
@@ -2185,7 +2210,7 @@ export declare class ChatActivityMaxAggregate {
     chatId?: string;
     targetId?: string;
     type?: keyof typeof ChatActivityType;
-    pinned?: boolean;
+    starred?: boolean;
 }
 export declare class ChatActivityMaxOrderByAggregateInput {
     id?: keyof typeof SortOrder;
@@ -2194,7 +2219,7 @@ export declare class ChatActivityMaxOrderByAggregateInput {
     chatId?: keyof typeof SortOrder;
     targetId?: keyof typeof SortOrder;
     type?: keyof typeof SortOrder;
-    pinned?: keyof typeof SortOrder;
+    starred?: keyof typeof SortOrder;
 }
 export declare class ChatActivityMinAggregateInput {
     id?: true;
@@ -2203,7 +2228,7 @@ export declare class ChatActivityMinAggregateInput {
     chatId?: true;
     targetId?: true;
     type?: true;
-    pinned?: true;
+    starred?: true;
 }
 export declare class ChatActivityMinAggregate {
     id?: string;
@@ -2212,7 +2237,7 @@ export declare class ChatActivityMinAggregate {
     chatId?: string;
     targetId?: string;
     type?: keyof typeof ChatActivityType;
-    pinned?: boolean;
+    starred?: boolean;
 }
 export declare class ChatActivityMinOrderByAggregateInput {
     id?: keyof typeof SortOrder;
@@ -2221,7 +2246,7 @@ export declare class ChatActivityMinOrderByAggregateInput {
     chatId?: keyof typeof SortOrder;
     targetId?: keyof typeof SortOrder;
     type?: keyof typeof SortOrder;
-    pinned?: keyof typeof SortOrder;
+    starred?: keyof typeof SortOrder;
 }
 export declare class ChatActivityOrderByRelationAggregateInput {
     _count?: keyof typeof SortOrder;
@@ -2234,7 +2259,7 @@ export declare class ChatActivityOrderByWithAggregationInput {
     targetId?: InstanceType<typeof SortOrderInput>;
     type?: keyof typeof SortOrder;
     value?: keyof typeof SortOrder;
-    pinned?: keyof typeof SortOrder;
+    starred?: keyof typeof SortOrder;
     _count?: InstanceType<typeof ChatActivityCountOrderByAggregateInput>;
     _max?: InstanceType<typeof ChatActivityMaxOrderByAggregateInput>;
     _min?: InstanceType<typeof ChatActivityMinOrderByAggregateInput>;
@@ -2247,14 +2272,11 @@ export declare class ChatActivityOrderByWithRelationInput {
     targetId?: InstanceType<typeof SortOrderInput>;
     type?: keyof typeof SortOrder;
     value?: keyof typeof SortOrder;
-    pinned?: keyof typeof SortOrder;
+    starred?: keyof typeof SortOrder;
     chat?: InstanceType<typeof ChatOrderByWithRelationInput>;
-    executor?: InstanceType<typeof UserChatActivityOrderByRelationAggregateInput>;
+    executor?: InstanceType<typeof UserOrderByRelationAggregateInput>;
+    readBy?: InstanceType<typeof UserOrderByRelationAggregateInput>;
     target?: InstanceType<typeof UserOrderByWithRelationInput>;
-}
-export declare class ChatActivityRelationFilter {
-    is?: InstanceType<typeof ChatActivityWhereInput>;
-    isNot?: InstanceType<typeof ChatActivityWhereInput>;
 }
 export declare class ChatActivityScalarWhereWithAggregatesInput {
     AND?: Array<ChatActivityScalarWhereWithAggregatesInput>;
@@ -2267,7 +2289,7 @@ export declare class ChatActivityScalarWhereWithAggregatesInput {
     targetId?: InstanceType<typeof UuidNullableWithAggregatesFilter>;
     type?: InstanceType<typeof EnumChatActivityTypeWithAggregatesFilter>;
     value?: InstanceType<typeof JsonNullableListFilter>;
-    pinned?: InstanceType<typeof BoolWithAggregatesFilter>;
+    starred?: InstanceType<typeof BoolWithAggregatesFilter>;
 }
 export declare class ChatActivityScalarWhereInput {
     AND?: Array<ChatActivityScalarWhereInput>;
@@ -2280,12 +2302,22 @@ export declare class ChatActivityScalarWhereInput {
     targetId?: InstanceType<typeof UuidNullableFilter>;
     type?: InstanceType<typeof EnumChatActivityTypeFilter>;
     value?: InstanceType<typeof JsonNullableListFilter>;
-    pinned?: InstanceType<typeof BoolFilter>;
+    starred?: InstanceType<typeof BoolFilter>;
 }
 export declare class ChatActivityUncheckedCreateNestedManyWithoutChatInput {
     create?: Array<ChatActivityCreateWithoutChatInput>;
     connectOrCreate?: Array<ChatActivityCreateOrConnectWithoutChatInput>;
     createMany?: InstanceType<typeof ChatActivityCreateManyChatInputEnvelope>;
+    connect?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+}
+export declare class ChatActivityUncheckedCreateNestedManyWithoutExecutorInput {
+    create?: Array<ChatActivityCreateWithoutExecutorInput>;
+    connectOrCreate?: Array<ChatActivityCreateOrConnectWithoutExecutorInput>;
+    connect?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+}
+export declare class ChatActivityUncheckedCreateNestedManyWithoutReadByInput {
+    create?: Array<ChatActivityCreateWithoutReadByInput>;
+    connectOrCreate?: Array<ChatActivityCreateOrConnectWithoutReadByInput>;
     connect?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
 }
 export declare class ChatActivityUncheckedCreateNestedManyWithoutTargetInput {
@@ -2301,8 +2333,9 @@ export declare class ChatActivityUncheckedCreateWithoutChatInput {
     targetId?: string;
     type: keyof typeof ChatActivityType;
     value?: InstanceType<typeof ChatActivityCreatevalueInput>;
-    pinned?: boolean;
-    executor?: InstanceType<typeof UserChatActivityUncheckedCreateNestedManyWithoutChatActivityInput>;
+    starred?: boolean;
+    executor?: InstanceType<typeof UserUncheckedCreateNestedManyWithoutActivitiesInput>;
+    readBy?: InstanceType<typeof UserUncheckedCreateNestedManyWithoutReadActivitiesInput>;
 }
 export declare class ChatActivityUncheckedCreateWithoutExecutorInput {
     id?: string;
@@ -2312,7 +2345,19 @@ export declare class ChatActivityUncheckedCreateWithoutExecutorInput {
     targetId?: string;
     type: keyof typeof ChatActivityType;
     value?: InstanceType<typeof ChatActivityCreatevalueInput>;
-    pinned?: boolean;
+    starred?: boolean;
+    readBy?: InstanceType<typeof UserUncheckedCreateNestedManyWithoutReadActivitiesInput>;
+}
+export declare class ChatActivityUncheckedCreateWithoutReadByInput {
+    id?: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    chatId: string;
+    targetId?: string;
+    type: keyof typeof ChatActivityType;
+    value?: InstanceType<typeof ChatActivityCreatevalueInput>;
+    starred?: boolean;
+    executor?: InstanceType<typeof UserUncheckedCreateNestedManyWithoutActivitiesInput>;
 }
 export declare class ChatActivityUncheckedCreateWithoutTargetInput {
     id?: string;
@@ -2321,8 +2366,9 @@ export declare class ChatActivityUncheckedCreateWithoutTargetInput {
     chatId: string;
     type: keyof typeof ChatActivityType;
     value?: InstanceType<typeof ChatActivityCreatevalueInput>;
-    pinned?: boolean;
-    executor?: InstanceType<typeof UserChatActivityUncheckedCreateNestedManyWithoutChatActivityInput>;
+    starred?: boolean;
+    executor?: InstanceType<typeof UserUncheckedCreateNestedManyWithoutActivitiesInput>;
+    readBy?: InstanceType<typeof UserUncheckedCreateNestedManyWithoutReadActivitiesInput>;
 }
 export declare class ChatActivityUncheckedCreateInput {
     id?: string;
@@ -2332,8 +2378,9 @@ export declare class ChatActivityUncheckedCreateInput {
     targetId?: string;
     type: keyof typeof ChatActivityType;
     value?: InstanceType<typeof ChatActivityCreatevalueInput>;
-    pinned?: boolean;
-    executor?: InstanceType<typeof UserChatActivityUncheckedCreateNestedManyWithoutChatActivityInput>;
+    starred?: boolean;
+    executor?: InstanceType<typeof UserUncheckedCreateNestedManyWithoutActivitiesInput>;
+    readBy?: InstanceType<typeof UserUncheckedCreateNestedManyWithoutReadActivitiesInput>;
 }
 export declare class ChatActivityUncheckedUpdateManyWithoutChatNestedInput {
     create?: Array<ChatActivityCreateWithoutChatInput>;
@@ -2355,7 +2402,51 @@ export declare class ChatActivityUncheckedUpdateManyWithoutChatInput {
     targetId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumChatActivityTypeFieldUpdateOperationsInput>;
     value?: InstanceType<typeof ChatActivityUpdatevalueInput>;
-    pinned?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+}
+export declare class ChatActivityUncheckedUpdateManyWithoutExecutorNestedInput {
+    create?: Array<ChatActivityCreateWithoutExecutorInput>;
+    connectOrCreate?: Array<ChatActivityCreateOrConnectWithoutExecutorInput>;
+    upsert?: Array<ChatActivityUpsertWithWhereUniqueWithoutExecutorInput>;
+    set?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+    disconnect?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+    delete?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+    connect?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+    update?: Array<ChatActivityUpdateWithWhereUniqueWithoutExecutorInput>;
+    updateMany?: Array<ChatActivityUpdateManyWithWhereWithoutExecutorInput>;
+    deleteMany?: Array<ChatActivityScalarWhereInput>;
+}
+export declare class ChatActivityUncheckedUpdateManyWithoutExecutorInput {
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    chatId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    targetId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    type?: InstanceType<typeof EnumChatActivityTypeFieldUpdateOperationsInput>;
+    value?: InstanceType<typeof ChatActivityUpdatevalueInput>;
+    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+}
+export declare class ChatActivityUncheckedUpdateManyWithoutReadByNestedInput {
+    create?: Array<ChatActivityCreateWithoutReadByInput>;
+    connectOrCreate?: Array<ChatActivityCreateOrConnectWithoutReadByInput>;
+    upsert?: Array<ChatActivityUpsertWithWhereUniqueWithoutReadByInput>;
+    set?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+    disconnect?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+    delete?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+    connect?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+    update?: Array<ChatActivityUpdateWithWhereUniqueWithoutReadByInput>;
+    updateMany?: Array<ChatActivityUpdateManyWithWhereWithoutReadByInput>;
+    deleteMany?: Array<ChatActivityScalarWhereInput>;
+}
+export declare class ChatActivityUncheckedUpdateManyWithoutReadByInput {
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    chatId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    targetId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    type?: InstanceType<typeof EnumChatActivityTypeFieldUpdateOperationsInput>;
+    value?: InstanceType<typeof ChatActivityUpdatevalueInput>;
+    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
 }
 export declare class ChatActivityUncheckedUpdateManyWithoutTargetNestedInput {
     create?: Array<ChatActivityCreateWithoutTargetInput>;
@@ -2377,7 +2468,7 @@ export declare class ChatActivityUncheckedUpdateManyWithoutTargetInput {
     chatId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumChatActivityTypeFieldUpdateOperationsInput>;
     value?: InstanceType<typeof ChatActivityUpdatevalueInput>;
-    pinned?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
 }
 export declare class ChatActivityUncheckedUpdateManyInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
@@ -2387,7 +2478,7 @@ export declare class ChatActivityUncheckedUpdateManyInput {
     targetId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumChatActivityTypeFieldUpdateOperationsInput>;
     value?: InstanceType<typeof ChatActivityUpdatevalueInput>;
-    pinned?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
 }
 export declare class ChatActivityUncheckedUpdateWithoutChatInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
@@ -2396,8 +2487,9 @@ export declare class ChatActivityUncheckedUpdateWithoutChatInput {
     targetId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumChatActivityTypeFieldUpdateOperationsInput>;
     value?: InstanceType<typeof ChatActivityUpdatevalueInput>;
-    pinned?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    executor?: InstanceType<typeof UserChatActivityUncheckedUpdateManyWithoutChatActivityNestedInput>;
+    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    executor?: InstanceType<typeof UserUncheckedUpdateManyWithoutActivitiesNestedInput>;
+    readBy?: InstanceType<typeof UserUncheckedUpdateManyWithoutReadActivitiesNestedInput>;
 }
 export declare class ChatActivityUncheckedUpdateWithoutExecutorInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
@@ -2407,7 +2499,19 @@ export declare class ChatActivityUncheckedUpdateWithoutExecutorInput {
     targetId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumChatActivityTypeFieldUpdateOperationsInput>;
     value?: InstanceType<typeof ChatActivityUpdatevalueInput>;
-    pinned?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    readBy?: InstanceType<typeof UserUncheckedUpdateManyWithoutReadActivitiesNestedInput>;
+}
+export declare class ChatActivityUncheckedUpdateWithoutReadByInput {
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    chatId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    targetId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    type?: InstanceType<typeof EnumChatActivityTypeFieldUpdateOperationsInput>;
+    value?: InstanceType<typeof ChatActivityUpdatevalueInput>;
+    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    executor?: InstanceType<typeof UserUncheckedUpdateManyWithoutActivitiesNestedInput>;
 }
 export declare class ChatActivityUncheckedUpdateWithoutTargetInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
@@ -2416,8 +2520,9 @@ export declare class ChatActivityUncheckedUpdateWithoutTargetInput {
     chatId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumChatActivityTypeFieldUpdateOperationsInput>;
     value?: InstanceType<typeof ChatActivityUpdatevalueInput>;
-    pinned?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    executor?: InstanceType<typeof UserChatActivityUncheckedUpdateManyWithoutChatActivityNestedInput>;
+    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    executor?: InstanceType<typeof UserUncheckedUpdateManyWithoutActivitiesNestedInput>;
+    readBy?: InstanceType<typeof UserUncheckedUpdateManyWithoutReadActivitiesNestedInput>;
 }
 export declare class ChatActivityUncheckedUpdateInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
@@ -2427,8 +2532,9 @@ export declare class ChatActivityUncheckedUpdateInput {
     targetId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumChatActivityTypeFieldUpdateOperationsInput>;
     value?: InstanceType<typeof ChatActivityUpdatevalueInput>;
-    pinned?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    executor?: InstanceType<typeof UserChatActivityUncheckedUpdateManyWithoutChatActivityNestedInput>;
+    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    executor?: InstanceType<typeof UserUncheckedUpdateManyWithoutActivitiesNestedInput>;
+    readBy?: InstanceType<typeof UserUncheckedUpdateManyWithoutReadActivitiesNestedInput>;
 }
 export declare class ChatActivityUpdateManyMutationInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
@@ -2436,9 +2542,17 @@ export declare class ChatActivityUpdateManyMutationInput {
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumChatActivityTypeFieldUpdateOperationsInput>;
     value?: InstanceType<typeof ChatActivityUpdatevalueInput>;
-    pinned?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
 }
 export declare class ChatActivityUpdateManyWithWhereWithoutChatInput {
+    where: InstanceType<typeof ChatActivityScalarWhereInput>;
+    data: InstanceType<typeof ChatActivityUpdateManyMutationInput>;
+}
+export declare class ChatActivityUpdateManyWithWhereWithoutExecutorInput {
+    where: InstanceType<typeof ChatActivityScalarWhereInput>;
+    data: InstanceType<typeof ChatActivityUpdateManyMutationInput>;
+}
+export declare class ChatActivityUpdateManyWithWhereWithoutReadByInput {
     where: InstanceType<typeof ChatActivityScalarWhereInput>;
     data: InstanceType<typeof ChatActivityUpdateManyMutationInput>;
 }
@@ -2459,6 +2573,30 @@ export declare class ChatActivityUpdateManyWithoutChatNestedInput {
     updateMany?: Array<ChatActivityUpdateManyWithWhereWithoutChatInput>;
     deleteMany?: Array<ChatActivityScalarWhereInput>;
 }
+export declare class ChatActivityUpdateManyWithoutExecutorNestedInput {
+    create?: Array<ChatActivityCreateWithoutExecutorInput>;
+    connectOrCreate?: Array<ChatActivityCreateOrConnectWithoutExecutorInput>;
+    upsert?: Array<ChatActivityUpsertWithWhereUniqueWithoutExecutorInput>;
+    set?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+    disconnect?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+    delete?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+    connect?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+    update?: Array<ChatActivityUpdateWithWhereUniqueWithoutExecutorInput>;
+    updateMany?: Array<ChatActivityUpdateManyWithWhereWithoutExecutorInput>;
+    deleteMany?: Array<ChatActivityScalarWhereInput>;
+}
+export declare class ChatActivityUpdateManyWithoutReadByNestedInput {
+    create?: Array<ChatActivityCreateWithoutReadByInput>;
+    connectOrCreate?: Array<ChatActivityCreateOrConnectWithoutReadByInput>;
+    upsert?: Array<ChatActivityUpsertWithWhereUniqueWithoutReadByInput>;
+    set?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+    disconnect?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+    delete?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+    connect?: Array<Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>>;
+    update?: Array<ChatActivityUpdateWithWhereUniqueWithoutReadByInput>;
+    updateMany?: Array<ChatActivityUpdateManyWithWhereWithoutReadByInput>;
+    deleteMany?: Array<ChatActivityScalarWhereInput>;
+}
 export declare class ChatActivityUpdateManyWithoutTargetNestedInput {
     create?: Array<ChatActivityCreateWithoutTargetInput>;
     connectOrCreate?: Array<ChatActivityCreateOrConnectWithoutTargetInput>;
@@ -2472,20 +2610,17 @@ export declare class ChatActivityUpdateManyWithoutTargetNestedInput {
     updateMany?: Array<ChatActivityUpdateManyWithWhereWithoutTargetInput>;
     deleteMany?: Array<ChatActivityScalarWhereInput>;
 }
-export declare class ChatActivityUpdateOneRequiredWithoutExecutorNestedInput {
-    create?: InstanceType<typeof ChatActivityCreateWithoutExecutorInput>;
-    connectOrCreate?: InstanceType<typeof ChatActivityCreateOrConnectWithoutExecutorInput>;
-    upsert?: InstanceType<typeof ChatActivityUpsertWithoutExecutorInput>;
-    connect?: Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>;
-    update?: InstanceType<typeof ChatActivityUpdateToOneWithWhereWithoutExecutorInput>;
-}
-export declare class ChatActivityUpdateToOneWithWhereWithoutExecutorInput {
-    where?: InstanceType<typeof ChatActivityWhereInput>;
-    data: InstanceType<typeof ChatActivityUpdateWithoutExecutorInput>;
-}
 export declare class ChatActivityUpdateWithWhereUniqueWithoutChatInput {
     where: Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>;
     data: InstanceType<typeof ChatActivityUpdateWithoutChatInput>;
+}
+export declare class ChatActivityUpdateWithWhereUniqueWithoutExecutorInput {
+    where: Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>;
+    data: InstanceType<typeof ChatActivityUpdateWithoutExecutorInput>;
+}
+export declare class ChatActivityUpdateWithWhereUniqueWithoutReadByInput {
+    where: Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>;
+    data: InstanceType<typeof ChatActivityUpdateWithoutReadByInput>;
 }
 export declare class ChatActivityUpdateWithWhereUniqueWithoutTargetInput {
     where: Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>;
@@ -2497,8 +2632,9 @@ export declare class ChatActivityUpdateWithoutChatInput {
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumChatActivityTypeFieldUpdateOperationsInput>;
     value?: InstanceType<typeof ChatActivityUpdatevalueInput>;
-    pinned?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    executor?: InstanceType<typeof UserChatActivityUpdateManyWithoutChatActivityNestedInput>;
+    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    executor?: InstanceType<typeof UserUpdateManyWithoutActivitiesNestedInput>;
+    readBy?: InstanceType<typeof UserUpdateManyWithoutReadActivitiesNestedInput>;
     target?: InstanceType<typeof UserUpdateOneWithoutTargetActivitiesNestedInput>;
 }
 export declare class ChatActivityUpdateWithoutExecutorInput {
@@ -2507,8 +2643,20 @@ export declare class ChatActivityUpdateWithoutExecutorInput {
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumChatActivityTypeFieldUpdateOperationsInput>;
     value?: InstanceType<typeof ChatActivityUpdatevalueInput>;
-    pinned?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     chat?: InstanceType<typeof ChatUpdateOneRequiredWithoutActivitiesNestedInput>;
+    readBy?: InstanceType<typeof UserUpdateManyWithoutReadActivitiesNestedInput>;
+    target?: InstanceType<typeof UserUpdateOneWithoutTargetActivitiesNestedInput>;
+}
+export declare class ChatActivityUpdateWithoutReadByInput {
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    type?: InstanceType<typeof EnumChatActivityTypeFieldUpdateOperationsInput>;
+    value?: InstanceType<typeof ChatActivityUpdatevalueInput>;
+    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    chat?: InstanceType<typeof ChatUpdateOneRequiredWithoutActivitiesNestedInput>;
+    executor?: InstanceType<typeof UserUpdateManyWithoutActivitiesNestedInput>;
     target?: InstanceType<typeof UserUpdateOneWithoutTargetActivitiesNestedInput>;
 }
 export declare class ChatActivityUpdateWithoutTargetInput {
@@ -2517,9 +2665,10 @@ export declare class ChatActivityUpdateWithoutTargetInput {
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumChatActivityTypeFieldUpdateOperationsInput>;
     value?: InstanceType<typeof ChatActivityUpdatevalueInput>;
-    pinned?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     chat?: InstanceType<typeof ChatUpdateOneRequiredWithoutActivitiesNestedInput>;
-    executor?: InstanceType<typeof UserChatActivityUpdateManyWithoutChatActivityNestedInput>;
+    executor?: InstanceType<typeof UserUpdateManyWithoutActivitiesNestedInput>;
+    readBy?: InstanceType<typeof UserUpdateManyWithoutReadActivitiesNestedInput>;
 }
 export declare class ChatActivityUpdateInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
@@ -2527,9 +2676,10 @@ export declare class ChatActivityUpdateInput {
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumChatActivityTypeFieldUpdateOperationsInput>;
     value?: InstanceType<typeof ChatActivityUpdatevalueInput>;
-    pinned?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
+    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     chat?: InstanceType<typeof ChatUpdateOneRequiredWithoutActivitiesNestedInput>;
-    executor?: InstanceType<typeof UserChatActivityUpdateManyWithoutChatActivityNestedInput>;
+    executor?: InstanceType<typeof UserUpdateManyWithoutActivitiesNestedInput>;
+    readBy?: InstanceType<typeof UserUpdateManyWithoutReadActivitiesNestedInput>;
     target?: InstanceType<typeof UserUpdateOneWithoutTargetActivitiesNestedInput>;
 }
 export declare class ChatActivityUpdatevalueInput {
@@ -2541,15 +2691,20 @@ export declare class ChatActivityUpsertWithWhereUniqueWithoutChatInput {
     update: InstanceType<typeof ChatActivityUpdateWithoutChatInput>;
     create: InstanceType<typeof ChatActivityCreateWithoutChatInput>;
 }
+export declare class ChatActivityUpsertWithWhereUniqueWithoutExecutorInput {
+    where: Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>;
+    update: InstanceType<typeof ChatActivityUpdateWithoutExecutorInput>;
+    create: InstanceType<typeof ChatActivityCreateWithoutExecutorInput>;
+}
+export declare class ChatActivityUpsertWithWhereUniqueWithoutReadByInput {
+    where: Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>;
+    update: InstanceType<typeof ChatActivityUpdateWithoutReadByInput>;
+    create: InstanceType<typeof ChatActivityCreateWithoutReadByInput>;
+}
 export declare class ChatActivityUpsertWithWhereUniqueWithoutTargetInput {
     where: Prisma.AtLeast<ChatActivityWhereUniqueInput, 'id'>;
     update: InstanceType<typeof ChatActivityUpdateWithoutTargetInput>;
     create: InstanceType<typeof ChatActivityCreateWithoutTargetInput>;
-}
-export declare class ChatActivityUpsertWithoutExecutorInput {
-    update: InstanceType<typeof ChatActivityUpdateWithoutExecutorInput>;
-    create: InstanceType<typeof ChatActivityCreateWithoutExecutorInput>;
-    where?: InstanceType<typeof ChatActivityWhereInput>;
 }
 export declare class ChatActivityWhereUniqueInput {
     id?: string;
@@ -2562,9 +2717,10 @@ export declare class ChatActivityWhereUniqueInput {
     targetId?: InstanceType<typeof UuidNullableFilter>;
     type?: InstanceType<typeof EnumChatActivityTypeFilter>;
     value?: InstanceType<typeof JsonNullableListFilter>;
-    pinned?: InstanceType<typeof BoolFilter>;
+    starred?: InstanceType<typeof BoolFilter>;
     chat?: InstanceType<typeof ChatRelationFilter>;
-    executor?: InstanceType<typeof UserChatActivityListRelationFilter>;
+    executor?: InstanceType<typeof UserListRelationFilter>;
+    readBy?: InstanceType<typeof UserListRelationFilter>;
     target?: InstanceType<typeof UserNullableRelationFilter>;
 }
 export declare class ChatActivityWhereInput {
@@ -2578,9 +2734,10 @@ export declare class ChatActivityWhereInput {
     targetId?: InstanceType<typeof UuidNullableFilter>;
     type?: InstanceType<typeof EnumChatActivityTypeFilter>;
     value?: InstanceType<typeof JsonNullableListFilter>;
-    pinned?: InstanceType<typeof BoolFilter>;
+    starred?: InstanceType<typeof BoolFilter>;
     chat?: InstanceType<typeof ChatRelationFilter>;
-    executor?: InstanceType<typeof UserChatActivityListRelationFilter>;
+    executor?: InstanceType<typeof UserListRelationFilter>;
+    readBy?: InstanceType<typeof UserListRelationFilter>;
     target?: InstanceType<typeof UserNullableRelationFilter>;
 }
 export declare class ChatActivity {
@@ -2591,9 +2748,10 @@ export declare class ChatActivity {
     targetId: string | null;
     type: keyof typeof ChatActivityType;
     value: Array<any>;
-    pinned: boolean;
+    starred: boolean;
     chat?: InstanceType<typeof Chat>;
-    executor?: Array<UserChatActivity>;
+    executor?: Array<User>;
+    readBy?: Array<User>;
     target?: InstanceType<typeof User> | null;
     _count?: InstanceType<typeof ChatActivityCount>;
 }
@@ -10369,6 +10527,7 @@ export declare class UserCount {
     coursesAsTeacher?: number;
     events?: number;
     eventTickets?: number;
+    readActivities?: number;
     schools?: number;
     targetActivities?: number;
     userChats?: number;
@@ -10382,6 +10541,11 @@ export declare class UserCreateManyInput {
     lastName: string;
     type: keyof typeof UserType;
     userAccountId: string;
+}
+export declare class UserCreateNestedManyWithoutActivitiesInput {
+    create?: Array<UserCreateWithoutActivitiesInput>;
+    connectOrCreate?: Array<UserCreateOrConnectWithoutActivitiesInput>;
+    connect?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
 }
 export declare class UserCreateNestedManyWithoutBlackboardsReceivedInput {
     create?: Array<UserCreateWithoutBlackboardsReceivedInput>;
@@ -10418,15 +10582,15 @@ export declare class UserCreateNestedManyWithoutEventsInput {
     connectOrCreate?: Array<UserCreateOrConnectWithoutEventsInput>;
     connect?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
 }
+export declare class UserCreateNestedManyWithoutReadActivitiesInput {
+    create?: Array<UserCreateWithoutReadActivitiesInput>;
+    connectOrCreate?: Array<UserCreateOrConnectWithoutReadActivitiesInput>;
+    connect?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+}
 export declare class UserCreateNestedManyWithoutSchoolsInput {
     create?: Array<UserCreateWithoutSchoolsInput>;
     connectOrCreate?: Array<UserCreateOrConnectWithoutSchoolsInput>;
     connect?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
-}
-export declare class UserCreateNestedOneWithoutActivitiesInput {
-    create?: InstanceType<typeof UserCreateWithoutActivitiesInput>;
-    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutActivitiesInput>;
-    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>;
 }
 export declare class UserCreateNestedOneWithoutCoursesAsTeacherInput {
     create?: InstanceType<typeof UserCreateWithoutCoursesAsTeacherInput>;
@@ -10493,6 +10657,10 @@ export declare class UserCreateOrConnectWithoutEventsInput {
     where: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>;
     create: InstanceType<typeof UserCreateWithoutEventsInput>;
 }
+export declare class UserCreateOrConnectWithoutReadActivitiesInput {
+    where: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>;
+    create: InstanceType<typeof UserCreateWithoutReadActivitiesInput>;
+}
 export declare class UserCreateOrConnectWithoutSchoolsInput {
     where: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>;
     create: InstanceType<typeof UserCreateWithoutSchoolsInput>;
@@ -10526,6 +10694,7 @@ export declare class UserCreateWithoutActivitiesInput {
     coursesAsTeacher?: InstanceType<typeof CourseCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutTargetInput>;
     userAccount: InstanceType<typeof UserAccountCreateNestedOneWithoutUserInput>;
@@ -10539,7 +10708,7 @@ export declare class UserCreateWithoutBlackboardsReceivedInput {
     firstName: string;
     lastName: string;
     type: keyof typeof UserType;
-    activities?: InstanceType<typeof UserChatActivityCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardCreateNestedManyWithoutAuthorsInput>;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutMembersInput>;
     clubs?: InstanceType<typeof ClubCreateNestedManyWithoutMembersInput>;
@@ -10548,6 +10717,7 @@ export declare class UserCreateWithoutBlackboardsReceivedInput {
     coursesAsTeacher?: InstanceType<typeof CourseCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutTargetInput>;
     userAccount: InstanceType<typeof UserAccountCreateNestedOneWithoutUserInput>;
@@ -10561,7 +10731,7 @@ export declare class UserCreateWithoutBlackboardsInput {
     firstName: string;
     lastName: string;
     type: keyof typeof UserType;
-    activities?: InstanceType<typeof UserChatActivityCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutExecutorInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutMembersInput>;
     clubs?: InstanceType<typeof ClubCreateNestedManyWithoutMembersInput>;
@@ -10570,6 +10740,7 @@ export declare class UserCreateWithoutBlackboardsInput {
     coursesAsTeacher?: InstanceType<typeof CourseCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutTargetInput>;
     userAccount: InstanceType<typeof UserAccountCreateNestedOneWithoutUserInput>;
@@ -10583,7 +10754,7 @@ export declare class UserCreateWithoutClassesInput {
     firstName: string;
     lastName: string;
     type: keyof typeof UserType;
-    activities?: InstanceType<typeof UserChatActivityCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardCreateNestedManyWithoutTargetsInput>;
     clubs?: InstanceType<typeof ClubCreateNestedManyWithoutMembersInput>;
@@ -10592,6 +10763,7 @@ export declare class UserCreateWithoutClassesInput {
     coursesAsTeacher?: InstanceType<typeof CourseCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutTargetInput>;
     userAccount: InstanceType<typeof UserAccountCreateNestedOneWithoutUserInput>;
@@ -10605,7 +10777,7 @@ export declare class UserCreateWithoutClubsAsLeaderInput {
     firstName: string;
     lastName: string;
     type: keyof typeof UserType;
-    activities?: InstanceType<typeof UserChatActivityCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutMembersInput>;
@@ -10614,6 +10786,7 @@ export declare class UserCreateWithoutClubsAsLeaderInput {
     coursesAsTeacher?: InstanceType<typeof CourseCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutTargetInput>;
     userAccount: InstanceType<typeof UserAccountCreateNestedOneWithoutUserInput>;
@@ -10627,7 +10800,7 @@ export declare class UserCreateWithoutClubsInput {
     firstName: string;
     lastName: string;
     type: keyof typeof UserType;
-    activities?: InstanceType<typeof UserChatActivityCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutMembersInput>;
@@ -10636,6 +10809,7 @@ export declare class UserCreateWithoutClubsInput {
     coursesAsTeacher?: InstanceType<typeof CourseCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutTargetInput>;
     userAccount: InstanceType<typeof UserAccountCreateNestedOneWithoutUserInput>;
@@ -10649,7 +10823,7 @@ export declare class UserCreateWithoutCoursesAsTeacherInput {
     firstName: string;
     lastName: string;
     type: keyof typeof UserType;
-    activities?: InstanceType<typeof UserChatActivityCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutMembersInput>;
@@ -10658,6 +10832,7 @@ export declare class UserCreateWithoutCoursesAsTeacherInput {
     courses?: InstanceType<typeof CourseCreateNestedManyWithoutMembersInput>;
     events?: InstanceType<typeof EventCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutTargetInput>;
     userAccount: InstanceType<typeof UserAccountCreateNestedOneWithoutUserInput>;
@@ -10671,7 +10846,7 @@ export declare class UserCreateWithoutCoursesInput {
     firstName: string;
     lastName: string;
     type: keyof typeof UserType;
-    activities?: InstanceType<typeof UserChatActivityCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutMembersInput>;
@@ -10680,6 +10855,7 @@ export declare class UserCreateWithoutCoursesInput {
     coursesAsTeacher?: InstanceType<typeof CourseCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutTargetInput>;
     userAccount: InstanceType<typeof UserAccountCreateNestedOneWithoutUserInput>;
@@ -10693,7 +10869,7 @@ export declare class UserCreateWithoutEventTicketsInput {
     firstName: string;
     lastName: string;
     type: keyof typeof UserType;
-    activities?: InstanceType<typeof UserChatActivityCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutMembersInput>;
@@ -10702,6 +10878,7 @@ export declare class UserCreateWithoutEventTicketsInput {
     courses?: InstanceType<typeof CourseCreateNestedManyWithoutMembersInput>;
     coursesAsTeacher?: InstanceType<typeof CourseCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventCreateNestedManyWithoutSubscribersInput>;
+    readActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutTargetInput>;
     userAccount: InstanceType<typeof UserAccountCreateNestedOneWithoutUserInput>;
@@ -10715,7 +10892,7 @@ export declare class UserCreateWithoutEventsInput {
     firstName: string;
     lastName: string;
     type: keyof typeof UserType;
-    activities?: InstanceType<typeof UserChatActivityCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutMembersInput>;
@@ -10723,6 +10900,30 @@ export declare class UserCreateWithoutEventsInput {
     clubsAsLeader?: InstanceType<typeof ClubCreateNestedManyWithoutLeadersInput>;
     courses?: InstanceType<typeof CourseCreateNestedManyWithoutMembersInput>;
     coursesAsTeacher?: InstanceType<typeof CourseCreateNestedManyWithoutTeacherInput>;
+    eventTickets?: InstanceType<typeof EventTicketCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutReadByInput>;
+    schools?: InstanceType<typeof SchoolCreateNestedManyWithoutMembersInput>;
+    targetActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutTargetInput>;
+    userAccount: InstanceType<typeof UserAccountCreateNestedOneWithoutUserInput>;
+    userChats?: InstanceType<typeof UserChatCreateNestedManyWithoutUserInput>;
+}
+export declare class UserCreateWithoutReadActivitiesInput {
+    id?: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    avatar?: string;
+    firstName: string;
+    lastName: string;
+    type: keyof typeof UserType;
+    activities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutExecutorInput>;
+    blackboards?: InstanceType<typeof BlackboardCreateNestedManyWithoutAuthorsInput>;
+    blackboardsReceived?: InstanceType<typeof BlackboardCreateNestedManyWithoutTargetsInput>;
+    classes?: InstanceType<typeof ClassCreateNestedManyWithoutMembersInput>;
+    clubs?: InstanceType<typeof ClubCreateNestedManyWithoutMembersInput>;
+    clubsAsLeader?: InstanceType<typeof ClubCreateNestedManyWithoutLeadersInput>;
+    courses?: InstanceType<typeof CourseCreateNestedManyWithoutMembersInput>;
+    coursesAsTeacher?: InstanceType<typeof CourseCreateNestedManyWithoutTeacherInput>;
+    events?: InstanceType<typeof EventCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketCreateNestedManyWithoutBuyerInput>;
     schools?: InstanceType<typeof SchoolCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutTargetInput>;
@@ -10737,7 +10938,7 @@ export declare class UserCreateWithoutSchoolsInput {
     firstName: string;
     lastName: string;
     type: keyof typeof UserType;
-    activities?: InstanceType<typeof UserChatActivityCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutMembersInput>;
@@ -10747,6 +10948,7 @@ export declare class UserCreateWithoutSchoolsInput {
     coursesAsTeacher?: InstanceType<typeof CourseCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutReadByInput>;
     targetActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutTargetInput>;
     userAccount: InstanceType<typeof UserAccountCreateNestedOneWithoutUserInput>;
     userChats?: InstanceType<typeof UserChatCreateNestedManyWithoutUserInput>;
@@ -10759,7 +10961,7 @@ export declare class UserCreateWithoutTargetActivitiesInput {
     firstName: string;
     lastName: string;
     type: keyof typeof UserType;
-    activities?: InstanceType<typeof UserChatActivityCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutMembersInput>;
@@ -10769,6 +10971,7 @@ export declare class UserCreateWithoutTargetActivitiesInput {
     coursesAsTeacher?: InstanceType<typeof CourseCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolCreateNestedManyWithoutMembersInput>;
     userAccount: InstanceType<typeof UserAccountCreateNestedOneWithoutUserInput>;
     userChats?: InstanceType<typeof UserChatCreateNestedManyWithoutUserInput>;
@@ -10781,7 +10984,7 @@ export declare class UserCreateWithoutUserAccountInput {
     firstName: string;
     lastName: string;
     type: keyof typeof UserType;
-    activities?: InstanceType<typeof UserChatActivityCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutMembersInput>;
@@ -10791,6 +10994,7 @@ export declare class UserCreateWithoutUserAccountInput {
     coursesAsTeacher?: InstanceType<typeof CourseCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutTargetInput>;
     userChats?: InstanceType<typeof UserChatCreateNestedManyWithoutUserInput>;
@@ -10803,7 +11007,7 @@ export declare class UserCreateWithoutUserChatsInput {
     firstName: string;
     lastName: string;
     type: keyof typeof UserType;
-    activities?: InstanceType<typeof UserChatActivityCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutMembersInput>;
@@ -10813,6 +11017,7 @@ export declare class UserCreateWithoutUserChatsInput {
     coursesAsTeacher?: InstanceType<typeof CourseCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutTargetInput>;
     userAccount: InstanceType<typeof UserAccountCreateNestedOneWithoutUserInput>;
@@ -10825,7 +11030,7 @@ export declare class UserCreateInput {
     firstName: string;
     lastName: string;
     type: keyof typeof UserType;
-    activities?: InstanceType<typeof UserChatActivityCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutMembersInput>;
@@ -10835,6 +11040,7 @@ export declare class UserCreateInput {
     coursesAsTeacher?: InstanceType<typeof CourseCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityCreateNestedManyWithoutTargetInput>;
     userAccount: InstanceType<typeof UserAccountCreateNestedOneWithoutUserInput>;
@@ -10958,7 +11164,7 @@ export declare class UserOrderByWithRelationInput {
     lastName?: keyof typeof SortOrder;
     type?: keyof typeof SortOrder;
     userAccountId?: keyof typeof SortOrder;
-    activities?: InstanceType<typeof UserChatActivityOrderByRelationAggregateInput>;
+    activities?: InstanceType<typeof ChatActivityOrderByRelationAggregateInput>;
     blackboards?: InstanceType<typeof BlackboardOrderByRelationAggregateInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardOrderByRelationAggregateInput>;
     classes?: InstanceType<typeof ClassOrderByRelationAggregateInput>;
@@ -10968,6 +11174,7 @@ export declare class UserOrderByWithRelationInput {
     coursesAsTeacher?: InstanceType<typeof CourseOrderByRelationAggregateInput>;
     events?: InstanceType<typeof EventOrderByRelationAggregateInput>;
     eventTickets?: InstanceType<typeof EventTicketOrderByRelationAggregateInput>;
+    readActivities?: InstanceType<typeof ChatActivityOrderByRelationAggregateInput>;
     schools?: InstanceType<typeof SchoolOrderByRelationAggregateInput>;
     targetActivities?: InstanceType<typeof ChatActivityOrderByRelationAggregateInput>;
     userAccount?: InstanceType<typeof UserAccountOrderByWithRelationInput>;
@@ -11002,6 +11209,11 @@ export declare class UserScalarWhereInput {
     lastName?: InstanceType<typeof StringFilter>;
     type?: InstanceType<typeof EnumUserTypeFilter>;
     userAccountId?: InstanceType<typeof UuidFilter>;
+}
+export declare class UserUncheckedCreateNestedManyWithoutActivitiesInput {
+    create?: Array<UserCreateWithoutActivitiesInput>;
+    connectOrCreate?: Array<UserCreateOrConnectWithoutActivitiesInput>;
+    connect?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
 }
 export declare class UserUncheckedCreateNestedManyWithoutBlackboardsReceivedInput {
     create?: Array<UserCreateWithoutBlackboardsReceivedInput>;
@@ -11038,6 +11250,11 @@ export declare class UserUncheckedCreateNestedManyWithoutEventsInput {
     connectOrCreate?: Array<UserCreateOrConnectWithoutEventsInput>;
     connect?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
 }
+export declare class UserUncheckedCreateNestedManyWithoutReadActivitiesInput {
+    create?: Array<UserCreateWithoutReadActivitiesInput>;
+    connectOrCreate?: Array<UserCreateOrConnectWithoutReadActivitiesInput>;
+    connect?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+}
 export declare class UserUncheckedCreateNestedManyWithoutSchoolsInput {
     create?: Array<UserCreateWithoutSchoolsInput>;
     connectOrCreate?: Array<UserCreateOrConnectWithoutSchoolsInput>;
@@ -11066,6 +11283,7 @@ export declare class UserUncheckedCreateWithoutActivitiesInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventUncheckedCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolUncheckedCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutTargetInput>;
     userChats?: InstanceType<typeof UserChatUncheckedCreateNestedManyWithoutUserInput>;
@@ -11079,7 +11297,7 @@ export declare class UserUncheckedCreateWithoutBlackboardsReceivedInput {
     lastName: string;
     type: keyof typeof UserType;
     userAccountId: string;
-    activities?: InstanceType<typeof UserChatActivityUncheckedCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutAuthorsInput>;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutMembersInput>;
     clubs?: InstanceType<typeof ClubUncheckedCreateNestedManyWithoutMembersInput>;
@@ -11088,6 +11306,7 @@ export declare class UserUncheckedCreateWithoutBlackboardsReceivedInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventUncheckedCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolUncheckedCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutTargetInput>;
     userChats?: InstanceType<typeof UserChatUncheckedCreateNestedManyWithoutUserInput>;
@@ -11101,7 +11320,7 @@ export declare class UserUncheckedCreateWithoutBlackboardsInput {
     lastName: string;
     type: keyof typeof UserType;
     userAccountId: string;
-    activities?: InstanceType<typeof UserChatActivityUncheckedCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutExecutorInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutMembersInput>;
     clubs?: InstanceType<typeof ClubUncheckedCreateNestedManyWithoutMembersInput>;
@@ -11110,6 +11329,7 @@ export declare class UserUncheckedCreateWithoutBlackboardsInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventUncheckedCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolUncheckedCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutTargetInput>;
     userChats?: InstanceType<typeof UserChatUncheckedCreateNestedManyWithoutUserInput>;
@@ -11123,7 +11343,7 @@ export declare class UserUncheckedCreateWithoutClassesInput {
     lastName: string;
     type: keyof typeof UserType;
     userAccountId: string;
-    activities?: InstanceType<typeof UserChatActivityUncheckedCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutTargetsInput>;
     clubs?: InstanceType<typeof ClubUncheckedCreateNestedManyWithoutMembersInput>;
@@ -11132,6 +11352,7 @@ export declare class UserUncheckedCreateWithoutClassesInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventUncheckedCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolUncheckedCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutTargetInput>;
     userChats?: InstanceType<typeof UserChatUncheckedCreateNestedManyWithoutUserInput>;
@@ -11145,7 +11366,7 @@ export declare class UserUncheckedCreateWithoutClubsAsLeaderInput {
     lastName: string;
     type: keyof typeof UserType;
     userAccountId: string;
-    activities?: InstanceType<typeof UserChatActivityUncheckedCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutMembersInput>;
@@ -11154,6 +11375,7 @@ export declare class UserUncheckedCreateWithoutClubsAsLeaderInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventUncheckedCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolUncheckedCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutTargetInput>;
     userChats?: InstanceType<typeof UserChatUncheckedCreateNestedManyWithoutUserInput>;
@@ -11167,7 +11389,7 @@ export declare class UserUncheckedCreateWithoutClubsInput {
     lastName: string;
     type: keyof typeof UserType;
     userAccountId: string;
-    activities?: InstanceType<typeof UserChatActivityUncheckedCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutMembersInput>;
@@ -11176,6 +11398,7 @@ export declare class UserUncheckedCreateWithoutClubsInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventUncheckedCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolUncheckedCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutTargetInput>;
     userChats?: InstanceType<typeof UserChatUncheckedCreateNestedManyWithoutUserInput>;
@@ -11189,7 +11412,7 @@ export declare class UserUncheckedCreateWithoutCoursesAsTeacherInput {
     lastName: string;
     type: keyof typeof UserType;
     userAccountId: string;
-    activities?: InstanceType<typeof UserChatActivityUncheckedCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutMembersInput>;
@@ -11198,6 +11421,7 @@ export declare class UserUncheckedCreateWithoutCoursesAsTeacherInput {
     courses?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutMembersInput>;
     events?: InstanceType<typeof EventUncheckedCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolUncheckedCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutTargetInput>;
     userChats?: InstanceType<typeof UserChatUncheckedCreateNestedManyWithoutUserInput>;
@@ -11211,7 +11435,7 @@ export declare class UserUncheckedCreateWithoutCoursesInput {
     lastName: string;
     type: keyof typeof UserType;
     userAccountId: string;
-    activities?: InstanceType<typeof UserChatActivityUncheckedCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutMembersInput>;
@@ -11220,6 +11444,7 @@ export declare class UserUncheckedCreateWithoutCoursesInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventUncheckedCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolUncheckedCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutTargetInput>;
     userChats?: InstanceType<typeof UserChatUncheckedCreateNestedManyWithoutUserInput>;
@@ -11233,7 +11458,7 @@ export declare class UserUncheckedCreateWithoutEventTicketsInput {
     lastName: string;
     type: keyof typeof UserType;
     userAccountId: string;
-    activities?: InstanceType<typeof UserChatActivityUncheckedCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutMembersInput>;
@@ -11242,6 +11467,7 @@ export declare class UserUncheckedCreateWithoutEventTicketsInput {
     courses?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutMembersInput>;
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventUncheckedCreateNestedManyWithoutSubscribersInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolUncheckedCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutTargetInput>;
     userChats?: InstanceType<typeof UserChatUncheckedCreateNestedManyWithoutUserInput>;
@@ -11255,7 +11481,7 @@ export declare class UserUncheckedCreateWithoutEventsInput {
     lastName: string;
     type: keyof typeof UserType;
     userAccountId: string;
-    activities?: InstanceType<typeof UserChatActivityUncheckedCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutMembersInput>;
@@ -11263,6 +11489,30 @@ export declare class UserUncheckedCreateWithoutEventsInput {
     clubsAsLeader?: InstanceType<typeof ClubUncheckedCreateNestedManyWithoutLeadersInput>;
     courses?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutMembersInput>;
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutTeacherInput>;
+    eventTickets?: InstanceType<typeof EventTicketUncheckedCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutReadByInput>;
+    schools?: InstanceType<typeof SchoolUncheckedCreateNestedManyWithoutMembersInput>;
+    targetActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutTargetInput>;
+    userChats?: InstanceType<typeof UserChatUncheckedCreateNestedManyWithoutUserInput>;
+}
+export declare class UserUncheckedCreateWithoutReadActivitiesInput {
+    id?: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    avatar?: string;
+    firstName: string;
+    lastName: string;
+    type: keyof typeof UserType;
+    userAccountId: string;
+    activities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutExecutorInput>;
+    blackboards?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutAuthorsInput>;
+    blackboardsReceived?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutTargetsInput>;
+    classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutMembersInput>;
+    clubs?: InstanceType<typeof ClubUncheckedCreateNestedManyWithoutMembersInput>;
+    clubsAsLeader?: InstanceType<typeof ClubUncheckedCreateNestedManyWithoutLeadersInput>;
+    courses?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutMembersInput>;
+    coursesAsTeacher?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutTeacherInput>;
+    events?: InstanceType<typeof EventUncheckedCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedCreateNestedManyWithoutBuyerInput>;
     schools?: InstanceType<typeof SchoolUncheckedCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutTargetInput>;
@@ -11277,7 +11527,7 @@ export declare class UserUncheckedCreateWithoutSchoolsInput {
     lastName: string;
     type: keyof typeof UserType;
     userAccountId: string;
-    activities?: InstanceType<typeof UserChatActivityUncheckedCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutMembersInput>;
@@ -11287,6 +11537,7 @@ export declare class UserUncheckedCreateWithoutSchoolsInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventUncheckedCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutReadByInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutTargetInput>;
     userChats?: InstanceType<typeof UserChatUncheckedCreateNestedManyWithoutUserInput>;
 }
@@ -11299,7 +11550,7 @@ export declare class UserUncheckedCreateWithoutTargetActivitiesInput {
     lastName: string;
     type: keyof typeof UserType;
     userAccountId: string;
-    activities?: InstanceType<typeof UserChatActivityUncheckedCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutMembersInput>;
@@ -11309,6 +11560,7 @@ export declare class UserUncheckedCreateWithoutTargetActivitiesInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventUncheckedCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolUncheckedCreateNestedManyWithoutMembersInput>;
     userChats?: InstanceType<typeof UserChatUncheckedCreateNestedManyWithoutUserInput>;
 }
@@ -11320,7 +11572,7 @@ export declare class UserUncheckedCreateWithoutUserAccountInput {
     firstName: string;
     lastName: string;
     type: keyof typeof UserType;
-    activities?: InstanceType<typeof UserChatActivityUncheckedCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutMembersInput>;
@@ -11330,6 +11582,7 @@ export declare class UserUncheckedCreateWithoutUserAccountInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventUncheckedCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolUncheckedCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutTargetInput>;
     userChats?: InstanceType<typeof UserChatUncheckedCreateNestedManyWithoutUserInput>;
@@ -11343,7 +11596,7 @@ export declare class UserUncheckedCreateWithoutUserChatsInput {
     lastName: string;
     type: keyof typeof UserType;
     userAccountId: string;
-    activities?: InstanceType<typeof UserChatActivityUncheckedCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutMembersInput>;
@@ -11353,6 +11606,7 @@ export declare class UserUncheckedCreateWithoutUserChatsInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventUncheckedCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolUncheckedCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutTargetInput>;
 }
@@ -11365,7 +11619,7 @@ export declare class UserUncheckedCreateInput {
     lastName: string;
     type: keyof typeof UserType;
     userAccountId: string;
-    activities?: InstanceType<typeof UserChatActivityUncheckedCreateNestedManyWithoutUserInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutExecutorInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutAuthorsInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedCreateNestedManyWithoutTargetsInput>;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutMembersInput>;
@@ -11375,9 +11629,32 @@ export declare class UserUncheckedCreateInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedCreateNestedManyWithoutTeacherInput>;
     events?: InstanceType<typeof EventUncheckedCreateNestedManyWithoutSubscribersInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedCreateNestedManyWithoutBuyerInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutReadByInput>;
     schools?: InstanceType<typeof SchoolUncheckedCreateNestedManyWithoutMembersInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedCreateNestedManyWithoutTargetInput>;
     userChats?: InstanceType<typeof UserChatUncheckedCreateNestedManyWithoutUserInput>;
+}
+export declare class UserUncheckedUpdateManyWithoutActivitiesNestedInput {
+    create?: Array<UserCreateWithoutActivitiesInput>;
+    connectOrCreate?: Array<UserCreateOrConnectWithoutActivitiesInput>;
+    upsert?: Array<UserUpsertWithWhereUniqueWithoutActivitiesInput>;
+    set?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+    disconnect?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+    delete?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+    connect?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+    update?: Array<UserUpdateWithWhereUniqueWithoutActivitiesInput>;
+    updateMany?: Array<UserUpdateManyWithWhereWithoutActivitiesInput>;
+    deleteMany?: Array<UserScalarWhereInput>;
+}
+export declare class UserUncheckedUpdateManyWithoutActivitiesInput {
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
+    userAccountId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
 }
 export declare class UserUncheckedUpdateManyWithoutBlackboardsNestedInput {
     create?: Array<UserCreateWithoutBlackboardsInput>;
@@ -11533,6 +11810,28 @@ export declare class UserUncheckedUpdateManyWithoutEventsInput {
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
     userAccountId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
 }
+export declare class UserUncheckedUpdateManyWithoutReadActivitiesNestedInput {
+    create?: Array<UserCreateWithoutReadActivitiesInput>;
+    connectOrCreate?: Array<UserCreateOrConnectWithoutReadActivitiesInput>;
+    upsert?: Array<UserUpsertWithWhereUniqueWithoutReadActivitiesInput>;
+    set?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+    disconnect?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+    delete?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+    connect?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+    update?: Array<UserUpdateWithWhereUniqueWithoutReadActivitiesInput>;
+    updateMany?: Array<UserUpdateManyWithWhereWithoutReadActivitiesInput>;
+    deleteMany?: Array<UserScalarWhereInput>;
+}
+export declare class UserUncheckedUpdateManyWithoutReadActivitiesInput {
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
+    userAccountId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+}
 export declare class UserUncheckedUpdateManyWithoutSchoolsNestedInput {
     create?: Array<UserCreateWithoutSchoolsInput>;
     connectOrCreate?: Array<UserCreateOrConnectWithoutSchoolsInput>;
@@ -11592,6 +11891,7 @@ export declare class UserUncheckedUpdateWithoutActivitiesInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUncheckedUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUncheckedUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutTargetNestedInput>;
     userChats?: InstanceType<typeof UserChatUncheckedUpdateManyWithoutUserNestedInput>;
@@ -11605,7 +11905,7 @@ export declare class UserUncheckedUpdateWithoutBlackboardsReceivedInput {
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
     userAccountId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUncheckedUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutAuthorsNestedInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutMembersNestedInput>;
     clubs?: InstanceType<typeof ClubUncheckedUpdateManyWithoutMembersNestedInput>;
@@ -11614,6 +11914,7 @@ export declare class UserUncheckedUpdateWithoutBlackboardsReceivedInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUncheckedUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUncheckedUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutTargetNestedInput>;
     userChats?: InstanceType<typeof UserChatUncheckedUpdateManyWithoutUserNestedInput>;
@@ -11627,7 +11928,7 @@ export declare class UserUncheckedUpdateWithoutBlackboardsInput {
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
     userAccountId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUncheckedUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutExecutorNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutMembersNestedInput>;
     clubs?: InstanceType<typeof ClubUncheckedUpdateManyWithoutMembersNestedInput>;
@@ -11636,6 +11937,7 @@ export declare class UserUncheckedUpdateWithoutBlackboardsInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUncheckedUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUncheckedUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutTargetNestedInput>;
     userChats?: InstanceType<typeof UserChatUncheckedUpdateManyWithoutUserNestedInput>;
@@ -11649,7 +11951,7 @@ export declare class UserUncheckedUpdateWithoutClassesInput {
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
     userAccountId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUncheckedUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutTargetsNestedInput>;
     clubs?: InstanceType<typeof ClubUncheckedUpdateManyWithoutMembersNestedInput>;
@@ -11658,6 +11960,7 @@ export declare class UserUncheckedUpdateWithoutClassesInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUncheckedUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUncheckedUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutTargetNestedInput>;
     userChats?: InstanceType<typeof UserChatUncheckedUpdateManyWithoutUserNestedInput>;
@@ -11671,7 +11974,7 @@ export declare class UserUncheckedUpdateWithoutClubsAsLeaderInput {
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
     userAccountId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUncheckedUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutMembersNestedInput>;
@@ -11680,6 +11983,7 @@ export declare class UserUncheckedUpdateWithoutClubsAsLeaderInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUncheckedUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUncheckedUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutTargetNestedInput>;
     userChats?: InstanceType<typeof UserChatUncheckedUpdateManyWithoutUserNestedInput>;
@@ -11693,7 +11997,7 @@ export declare class UserUncheckedUpdateWithoutClubsInput {
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
     userAccountId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUncheckedUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutMembersNestedInput>;
@@ -11702,6 +12006,7 @@ export declare class UserUncheckedUpdateWithoutClubsInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUncheckedUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUncheckedUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutTargetNestedInput>;
     userChats?: InstanceType<typeof UserChatUncheckedUpdateManyWithoutUserNestedInput>;
@@ -11715,7 +12020,7 @@ export declare class UserUncheckedUpdateWithoutCoursesAsTeacherInput {
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
     userAccountId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUncheckedUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutMembersNestedInput>;
@@ -11724,6 +12029,7 @@ export declare class UserUncheckedUpdateWithoutCoursesAsTeacherInput {
     courses?: InstanceType<typeof CourseUncheckedUpdateManyWithoutMembersNestedInput>;
     events?: InstanceType<typeof EventUncheckedUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUncheckedUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutTargetNestedInput>;
     userChats?: InstanceType<typeof UserChatUncheckedUpdateManyWithoutUserNestedInput>;
@@ -11737,7 +12043,7 @@ export declare class UserUncheckedUpdateWithoutCoursesInput {
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
     userAccountId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUncheckedUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutMembersNestedInput>;
@@ -11746,6 +12052,7 @@ export declare class UserUncheckedUpdateWithoutCoursesInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUncheckedUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUncheckedUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutTargetNestedInput>;
     userChats?: InstanceType<typeof UserChatUncheckedUpdateManyWithoutUserNestedInput>;
@@ -11759,7 +12066,7 @@ export declare class UserUncheckedUpdateWithoutEventTicketsInput {
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
     userAccountId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUncheckedUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutMembersNestedInput>;
@@ -11768,6 +12075,7 @@ export declare class UserUncheckedUpdateWithoutEventTicketsInput {
     courses?: InstanceType<typeof CourseUncheckedUpdateManyWithoutMembersNestedInput>;
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUncheckedUpdateManyWithoutSubscribersNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUncheckedUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutTargetNestedInput>;
     userChats?: InstanceType<typeof UserChatUncheckedUpdateManyWithoutUserNestedInput>;
@@ -11781,7 +12089,7 @@ export declare class UserUncheckedUpdateWithoutEventsInput {
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
     userAccountId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUncheckedUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutMembersNestedInput>;
@@ -11789,6 +12097,30 @@ export declare class UserUncheckedUpdateWithoutEventsInput {
     clubsAsLeader?: InstanceType<typeof ClubUncheckedUpdateManyWithoutLeadersNestedInput>;
     courses?: InstanceType<typeof CourseUncheckedUpdateManyWithoutMembersNestedInput>;
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedUpdateManyWithoutTeacherNestedInput>;
+    eventTickets?: InstanceType<typeof EventTicketUncheckedUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutReadByNestedInput>;
+    schools?: InstanceType<typeof SchoolUncheckedUpdateManyWithoutMembersNestedInput>;
+    targetActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutTargetNestedInput>;
+    userChats?: InstanceType<typeof UserChatUncheckedUpdateManyWithoutUserNestedInput>;
+}
+export declare class UserUncheckedUpdateWithoutReadActivitiesInput {
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
+    userAccountId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutExecutorNestedInput>;
+    blackboards?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutAuthorsNestedInput>;
+    blackboardsReceived?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutTargetsNestedInput>;
+    classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutMembersNestedInput>;
+    clubs?: InstanceType<typeof ClubUncheckedUpdateManyWithoutMembersNestedInput>;
+    clubsAsLeader?: InstanceType<typeof ClubUncheckedUpdateManyWithoutLeadersNestedInput>;
+    courses?: InstanceType<typeof CourseUncheckedUpdateManyWithoutMembersNestedInput>;
+    coursesAsTeacher?: InstanceType<typeof CourseUncheckedUpdateManyWithoutTeacherNestedInput>;
+    events?: InstanceType<typeof EventUncheckedUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedUpdateManyWithoutBuyerNestedInput>;
     schools?: InstanceType<typeof SchoolUncheckedUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutTargetNestedInput>;
@@ -11803,7 +12135,7 @@ export declare class UserUncheckedUpdateWithoutSchoolsInput {
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
     userAccountId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUncheckedUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutMembersNestedInput>;
@@ -11813,6 +12145,7 @@ export declare class UserUncheckedUpdateWithoutSchoolsInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUncheckedUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutReadByNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutTargetNestedInput>;
     userChats?: InstanceType<typeof UserChatUncheckedUpdateManyWithoutUserNestedInput>;
 }
@@ -11825,7 +12158,7 @@ export declare class UserUncheckedUpdateWithoutTargetActivitiesInput {
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
     userAccountId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUncheckedUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutMembersNestedInput>;
@@ -11835,6 +12168,7 @@ export declare class UserUncheckedUpdateWithoutTargetActivitiesInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUncheckedUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUncheckedUpdateManyWithoutMembersNestedInput>;
     userChats?: InstanceType<typeof UserChatUncheckedUpdateManyWithoutUserNestedInput>;
 }
@@ -11846,7 +12180,7 @@ export declare class UserUncheckedUpdateWithoutUserAccountInput {
     firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUncheckedUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutMembersNestedInput>;
@@ -11856,6 +12190,7 @@ export declare class UserUncheckedUpdateWithoutUserAccountInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUncheckedUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUncheckedUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutTargetNestedInput>;
     userChats?: InstanceType<typeof UserChatUncheckedUpdateManyWithoutUserNestedInput>;
@@ -11869,7 +12204,7 @@ export declare class UserUncheckedUpdateWithoutUserChatsInput {
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
     userAccountId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUncheckedUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutMembersNestedInput>;
@@ -11879,6 +12214,7 @@ export declare class UserUncheckedUpdateWithoutUserChatsInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUncheckedUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUncheckedUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutTargetNestedInput>;
 }
@@ -11891,7 +12227,7 @@ export declare class UserUncheckedUpdateInput {
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
     userAccountId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUncheckedUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUncheckedUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutMembersNestedInput>;
@@ -11901,6 +12237,7 @@ export declare class UserUncheckedUpdateInput {
     coursesAsTeacher?: InstanceType<typeof CourseUncheckedUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUncheckedUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUncheckedUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUncheckedUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUncheckedUpdateManyWithoutTargetNestedInput>;
     userChats?: InstanceType<typeof UserChatUncheckedUpdateManyWithoutUserNestedInput>;
@@ -11913,6 +12250,10 @@ export declare class UserUpdateManyMutationInput {
     firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
+}
+export declare class UserUpdateManyWithWhereWithoutActivitiesInput {
+    where: InstanceType<typeof UserScalarWhereInput>;
+    data: InstanceType<typeof UserUpdateManyMutationInput>;
 }
 export declare class UserUpdateManyWithWhereWithoutBlackboardsReceivedInput {
     where: InstanceType<typeof UserScalarWhereInput>;
@@ -11942,9 +12283,25 @@ export declare class UserUpdateManyWithWhereWithoutEventsInput {
     where: InstanceType<typeof UserScalarWhereInput>;
     data: InstanceType<typeof UserUpdateManyMutationInput>;
 }
+export declare class UserUpdateManyWithWhereWithoutReadActivitiesInput {
+    where: InstanceType<typeof UserScalarWhereInput>;
+    data: InstanceType<typeof UserUpdateManyMutationInput>;
+}
 export declare class UserUpdateManyWithWhereWithoutSchoolsInput {
     where: InstanceType<typeof UserScalarWhereInput>;
     data: InstanceType<typeof UserUpdateManyMutationInput>;
+}
+export declare class UserUpdateManyWithoutActivitiesNestedInput {
+    create?: Array<UserCreateWithoutActivitiesInput>;
+    connectOrCreate?: Array<UserCreateOrConnectWithoutActivitiesInput>;
+    upsert?: Array<UserUpsertWithWhereUniqueWithoutActivitiesInput>;
+    set?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+    disconnect?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+    delete?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+    connect?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+    update?: Array<UserUpdateWithWhereUniqueWithoutActivitiesInput>;
+    updateMany?: Array<UserUpdateManyWithWhereWithoutActivitiesInput>;
+    deleteMany?: Array<UserScalarWhereInput>;
 }
 export declare class UserUpdateManyWithoutBlackboardsNestedInput {
     create?: Array<UserCreateWithoutBlackboardsInput>;
@@ -12030,6 +12387,18 @@ export declare class UserUpdateManyWithoutEventsNestedInput {
     updateMany?: Array<UserUpdateManyWithWhereWithoutEventsInput>;
     deleteMany?: Array<UserScalarWhereInput>;
 }
+export declare class UserUpdateManyWithoutReadActivitiesNestedInput {
+    create?: Array<UserCreateWithoutReadActivitiesInput>;
+    connectOrCreate?: Array<UserCreateOrConnectWithoutReadActivitiesInput>;
+    upsert?: Array<UserUpsertWithWhereUniqueWithoutReadActivitiesInput>;
+    set?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+    disconnect?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+    delete?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+    connect?: Array<Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>>;
+    update?: Array<UserUpdateWithWhereUniqueWithoutReadActivitiesInput>;
+    updateMany?: Array<UserUpdateManyWithWhereWithoutReadActivitiesInput>;
+    deleteMany?: Array<UserScalarWhereInput>;
+}
 export declare class UserUpdateManyWithoutSchoolsNestedInput {
     create?: Array<UserCreateWithoutSchoolsInput>;
     connectOrCreate?: Array<UserCreateOrConnectWithoutSchoolsInput>;
@@ -12041,13 +12410,6 @@ export declare class UserUpdateManyWithoutSchoolsNestedInput {
     update?: Array<UserUpdateWithWhereUniqueWithoutSchoolsInput>;
     updateMany?: Array<UserUpdateManyWithWhereWithoutSchoolsInput>;
     deleteMany?: Array<UserScalarWhereInput>;
-}
-export declare class UserUpdateOneRequiredWithoutActivitiesNestedInput {
-    create?: InstanceType<typeof UserCreateWithoutActivitiesInput>;
-    connectOrCreate?: InstanceType<typeof UserCreateOrConnectWithoutActivitiesInput>;
-    upsert?: InstanceType<typeof UserUpsertWithoutActivitiesInput>;
-    connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>;
-    update?: InstanceType<typeof UserUpdateToOneWithWhereWithoutActivitiesInput>;
 }
 export declare class UserUpdateOneRequiredWithoutCoursesAsTeacherNestedInput {
     create?: InstanceType<typeof UserCreateWithoutCoursesAsTeacherInput>;
@@ -12088,10 +12450,6 @@ export declare class UserUpdateOneWithoutUserAccountNestedInput {
     connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>;
     update?: InstanceType<typeof UserUpdateToOneWithWhereWithoutUserAccountInput>;
 }
-export declare class UserUpdateToOneWithWhereWithoutActivitiesInput {
-    where?: InstanceType<typeof UserWhereInput>;
-    data: InstanceType<typeof UserUpdateWithoutActivitiesInput>;
-}
 export declare class UserUpdateToOneWithWhereWithoutCoursesAsTeacherInput {
     where?: InstanceType<typeof UserWhereInput>;
     data: InstanceType<typeof UserUpdateWithoutCoursesAsTeacherInput>;
@@ -12111,6 +12469,10 @@ export declare class UserUpdateToOneWithWhereWithoutUserAccountInput {
 export declare class UserUpdateToOneWithWhereWithoutUserChatsInput {
     where?: InstanceType<typeof UserWhereInput>;
     data: InstanceType<typeof UserUpdateWithoutUserChatsInput>;
+}
+export declare class UserUpdateWithWhereUniqueWithoutActivitiesInput {
+    where: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>;
+    data: InstanceType<typeof UserUpdateWithoutActivitiesInput>;
 }
 export declare class UserUpdateWithWhereUniqueWithoutBlackboardsReceivedInput {
     where: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>;
@@ -12140,6 +12502,10 @@ export declare class UserUpdateWithWhereUniqueWithoutEventsInput {
     where: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>;
     data: InstanceType<typeof UserUpdateWithoutEventsInput>;
 }
+export declare class UserUpdateWithWhereUniqueWithoutReadActivitiesInput {
+    where: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>;
+    data: InstanceType<typeof UserUpdateWithoutReadActivitiesInput>;
+}
 export declare class UserUpdateWithWhereUniqueWithoutSchoolsInput {
     where: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>;
     data: InstanceType<typeof UserUpdateWithoutSchoolsInput>;
@@ -12161,6 +12527,7 @@ export declare class UserUpdateWithoutActivitiesInput {
     coursesAsTeacher?: InstanceType<typeof CourseUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutTargetNestedInput>;
     userAccount?: InstanceType<typeof UserAccountUpdateOneRequiredWithoutUserNestedInput>;
@@ -12174,7 +12541,7 @@ export declare class UserUpdateWithoutBlackboardsReceivedInput {
     firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUpdateManyWithoutAuthorsNestedInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutMembersNestedInput>;
     clubs?: InstanceType<typeof ClubUpdateManyWithoutMembersNestedInput>;
@@ -12183,6 +12550,7 @@ export declare class UserUpdateWithoutBlackboardsReceivedInput {
     coursesAsTeacher?: InstanceType<typeof CourseUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutTargetNestedInput>;
     userAccount?: InstanceType<typeof UserAccountUpdateOneRequiredWithoutUserNestedInput>;
@@ -12196,7 +12564,7 @@ export declare class UserUpdateWithoutBlackboardsInput {
     firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUpdateManyWithoutExecutorNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutMembersNestedInput>;
     clubs?: InstanceType<typeof ClubUpdateManyWithoutMembersNestedInput>;
@@ -12205,6 +12573,7 @@ export declare class UserUpdateWithoutBlackboardsInput {
     coursesAsTeacher?: InstanceType<typeof CourseUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutTargetNestedInput>;
     userAccount?: InstanceType<typeof UserAccountUpdateOneRequiredWithoutUserNestedInput>;
@@ -12218,7 +12587,7 @@ export declare class UserUpdateWithoutClassesInput {
     firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUpdateManyWithoutTargetsNestedInput>;
     clubs?: InstanceType<typeof ClubUpdateManyWithoutMembersNestedInput>;
@@ -12227,6 +12596,7 @@ export declare class UserUpdateWithoutClassesInput {
     coursesAsTeacher?: InstanceType<typeof CourseUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutTargetNestedInput>;
     userAccount?: InstanceType<typeof UserAccountUpdateOneRequiredWithoutUserNestedInput>;
@@ -12240,7 +12610,7 @@ export declare class UserUpdateWithoutClubsAsLeaderInput {
     firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutMembersNestedInput>;
@@ -12249,6 +12619,7 @@ export declare class UserUpdateWithoutClubsAsLeaderInput {
     coursesAsTeacher?: InstanceType<typeof CourseUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutTargetNestedInput>;
     userAccount?: InstanceType<typeof UserAccountUpdateOneRequiredWithoutUserNestedInput>;
@@ -12262,7 +12633,7 @@ export declare class UserUpdateWithoutClubsInput {
     firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutMembersNestedInput>;
@@ -12271,6 +12642,7 @@ export declare class UserUpdateWithoutClubsInput {
     coursesAsTeacher?: InstanceType<typeof CourseUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutTargetNestedInput>;
     userAccount?: InstanceType<typeof UserAccountUpdateOneRequiredWithoutUserNestedInput>;
@@ -12284,7 +12656,7 @@ export declare class UserUpdateWithoutCoursesAsTeacherInput {
     firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutMembersNestedInput>;
@@ -12293,6 +12665,7 @@ export declare class UserUpdateWithoutCoursesAsTeacherInput {
     courses?: InstanceType<typeof CourseUpdateManyWithoutMembersNestedInput>;
     events?: InstanceType<typeof EventUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutTargetNestedInput>;
     userAccount?: InstanceType<typeof UserAccountUpdateOneRequiredWithoutUserNestedInput>;
@@ -12306,7 +12679,7 @@ export declare class UserUpdateWithoutCoursesInput {
     firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutMembersNestedInput>;
@@ -12315,6 +12688,7 @@ export declare class UserUpdateWithoutCoursesInput {
     coursesAsTeacher?: InstanceType<typeof CourseUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutTargetNestedInput>;
     userAccount?: InstanceType<typeof UserAccountUpdateOneRequiredWithoutUserNestedInput>;
@@ -12328,7 +12702,7 @@ export declare class UserUpdateWithoutEventTicketsInput {
     firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutMembersNestedInput>;
@@ -12337,6 +12711,7 @@ export declare class UserUpdateWithoutEventTicketsInput {
     courses?: InstanceType<typeof CourseUpdateManyWithoutMembersNestedInput>;
     coursesAsTeacher?: InstanceType<typeof CourseUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUpdateManyWithoutSubscribersNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutTargetNestedInput>;
     userAccount?: InstanceType<typeof UserAccountUpdateOneRequiredWithoutUserNestedInput>;
@@ -12350,7 +12725,7 @@ export declare class UserUpdateWithoutEventsInput {
     firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutMembersNestedInput>;
@@ -12358,6 +12733,30 @@ export declare class UserUpdateWithoutEventsInput {
     clubsAsLeader?: InstanceType<typeof ClubUpdateManyWithoutLeadersNestedInput>;
     courses?: InstanceType<typeof CourseUpdateManyWithoutMembersNestedInput>;
     coursesAsTeacher?: InstanceType<typeof CourseUpdateManyWithoutTeacherNestedInput>;
+    eventTickets?: InstanceType<typeof EventTicketUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutReadByNestedInput>;
+    schools?: InstanceType<typeof SchoolUpdateManyWithoutMembersNestedInput>;
+    targetActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutTargetNestedInput>;
+    userAccount?: InstanceType<typeof UserAccountUpdateOneRequiredWithoutUserNestedInput>;
+    userChats?: InstanceType<typeof UserChatUpdateManyWithoutUserNestedInput>;
+}
+export declare class UserUpdateWithoutReadActivitiesInput {
+    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
+    type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
+    activities?: InstanceType<typeof ChatActivityUpdateManyWithoutExecutorNestedInput>;
+    blackboards?: InstanceType<typeof BlackboardUpdateManyWithoutAuthorsNestedInput>;
+    blackboardsReceived?: InstanceType<typeof BlackboardUpdateManyWithoutTargetsNestedInput>;
+    classes?: InstanceType<typeof ClassUpdateManyWithoutMembersNestedInput>;
+    clubs?: InstanceType<typeof ClubUpdateManyWithoutMembersNestedInput>;
+    clubsAsLeader?: InstanceType<typeof ClubUpdateManyWithoutLeadersNestedInput>;
+    courses?: InstanceType<typeof CourseUpdateManyWithoutMembersNestedInput>;
+    coursesAsTeacher?: InstanceType<typeof CourseUpdateManyWithoutTeacherNestedInput>;
+    events?: InstanceType<typeof EventUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUpdateManyWithoutBuyerNestedInput>;
     schools?: InstanceType<typeof SchoolUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutTargetNestedInput>;
@@ -12372,7 +12771,7 @@ export declare class UserUpdateWithoutSchoolsInput {
     firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutMembersNestedInput>;
@@ -12382,6 +12781,7 @@ export declare class UserUpdateWithoutSchoolsInput {
     coursesAsTeacher?: InstanceType<typeof CourseUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutReadByNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutTargetNestedInput>;
     userAccount?: InstanceType<typeof UserAccountUpdateOneRequiredWithoutUserNestedInput>;
     userChats?: InstanceType<typeof UserChatUpdateManyWithoutUserNestedInput>;
@@ -12394,7 +12794,7 @@ export declare class UserUpdateWithoutTargetActivitiesInput {
     firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutMembersNestedInput>;
@@ -12404,6 +12804,7 @@ export declare class UserUpdateWithoutTargetActivitiesInput {
     coursesAsTeacher?: InstanceType<typeof CourseUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUpdateManyWithoutMembersNestedInput>;
     userAccount?: InstanceType<typeof UserAccountUpdateOneRequiredWithoutUserNestedInput>;
     userChats?: InstanceType<typeof UserChatUpdateManyWithoutUserNestedInput>;
@@ -12416,7 +12817,7 @@ export declare class UserUpdateWithoutUserAccountInput {
     firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutMembersNestedInput>;
@@ -12426,6 +12827,7 @@ export declare class UserUpdateWithoutUserAccountInput {
     coursesAsTeacher?: InstanceType<typeof CourseUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutTargetNestedInput>;
     userChats?: InstanceType<typeof UserChatUpdateManyWithoutUserNestedInput>;
@@ -12438,7 +12840,7 @@ export declare class UserUpdateWithoutUserChatsInput {
     firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutMembersNestedInput>;
@@ -12448,6 +12850,7 @@ export declare class UserUpdateWithoutUserChatsInput {
     coursesAsTeacher?: InstanceType<typeof CourseUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutTargetNestedInput>;
     userAccount?: InstanceType<typeof UserAccountUpdateOneRequiredWithoutUserNestedInput>;
@@ -12460,7 +12863,7 @@ export declare class UserUpdateInput {
     firstName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     lastName?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     type?: InstanceType<typeof EnumUserTypeFieldUpdateOperationsInput>;
-    activities?: InstanceType<typeof UserChatActivityUpdateManyWithoutUserNestedInput>;
+    activities?: InstanceType<typeof ChatActivityUpdateManyWithoutExecutorNestedInput>;
     blackboards?: InstanceType<typeof BlackboardUpdateManyWithoutAuthorsNestedInput>;
     blackboardsReceived?: InstanceType<typeof BlackboardUpdateManyWithoutTargetsNestedInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutMembersNestedInput>;
@@ -12470,10 +12873,16 @@ export declare class UserUpdateInput {
     coursesAsTeacher?: InstanceType<typeof CourseUpdateManyWithoutTeacherNestedInput>;
     events?: InstanceType<typeof EventUpdateManyWithoutSubscribersNestedInput>;
     eventTickets?: InstanceType<typeof EventTicketUpdateManyWithoutBuyerNestedInput>;
+    readActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutReadByNestedInput>;
     schools?: InstanceType<typeof SchoolUpdateManyWithoutMembersNestedInput>;
     targetActivities?: InstanceType<typeof ChatActivityUpdateManyWithoutTargetNestedInput>;
     userAccount?: InstanceType<typeof UserAccountUpdateOneRequiredWithoutUserNestedInput>;
     userChats?: InstanceType<typeof UserChatUpdateManyWithoutUserNestedInput>;
+}
+export declare class UserUpsertWithWhereUniqueWithoutActivitiesInput {
+    where: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>;
+    update: InstanceType<typeof UserUpdateWithoutActivitiesInput>;
+    create: InstanceType<typeof UserCreateWithoutActivitiesInput>;
 }
 export declare class UserUpsertWithWhereUniqueWithoutBlackboardsReceivedInput {
     where: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>;
@@ -12510,15 +12919,15 @@ export declare class UserUpsertWithWhereUniqueWithoutEventsInput {
     update: InstanceType<typeof UserUpdateWithoutEventsInput>;
     create: InstanceType<typeof UserCreateWithoutEventsInput>;
 }
+export declare class UserUpsertWithWhereUniqueWithoutReadActivitiesInput {
+    where: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>;
+    update: InstanceType<typeof UserUpdateWithoutReadActivitiesInput>;
+    create: InstanceType<typeof UserCreateWithoutReadActivitiesInput>;
+}
 export declare class UserUpsertWithWhereUniqueWithoutSchoolsInput {
     where: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'userAccountId'>;
     update: InstanceType<typeof UserUpdateWithoutSchoolsInput>;
     create: InstanceType<typeof UserCreateWithoutSchoolsInput>;
-}
-export declare class UserUpsertWithoutActivitiesInput {
-    update: InstanceType<typeof UserUpdateWithoutActivitiesInput>;
-    create: InstanceType<typeof UserCreateWithoutActivitiesInput>;
-    where?: InstanceType<typeof UserWhereInput>;
 }
 export declare class UserUpsertWithoutCoursesAsTeacherInput {
     update: InstanceType<typeof UserUpdateWithoutCoursesAsTeacherInput>;
@@ -12557,7 +12966,7 @@ export declare class UserWhereUniqueInput {
     firstName?: InstanceType<typeof StringFilter>;
     lastName?: InstanceType<typeof StringFilter>;
     type?: InstanceType<typeof EnumUserTypeFilter>;
-    activities?: InstanceType<typeof UserChatActivityListRelationFilter>;
+    activities?: InstanceType<typeof ChatActivityListRelationFilter>;
     blackboards?: InstanceType<typeof BlackboardListRelationFilter>;
     blackboardsReceived?: InstanceType<typeof BlackboardListRelationFilter>;
     classes?: InstanceType<typeof ClassListRelationFilter>;
@@ -12567,6 +12976,7 @@ export declare class UserWhereUniqueInput {
     coursesAsTeacher?: InstanceType<typeof CourseListRelationFilter>;
     events?: InstanceType<typeof EventListRelationFilter>;
     eventTickets?: InstanceType<typeof EventTicketListRelationFilter>;
+    readActivities?: InstanceType<typeof ChatActivityListRelationFilter>;
     schools?: InstanceType<typeof SchoolListRelationFilter>;
     targetActivities?: InstanceType<typeof ChatActivityListRelationFilter>;
     userAccount?: InstanceType<typeof UserAccountRelationFilter>;
@@ -12584,7 +12994,7 @@ export declare class UserWhereInput {
     lastName?: InstanceType<typeof StringFilter>;
     type?: InstanceType<typeof EnumUserTypeFilter>;
     userAccountId?: InstanceType<typeof UuidFilter>;
-    activities?: InstanceType<typeof UserChatActivityListRelationFilter>;
+    activities?: InstanceType<typeof ChatActivityListRelationFilter>;
     blackboards?: InstanceType<typeof BlackboardListRelationFilter>;
     blackboardsReceived?: InstanceType<typeof BlackboardListRelationFilter>;
     classes?: InstanceType<typeof ClassListRelationFilter>;
@@ -12594,6 +13004,7 @@ export declare class UserWhereInput {
     coursesAsTeacher?: InstanceType<typeof CourseListRelationFilter>;
     events?: InstanceType<typeof EventListRelationFilter>;
     eventTickets?: InstanceType<typeof EventTicketListRelationFilter>;
+    readActivities?: InstanceType<typeof ChatActivityListRelationFilter>;
     schools?: InstanceType<typeof SchoolListRelationFilter>;
     targetActivities?: InstanceType<typeof ChatActivityListRelationFilter>;
     userAccount?: InstanceType<typeof UserAccountRelationFilter>;
@@ -12608,7 +13019,7 @@ export declare class User {
     lastName: string;
     type: keyof typeof UserType;
     userAccountId: string;
-    activities?: Array<UserChatActivity>;
+    activities?: Array<ChatActivity>;
     blackboards?: Array<Blackboard>;
     blackboardsReceived?: Array<Blackboard>;
     classes?: Array<Class>;
@@ -12618,6 +13029,7 @@ export declare class User {
     coursesAsTeacher?: Array<Course>;
     events?: Array<Event>;
     eventTickets?: Array<EventTicket>;
+    readActivities?: Array<ChatActivity>;
     schools?: Array<School>;
     targetActivities?: Array<ChatActivity>;
     userAccount?: InstanceType<typeof UserAccount>;
@@ -13556,551 +13968,5 @@ export declare class UserChat {
     read: boolean;
     userId: string;
     chat?: InstanceType<typeof Chat>;
-    user?: InstanceType<typeof User>;
-}
-export declare class AggregateUserChatActivity {
-    _count?: InstanceType<typeof UserChatActivityCountAggregate>;
-    _min?: InstanceType<typeof UserChatActivityMinAggregate>;
-    _max?: InstanceType<typeof UserChatActivityMaxAggregate>;
-}
-export declare class CreateManyUserChatActivityArgs {
-    data: Array<UserChatActivityCreateManyInput>;
-    skipDuplicates?: boolean;
-}
-export declare class CreateOneUserChatActivityArgs {
-    data: InstanceType<typeof UserChatActivityCreateInput>;
-}
-export declare class DeleteManyUserChatActivityArgs {
-    where?: InstanceType<typeof UserChatActivityWhereInput>;
-}
-export declare class DeleteOneUserChatActivityArgs {
-    where: Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>;
-}
-export declare class FindFirstUserChatActivityOrThrowArgs {
-    where?: InstanceType<typeof UserChatActivityWhereInput>;
-    orderBy?: Array<UserChatActivityOrderByWithRelationInput>;
-    cursor?: Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>;
-    take?: number;
-    skip?: number;
-    distinct?: Array<keyof typeof UserChatActivityScalarFieldEnum>;
-}
-export declare class FindFirstUserChatActivityArgs {
-    where?: InstanceType<typeof UserChatActivityWhereInput>;
-    orderBy?: Array<UserChatActivityOrderByWithRelationInput>;
-    cursor?: Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>;
-    take?: number;
-    skip?: number;
-    distinct?: Array<keyof typeof UserChatActivityScalarFieldEnum>;
-}
-export declare class FindManyUserChatActivityArgs {
-    where?: InstanceType<typeof UserChatActivityWhereInput>;
-    orderBy?: Array<UserChatActivityOrderByWithRelationInput>;
-    cursor?: Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>;
-    take?: number;
-    skip?: number;
-    distinct?: Array<keyof typeof UserChatActivityScalarFieldEnum>;
-}
-export declare class FindUniqueUserChatActivityOrThrowArgs {
-    where: Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>;
-}
-export declare class FindUniqueUserChatActivityArgs {
-    where: Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>;
-}
-export declare class UpdateManyUserChatActivityArgs {
-    data: InstanceType<typeof UserChatActivityUpdateManyMutationInput>;
-    where?: InstanceType<typeof UserChatActivityWhereInput>;
-}
-export declare class UpdateOneUserChatActivityArgs {
-    data: InstanceType<typeof UserChatActivityUpdateInput>;
-    where: Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>;
-}
-export declare class UpsertOneUserChatActivityArgs {
-    where: Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>;
-    create: InstanceType<typeof UserChatActivityCreateInput>;
-    update: InstanceType<typeof UserChatActivityUpdateInput>;
-}
-export declare class UserChatActivityAggregateArgs {
-    where?: InstanceType<typeof UserChatActivityWhereInput>;
-    orderBy?: Array<UserChatActivityOrderByWithRelationInput>;
-    cursor?: Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>;
-    take?: number;
-    skip?: number;
-    _count?: InstanceType<typeof UserChatActivityCountAggregateInput>;
-    _min?: InstanceType<typeof UserChatActivityMinAggregateInput>;
-    _max?: InstanceType<typeof UserChatActivityMaxAggregateInput>;
-}
-export declare class UserChatActivityCountAggregateInput {
-    id?: true;
-    createdAt?: true;
-    updatedAt?: true;
-    chatActivityId?: true;
-    userId?: true;
-    read?: true;
-    starred?: true;
-    _all?: true;
-}
-export declare class UserChatActivityCountAggregate {
-    id: number;
-    createdAt: number;
-    updatedAt: number;
-    chatActivityId: number;
-    userId: number;
-    read: number;
-    starred: number;
-    _all: number;
-}
-export declare class UserChatActivityCountOrderByAggregateInput {
-    id?: keyof typeof SortOrder;
-    createdAt?: keyof typeof SortOrder;
-    updatedAt?: keyof typeof SortOrder;
-    chatActivityId?: keyof typeof SortOrder;
-    userId?: keyof typeof SortOrder;
-    read?: keyof typeof SortOrder;
-    starred?: keyof typeof SortOrder;
-}
-export declare class UserChatActivityCreateManyChatActivityInputEnvelope {
-    data: Array<UserChatActivityCreateManyChatActivityInput>;
-    skipDuplicates?: boolean;
-}
-export declare class UserChatActivityCreateManyChatActivityInput {
-    id?: string;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-    userId: string;
-    read?: boolean;
-    starred?: boolean;
-}
-export declare class UserChatActivityCreateManyUserInputEnvelope {
-    data: Array<UserChatActivityCreateManyUserInput>;
-    skipDuplicates?: boolean;
-}
-export declare class UserChatActivityCreateManyUserInput {
-    id?: string;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-    chatActivityId: string;
-    read?: boolean;
-    starred?: boolean;
-}
-export declare class UserChatActivityCreateManyInput {
-    id?: string;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-    chatActivityId: string;
-    userId: string;
-    read?: boolean;
-    starred?: boolean;
-}
-export declare class UserChatActivityCreateNestedManyWithoutChatActivityInput {
-    create?: Array<UserChatActivityCreateWithoutChatActivityInput>;
-    connectOrCreate?: Array<UserChatActivityCreateOrConnectWithoutChatActivityInput>;
-    createMany?: InstanceType<typeof UserChatActivityCreateManyChatActivityInputEnvelope>;
-    connect?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-}
-export declare class UserChatActivityCreateNestedManyWithoutUserInput {
-    create?: Array<UserChatActivityCreateWithoutUserInput>;
-    connectOrCreate?: Array<UserChatActivityCreateOrConnectWithoutUserInput>;
-    createMany?: InstanceType<typeof UserChatActivityCreateManyUserInputEnvelope>;
-    connect?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-}
-export declare class UserChatActivityCreateOrConnectWithoutChatActivityInput {
-    where: Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>;
-    create: InstanceType<typeof UserChatActivityCreateWithoutChatActivityInput>;
-}
-export declare class UserChatActivityCreateOrConnectWithoutUserInput {
-    where: Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>;
-    create: InstanceType<typeof UserChatActivityCreateWithoutUserInput>;
-}
-export declare class UserChatActivityCreateWithoutChatActivityInput {
-    id?: string;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-    read?: boolean;
-    starred?: boolean;
-    user: InstanceType<typeof UserCreateNestedOneWithoutActivitiesInput>;
-}
-export declare class UserChatActivityCreateWithoutUserInput {
-    id?: string;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-    read?: boolean;
-    starred?: boolean;
-    chatActivity: InstanceType<typeof ChatActivityCreateNestedOneWithoutExecutorInput>;
-}
-export declare class UserChatActivityCreateInput {
-    id?: string;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-    read?: boolean;
-    starred?: boolean;
-    chatActivity: InstanceType<typeof ChatActivityCreateNestedOneWithoutExecutorInput>;
-    user: InstanceType<typeof UserCreateNestedOneWithoutActivitiesInput>;
-}
-export declare class UserChatActivityGroupByArgs {
-    where?: InstanceType<typeof UserChatActivityWhereInput>;
-    orderBy?: Array<UserChatActivityOrderByWithAggregationInput>;
-    by: Array<keyof typeof UserChatActivityScalarFieldEnum>;
-    having?: InstanceType<typeof UserChatActivityScalarWhereWithAggregatesInput>;
-    take?: number;
-    skip?: number;
-    _count?: InstanceType<typeof UserChatActivityCountAggregateInput>;
-    _min?: InstanceType<typeof UserChatActivityMinAggregateInput>;
-    _max?: InstanceType<typeof UserChatActivityMaxAggregateInput>;
-}
-export declare class UserChatActivityGroupBy {
-    id: string;
-    createdAt: Date | string;
-    updatedAt: Date | string;
-    chatActivityId: string;
-    userId: string;
-    read: boolean;
-    starred: boolean;
-    _count?: InstanceType<typeof UserChatActivityCountAggregate>;
-    _min?: InstanceType<typeof UserChatActivityMinAggregate>;
-    _max?: InstanceType<typeof UserChatActivityMaxAggregate>;
-}
-export declare class UserChatActivityListRelationFilter {
-    every?: InstanceType<typeof UserChatActivityWhereInput>;
-    some?: InstanceType<typeof UserChatActivityWhereInput>;
-    none?: InstanceType<typeof UserChatActivityWhereInput>;
-}
-export declare class UserChatActivityMaxAggregateInput {
-    id?: true;
-    createdAt?: true;
-    updatedAt?: true;
-    chatActivityId?: true;
-    userId?: true;
-    read?: true;
-    starred?: true;
-}
-export declare class UserChatActivityMaxAggregate {
-    id?: string;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-    chatActivityId?: string;
-    userId?: string;
-    read?: boolean;
-    starred?: boolean;
-}
-export declare class UserChatActivityMaxOrderByAggregateInput {
-    id?: keyof typeof SortOrder;
-    createdAt?: keyof typeof SortOrder;
-    updatedAt?: keyof typeof SortOrder;
-    chatActivityId?: keyof typeof SortOrder;
-    userId?: keyof typeof SortOrder;
-    read?: keyof typeof SortOrder;
-    starred?: keyof typeof SortOrder;
-}
-export declare class UserChatActivityMinAggregateInput {
-    id?: true;
-    createdAt?: true;
-    updatedAt?: true;
-    chatActivityId?: true;
-    userId?: true;
-    read?: true;
-    starred?: true;
-}
-export declare class UserChatActivityMinAggregate {
-    id?: string;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-    chatActivityId?: string;
-    userId?: string;
-    read?: boolean;
-    starred?: boolean;
-}
-export declare class UserChatActivityMinOrderByAggregateInput {
-    id?: keyof typeof SortOrder;
-    createdAt?: keyof typeof SortOrder;
-    updatedAt?: keyof typeof SortOrder;
-    chatActivityId?: keyof typeof SortOrder;
-    userId?: keyof typeof SortOrder;
-    read?: keyof typeof SortOrder;
-    starred?: keyof typeof SortOrder;
-}
-export declare class UserChatActivityOrderByRelationAggregateInput {
-    _count?: keyof typeof SortOrder;
-}
-export declare class UserChatActivityOrderByWithAggregationInput {
-    id?: keyof typeof SortOrder;
-    createdAt?: keyof typeof SortOrder;
-    updatedAt?: keyof typeof SortOrder;
-    chatActivityId?: keyof typeof SortOrder;
-    userId?: keyof typeof SortOrder;
-    read?: keyof typeof SortOrder;
-    starred?: keyof typeof SortOrder;
-    _count?: InstanceType<typeof UserChatActivityCountOrderByAggregateInput>;
-    _max?: InstanceType<typeof UserChatActivityMaxOrderByAggregateInput>;
-    _min?: InstanceType<typeof UserChatActivityMinOrderByAggregateInput>;
-}
-export declare class UserChatActivityOrderByWithRelationInput {
-    id?: keyof typeof SortOrder;
-    createdAt?: keyof typeof SortOrder;
-    updatedAt?: keyof typeof SortOrder;
-    chatActivityId?: keyof typeof SortOrder;
-    userId?: keyof typeof SortOrder;
-    read?: keyof typeof SortOrder;
-    starred?: keyof typeof SortOrder;
-    chatActivity?: InstanceType<typeof ChatActivityOrderByWithRelationInput>;
-    user?: InstanceType<typeof UserOrderByWithRelationInput>;
-}
-export declare class UserChatActivityScalarWhereWithAggregatesInput {
-    AND?: Array<UserChatActivityScalarWhereWithAggregatesInput>;
-    OR?: Array<UserChatActivityScalarWhereWithAggregatesInput>;
-    NOT?: Array<UserChatActivityScalarWhereWithAggregatesInput>;
-    id?: InstanceType<typeof UuidWithAggregatesFilter>;
-    createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
-    updatedAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
-    chatActivityId?: InstanceType<typeof UuidWithAggregatesFilter>;
-    userId?: InstanceType<typeof UuidWithAggregatesFilter>;
-    read?: InstanceType<typeof BoolWithAggregatesFilter>;
-    starred?: InstanceType<typeof BoolWithAggregatesFilter>;
-}
-export declare class UserChatActivityScalarWhereInput {
-    AND?: Array<UserChatActivityScalarWhereInput>;
-    OR?: Array<UserChatActivityScalarWhereInput>;
-    NOT?: Array<UserChatActivityScalarWhereInput>;
-    id?: InstanceType<typeof UuidFilter>;
-    createdAt?: InstanceType<typeof DateTimeFilter>;
-    updatedAt?: InstanceType<typeof DateTimeFilter>;
-    chatActivityId?: InstanceType<typeof UuidFilter>;
-    userId?: InstanceType<typeof UuidFilter>;
-    read?: InstanceType<typeof BoolFilter>;
-    starred?: InstanceType<typeof BoolFilter>;
-}
-export declare class UserChatActivityUncheckedCreateNestedManyWithoutChatActivityInput {
-    create?: Array<UserChatActivityCreateWithoutChatActivityInput>;
-    connectOrCreate?: Array<UserChatActivityCreateOrConnectWithoutChatActivityInput>;
-    createMany?: InstanceType<typeof UserChatActivityCreateManyChatActivityInputEnvelope>;
-    connect?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-}
-export declare class UserChatActivityUncheckedCreateNestedManyWithoutUserInput {
-    create?: Array<UserChatActivityCreateWithoutUserInput>;
-    connectOrCreate?: Array<UserChatActivityCreateOrConnectWithoutUserInput>;
-    createMany?: InstanceType<typeof UserChatActivityCreateManyUserInputEnvelope>;
-    connect?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-}
-export declare class UserChatActivityUncheckedCreateWithoutChatActivityInput {
-    id?: string;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-    userId: string;
-    read?: boolean;
-    starred?: boolean;
-}
-export declare class UserChatActivityUncheckedCreateWithoutUserInput {
-    id?: string;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-    chatActivityId: string;
-    read?: boolean;
-    starred?: boolean;
-}
-export declare class UserChatActivityUncheckedCreateInput {
-    id?: string;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-    chatActivityId: string;
-    userId: string;
-    read?: boolean;
-    starred?: boolean;
-}
-export declare class UserChatActivityUncheckedUpdateManyWithoutChatActivityNestedInput {
-    create?: Array<UserChatActivityCreateWithoutChatActivityInput>;
-    connectOrCreate?: Array<UserChatActivityCreateOrConnectWithoutChatActivityInput>;
-    upsert?: Array<UserChatActivityUpsertWithWhereUniqueWithoutChatActivityInput>;
-    createMany?: InstanceType<typeof UserChatActivityCreateManyChatActivityInputEnvelope>;
-    set?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-    disconnect?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-    delete?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-    connect?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-    update?: Array<UserChatActivityUpdateWithWhereUniqueWithoutChatActivityInput>;
-    updateMany?: Array<UserChatActivityUpdateManyWithWhereWithoutChatActivityInput>;
-    deleteMany?: Array<UserChatActivityScalarWhereInput>;
-}
-export declare class UserChatActivityUncheckedUpdateManyWithoutChatActivityInput {
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-}
-export declare class UserChatActivityUncheckedUpdateManyWithoutUserNestedInput {
-    create?: Array<UserChatActivityCreateWithoutUserInput>;
-    connectOrCreate?: Array<UserChatActivityCreateOrConnectWithoutUserInput>;
-    upsert?: Array<UserChatActivityUpsertWithWhereUniqueWithoutUserInput>;
-    createMany?: InstanceType<typeof UserChatActivityCreateManyUserInputEnvelope>;
-    set?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-    disconnect?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-    delete?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-    connect?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-    update?: Array<UserChatActivityUpdateWithWhereUniqueWithoutUserInput>;
-    updateMany?: Array<UserChatActivityUpdateManyWithWhereWithoutUserInput>;
-    deleteMany?: Array<UserChatActivityScalarWhereInput>;
-}
-export declare class UserChatActivityUncheckedUpdateManyWithoutUserInput {
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    chatActivityId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-}
-export declare class UserChatActivityUncheckedUpdateManyInput {
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    chatActivityId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-}
-export declare class UserChatActivityUncheckedUpdateWithoutChatActivityInput {
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-}
-export declare class UserChatActivityUncheckedUpdateWithoutUserInput {
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    chatActivityId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-}
-export declare class UserChatActivityUncheckedUpdateInput {
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    chatActivityId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    userId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-}
-export declare class UserChatActivityUpdateManyMutationInput {
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-}
-export declare class UserChatActivityUpdateManyWithWhereWithoutChatActivityInput {
-    where: InstanceType<typeof UserChatActivityScalarWhereInput>;
-    data: InstanceType<typeof UserChatActivityUpdateManyMutationInput>;
-}
-export declare class UserChatActivityUpdateManyWithWhereWithoutUserInput {
-    where: InstanceType<typeof UserChatActivityScalarWhereInput>;
-    data: InstanceType<typeof UserChatActivityUpdateManyMutationInput>;
-}
-export declare class UserChatActivityUpdateManyWithoutChatActivityNestedInput {
-    create?: Array<UserChatActivityCreateWithoutChatActivityInput>;
-    connectOrCreate?: Array<UserChatActivityCreateOrConnectWithoutChatActivityInput>;
-    upsert?: Array<UserChatActivityUpsertWithWhereUniqueWithoutChatActivityInput>;
-    createMany?: InstanceType<typeof UserChatActivityCreateManyChatActivityInputEnvelope>;
-    set?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-    disconnect?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-    delete?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-    connect?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-    update?: Array<UserChatActivityUpdateWithWhereUniqueWithoutChatActivityInput>;
-    updateMany?: Array<UserChatActivityUpdateManyWithWhereWithoutChatActivityInput>;
-    deleteMany?: Array<UserChatActivityScalarWhereInput>;
-}
-export declare class UserChatActivityUpdateManyWithoutUserNestedInput {
-    create?: Array<UserChatActivityCreateWithoutUserInput>;
-    connectOrCreate?: Array<UserChatActivityCreateOrConnectWithoutUserInput>;
-    upsert?: Array<UserChatActivityUpsertWithWhereUniqueWithoutUserInput>;
-    createMany?: InstanceType<typeof UserChatActivityCreateManyUserInputEnvelope>;
-    set?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-    disconnect?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-    delete?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-    connect?: Array<Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>>;
-    update?: Array<UserChatActivityUpdateWithWhereUniqueWithoutUserInput>;
-    updateMany?: Array<UserChatActivityUpdateManyWithWhereWithoutUserInput>;
-    deleteMany?: Array<UserChatActivityScalarWhereInput>;
-}
-export declare class UserChatActivityUpdateWithWhereUniqueWithoutChatActivityInput {
-    where: Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>;
-    data: InstanceType<typeof UserChatActivityUpdateWithoutChatActivityInput>;
-}
-export declare class UserChatActivityUpdateWithWhereUniqueWithoutUserInput {
-    where: Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>;
-    data: InstanceType<typeof UserChatActivityUpdateWithoutUserInput>;
-}
-export declare class UserChatActivityUpdateWithoutChatActivityInput {
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    user?: InstanceType<typeof UserUpdateOneRequiredWithoutActivitiesNestedInput>;
-}
-export declare class UserChatActivityUpdateWithoutUserInput {
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    chatActivity?: InstanceType<typeof ChatActivityUpdateOneRequiredWithoutExecutorNestedInput>;
-}
-export declare class UserChatActivityUpdateInput {
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    read?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    starred?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    chatActivity?: InstanceType<typeof ChatActivityUpdateOneRequiredWithoutExecutorNestedInput>;
-    user?: InstanceType<typeof UserUpdateOneRequiredWithoutActivitiesNestedInput>;
-}
-export declare class UserChatActivityUpsertWithWhereUniqueWithoutChatActivityInput {
-    where: Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>;
-    update: InstanceType<typeof UserChatActivityUpdateWithoutChatActivityInput>;
-    create: InstanceType<typeof UserChatActivityCreateWithoutChatActivityInput>;
-}
-export declare class UserChatActivityUpsertWithWhereUniqueWithoutUserInput {
-    where: Prisma.AtLeast<UserChatActivityWhereUniqueInput, 'id'>;
-    update: InstanceType<typeof UserChatActivityUpdateWithoutUserInput>;
-    create: InstanceType<typeof UserChatActivityCreateWithoutUserInput>;
-}
-export declare class UserChatActivityWhereUniqueInput {
-    id?: string;
-    AND?: Array<UserChatActivityWhereInput>;
-    OR?: Array<UserChatActivityWhereInput>;
-    NOT?: Array<UserChatActivityWhereInput>;
-    createdAt?: InstanceType<typeof DateTimeFilter>;
-    updatedAt?: InstanceType<typeof DateTimeFilter>;
-    chatActivityId?: InstanceType<typeof UuidFilter>;
-    userId?: InstanceType<typeof UuidFilter>;
-    read?: InstanceType<typeof BoolFilter>;
-    starred?: InstanceType<typeof BoolFilter>;
-    chatActivity?: InstanceType<typeof ChatActivityRelationFilter>;
-    user?: InstanceType<typeof UserRelationFilter>;
-}
-export declare class UserChatActivityWhereInput {
-    AND?: Array<UserChatActivityWhereInput>;
-    OR?: Array<UserChatActivityWhereInput>;
-    NOT?: Array<UserChatActivityWhereInput>;
-    id?: InstanceType<typeof UuidFilter>;
-    createdAt?: InstanceType<typeof DateTimeFilter>;
-    updatedAt?: InstanceType<typeof DateTimeFilter>;
-    chatActivityId?: InstanceType<typeof UuidFilter>;
-    userId?: InstanceType<typeof UuidFilter>;
-    read?: InstanceType<typeof BoolFilter>;
-    starred?: InstanceType<typeof BoolFilter>;
-    chatActivity?: InstanceType<typeof ChatActivityRelationFilter>;
-    user?: InstanceType<typeof UserRelationFilter>;
-}
-export declare class UserChatActivity {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    chatActivityId: string;
-    userId: string;
-    read: boolean;
-    starred: boolean;
-    chatActivity?: InstanceType<typeof ChatActivity>;
     user?: InstanceType<typeof User>;
 }

@@ -15,7 +15,7 @@ export class CreateChatActivityDto {
   @Field(() => [String], { nullable: true })
   @IsString({ each: true })
   @IsOptional()
-  read?: string[];
+  readBy?: string[];
 
   @Field(() => String, { nullable: true })
   @IsString()
