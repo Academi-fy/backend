@@ -5,14 +5,23 @@
   <script>
     const socket = io('http://localhost:8080', {
       query: {
-        userId: '1'
+        userId: '9b0ff78b-898d-4d95-b548-a4a4ff6ac712'
       }
     });
     socket.on('connect', function() {
       console.log('Connected');
 
-      socket.emit('test', {
-        message: "1"
+      socket.emit('BLACKBOARD_UPDATE', {
+        "sender": "9b0ff78b-898d-4d95-b548-a4a4ff6ac712",
+        "modifyId": "8c7bb263-3179-480c-a85c-14e4f7141294",
+        "value": {
+          "authors": ["9b0ff78b-898d-4d95-b548-a4a4ff6ac712"],
+          "coverImage": "https://www.adorama.com/alc/wp-content/uploads/2018/11/landscape-photography-tips-yosemite-valley-feature.jpg",
+          "tags": ["339b08ff-3fae-4ba8-a1a5-a9ffb2323012"],
+          "targets": ["9b0ff78b-898d-4d95-b548-a4a4ff6ac712"],
+          "title": "Titel",
+          "text": "Text"
+        }
       }, function(response) {
         console.log('Server response:', response);
       });
@@ -20,8 +29,8 @@
     });
 
 
-    socket.on('ERROR', function(data) {
-      console.log('ERROR:', data);
+    socket.on('RECEIVED_BLACKBOARD_UPDATE', function(data) {
+      console.log('RECEIVED_BLACKBOARD_UPDATE:', data);
     });
     socket.on('disconnect', function() {
       console.log('Disconnected');

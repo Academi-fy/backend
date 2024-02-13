@@ -16,12 +16,14 @@ import { SubjectModule } from './subject';
 import { UserModule } from './user';
 import { UserAccountModule } from './user-account';
 import { UserChatModule } from './user-chat';
+import { ChatActivityModule } from './chat-activity';
 
 @Module({
   imports: [
     BlackboardModule,
     BlackboardTagModule,
     ChatModule,
+    ChatActivityModule,
     ClassModule,
     ClubModule,
     ClubTagModule,

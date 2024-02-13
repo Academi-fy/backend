@@ -11,7 +11,7 @@ export class EditClassDto {
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  grade: string;
+  grade?: string;
 
   @Field(() => [String], { nullable: true })
   @IsArray()

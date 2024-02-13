@@ -8,7 +8,6 @@ import { PrismaModule } from './prisma';
 import { GraphQLJSON } from 'graphql-type-json';
 import { SocketModule } from './socket/socket.module';
 import { RestModule } from './rest/rest.module';
-import { ChatActivityController } from './rest/chat-activity/chat-activity.controller';
 
 @Module({
   imports: [
@@ -28,6 +27,6 @@ import { ChatActivityController } from './rest/chat-activity/chat-activity.contr
     SocketModule,
   ],
   providers: [],
-  controllers: [ChatActivityController],
+  controllers: [],
 })
 export class AppModule {}

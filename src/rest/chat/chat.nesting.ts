@@ -1,12 +1,12 @@
 import { clubRawNesting } from '../club';
 import { courseRawNesting } from '../course';
 import { userChatRawNesting } from '../user-chat';
-import { chatActivityRawNesting } from '../chat-activity/chat-activity.nesting';
+import { chatActivityRawNesting } from '../chat-activity';
 
 export const chatRawNesting = {
+  activities: true,
   clubs: true,
   courses: true,
-  messages: true,
   targets: true,
 } as const;
 

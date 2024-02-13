@@ -1,3 +1,12 @@
+import { chatActivityRawNesting } from '../chat-activity';
+import { blackboardRawNesting } from '../blackboard';
+import { classRawNesting } from '../class';
+import { clubRawNesting } from '../club';
+import { courseRawNesting } from '../course';
+import { eventRawNesting } from '../event';
+import { eventTicketRawNesting } from '../event-ticket';
+import { userChatRawNesting } from '../user-chat';
+
 export const userRawNesting = {
   activities: true,
   blackboards: true,
@@ -17,19 +26,75 @@ export const userRawNesting = {
 };
 
 export const userNesting = {
-  activities: {},
-  blackboards: {},
-  blackboardsReceived: {},
-  classes: {},
-  clubs: {},
-  clubsAsLeader: {},
-  courses: {},
-  coursesAsTeacher: {},
-  events: {},
-  eventTickets: {},
-  readActivities: {},
+  activities: {
+    include: {
+      ...chatActivityRawNesting,
+    },
+  },
+  blackboards: {
+    include: {
+      ...blackboardRawNesting,
+    },
+  },
+  blackboardsReceived: {
+    include: {
+      ...blackboardRawNesting,
+    },
+  },
+  classes: {
+    include: {
+      ...classRawNesting,
+    },
+  },
+  clubs: {
+    include: {
+      ...clubRawNesting,
+    },
+  },
+  clubsAsLeader: {
+    include: {
+      ...clubRawNesting,
+    },
+  },
+  courses: {
+    include: {
+      ...courseRawNesting,
+    },
+  },
+  coursesAsTeacher: {
+    include: {
+      ...courseRawNesting,
+    },
+  },
+  events: {
+    include: {
+      ...eventRawNesting,
+    },
+  },
+  eventTickets: {
+    include: {
+      ...eventTicketRawNesting,
+    },
+  },
+  readActivities: {
+    include: {
+      ...chatActivityRawNesting,
+    },
+  },
   schools: false,
-  targetActivities: {},
-  userAccount: {},
-  userChats: {},
+  targetActivities: {
+    include: {
+      ...chatActivityRawNesting,
+    },
+  },
+  userAccount: {
+    include: {
+      user: true,
+    },
+  },
+  userChats: {
+    include: {
+      ...userChatRawNesting,
+    },
+  },
 };

@@ -1,5 +1,4 @@
 import { WebSocketServer } from '@nestjs/websockets';
-import { EventResponse } from './gateway';
 import { Socket } from 'socket.io';
 import { plainToInstance } from 'class-transformer';
 import { validateOrReject } from 'class-validator';
@@ -35,12 +34,5 @@ export class Gateway {
       return error;
     }
     return event;
-  }
-
-  respond<X>(event: string, data: X): EventResponse<X> {
-    return {
-      event: event,
-      body: data,
-    };
   }
 }

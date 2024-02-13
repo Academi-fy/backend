@@ -148,15 +148,17 @@ type ChatActivityCountAggregate {
   createdAt: Int!
   updatedAt: Int!
   chatId: Int!
-  targetId: Int!
+  answerToId: Int!
   type: Int!
   value: Int!
-  pinned: Int!
+  starred: Int!
   _all: Int!
 }
 
 type ChatActivityCount {
   executor: Int!
+  readBy: Int!
+  answeredBy: Int!
 }
 
 type ChatActivityMaxAggregate {
@@ -164,17 +166,27 @@ type ChatActivityMaxAggregate {
   createdAt: DateTime
   updatedAt: DateTime
   chatId: String
-  targetId: String
+  answerToId: String
   type: ChatActivityType
-  pinned: Boolean
+  starred: Boolean
 }
 
+"""Type of a chat activity"""
 enum ChatActivityType {
-  ACTIVITY_SEND
-  ACTIVITY_EDIT
-  ACTIVITY_DELETE
-  ACTIVITY_PIN
-  ACTIVITY_UNPIN
+  MESSAGE_SEND
+  MESSAGE_EDIT
+  MESSAGE_DELETE
+  MESSAGE_ANSWER
+  ACTIVITY_STAR
+  ACTIVITY_UNSTAR
+  POLL_SEND
+  POLL_EDIT
+  POLL_DELETE
+  POLL_VOTE
+  POLL_UNVOTE
+  POLL_CLOSE
+  POLL_REOPEN
+  POLL_RESULT
   CHAT_TARGET_ADD
   CHAT_TARGET_REMOVE
   CHAT_COURSE_ADD
@@ -190,9 +202,9 @@ type ChatActivityMinAggregate {
   createdAt: DateTime
   updatedAt: DateTime
   chatId: String
-  targetId: String
+  answerToId: String
   type: ChatActivityType
-  pinned: Boolean
+  starred: Boolean
 }
 
 type ChatActivity {
@@ -200,13 +212,15 @@ type ChatActivity {
   createdAt: DateTime!
   updatedAt: DateTime!
   chatId: String!
-  targetId: String
+  answerToId: String
   type: ChatActivityType!
   value: [JSON!]
-  pinned: Boolean!
+  starred: Boolean!
   chat: Chat!
-  executor: [UserChatActivity!]
-  target: User
+  executor: [User!]
+  readBy: [User!]
+  answerTo: ChatActivity
+  answeredBy: [ChatActivity!]
   _count: ChatActivityCount!
 }
 
@@ -774,8 +788,8 @@ type UserCount {
   coursesAsTeacher: Int!
   events: Int!
   eventTickets: Int!
+  readActivities: Int!
   schools: Int!
-  targetActivities: Int!
   userChats: Int!
 }
 
@@ -817,7 +831,7 @@ type User {
   lastName: String!
   type: UserType!
   userAccountId: String!
-  activities: [UserChatActivity!]
+  activities: [ChatActivity!]
   blackboards: [Blackboard!]
   blackboardsReceived: [Blackboard!]
   classes: [Class!]
@@ -827,8 +841,8 @@ type User {
   coursesAsTeacher: [Course!]
   events: [Event!]
   eventTickets: [EventTicket!]
+  readActivities: [ChatActivity!]
   schools: [School!]
-  targetActivities: [ChatActivity!]
   userAccount: UserAccount!
   userChats: [UserChat!]
   _count: UserCount!
@@ -919,49 +933,6 @@ type UserChat {
   user: User!
 }
 
-type UserChatActivityCountAggregate {
-  id: Int!
-  createdAt: Int!
-  updatedAt: Int!
-  chatActivityId: Int!
-  userId: Int!
-  read: Int!
-  starred: Int!
-  _all: Int!
-}
-
-type UserChatActivityMaxAggregate {
-  id: String
-  createdAt: DateTime
-  updatedAt: DateTime
-  chatActivityId: String
-  userId: String
-  read: Boolean
-  starred: Boolean
-}
-
-type UserChatActivityMinAggregate {
-  id: String
-  createdAt: DateTime
-  updatedAt: DateTime
-  chatActivityId: String
-  userId: String
-  read: Boolean
-  starred: Boolean
-}
-
-type UserChatActivity {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  chatActivityId: String!
-  userId: String!
-  read: Boolean!
-  starred: Boolean!
-  chatActivity: ChatActivity!
-  user: User!
-}
-
 type Query {
   getAllBlackboards: [Blackboard!]!
   getLastBlackboards(sort: SortOrder!, limit: Float!, lastId: String): [Blackboard!]!
@@ -976,6 +947,8 @@ type Query {
   ): BlackboardTag!
   getAllChats: [Chat!]!
   getChat(id: String!): Chat!
+  getAllChatActivities: [ChatActivity!]!
+  getChatActivity(id: String!): ChatActivity!
   getAllClasses: [Class!]!
   getClass(id: String!): Class!
   getAllClubs: [Club!]!
@@ -1023,6 +996,9 @@ type Mutation {
   createChat(chat: CreateChatDto!): Chat!
   editChat(id: String!, chat: EditChatDto!): Chat!
   deleteChat(id: String!): Chat!
+  createChatActivity(chatActivity: CreateChatActivityDto!): ChatActivity!
+  editChatActivity(id: String!, chatActivity: CreateChatActivityDto!): ChatActivity!
+  deleteChatActivity(id: String!): ChatActivity!
   createClass(class: CreateClassDto!): Class!
   editClass(id: String!, class: EditClassDto!): Class!
   deleteClass(id: String!): Class!
@@ -1110,6 +1086,17 @@ input EditChatDto {
   name: String
   targets: [String!]
   type: String
+}
+
+input CreateChatActivityDto {
+  answeredBy: String
+  answerTo: String
+  chat: String!
+  executor: String!
+  readBy: [String!]
+  type: ChatActivityType!
+  value: String!
+  starred: Boolean
 }
 
 input CreateClassDto {
@@ -1297,6 +1284,7 @@ input EditSubjectDto {
 }
 
 input CreateUserDto {
+  activities: [String!]
   avatar: String
   blackboards: [String!]
   blackboardsReceived: [String!]
@@ -1309,14 +1297,16 @@ input CreateUserDto {
   eventTickets: [String!]
   firstName: String
   lastName: String!
-  messages: [String!]
+  readActivities: [String!]
   schools: [String!]!
+  targetActivities: [String!]
   type: String!
   userAccount: String!
   userChats: [String!]
 }
 
 input EditUserDto {
+  activities: [String!]
   avatar: String
   blackboards: [String!]
   blackboardsReceived: [String!]
@@ -1329,8 +1319,9 @@ input EditUserDto {
   eventTickets: [String!]
   firstName: String
   lastName: String!
-  messages: [String!]
+  readActivities: [String!]
   schools: [String!]!
+  targetActivities: [String!]
   type: String!
   userAccount: String!
   userChats: [String!]

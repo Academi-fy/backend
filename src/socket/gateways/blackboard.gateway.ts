@@ -10,7 +10,7 @@ import {
   CreateBlackboardDto,
   EditBlackboardDto,
 } from '../../rest/blackboard';
-import { Blackboard, User } from '../../@generated-types';
+import { Blackboard } from '../../@generated-types';
 import { GatewayMessage } from '../entities/gateway';
 import { Gateway } from '../entities';
 
@@ -35,6 +35,7 @@ export class BlackboardGateway extends Gateway {
   async handleBlackboardUpdate(
     @MessageBody() body: GatewayMessage<EditBlackboardDto>,
   ): Promise<GatewayMessage<EditBlackboardDto> | Error> {
+    console.log('update');
     return this.handleBlackboardAction<EditBlackboardDto>(
       body,
       'edit',
@@ -60,10 +61,9 @@ export class BlackboardGateway extends Gateway {
     action: 'create' | 'edit' | 'delete',
     event: string,
   ): Promise<GatewayMessage<T> | Error> {
-    const data = await this.validateData<GatewayMessage<T>>(
-      body,
-      GatewayMessage<T>,
-    );
+    const data: GatewayMessage<T> | Error = await this.validateData<
+      GatewayMessage<T>
+    >(body, GatewayMessage<T>);
     if (data instanceof Error) return data;
 
     let blackboard: Blackboard;
@@ -82,20 +82,16 @@ export class BlackboardGateway extends Gateway {
       delete: async (data: GatewayMessage<T>) => {
         return await this.blackboardService.deleteBlackboard(data.modifyId);
       },
-    };
+    } as const;
 
     if (actions[action]) {
       blackboard = await actions[action](data);
     }
 
-    this.emitToMembers(blackboard, event);
+    for (const member of blackboard.school.members) {
+      this.emit(member.id, event, data);
+    }
 
     return data;
-  }
-
-  private emitToMembers(blackboard: Blackboard, event: string) {
-    blackboard.school.members.forEach((member: User) => {
-      this.clients.get(member.id)?.emit(event, blackboard);
-    });
   }
 }
