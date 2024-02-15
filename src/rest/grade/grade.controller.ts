@@ -8,7 +8,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { Grade } from '../../@generated-types';
+import { Grade } from '@/@generated-types';
 
 import { CreateGradeDto } from './dto';
 import { JwtGuard } from '../../auth/guard';

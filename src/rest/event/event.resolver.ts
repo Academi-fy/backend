@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { Event } from '../../@generated-types';
+import { Event } from '@/@generated-types';
 import { EventService } from './event.service';
 import { CreateEventDto, EditEventDto } from './dto';
 

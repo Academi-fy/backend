@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { Club, ClubTag } from '../../@generated-types';
+import { Club, ClubTag } from '@/@generated-types';
 import { ClubTagService } from './club-tag.service';
 import { CreateClubTagDto, EditClubTagDto } from './dto';
 

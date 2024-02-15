@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { Subject, SubjectType } from '../../@generated-types';
+import { Subject, SubjectType } from '@/@generated-types';
 import { SubjectService } from './subject.service';
 import { CreateSubjectDto, EditSubjectDto } from './dto';
 

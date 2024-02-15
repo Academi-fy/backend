@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../../@generated-types';
+import { User } from '@/@generated-types';
 
-import { Service } from '../../service';
-import { PrismaService } from '../../prisma/prisma.service';
+import { Service } from '@/service';
+import { PrismaService } from '@/prisma/prisma.service';
 
 import { userNesting } from './user.nesting';
 import { CreateUserDto, EditUserDto } from './dto';

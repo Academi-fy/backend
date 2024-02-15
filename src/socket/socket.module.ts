@@ -10,7 +10,7 @@ import { ErrorGateway } from './gateways/error.gateway';
 import { EventGateway } from './gateways/event.gateway';
 import { UserGateway } from './gateways/user.gateway';
 
-import { RestModule } from '../rest/rest.module';
+import { RestModule } from '@/rest/rest.module';
 
 @Module({
   providers: [

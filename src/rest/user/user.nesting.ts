@@ -20,7 +20,6 @@ export const userRawNesting = {
   eventTickets: true,
   readActivities: true,
   schools: false,
-  targetActivities: true,
   userAccount: true,
   userChats: true,
 };
@@ -82,11 +81,6 @@ export const userNesting = {
     },
   },
   schools: false,
-  targetActivities: {
-    include: {
-      ...chatActivityRawNesting,
-    },
-  },
   userAccount: {
     include: {
       user: true,

@@ -9,7 +9,7 @@ export const blackboardRawNesting = {
 };
 
 export const blackboardNesting = {
-  school: false,
+  school: true,
   tags: {
     include: {
       ...blackboardTagRawNesting,

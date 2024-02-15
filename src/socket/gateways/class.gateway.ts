@@ -4,12 +4,12 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 
-import { Class, Course, User } from '../../@generated-types';
+import { Class, Course, User } from '@/@generated-types';
 import { ClassCourseMutation, ClassUserMutation } from '../entities/class';
 import { Gateway } from '../entities';
 import { GatewayMessage } from '../entities/gateway';
 import { ClassService } from 'src/rest/class/class.service';
-import { SOCKET_PORT } from '../../constants';
+import { SOCKET_PORT } from '@/constants';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ClassGateway extends Gateway {
@@ -21,9 +21,11 @@ export class ClassGateway extends Gateway {
   async handleClassCourseAdd(
     @MessageBody() body: GatewayMessage<ClassCourseMutation>,
   ): Promise<GatewayMessage<ClassCourseMutation> | Error> {
-    const data: Error | GatewayMessage<any> = await this.validateData<
-      GatewayMessage<any>
-    >(body, GatewayMessage<ClassCourseMutation>);
+    const data: Error | GatewayMessage<ClassCourseMutation> =
+      await this.validateData<GatewayMessage<ClassCourseMutation>>(
+        body,
+        GatewayMessage<ClassCourseMutation>,
+      );
     if (data instanceof Error) return data;
 
     const class_: Class = await this.classService.getClassById(
@@ -36,7 +38,7 @@ export class ClassGateway extends Gateway {
       {
         courses: class_.courses
           .map((course: Course) => course.id)
-          .concat(data.value.targetId),
+          .concat(data.value.courseId),
       },
     );
 
@@ -51,9 +53,11 @@ export class ClassGateway extends Gateway {
   async handleClassCourseRemove(
     @MessageBody() body: GatewayMessage<ClassCourseMutation>,
   ): Promise<GatewayMessage<ClassCourseMutation> | Error> {
-    const data: Error | GatewayMessage<any> = await this.validateData<
-      GatewayMessage<any>
-    >(body, GatewayMessage<ClassCourseMutation>);
+    const data: Error | GatewayMessage<ClassCourseMutation> =
+      await this.validateData<GatewayMessage<ClassCourseMutation>>(
+        body,
+        GatewayMessage<ClassCourseMutation>,
+      );
     if (data instanceof Error) return data;
 
     const class_: Class = await this.classService.getClassById(
@@ -66,7 +70,7 @@ export class ClassGateway extends Gateway {
       {
         courses: class_.courses
           .map((course: Course) => course.id)
-          .filter((courseId: string) => courseId !== data.value.targetId),
+          .filter((courseId: string) => courseId !== data.value.courseId),
       },
     );
 
@@ -81,9 +85,11 @@ export class ClassGateway extends Gateway {
   async handleClassUserAdd(
     @MessageBody() body: GatewayMessage<ClassUserMutation>,
   ): Promise<GatewayMessage<ClassUserMutation> | Error> {
-    const data: Error | GatewayMessage<any> = await this.validateData<
-      GatewayMessage<any>
-    >(body, GatewayMessage<ClassUserMutation>);
+    const data: Error | GatewayMessage<ClassUserMutation> =
+      await this.validateData<GatewayMessage<ClassUserMutation>>(
+        body,
+        GatewayMessage<ClassUserMutation>,
+      );
     if (data instanceof Error) return data;
 
     const class_: Class = await this.classService.getClassById(
@@ -96,7 +102,7 @@ export class ClassGateway extends Gateway {
       {
         members: class_.members
           .map((member: User) => member.id)
-          .concat(data.value.targetId),
+          .concat(data.value.userId),
       },
     );
 
@@ -111,9 +117,11 @@ export class ClassGateway extends Gateway {
   async handleClassUserRemove(
     @MessageBody() body: GatewayMessage<ClassUserMutation>,
   ): Promise<GatewayMessage<ClassUserMutation> | Error> {
-    const data: Error | GatewayMessage<any> = await this.validateData<
-      GatewayMessage<any>
-    >(body, GatewayMessage<ClassUserMutation>);
+    const data: Error | GatewayMessage<ClassUserMutation> =
+      await this.validateData<GatewayMessage<ClassUserMutation>>(
+        body,
+        GatewayMessage<ClassUserMutation>,
+      );
     if (data instanceof Error) return data;
 
     const class_: Class = await this.classService.getClassById(
@@ -126,7 +134,7 @@ export class ClassGateway extends Gateway {
       {
         members: class_.members
           .map((member: User) => member.id)
-          .filter((memberId: string) => memberId !== data.value.targetId),
+          .filter((memberId: string) => memberId !== data.value.userId),
       },
     );
 

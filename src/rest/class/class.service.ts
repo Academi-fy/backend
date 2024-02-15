@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Class } from '@prisma/client';
 
-import { Service } from '../../service';
-import { PrismaService } from '../../prisma/prisma.service';
+import { Service } from '@/service';
+import { PrismaService } from '@/prisma/prisma.service';
 
 import { classNesting } from './';
 import { CreateClassDto, EditClassDto } from './dto';

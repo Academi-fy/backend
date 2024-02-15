@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
-import { Blackboard } from '../../@generated-types';
-import { Service } from '../../service';
-import { SortOrder } from '../../prisma';
+import { Blackboard } from '@/@generated-types';
+import { Service } from '@/service';
+import { SortOrder } from '@/prisma';
 
 import { blackboardNesting } from './';
 import { CreateBlackboardDto, EditBlackboardDto } from './dto';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '@/prisma/prisma.service';
 
 @Injectable()
 export class BlackboardService extends Service {

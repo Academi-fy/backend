@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { SortOrder } from '../../prisma';
+import { SortOrder } from '@/prisma';
 
-import { Blackboard } from '../../@generated-types';
+import { Blackboard } from '@/@generated-types';
 import { CreateBlackboardDto, EditBlackboardDto } from './dto';
 import { BlackboardService } from './blackboard.service';
 

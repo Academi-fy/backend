@@ -7,5 +7,6 @@ import { SchoolResolver } from './school.resolver';
 @Module({
   controllers: [SchoolController],
   providers: [SchoolService, SchoolResolver],
+  exports: [SchoolService],
 })
 export class SchoolModule {}

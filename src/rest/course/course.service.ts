@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Course } from '@prisma/client';
 
-import { Service } from '../../service';
-import { PrismaService } from '../../prisma/prisma.service';
+import { Service } from '@/service';
+import { PrismaService } from '@/prisma/prisma.service';
 
 import { clubNesting } from '../club';
 import { CreateCourseDto, EditCourseDto } from './dto';

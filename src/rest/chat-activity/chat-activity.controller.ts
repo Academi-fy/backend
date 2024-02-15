@@ -8,10 +8,10 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ChatActivity } from '../../@generated-types';
+import { ChatActivity } from '@/@generated-types';
 
 import { CreateChatActivityDto, EditChatActivityDto } from './dto';
-import { JwtGuard } from '../../auth/guard';
+import { JwtGuard } from '@/auth/guard';
 import { ChatActivityService } from './chat-activity.service';
 
 @UseGuards(JwtGuard)

@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { Chat } from '../../@generated-types';
+import { Chat } from '@/@generated-types';
 import { CreateChatDto, EditChatDto } from './dto';
 import { ChatService } from './chat.service';
 

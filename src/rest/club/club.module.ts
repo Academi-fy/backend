@@ -7,5 +7,6 @@ import { ClubResolver } from './club.resolver';
 @Module({
   controllers: [ClubController],
   providers: [ClubService, ClubResolver],
+  exports: [ClubService],
 })
 export class ClubModule {}

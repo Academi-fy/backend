@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { BlackboardTag } from '@prisma/client';
 
-import { Service } from '../../service';
-import { PrismaService } from '../../prisma/prisma.service';
+import { Service } from '@/service';
+import { PrismaService } from '@/prisma/prisma.service';
 
 import { blackboardTagNesting } from './';
 import { CreateBlackboardTagDto, EditBlackboardTagDto } from './dto';

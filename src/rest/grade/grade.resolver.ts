@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Grade } from '../../@generated-types';
+import { Grade } from '@/@generated-types';
 
 import { CreateGradeDto, EditGradeDto } from './dto';
 import { GradeService } from './grade.service';

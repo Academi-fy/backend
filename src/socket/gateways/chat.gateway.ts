@@ -4,7 +4,7 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 
-import { Chat, Club, Course, UserChat } from '../../@generated-types';
+import { Chat, Club, Course, UserChat } from '@/@generated-types';
 import {
   ChatClubMutation,
   ChatCourseMutation,

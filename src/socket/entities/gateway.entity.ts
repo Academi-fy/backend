@@ -1,16 +1,16 @@
 import { WebSocketServer } from '@nestjs/websockets';
-import { Socket } from 'socket.io';
 import { plainToInstance } from 'class-transformer';
 import { validateOrReject } from 'class-validator';
 import { BadRequestException, Logger } from '@nestjs/common';
+import { clients } from '@/main';
 
 export class Gateway {
   @WebSocketServer()
   server: any;
 
-  clients: Map<string, Socket> = new Map<string, Socket>();
-
   public gatewayLogger: Logger = new Logger('Gateway');
+
+  clients = clients;
 
   emit(target: string, event: string, data: any) {
     this.clients.get(target)?.emit(event, data);

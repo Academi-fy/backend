@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { SetupAccount } from '../../@generated-types';
+import { SetupAccount } from '@/@generated-types';
 
-import { Service } from '../../service';
-import { PrismaService } from '../../prisma/prisma.service';
+import { Service } from '@/service';
+import { PrismaService } from '@/prisma/prisma.service';
 
 import { setupAccountNesting } from './setup-account.nesting';
 import { CreateSetupAccountDto, EditSetupAccountDto } from './dto';

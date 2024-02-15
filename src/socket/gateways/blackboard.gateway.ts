@@ -4,16 +4,21 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 
-import { Blackboard } from '../../@generated-types';
-import { CreateBlackboardDto, EditBlackboardDto } from '../../rest/blackboard';
-import { BlackboardService } from '../../rest/blackboard/blackboard.service';
+import { Blackboard, School } from '@/@generated-types';
+import { BlackboardService } from '@/rest/blackboard/blackboard.service';
+import { CreateBlackboardDto, EditBlackboardDto } from '@/rest/blackboard';
+
 import { Gateway } from '../entities';
 import { GatewayMessage } from '../entities/gateway';
-import { SOCKET_PORT } from '../../constants';
+import { SOCKET_PORT } from '@/constants';
+import { SchoolService } from '@/rest/school/school.service';
 
 @WebSocketGateway(SOCKET_PORT)
 export class BlackboardGateway extends Gateway {
-  constructor(private blackboardService: BlackboardService) {
+  constructor(
+    private readonly blackboardService: BlackboardService,
+    private readonly schoolService: SchoolService,
+  ) {
     super();
   }
 
@@ -54,7 +59,11 @@ export class BlackboardGateway extends Gateway {
       data.value,
     );
 
-    for (const member of blackboard.school.members) {
+    const school: School = await this.schoolService.getSchoolById(
+      blackboard.school.id,
+    );
+
+    for (const member of school.members) {
       this.emit(member.id, 'RECEIVED_BLACKBOARD_UPDATE', data);
     }
 

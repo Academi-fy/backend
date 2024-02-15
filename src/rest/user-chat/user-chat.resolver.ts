@@ -1,5 +1,5 @@
 import { Args, Mutation, Query } from '@nestjs/graphql';
-import { UserChat } from '../../@generated-types';
+import { UserChat } from '@/@generated-types';
 
 import { CreateUserChatDto, EditUserChatDto } from './dto';
 import { UserChatService } from './user-chat.service';

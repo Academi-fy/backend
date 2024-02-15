@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { School } from '../../@generated-types';
+import { School } from '@/@generated-types';
 import { SchoolService } from './school.service';
 import { CreateSchoolDto, EditSchoolDto } from './dto';
 

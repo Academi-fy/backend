@@ -38,7 +38,12 @@ Follow these steps to install the project:
     ```
 
     > This will start a postgres database in a docker container.
-   
+
+5. Run the following command to generate the Prisma client:
+
+    ```bash
+    npx prisma generate
+    ``` 
 
 ## Starting the Application
 

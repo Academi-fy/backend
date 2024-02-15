@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Subject, SubjectType } from '../../@generated-types';
+import { Subject, SubjectType } from '@/@generated-types';
 
-import { Service } from '../../service';
-import { PrismaService } from '../../prisma/prisma.service';
+import { Service } from '@/service';
+import { PrismaService } from '@/prisma/prisma.service';
 
 import { subjectNesting } from './subject.nesting';
 import { CreateSubjectDto, EditSubjectDto } from './dto';

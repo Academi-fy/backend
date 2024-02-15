@@ -8,7 +8,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { Club } from '../../@generated-types';
+import { Club } from '@/@generated-types';
 
 import { CreateClubDto, EditClubDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';

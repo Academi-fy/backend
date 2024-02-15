@@ -8,7 +8,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { Class } from '../../@generated-types';
+import { Class } from '@/@generated-types';
 
 import { CreateClassDto, EditClassDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';

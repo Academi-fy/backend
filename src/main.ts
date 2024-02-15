@@ -5,6 +5,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { registerEnums } from './register-enums';
 import { SocketAdapter } from './socket/SocketAdapter';
+import { Socket } from 'socket.io';
 
 const appLogger: Logger = new Logger('NestApplication');
 
@@ -30,3 +31,5 @@ async function bootstrap() {
 bootstrap().then(() => {
   appLogger.log(`Application is listening on port ${port}`);
 });
+
+export const clients: Map<string, Socket> = new Map<string, Socket>();

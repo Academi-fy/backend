@@ -1,4 +1,4 @@
-import { EventInformationItem } from './event-information-item.entity';
+import { EventInformationItem } from '@/rest/event';
 import { IsInstance, IsString } from 'class-validator';
 import { Field, InputType } from '@nestjs/graphql';
 

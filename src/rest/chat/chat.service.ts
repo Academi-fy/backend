@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Chat } from 'src/@generated-types';
 
-import { Service } from '../../service';
-import { PrismaService } from '../../prisma/prisma.service';
+import { Service } from '@/service';
+import { PrismaService } from '@/prisma/prisma.service';
 
 import { chatNesting } from './';
 import { CreateChatDto, EditChatDto } from './dto';

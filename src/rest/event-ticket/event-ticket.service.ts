@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { EventTicket } from '../../@generated-types';
+import { EventTicket } from '@/@generated-types';
 
-import { Service } from '../../service';
-import { PrismaService } from '../../prisma/prisma.service';
+import { Service } from '@/service';
+import { PrismaService } from '@/prisma/prisma.service';
 
 import { eventTicketNesting } from './event-ticket.nesting';
 import { CreateEventTicketDto, EditEventTicketDto } from './dto';

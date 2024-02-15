@@ -8,7 +8,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { Chat } from '../../@generated-types';
+import { Chat } from '@/@generated-types';
 
 import { CreateChatDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';

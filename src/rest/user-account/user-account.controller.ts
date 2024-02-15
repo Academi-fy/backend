@@ -8,11 +8,11 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { UserAccount } from '../../@generated-types';
+import { UserAccount } from '@/@generated-types';
 
 import { CreateUserAccountDto, EditUserAccountDto } from './dto';
-import { GetUserAccount } from '../../auth/decorator';
-import { JwtGuard } from '../../auth/guard';
+import { GetUserAccount } from '@/auth/decorator';
+import { JwtGuard } from '@/auth/guard';
 import { UserAccountService } from './user-account.service';
 
 @UseGuards(JwtGuard)

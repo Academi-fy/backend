@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Event } from '@prisma/client';
 
-import { Service } from '../../service';
-import { PrismaService } from '../../prisma/prisma.service';
+import { Service } from '@/service';
+import { PrismaService } from '@/prisma/prisma.service';
 
 import { eventNesting } from './event.nesting';
 import { CreateEventDto, EditEventDto } from './dto';
