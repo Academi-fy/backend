@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma';
 import { Grade } from '../../@generated-types';
-import { gradeNesting } from './grade.nesting';
+
 import { Service } from '../../service';
+import { PrismaService } from '../../prisma/prisma.service';
+
+import { gradeNesting } from './grade.nesting';
 import { CreateGradeDto, EditGradeDto } from './dto';
 
 @Injectable()

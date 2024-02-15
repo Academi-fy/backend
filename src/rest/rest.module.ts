@@ -1,25 +1,47 @@
 import { Module } from '@nestjs/common';
-import { BlackboardModule } from './blackboard';
-import { BlackboardTagModule } from './blackboard-tag';
-import { ChatModule } from './chat';
-import { ClassModule } from './class';
-import { ClubModule } from './club';
-import { ClubTagModule } from './club-tag';
-import { CourseModule } from './course';
-import { EventModule } from './event';
-import { EventTicketModule } from './event-ticket';
-import { GradeModule } from './grade';
-import { PrismaModule } from '../prisma';
-import { SchoolModule } from './school';
-import { SetupAccountModule } from './setup-account';
-import { SubjectModule } from './subject';
-import { UserModule } from './user';
-import { UserAccountModule } from './user-account';
-import { UserChatModule } from './user-chat';
-import { ChatActivityModule } from './chat-activity';
+
+import { BlackboardModule } from './blackboard/blackboard.module';
+import { BlackboardTagModule } from './blackboard-tag/blackboard-tag.module';
+import { ChatModule } from './chat/chat.module';
+import { ClassModule } from './class/class.module';
+import { ClubModule } from './club/club.module';
+import { ClubTagModule } from './club-tag/club-tag.module';
+import { CourseModule } from './course/course.module';
+import { EventModule } from './event/event.module';
+import { EventTicketModule } from './event-ticket/event-ticket.module';
+import { GradeModule } from './grade/grade.module';
+import { SchoolModule } from './school/school.module';
+import { SetupAccountModule } from './setup-account/setup-account.module';
+import { SubjectModule } from './subject/subject.module';
+import { UserModule } from './user/user.module';
+import { UserAccountModule } from './user-account/user-account.module';
+import { UserChatModule } from './user-chat/user-chat.module';
+import { ChatActivityModule } from './chat-activity/chat-activity.module';
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
   imports: [
+    BlackboardModule,
+    BlackboardTagModule,
+    ChatModule,
+    ChatActivityModule,
+    ClassModule,
+    ClubModule,
+    ClubTagModule,
+    CourseModule,
+    EventModule,
+    EventTicketModule,
+    GradeModule,
+    PrismaModule,
+    SchoolModule,
+    SetupAccountModule,
+    SubjectModule,
+    UserModule,
+    UserAccountModule,
+    UserChatModule,
+  ],
+  providers: [],
+  exports: [
     BlackboardModule,
     BlackboardTagModule,
     ChatModule,

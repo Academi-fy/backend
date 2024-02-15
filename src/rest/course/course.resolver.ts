@@ -1,4 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+
 import { CourseService } from './course.service';
 import { Course } from '../../@generated-types';
 import { CreateCourseDto, EditCourseDto } from './dto';

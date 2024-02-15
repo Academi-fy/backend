@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSchoolDto, EditSchoolDto } from './dto';
-import { Service } from '../../service';
-import { PrismaService } from '../../prisma';
-import { schoolNesting } from './school.nesting';
 import { School } from '../../@generated-types';
+
+import { Service } from '../../service';
+import { PrismaService } from '../../prisma/prisma.service';
+
+import { schoolNesting } from './school.nesting';
+import { CreateSchoolDto, EditSchoolDto } from './dto';
 
 @Injectable()
 export class SchoolService extends Service {

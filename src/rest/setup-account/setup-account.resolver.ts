@@ -1,7 +1,8 @@
-import { SetupAccountService } from './setup-account.service';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { SetupAccount } from '../../@generated-types';
+
 import { CreateSetupAccountDto, EditSetupAccountDto } from './dto';
+import { SetupAccountService } from './setup-account.service';
 
 @Resolver(() => SetupAccount)
 export class SetupAccountResolver {

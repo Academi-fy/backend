@@ -17,4 +17,4 @@ export {
   UserChatModule,
 } from './rest';
 
-export { AuthModule } from './auth';
+export { AuthModule } from './auth/auth.module';

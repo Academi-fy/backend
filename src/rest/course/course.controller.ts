@@ -8,10 +8,11 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { Course } from '../../@generated-types';
+
+import { CreateCourseDto, EditCourseDto } from './dto';
 import { JwtGuard } from '../../auth/guard';
 import { CourseService } from './course.service';
-import { CreateCourseDto, EditCourseDto } from './dto';
-import { Course } from '../../@generated-types';
 
 @UseGuards(JwtGuard)
 @Controller('courses')

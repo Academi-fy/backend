@@ -1,4 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+
 import { ChatActivity } from '../../@generated-types';
 import { ChatActivityService } from './chat-activity.service';
 import { CreateChatActivityDto } from './dto';

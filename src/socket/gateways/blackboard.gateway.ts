@@ -3,16 +3,13 @@ import {
   SubscribeMessage,
   WebSocketGateway,
 } from '@nestjs/websockets';
-import { SOCKET_PORT } from '../../constants';
 
-import {
-  BlackboardService,
-  CreateBlackboardDto,
-  EditBlackboardDto,
-} from '../../rest/blackboard';
 import { Blackboard } from '../../@generated-types';
-import { GatewayMessage } from '../entities/gateway';
+import { CreateBlackboardDto, EditBlackboardDto } from '../../rest/blackboard';
+import { BlackboardService } from '../../rest/blackboard/blackboard.service';
 import { Gateway } from '../entities';
+import { GatewayMessage } from '../entities/gateway';
+import { SOCKET_PORT } from '../../constants';
 
 @WebSocketGateway(SOCKET_PORT)
 export class BlackboardGateway extends Gateway {
@@ -24,72 +21,60 @@ export class BlackboardGateway extends Gateway {
   async handleBlackboardCreate(
     @MessageBody() body: GatewayMessage<CreateBlackboardDto>,
   ): Promise<GatewayMessage<CreateBlackboardDto> | Error> {
-    return this.handleBlackboardAction<CreateBlackboardDto>(
-      body,
-      'create',
-      'RECEIVED_BLACKBOARD_CREATE',
-    );
+    const data: GatewayMessage<CreateBlackboardDto> | Error =
+      await this.validateData<GatewayMessage<CreateBlackboardDto>>(
+        body,
+        GatewayMessage<CreateBlackboardDto>,
+      );
+    if (data instanceof Error) return data;
+
+    const blackboard: Blackboard =
+      await this.blackboardService.createBlackboard(data.value);
+
+    for (const member of blackboard.school.members) {
+      this.emit(member.id, 'RECEIVED_BLACKBOARD_CREATE', data);
+    }
+
+    return data;
   }
 
   @SubscribeMessage('BLACKBOARD_UPDATE')
   async handleBlackboardUpdate(
     @MessageBody() body: GatewayMessage<EditBlackboardDto>,
   ): Promise<GatewayMessage<EditBlackboardDto> | Error> {
-    console.log('update');
-    return this.handleBlackboardAction<EditBlackboardDto>(
-      body,
-      'edit',
-      'RECEIVED_BLACKBOARD_UPDATE',
+    const data: GatewayMessage<EditBlackboardDto> | Error =
+      await this.validateData<GatewayMessage<EditBlackboardDto>>(
+        body,
+        GatewayMessage<EditBlackboardDto>,
+      );
+    if (data instanceof Error) return data;
+
+    const blackboard: Blackboard = await this.blackboardService.editBlackboard(
+      data.modifyId,
+      data.value,
     );
+
+    for (const member of blackboard.school.members) {
+      this.emit(member.id, 'RECEIVED_BLACKBOARD_UPDATE', data);
+    }
+
+    return data;
   }
 
   @SubscribeMessage('BLACKBOARD_DELETE')
   async handleBlackboardDelete(
     @MessageBody() body: GatewayMessage<never>,
   ): Promise<GatewayMessage<never> | Error> {
-    return this.handleBlackboardAction<never>(
-      body,
-      'delete',
-      'RECEIVED_BLACKBOARD_DELETE',
-    );
-  }
-
-  private async handleBlackboardAction<
-    T extends CreateBlackboardDto | EditBlackboardDto | never,
-  >(
-    body: GatewayMessage<T>,
-    action: 'create' | 'edit' | 'delete',
-    event: string,
-  ): Promise<GatewayMessage<T> | Error> {
-    const data: GatewayMessage<T> | Error = await this.validateData<
-      GatewayMessage<T>
-    >(body, GatewayMessage<T>);
+    const data: GatewayMessage<never> | Error = await this.validateData<
+      GatewayMessage<never>
+    >(body, GatewayMessage<never>);
     if (data instanceof Error) return data;
 
-    let blackboard: Blackboard;
-    const actions = {
-      create: async (data: GatewayMessage<T>) => {
-        return await this.blackboardService.createBlackboard(
-          data.value as CreateBlackboardDto,
-        );
-      },
-      edit: async (data: GatewayMessage<T>) => {
-        return await this.blackboardService.editBlackboard(
-          data.modifyId,
-          data.value as EditBlackboardDto,
-        );
-      },
-      delete: async (data: GatewayMessage<T>) => {
-        return await this.blackboardService.deleteBlackboard(data.modifyId);
-      },
-    } as const;
-
-    if (actions[action]) {
-      blackboard = await actions[action](data);
-    }
+    const blackboard: Blackboard =
+      await this.blackboardService.deleteBlackboard(data.modifyId);
 
     for (const member of blackboard.school.members) {
-      this.emit(member.id, event, data);
+      this.emit(member.id, 'RECEIVED_BLACKBOARD_DELETE', data);
     }
 
     return data;

@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { BlackboardTag } from '@prisma/client';
-import { CreateBlackboardTagDto, EditBlackboardTagDto } from './dto';
+
 import { Service } from '../../service';
+import { PrismaService } from '../../prisma/prisma.service';
+
 import { blackboardTagNesting } from './';
-import { PrismaService } from '../../prisma';
+import { CreateBlackboardTagDto, EditBlackboardTagDto } from './dto';
 
 @Injectable()
 export class BlackboardTagService extends Service {

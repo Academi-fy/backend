@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { ChatActivityController } from './chat-activity.controller';
 import { ChatActivityResolver } from './chat-activity.resolver';
 import { ChatActivityService } from './chat-activity.service';

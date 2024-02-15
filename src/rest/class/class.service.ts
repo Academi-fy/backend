@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateClassDto, EditClassDto } from './dto';
 import { Class } from '@prisma/client';
+
 import { Service } from '../../service';
+import { PrismaService } from '../../prisma/prisma.service';
+
 import { classNesting } from './';
-import { PrismaService } from '../../prisma';
+import { CreateClassDto, EditClassDto } from './dto';
 
 @Injectable()
 export class ClassService extends Service {

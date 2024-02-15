@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateClubTagDto, EditClubTagDto } from './dto';
-import { Service } from '../../service';
-import { PrismaService } from '../../prisma';
-import { clubTagNesting } from './club-tag.nesting';
 import { ClubTag } from '../../@generated-types';
+
+import { Service } from '../../service';
+import { PrismaService } from '../../prisma/prisma.service';
+
+import { clubTagNesting } from './club-tag.nesting';
+import { CreateClubTagDto, EditClubTagDto } from './dto';
 
 @Injectable()
 export class ClubTagService extends Service {

@@ -1,4 +1,5 @@
 import { registerEnumType } from '@nestjs/graphql';
+
 import { SortOrder } from './prisma';
 import {
   ChatActivityType,

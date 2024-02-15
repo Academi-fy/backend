@@ -1,7 +1,8 @@
-import { UserAccountService } from './user-account.service';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserAccount } from '../../@generated-types';
+
 import { CreateUserAccountDto } from './dto';
+import { UserAccountService } from './user-account.service';
 
 @Resolver(() => UserAccount)
 export class UserAccountResolver {

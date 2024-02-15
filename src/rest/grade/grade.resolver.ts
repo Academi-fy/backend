@@ -1,8 +1,8 @@
-import { Grade } from '../../@generated-types';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Grade } from '../../@generated-types';
+
+import { CreateGradeDto, EditGradeDto } from './dto';
 import { GradeService } from './grade.service';
-import { CreateGradeDto } from './dto/create-grade.dto';
-import { EditGradeDto } from './dto/edit-grade.dto';
 
 @Resolver(() => Grade)
 export class GradeResolver {

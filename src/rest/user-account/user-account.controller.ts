@@ -8,11 +8,12 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { JwtGuard } from '../../auth/guard';
-import { CreateUserAccountDto, EditUserAccountDto } from './dto';
-import { UserAccountService } from './user-account.service';
-import { GetUserAccount } from '../../auth/decorator';
 import { UserAccount } from '../../@generated-types';
+
+import { CreateUserAccountDto, EditUserAccountDto } from './dto';
+import { GetUserAccount } from '../../auth/decorator';
+import { JwtGuard } from '../../auth/guard';
+import { UserAccountService } from './user-account.service';
 
 @UseGuards(JwtGuard)
 @Controller('user-accounts')

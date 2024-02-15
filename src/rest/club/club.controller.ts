@@ -8,10 +8,11 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ClubService } from './club.service';
+import { Club } from '../../@generated-types';
+
 import { CreateClubDto, EditClubDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';
-import { Club } from '../../@generated-types';
+import { ClubService } from './club.service';
 
 @UseGuards(JwtGuard)
 @Controller('clubs')

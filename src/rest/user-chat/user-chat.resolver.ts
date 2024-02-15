@@ -1,8 +1,8 @@
-import { UserChatService } from './user-chat.service';
 import { Args, Mutation, Query } from '@nestjs/graphql';
 import { UserChat } from '../../@generated-types';
-import { CreateUserChatDto } from './dto/create-user-chat.dto';
-import { EditUserChatDto } from './dto/edit-user-chat.dto';
+
+import { CreateUserChatDto, EditUserChatDto } from './dto';
+import { UserChatService } from './user-chat.service';
 
 export class UserChatResolver {
   constructor(private userChatService: UserChatService) {}

@@ -8,10 +8,11 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { EventTicket } from '../../@generated-types';
+
+import { CreateEventTicketDto, EditEventTicketDto } from './dto';
 import { JwtGuard } from '../../auth/guard';
 import { EventTicketService } from './event-ticket.service';
-import { CreateEventTicketDto, EditEventTicketDto } from './dto';
-import { EventTicket } from '../../@generated-types';
 
 @UseGuards(JwtGuard)
 @Controller('event-tickets')

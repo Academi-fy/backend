@@ -3,11 +3,8 @@ import {
   SubscribeMessage,
   WebSocketGateway,
 } from '@nestjs/websockets';
-import { SOCKET_PORT } from 'src/constants';
-import { ChatService } from 'src/rest/chat';
-import { UserChatService } from 'src/rest/user-chat';
 
-import { Chat } from '../../@generated-types';
+import { Chat, Club, Course, UserChat } from '../../@generated-types';
 import {
   ChatClubMutation,
   ChatCourseMutation,
@@ -16,13 +13,12 @@ import {
 } from '../entities';
 import { GatewayMessage } from '../entities/gateway';
 import { Typing } from '../entities/chat/typing.entity';
+import { ChatService } from 'src/rest/chat/chat.service';
+import { SOCKET_PORT } from 'src/constants';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ChatGateway extends Gateway {
-  constructor(
-    private chatService: ChatService,
-    private userChatService: UserChatService,
-  ) {
+  constructor(private chatService: ChatService) {
     super();
   }
 
@@ -30,99 +26,153 @@ export class ChatGateway extends Gateway {
   async handleChatTargetAdd(
     @MessageBody() body: GatewayMessage<ChatTargetMutation>,
   ): Promise<GatewayMessage<ChatTargetMutation> | Error> {
-    return this.handleChatMutation<ChatTargetMutation>(
-      body,
-      'targets',
-      'RECEIVED_CHAT_TARGET_ADD',
-    );
+    const data: Error | GatewayMessage<ChatTargetMutation> =
+      await this.validateData<GatewayMessage<ChatTargetMutation>>(
+        body,
+        GatewayMessage<ChatTargetMutation>,
+      );
+    if (data instanceof Error) return data;
+
+    const chat: Chat = await this.chatService.getChatById(data.value.chatId);
+
+    const modifiedChat: Chat = await this.chatService.editChat(data.modifyId, {
+      targets: chat.targets
+        .map((targetChat: UserChat) => targetChat.userId)
+        .concat(data.value.targetId),
+    });
+
+    for (const targetChat of modifiedChat.targets) {
+      this.emit(targetChat.userId, 'RECEIVED_CHAT_TARGET_ADD', modifiedChat);
+    }
+
+    return data;
   }
 
   @SubscribeMessage('CHAT_TARGET_REMOVE')
   async handleChatTargetRemove(
     @MessageBody() body: GatewayMessage<ChatTargetMutation>,
   ): Promise<GatewayMessage<ChatTargetMutation> | Error> {
-    return this.handleChatMutation<ChatTargetMutation>(
-      body,
-      'targets',
-      'RECEIVED_CHAT_TARGET_REMOVE',
-      true,
-    );
+    const data: Error | GatewayMessage<ChatTargetMutation> =
+      await this.validateData<GatewayMessage<ChatTargetMutation>>(
+        body,
+        GatewayMessage<ChatTargetMutation>,
+      );
+    if (data instanceof Error) return data;
+
+    const chat: Chat = await this.chatService.getChatById(data.value.chatId);
+
+    const modifiedChat: Chat = await this.chatService.editChat(data.modifyId, {
+      targets: chat.targets
+        .map((targetChat: UserChat) => targetChat.userId)
+        .filter((userId: string) => userId !== data.value.targetId),
+    });
+
+    for (const targetChat of modifiedChat.targets) {
+      this.emit(targetChat.userId, 'RECEIVED_CHAT_TARGET_REMOVE', modifiedChat);
+    }
+
+    return data;
   }
 
   @SubscribeMessage('CHAT_COURSE_ADD')
   async handleChatCourseAdd(
     @MessageBody() body: GatewayMessage<ChatCourseMutation>,
   ): Promise<GatewayMessage<ChatCourseMutation> | Error> {
-    return this.handleChatMutation<ChatCourseMutation>(
-      body,
-      'courses',
-      'RECEIVED_CHAT_COURSE_ADD',
-    );
+    const data: Error | GatewayMessage<ChatCourseMutation> =
+      await this.validateData<GatewayMessage<ChatCourseMutation>>(
+        body,
+        GatewayMessage<ChatCourseMutation>,
+      );
+    if (data instanceof Error) return data;
+
+    const chat: Chat = await this.findChat(data.value.chatId);
+
+    const modifiedChat: Chat = await this.chatService.editChat(data.modifyId, {
+      targets: chat.courses
+        .map((course: Course) => course.id)
+        .concat(data.value.courseId),
+    });
+
+    for (const targetChat of chat.targets) {
+      this.emit(targetChat.userId, 'RECEIVED_CHAT_COURSE_ADD', modifiedChat);
+    }
+
+    return data;
   }
 
   @SubscribeMessage('CHAT_COURSE_REMOVE')
   async handleChatCourseRemove(
     @MessageBody() body: GatewayMessage<ChatCourseMutation>,
   ): Promise<GatewayMessage<ChatCourseMutation> | Error> {
-    return this.handleChatMutation<ChatCourseMutation>(
-      body,
-      'courses',
-      'RECEIVED_CHAT_COURSE_REMOVE',
-      true,
-    );
+    const data: Error | GatewayMessage<ChatCourseMutation> =
+      await this.validateData<GatewayMessage<ChatCourseMutation>>(
+        body,
+        GatewayMessage<ChatCourseMutation>,
+      );
+    if (data instanceof Error) return data;
+
+    const chat: Chat = await this.findChat(data.value.chatId);
+
+    const modifiedChat: Chat = await this.chatService.editChat(data.modifyId, {
+      targets: chat.courses
+        .map((course: Course) => course.id)
+        .filter((courseId: string) => courseId !== data.value.courseId),
+    });
+
+    for (const targetChat of chat.targets) {
+      this.emit(targetChat.userId, 'RECEIVED_CHAT_COURSE_REMOVE', modifiedChat);
+    }
+
+    return data;
   }
 
   @SubscribeMessage('CHAT_CLUB_ADD')
   async handleChatClubAdd(
     @MessageBody() body: GatewayMessage<ChatClubMutation>,
   ): Promise<GatewayMessage<ChatClubMutation> | Error> {
-    return this.handleChatMutation<ChatClubMutation>(
-      body,
-      'clubs',
-      'RECEIVED_CHAT_CLUB_ADD',
-    );
+    const data: Error | GatewayMessage<ChatClubMutation> =
+      await this.validateData<GatewayMessage<ChatClubMutation>>(
+        body,
+        GatewayMessage<ChatClubMutation>,
+      );
+    if (data instanceof Error) return data;
+
+    const chat: Chat = await this.findChat(data.value.chatId);
+
+    const modifiedChat: Chat = await this.chatService.editChat(data.modifyId, {
+      targets: chat.clubs
+        .map((club: Club) => club.id)
+        .concat(data.value.clubId),
+    });
+
+    for (const targetChat of chat.targets) {
+      this.emit(targetChat.userId, 'RECEIVED_CHAT_CLUB_ADD', modifiedChat);
+    }
+
+    return data;
   }
 
   @SubscribeMessage('CHAT_CLUB_REMOVE')
   async handleChatClubRemove(
     @MessageBody() body: GatewayMessage<ChatClubMutation>,
   ): Promise<GatewayMessage<ChatClubMutation> | Error> {
-    return this.handleChatMutation<ChatClubMutation>(
-      body,
-      'clubs',
-      'RECEIVED_CHAT_CLUB_REMOVE',
-      true,
-    );
-  }
-
-  private async handleChatMutation<T>(
-    body: GatewayMessage<T>,
-    field: 'targets' | 'courses' | 'clubs',
-    event: string,
-    remove: boolean = false,
-  ): Promise<GatewayMessage<T> | Error> {
-    const data: Error | GatewayMessage<any> = await this.validateData<
-      GatewayMessage<any>
-    >(body, GatewayMessage<T>);
+    const data: Error | GatewayMessage<ChatClubMutation> =
+      await this.validateData<GatewayMessage<ChatClubMutation>>(
+        body,
+        GatewayMessage<ChatClubMutation>,
+      );
     if (data instanceof Error) return data;
 
-    const chat: Chat = await this.chatService.getChatById(data.value.chatId);
-    if (!chat) throw new Error(`Chat '${data.value.chatId}' not found`);
-
-    const identifiers: any[] = chat[field].map((item: any) => item.id);
-
-    if (remove) {
-      identifiers.filter((id: string) => id !== data.value.targetId);
-    } else {
-      identifiers.push(data.value.targetId);
-    }
+    const chat: Chat = await this.findChat(data.value.chatId);
 
     const modifiedChat: Chat = await this.chatService.editChat(data.modifyId, {
-      [field]: identifiers,
+      targets: chat.clubs
+        .map((club: Club) => club.id)
+        .filter((clubId: string) => clubId !== data.value.clubId),
     });
 
-    for (const targetChat of modifiedChat.targets) {
-      this.emit(targetChat.userId, event, data);
+    for (const targetChat of chat.targets) {
+      this.emit(targetChat.userId, 'RECEIVED_CHAT_CLUB_REMOVE', modifiedChat);
     }
 
     return data;
@@ -145,5 +195,11 @@ export class ChatGateway extends Gateway {
     }
 
     return data;
+  }
+
+  private async findChat(chatId: string): Promise<Chat> {
+    const chat: Chat = await this.chatService.getChatById(chatId);
+    if (!chat) throw new Error(`Chat '${chatId}' not found`);
+    return chat;
   }
 }

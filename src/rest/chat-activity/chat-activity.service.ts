@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { Service } from '../../service';
-import { PrismaService } from '../../prisma';
-import { chatActivityNesting } from './chat-activity.nesting';
 import { ChatActivity } from '../../@generated-types';
+
+import { Service } from '../../service';
+import { PrismaService } from '../../prisma/prisma.service';
+
+import { chatActivityNesting } from './chat-activity.nesting';
 import { CreateChatActivityDto, EditChatActivityDto } from './dto';
 
 @Injectable()

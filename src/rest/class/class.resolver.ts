@@ -1,4 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+
 import { Class } from '../../@generated-types';
 import { ClassService } from './class.service';
 import { CreateClassDto, EditClassDto } from './dto';

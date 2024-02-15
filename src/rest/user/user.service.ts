@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { Service } from '../../service';
-import { PrismaService } from '../../prisma';
-import { userNesting } from './user.nesting';
 import { User } from '../../@generated-types';
+
+import { Service } from '../../service';
+import { PrismaService } from '../../prisma/prisma.service';
+
+import { userNesting } from './user.nesting';
 import { CreateUserDto, EditUserDto } from './dto';
 
 @Injectable()
 export class UserService extends Service {
-  constructor(private prisma: PrismaService) {
+  constructor(private readonly prisma: PrismaService) {
     super();
   }
 

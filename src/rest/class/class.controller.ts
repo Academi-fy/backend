@@ -8,10 +8,11 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ClassService } from './class.service';
+import { Class } from '../../@generated-types';
+
 import { CreateClassDto, EditClassDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';
-import { Class } from '../../@generated-types';
+import { ClassService } from './class.service';
 
 @UseGuards(JwtGuard)
 @Controller('classes')

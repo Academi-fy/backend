@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { SubjectController } from './subject.controller';
 import { SubjectService } from './subject.service';
 import { SubjectResolver } from './subject.resolver';

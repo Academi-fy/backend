@@ -8,10 +8,11 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { Subject } from '../../@generated-types';
+
+import { CreateSubjectDto } from './dto';
 import { JwtGuard } from '../../auth/guard';
 import { SubjectService } from './subject.service';
-import { Subject } from '../../@generated-types';
-import { CreateSubjectDto } from './dto';
 
 @UseGuards(JwtGuard)
 @Controller('subjects')

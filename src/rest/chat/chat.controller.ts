@@ -8,10 +8,11 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ChatService } from './chat.service';
+import { Chat } from '../../@generated-types';
+
 import { CreateChatDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';
-import { Chat } from '@prisma/client';
+import { ChatService } from './chat.service';
 
 @UseGuards(JwtGuard)
 @Controller('chats')

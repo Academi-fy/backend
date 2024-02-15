@@ -8,10 +8,11 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+
+import { BlackboardTag } from '../../@generated-types';
+import { CreateBlackboardTagDto, EditBlackboardTagDto } from './dto';
 import { JwtGuard } from '../../auth/guard';
 import { BlackboardTagService } from './blackboard-tag.service';
-import { CreateBlackboardTagDto, EditBlackboardTagDto } from './dto';
-import { BlackboardTag } from '../../@generated-types';
 
 @UseGuards(JwtGuard)
 @Controller('blackboard-tags')
