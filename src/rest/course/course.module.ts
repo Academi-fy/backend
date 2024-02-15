@@ -7,5 +7,6 @@ import { CourseResolver } from './course.resolver';
 @Module({
   providers: [CourseService, CourseResolver],
   controllers: [CourseController],
+  exports: [CourseService],
 })
 export class CourseModule {}
