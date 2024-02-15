@@ -35,6 +35,8 @@ export class BlackboardGateway extends Gateway {
 
     const blackboard: Blackboard =
       await this.blackboardService.createBlackboard(data.value);
+    if (!blackboard)
+      throw new Error(`Blackboard could not be created with data: ${data}`);
 
     for (const member of blackboard.school.members) {
       this.emit(member.id, 'RECEIVED_BLACKBOARD_CREATE', data);
@@ -54,10 +56,13 @@ export class BlackboardGateway extends Gateway {
       );
     if (data instanceof Error) return data;
 
+    const blackboardId: string = data.modifyId;
+
     const blackboard: Blackboard = await this.blackboardService.editBlackboard(
-      data.modifyId,
+      blackboardId,
       data.value,
     );
+    if (!blackboard) throw new Error(`Blackboard '${blackboardId}' not found`);
 
     const school: School = await this.schoolService.getSchoolById(
       blackboard.school.id,
@@ -79,8 +84,11 @@ export class BlackboardGateway extends Gateway {
     >(body, GatewayMessage<never>);
     if (data instanceof Error) return data;
 
+    const blackboardId: string = data.modifyId;
+
     const blackboard: Blackboard =
-      await this.blackboardService.deleteBlackboard(data.modifyId);
+      await this.blackboardService.deleteBlackboard(blackboardId);
+    if (!blackboard) throw new Error(`Blackboard '${blackboardId}' not found`);
 
     for (const member of blackboard.school.members) {
       this.emit(member.id, 'RECEIVED_BLACKBOARD_DELETE', data);

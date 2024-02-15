@@ -33,9 +33,12 @@ export class ChatGateway extends Gateway {
       );
     if (data instanceof Error) return data;
 
-    const chat: Chat = await this.chatService.getChatById(data.value.chatId);
+    const chatId: string = data.value.chatId;
 
-    const modifiedChat: Chat = await this.chatService.editChat(data.modifyId, {
+    const chat: Chat = await this.chatService.getChatById(chatId);
+    if (!chat) throw new Error(`Chat '${chatId}' not found`);
+
+    const modifiedChat: Chat = await this.chatService.editChat(chatId, {
       targets: chat.targets
         .map((targetChat: UserChat) => targetChat.userId)
         .concat(data.value.targetId),
@@ -59,9 +62,12 @@ export class ChatGateway extends Gateway {
       );
     if (data instanceof Error) return data;
 
-    const chat: Chat = await this.chatService.getChatById(data.value.chatId);
+    const chatId: string = data.value.chatId;
 
-    const modifiedChat: Chat = await this.chatService.editChat(data.modifyId, {
+    const chat: Chat = await this.chatService.getChatById(chatId);
+    if (!chat) throw new Error(`Chat '${chatId}' not found`);
+
+    const modifiedChat: Chat = await this.chatService.editChat(chatId, {
       targets: chat.targets
         .map((targetChat: UserChat) => targetChat.userId)
         .filter((userId: string) => userId !== data.value.targetId),
@@ -85,9 +91,12 @@ export class ChatGateway extends Gateway {
       );
     if (data instanceof Error) return data;
 
-    const chat: Chat = await this.findChat(data.value.chatId);
+    const chatId: string = data.value.chatId;
 
-    const modifiedChat: Chat = await this.chatService.editChat(data.modifyId, {
+    const chat: Chat = await this.findChat(chatId);
+    if (!chat) throw new Error(`Chat '${chatId}' not found`);
+
+    const modifiedChat: Chat = await this.chatService.editChat(chatId, {
       targets: chat.courses
         .map((course: Course) => course.id)
         .concat(data.value.courseId),
@@ -111,9 +120,12 @@ export class ChatGateway extends Gateway {
       );
     if (data instanceof Error) return data;
 
-    const chat: Chat = await this.findChat(data.value.chatId);
+    const chatId: string = data.value.chatId;
 
-    const modifiedChat: Chat = await this.chatService.editChat(data.modifyId, {
+    const chat: Chat = await this.findChat(chatId);
+    if (!chat) throw new Error(`Chat '${chatId}' not found`);
+
+    const modifiedChat: Chat = await this.chatService.editChat(chatId, {
       targets: chat.courses
         .map((course: Course) => course.id)
         .filter((courseId: string) => courseId !== data.value.courseId),
@@ -137,9 +149,12 @@ export class ChatGateway extends Gateway {
       );
     if (data instanceof Error) return data;
 
-    const chat: Chat = await this.findChat(data.value.chatId);
+    const chatId: string = data.value.chatId;
 
-    const modifiedChat: Chat = await this.chatService.editChat(data.modifyId, {
+    const chat: Chat = await this.findChat(chatId);
+    if (!chat) throw new Error(`Chat '${chatId}' not found`);
+
+    const modifiedChat: Chat = await this.chatService.editChat(chatId, {
       targets: chat.clubs
         .map((club: Club) => club.id)
         .concat(data.value.clubId),

@@ -1,4 +1,3 @@
-// DTO = Data Transfer Object
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class AuthDto {

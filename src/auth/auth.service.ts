@@ -5,7 +5,7 @@ import { Prisma, UserAccount } from '@prisma/client';
 
 import { AuthDto } from './dto';
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '@/prisma/prisma.service';
 
 @Injectable()
 export class AuthService {

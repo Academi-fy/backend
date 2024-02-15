@@ -28,17 +28,16 @@ export class ClubGateway extends Gateway {
       );
     if (data instanceof Error) return data;
 
-    const club: Club = await this.clubService.getClubById(data.value.clubId);
-    if (!club) throw new Error(`Club '${data.modifyId}' not found`);
+    const clubId: string = data.value.clubId;
 
-    const modifiedClub: Club = await this.clubService.editClub(
-      data.value.clubId,
-      {
-        members: club.members
-          .map((member: User) => member.id)
-          .concat(data.value.userId),
-      },
-    );
+    const club: Club = await this.clubService.getClubById(clubId);
+    if (!club) throw new Error(`Club '${clubId}' not found`);
+
+    const modifiedClub: Club = await this.clubService.editClub(clubId, {
+      members: club.members
+        .map((member: User) => member.id)
+        .concat(data.value.userId),
+    });
 
     for (const member of modifiedClub.members) {
       this.emit(member.id, 'RECEIVED_CLUB_USER_ADD', modifiedClub);
@@ -58,17 +57,16 @@ export class ClubGateway extends Gateway {
       );
     if (data instanceof Error) return data;
 
-    const club: Club = await this.clubService.getClubById(data.value.clubId);
-    if (!club) throw new Error(`Club '${data.modifyId}' not found`);
+    const clubId: string = data.value.clubId;
 
-    const modifiedClub: Club = await this.clubService.editClub(
-      data.value.clubId,
-      {
-        members: club.members
-          .map((member: User) => member.id)
-          .filter((memberId: string) => memberId !== data.value.userId),
-      },
-    );
+    const club: Club = await this.clubService.getClubById(clubId);
+    if (!club) throw new Error(`Club '${clubId}' not found`);
+
+    const modifiedClub: Club = await this.clubService.editClub(clubId, {
+      members: club.members
+        .map((member: User) => member.id)
+        .filter((memberId: string) => memberId !== data.value.userId),
+    });
 
     for (const member of modifiedClub.members) {
       this.emit(member.id, 'RECEIVED_CLUB_USER_REMOVE', modifiedClub);
@@ -88,17 +86,16 @@ export class ClubGateway extends Gateway {
       );
     if (data instanceof Error) return data;
 
-    const club: Club = await this.clubService.getClubById(data.value.clubId);
-    if (!club) throw new Error(`Club '${data.modifyId}' not found`);
+    const clubId: string = data.value.clubId;
 
-    const modifiedClub: Club = await this.clubService.editClub(
-      data.value.clubId,
-      {
-        members: club.events
-          .map((event: Event) => event.id)
-          .concat(data.value.eventId),
-      },
-    );
+    const club: Club = await this.clubService.getClubById(clubId);
+    if (!club) throw new Error(`Club '${clubId}' not found`);
+
+    const modifiedClub: Club = await this.clubService.editClub(clubId, {
+      members: club.events
+        .map((event: Event) => event.id)
+        .concat(data.value.eventId),
+    });
 
     for (const member of modifiedClub.members) {
       this.emit(member.id, 'RECEIVED_CLUB_EVENT_ADD', modifiedClub);
@@ -118,17 +115,16 @@ export class ClubGateway extends Gateway {
       );
     if (data instanceof Error) return data;
 
-    const club: Club = await this.clubService.getClubById(data.value.clubId);
-    if (!club) throw new Error(`Club '${data.modifyId}' not found`);
+    const clubId: string = data.value.clubId;
 
-    const modifiedClub: Club = await this.clubService.editClub(
-      data.value.clubId,
-      {
-        members: club.events
-          .map((event: Event) => event.id)
-          .filter((eventId: string) => eventId !== data.value.eventId),
-      },
-    );
+    const club: Club = await this.clubService.getClubById(clubId);
+    if (!club) throw new Error(`Club '${clubId}' not found`);
+
+    const modifiedClub: Club = await this.clubService.editClub(clubId, {
+      members: club.events
+        .map((event: Event) => event.id)
+        .filter((eventId: string) => eventId !== data.value.eventId),
+    });
 
     for (const member of modifiedClub.members) {
       this.emit(member.id, 'RECEIVED_CLUB_EVENT_REMOVE', modifiedClub);

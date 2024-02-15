@@ -28,19 +28,16 @@ export class ClassGateway extends Gateway {
       );
     if (data instanceof Error) return data;
 
-    const class_: Class = await this.classService.getClassById(
-      data.value.classId,
-    );
-    if (!class_) throw new Error(`Class '${data.value.classId}' not found`);
+    const classId: string = data.value.classId;
 
-    const modifiedClass: Class = await this.classService.editClass(
-      data.value.classId,
-      {
-        courses: class_.courses
-          .map((course: Course) => course.id)
-          .concat(data.value.courseId),
-      },
-    );
+    const class_: Class = await this.classService.getClassById(classId);
+    if (!class_) throw new Error(`Class '${classId}' not found`);
+
+    const modifiedClass: Class = await this.classService.editClass(classId, {
+      courses: class_.courses
+        .map((course: Course) => course.id)
+        .concat(data.value.courseId),
+    });
 
     for (const member of modifiedClass.members) {
       this.emit(member.id, 'RECEIVED_CLASS_COURSE_ADD', data);
@@ -60,19 +57,16 @@ export class ClassGateway extends Gateway {
       );
     if (data instanceof Error) return data;
 
-    const class_: Class = await this.classService.getClassById(
-      data.value.classId,
-    );
-    if (!class_) throw new Error(`Class '${data.value.classId}' not found`);
+    const classId: string = data.value.classId;
 
-    const modifiedClass: Class = await this.classService.editClass(
-      data.value.classId,
-      {
-        courses: class_.courses
-          .map((course: Course) => course.id)
-          .filter((courseId: string) => courseId !== data.value.courseId),
-      },
-    );
+    const class_: Class = await this.classService.getClassById(classId);
+    if (!class_) throw new Error(`Class '${classId}' not found`);
+
+    const modifiedClass: Class = await this.classService.editClass(classId, {
+      courses: class_.courses
+        .map((course: Course) => course.id)
+        .filter((courseId: string) => courseId !== data.value.courseId),
+    });
 
     for (const member of modifiedClass.members) {
       this.emit(member.id, 'RECEIVED_CLASS_COURSE_REMOVE', data);
@@ -92,19 +86,16 @@ export class ClassGateway extends Gateway {
       );
     if (data instanceof Error) return data;
 
-    const class_: Class = await this.classService.getClassById(
-      data.value.classId,
-    );
-    if (!class_) throw new Error(`Class '${data.value.classId}' not found`);
+    const classId: string = data.value.classId;
 
-    const modifiedClass: Class = await this.classService.editClass(
-      data.value.classId,
-      {
-        members: class_.members
-          .map((member: User) => member.id)
-          .concat(data.value.userId),
-      },
-    );
+    const class_: Class = await this.classService.getClassById(classId);
+    if (!class_) throw new Error(`Class '${classId}' not found`);
+
+    const modifiedClass: Class = await this.classService.editClass(classId, {
+      members: class_.members
+        .map((member: User) => member.id)
+        .concat(data.value.userId),
+    });
 
     for (const member of modifiedClass.members) {
       this.emit(member.id, 'RECEIVED_CLASS_USER_ADD', data);
@@ -124,19 +115,16 @@ export class ClassGateway extends Gateway {
       );
     if (data instanceof Error) return data;
 
-    const class_: Class = await this.classService.getClassById(
-      data.value.classId,
-    );
-    if (!class_) throw new Error(`Class '${data.value.classId}' not found`);
+    const classId: string = data.value.classId;
 
-    const modifiedClass: Class = await this.classService.editClass(
-      data.value.classId,
-      {
-        members: class_.members
-          .map((member: User) => member.id)
-          .filter((memberId: string) => memberId !== data.value.userId),
-      },
-    );
+    const class_: Class = await this.classService.getClassById(classId);
+    if (!class_) throw new Error(`Class '${classId}' not found`);
+
+    const modifiedClass: Class = await this.classService.editClass(classId, {
+      members: class_.members
+        .map((member: User) => member.id)
+        .filter((memberId: string) => memberId !== data.value.userId),
+    });
 
     for (const member of modifiedClass.members) {
       this.emit(member.id, 'RECEIVED_CLASS_USER_REMOVE', data);
