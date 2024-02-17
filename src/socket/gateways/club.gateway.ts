@@ -38,6 +38,8 @@ export class ClubGateway extends Gateway {
         .map((member: User) => member.id)
         .concat(data.value.userId),
     });
+    if (!modifiedClub)
+      throw new Error(`Club '${clubId}' could not be modified`);
 
     for (const member of modifiedClub.members) {
       this.emit(member.id, 'RECEIVED_CLUB_USER_ADD', modifiedClub);
@@ -67,6 +69,8 @@ export class ClubGateway extends Gateway {
         .map((member: User) => member.id)
         .filter((memberId: string) => memberId !== data.value.userId),
     });
+    if (!modifiedClub)
+      throw new Error(`Club '${clubId}' could not be modified`);
 
     for (const member of modifiedClub.members) {
       this.emit(member.id, 'RECEIVED_CLUB_USER_REMOVE', modifiedClub);
@@ -96,6 +100,8 @@ export class ClubGateway extends Gateway {
         .map((event: Event) => event.id)
         .concat(data.value.eventId),
     });
+    if (!modifiedClub)
+      throw new Error(`Club '${clubId}' could not be modified`);
 
     for (const member of modifiedClub.members) {
       this.emit(member.id, 'RECEIVED_CLUB_EVENT_ADD', modifiedClub);
@@ -125,6 +131,8 @@ export class ClubGateway extends Gateway {
         .map((event: Event) => event.id)
         .filter((eventId: string) => eventId !== data.value.eventId),
     });
+    if (!modifiedClub)
+      throw new Error(`Club '${clubId}' could not be modified`);
 
     for (const member of modifiedClub.members) {
       this.emit(member.id, 'RECEIVED_CLUB_EVENT_REMOVE', modifiedClub);

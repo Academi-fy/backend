@@ -239,6 +239,7 @@ var CourseScalarFieldEnum;
     CourseScalarFieldEnum["createdAt"] = "createdAt";
     CourseScalarFieldEnum["updatedAt"] = "updatedAt";
     CourseScalarFieldEnum["chatId"] = "chatId";
+    CourseScalarFieldEnum["name"] = "name";
     CourseScalarFieldEnum["subjectId"] = "subjectId";
     CourseScalarFieldEnum["teacherId"] = "teacherId";
 })(CourseScalarFieldEnum = exports.CourseScalarFieldEnum || (exports.CourseScalarFieldEnum = {}));
@@ -254,6 +255,7 @@ var ClubScalarFieldEnum;
     ClubScalarFieldEnum["id"] = "id";
     ClubScalarFieldEnum["createdAt"] = "createdAt";
     ClubScalarFieldEnum["updatedAt"] = "updatedAt";
+    ClubScalarFieldEnum["avatar"] = "avatar";
     ClubScalarFieldEnum["chatId"] = "chatId";
     ClubScalarFieldEnum["coverImage"] = "coverImage";
     ClubScalarFieldEnum["description"] = "description";
@@ -11300,6 +11302,9 @@ __decorate([
 ], ClubCountAggregateInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => Boolean, { nullable: true })
+], ClubCountAggregateInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => Boolean, { nullable: true })
 ], ClubCountAggregateInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => Boolean, { nullable: true })
@@ -11345,6 +11350,9 @@ __decorate([
 ], ClubCountAggregate.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => graphql_4.Int, { nullable: false })
+], ClubCountAggregate.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => graphql_4.Int, { nullable: false })
 ], ClubCountAggregate.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => graphql_4.Int, { nullable: false })
@@ -11388,6 +11396,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => SortOrder, { nullable: true })
 ], ClubCountOrderByAggregateInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => SortOrder, { nullable: true })
+], ClubCountOrderByAggregateInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => SortOrder, { nullable: true })
 ], ClubCountOrderByAggregateInput.prototype, "chatId", void 0);
@@ -11463,6 +11474,9 @@ __decorate([
 ], ClubCreateManyChatInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubCreateManyChatInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubCreateManyChatInput.prototype, "coverImage", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
@@ -11515,6 +11529,9 @@ __decorate([
 ], ClubCreateManySchoolInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubCreateManySchoolInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubCreateManySchoolInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
@@ -11552,6 +11569,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => Date, { nullable: true })
 ], ClubCreateManyInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubCreateManyInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubCreateManyInput.prototype, "chatId", void 0);
@@ -11796,6 +11816,9 @@ __decorate([
 ], ClubCreateWithoutChatInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubCreateWithoutChatInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubCreateWithoutChatInput.prototype, "coverImage", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
@@ -11845,6 +11868,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => Date, { nullable: true })
 ], ClubCreateWithoutEventsInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubCreateWithoutEventsInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubCreateWithoutEventsInput.prototype, "coverImage", void 0);
@@ -11898,6 +11924,9 @@ __decorate([
 ], ClubCreateWithoutLeadersInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubCreateWithoutLeadersInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubCreateWithoutLeadersInput.prototype, "coverImage", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
@@ -11947,6 +11976,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => Date, { nullable: true })
 ], ClubCreateWithoutMembersInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubCreateWithoutMembersInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubCreateWithoutMembersInput.prototype, "coverImage", void 0);
@@ -12000,6 +12032,9 @@ __decorate([
 ], ClubCreateWithoutSchoolInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubCreateWithoutSchoolInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubCreateWithoutSchoolInput.prototype, "coverImage", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
@@ -12051,6 +12086,9 @@ __decorate([
 ], ClubCreateWithoutTagsInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubCreateWithoutTagsInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubCreateWithoutTagsInput.prototype, "coverImage", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
@@ -12100,6 +12138,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => Date, { nullable: true })
 ], ClubCreateInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubCreateInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubCreateInput.prototype, "coverImage", void 0);
@@ -12199,6 +12240,9 @@ __decorate([
 ], ClubGroupBy.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubGroupBy.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubGroupBy.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
@@ -12265,6 +12309,9 @@ __decorate([
 ], ClubMaxAggregateInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => Boolean, { nullable: true })
+], ClubMaxAggregateInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => Boolean, { nullable: true })
 ], ClubMaxAggregateInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => Boolean, { nullable: true })
@@ -12302,6 +12349,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => Date, { nullable: true })
 ], ClubMaxAggregate.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubMaxAggregate.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubMaxAggregate.prototype, "chatId", void 0);
@@ -12343,6 +12393,9 @@ __decorate([
 ], ClubMaxOrderByAggregateInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => SortOrder, { nullable: true })
+], ClubMaxOrderByAggregateInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => SortOrder, { nullable: true })
 ], ClubMaxOrderByAggregateInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => SortOrder, { nullable: true })
@@ -12380,6 +12433,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => Boolean, { nullable: true })
 ], ClubMinAggregateInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => Boolean, { nullable: true })
+], ClubMinAggregateInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => Boolean, { nullable: true })
 ], ClubMinAggregateInput.prototype, "chatId", void 0);
@@ -12421,6 +12477,9 @@ __decorate([
 ], ClubMinAggregate.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubMinAggregate.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubMinAggregate.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
@@ -12458,6 +12517,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => SortOrder, { nullable: true })
 ], ClubMinOrderByAggregateInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => SortOrder, { nullable: true })
+], ClubMinOrderByAggregateInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => SortOrder, { nullable: true })
 ], ClubMinOrderByAggregateInput.prototype, "chatId", void 0);
@@ -12506,6 +12568,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => SortOrder, { nullable: true })
 ], ClubOrderByWithAggregationInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => SortOrderInput, { nullable: true })
+], ClubOrderByWithAggregationInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => SortOrderInput, { nullable: true })
 ], ClubOrderByWithAggregationInput.prototype, "chatId", void 0);
@@ -12557,6 +12622,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => SortOrder, { nullable: true })
 ], ClubOrderByWithRelationInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => SortOrderInput, { nullable: true })
+], ClubOrderByWithRelationInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => SortOrderInput, { nullable: true })
 ], ClubOrderByWithRelationInput.prototype, "chatId", void 0);
@@ -12627,6 +12695,9 @@ __decorate([
     (0, graphql_1.Field)(() => DateTimeWithAggregatesFilter, { nullable: true })
 ], ClubScalarWhereWithAggregatesInput.prototype, "updatedAt", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => StringNullableWithAggregatesFilter, { nullable: true })
+], ClubScalarWhereWithAggregatesInput.prototype, "avatar", void 0);
+__decorate([
     (0, graphql_1.Field)(() => UuidNullableWithAggregatesFilter, { nullable: true })
 ], ClubScalarWhereWithAggregatesInput.prototype, "chatId", void 0);
 __decorate([
@@ -12677,6 +12748,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => DateTimeFilter, { nullable: true })
 ], ClubScalarWhereInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringNullableFilter, { nullable: true })
+], ClubScalarWhereInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => UuidNullableFilter, { nullable: true })
 ], ClubScalarWhereInput.prototype, "chatId", void 0);
@@ -12837,6 +12911,9 @@ __decorate([
 ], ClubUncheckedCreateWithoutChatInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubUncheckedCreateWithoutChatInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubUncheckedCreateWithoutChatInput.prototype, "coverImage", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
@@ -12886,6 +12963,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => Date, { nullable: true })
 ], ClubUncheckedCreateWithoutEventsInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubUncheckedCreateWithoutEventsInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubUncheckedCreateWithoutEventsInput.prototype, "chatId", void 0);
@@ -12939,6 +13019,9 @@ __decorate([
 ], ClubUncheckedCreateWithoutLeadersInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubUncheckedCreateWithoutLeadersInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubUncheckedCreateWithoutLeadersInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
@@ -12988,6 +13071,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => Date, { nullable: true })
 ], ClubUncheckedCreateWithoutMembersInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubUncheckedCreateWithoutMembersInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubUncheckedCreateWithoutMembersInput.prototype, "chatId", void 0);
@@ -13041,6 +13127,9 @@ __decorate([
 ], ClubUncheckedCreateWithoutSchoolInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubUncheckedCreateWithoutSchoolInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubUncheckedCreateWithoutSchoolInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
@@ -13092,6 +13181,9 @@ __decorate([
 ], ClubUncheckedCreateWithoutTagsInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubUncheckedCreateWithoutTagsInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubUncheckedCreateWithoutTagsInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
@@ -13141,6 +13233,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => Date, { nullable: true })
 ], ClubUncheckedCreateInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
+], ClubUncheckedCreateInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
 ], ClubUncheckedCreateInput.prototype, "chatId", void 0);
@@ -13247,6 +13342,9 @@ __decorate([
 ], ClubUncheckedUpdateManyWithoutChatInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUncheckedUpdateManyWithoutChatInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateManyWithoutChatInput.prototype, "coverImage", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
@@ -13330,6 +13428,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateManyWithoutEventsInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUncheckedUpdateManyWithoutEventsInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateManyWithoutEventsInput.prototype, "chatId", void 0);
@@ -13420,6 +13521,9 @@ __decorate([
 ], ClubUncheckedUpdateManyWithoutLeadersInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUncheckedUpdateManyWithoutLeadersInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateManyWithoutLeadersInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
@@ -13506,6 +13610,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateManyWithoutMembersInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUncheckedUpdateManyWithoutMembersInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateManyWithoutMembersInput.prototype, "chatId", void 0);
@@ -13600,6 +13707,9 @@ __decorate([
 ], ClubUncheckedUpdateManyWithoutSchoolInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUncheckedUpdateManyWithoutSchoolInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateManyWithoutSchoolInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
@@ -13685,6 +13795,9 @@ __decorate([
 ], ClubUncheckedUpdateManyWithoutTagsInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUncheckedUpdateManyWithoutTagsInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateManyWithoutTagsInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
@@ -13727,6 +13840,9 @@ __decorate([
 ], ClubUncheckedUpdateManyInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUncheckedUpdateManyInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateManyInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
@@ -13767,6 +13883,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateWithoutChatInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUncheckedUpdateWithoutChatInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateWithoutChatInput.prototype, "coverImage", void 0);
@@ -13820,6 +13939,9 @@ __decorate([
 ], ClubUncheckedUpdateWithoutEventsInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUncheckedUpdateWithoutEventsInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateWithoutEventsInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
@@ -13869,6 +13991,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateWithoutLeadersInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUncheckedUpdateWithoutLeadersInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateWithoutLeadersInput.prototype, "chatId", void 0);
@@ -13922,6 +14047,9 @@ __decorate([
 ], ClubUncheckedUpdateWithoutMembersInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUncheckedUpdateWithoutMembersInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateWithoutMembersInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
@@ -13971,6 +14099,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateWithoutSchoolInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUncheckedUpdateWithoutSchoolInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateWithoutSchoolInput.prototype, "chatId", void 0);
@@ -14024,6 +14155,9 @@ __decorate([
 ], ClubUncheckedUpdateWithoutTagsInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUncheckedUpdateWithoutTagsInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateWithoutTagsInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
@@ -14073,6 +14207,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUncheckedUpdateInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUncheckedUpdateInput.prototype, "chatId", void 0);
@@ -14127,6 +14264,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], ClubUpdateManyMutationInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUpdateManyMutationInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUpdateManyMutationInput.prototype, "coverImage", void 0);
@@ -14617,6 +14757,9 @@ __decorate([
 ], ClubUpdateWithoutChatInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUpdateWithoutChatInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUpdateWithoutChatInput.prototype, "coverImage", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
@@ -14666,6 +14809,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], ClubUpdateWithoutEventsInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUpdateWithoutEventsInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUpdateWithoutEventsInput.prototype, "coverImage", void 0);
@@ -14719,6 +14865,9 @@ __decorate([
 ], ClubUpdateWithoutLeadersInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUpdateWithoutLeadersInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUpdateWithoutLeadersInput.prototype, "coverImage", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
@@ -14768,6 +14917,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], ClubUpdateWithoutMembersInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUpdateWithoutMembersInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUpdateWithoutMembersInput.prototype, "coverImage", void 0);
@@ -14821,6 +14973,9 @@ __decorate([
 ], ClubUpdateWithoutSchoolInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUpdateWithoutSchoolInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUpdateWithoutSchoolInput.prototype, "coverImage", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
@@ -14872,6 +15027,9 @@ __decorate([
 ], ClubUpdateWithoutTagsInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUpdateWithoutTagsInput.prototype, "avatar", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUpdateWithoutTagsInput.prototype, "coverImage", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
@@ -14921,6 +15079,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], ClubUpdateInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+], ClubUpdateInput.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], ClubUpdateInput.prototype, "coverImage", void 0);
@@ -15105,6 +15266,9 @@ __decorate([
     (0, graphql_1.Field)(() => DateTimeFilter, { nullable: true })
 ], ClubWhereUniqueInput.prototype, "updatedAt", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => StringNullableFilter, { nullable: true })
+], ClubWhereUniqueInput.prototype, "avatar", void 0);
+__decorate([
     (0, graphql_1.Field)(() => UuidNullableFilter, { nullable: true })
 ], ClubWhereUniqueInput.prototype, "chatId", void 0);
 __decorate([
@@ -15174,6 +15338,9 @@ __decorate([
     (0, graphql_1.Field)(() => DateTimeFilter, { nullable: true })
 ], ClubWhereInput.prototype, "updatedAt", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => StringNullableFilter, { nullable: true })
+], ClubWhereInput.prototype, "avatar", void 0);
+__decorate([
     (0, graphql_1.Field)(() => UuidNullableFilter, { nullable: true })
 ], ClubWhereInput.prototype, "chatId", void 0);
 __decorate([
@@ -15233,6 +15400,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => Date, { nullable: false })
 ], Club.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
+], Club.prototype, "avatar", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
 ], Club.prototype, "chatId", void 0);
@@ -16625,6 +16795,9 @@ __decorate([
 ], CourseCountAggregateInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => Boolean, { nullable: true })
+], CourseCountAggregateInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => Boolean, { nullable: true })
 ], CourseCountAggregateInput.prototype, "subjectId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => Boolean, { nullable: true })
@@ -16652,6 +16825,9 @@ __decorate([
 ], CourseCountAggregate.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => graphql_4.Int, { nullable: false })
+], CourseCountAggregate.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => graphql_4.Int, { nullable: false })
 ], CourseCountAggregate.prototype, "subjectId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => graphql_4.Int, { nullable: false })
@@ -16677,6 +16853,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => SortOrder, { nullable: true })
 ], CourseCountOrderByAggregateInput.prototype, "chatId", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => SortOrder, { nullable: true })
+], CourseCountOrderByAggregateInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => SortOrder, { nullable: true })
 ], CourseCountOrderByAggregateInput.prototype, "subjectId", void 0);
@@ -16725,6 +16904,9 @@ __decorate([
 ], CourseCreateManyChatInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: false })
+], CourseCreateManyChatInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
 ], CourseCreateManyChatInput.prototype, "subjectId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: false })
@@ -16762,6 +16944,9 @@ __decorate([
 ], CourseCreateManySubjectInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: false })
+], CourseCreateManySubjectInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
 ], CourseCreateManySubjectInput.prototype, "teacherId", void 0);
 CourseCreateManySubjectInput = __decorate([
     (0, graphql_5.InputType)()
@@ -16796,6 +16981,9 @@ __decorate([
 ], CourseCreateManyTeacherInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: false })
+], CourseCreateManyTeacherInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
 ], CourseCreateManyTeacherInput.prototype, "subjectId", void 0);
 CourseCreateManyTeacherInput = __decorate([
     (0, graphql_5.InputType)()
@@ -16815,6 +17003,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
 ], CourseCreateManyInput.prototype, "chatId", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
+], CourseCreateManyInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: false })
 ], CourseCreateManyInput.prototype, "subjectId", void 0);
@@ -17009,6 +17200,9 @@ __decorate([
     (0, graphql_1.Field)(() => Date, { nullable: true })
 ], CourseCreateWithoutChatInput.prototype, "updatedAt", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
+], CourseCreateWithoutChatInput.prototype, "name", void 0);
+__decorate([
     (0, graphql_1.Field)(() => ClassCreateNestedManyWithoutCoursesInput, { nullable: true })
 ], CourseCreateWithoutChatInput.prototype, "classes", void 0);
 __decorate([
@@ -17035,6 +17229,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => Date, { nullable: true })
 ], CourseCreateWithoutClassesInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
+], CourseCreateWithoutClassesInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => ChatCreateNestedOneWithoutCoursesInput, { nullable: true })
 ], CourseCreateWithoutClassesInput.prototype, "chat", void 0);
@@ -17063,6 +17260,9 @@ __decorate([
     (0, graphql_1.Field)(() => Date, { nullable: true })
 ], CourseCreateWithoutMembersInput.prototype, "updatedAt", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
+], CourseCreateWithoutMembersInput.prototype, "name", void 0);
+__decorate([
     (0, graphql_1.Field)(() => ChatCreateNestedOneWithoutCoursesInput, { nullable: true })
 ], CourseCreateWithoutMembersInput.prototype, "chat", void 0);
 __decorate([
@@ -17089,6 +17289,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => Date, { nullable: true })
 ], CourseCreateWithoutSubjectInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
+], CourseCreateWithoutSubjectInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => ChatCreateNestedOneWithoutCoursesInput, { nullable: true })
 ], CourseCreateWithoutSubjectInput.prototype, "chat", void 0);
@@ -17117,6 +17320,9 @@ __decorate([
     (0, graphql_1.Field)(() => Date, { nullable: true })
 ], CourseCreateWithoutTeacherInput.prototype, "updatedAt", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
+], CourseCreateWithoutTeacherInput.prototype, "name", void 0);
+__decorate([
     (0, graphql_1.Field)(() => ChatCreateNestedOneWithoutCoursesInput, { nullable: true })
 ], CourseCreateWithoutTeacherInput.prototype, "chat", void 0);
 __decorate([
@@ -17143,6 +17349,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => Date, { nullable: true })
 ], CourseCreateInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
+], CourseCreateInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => ChatCreateNestedOneWithoutCoursesInput, { nullable: true })
 ], CourseCreateInput.prototype, "chat", void 0);
@@ -17212,6 +17421,9 @@ __decorate([
 ], CourseGroupBy.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: false })
+], CourseGroupBy.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
 ], CourseGroupBy.prototype, "subjectId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: false })
@@ -17260,6 +17472,9 @@ __decorate([
 ], CourseMaxAggregateInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => Boolean, { nullable: true })
+], CourseMaxAggregateInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => Boolean, { nullable: true })
 ], CourseMaxAggregateInput.prototype, "subjectId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => Boolean, { nullable: true })
@@ -17282,6 +17497,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
 ], CourseMaxAggregate.prototype, "chatId", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
+], CourseMaxAggregate.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
 ], CourseMaxAggregate.prototype, "subjectId", void 0);
@@ -17308,6 +17526,9 @@ __decorate([
 ], CourseMaxOrderByAggregateInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => SortOrder, { nullable: true })
+], CourseMaxOrderByAggregateInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => SortOrder, { nullable: true })
 ], CourseMaxOrderByAggregateInput.prototype, "subjectId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => SortOrder, { nullable: true })
@@ -17330,6 +17551,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => Boolean, { nullable: true })
 ], CourseMinAggregateInput.prototype, "chatId", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => Boolean, { nullable: true })
+], CourseMinAggregateInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => Boolean, { nullable: true })
 ], CourseMinAggregateInput.prototype, "subjectId", void 0);
@@ -17356,6 +17580,9 @@ __decorate([
 ], CourseMinAggregate.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
+], CourseMinAggregate.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true })
 ], CourseMinAggregate.prototype, "subjectId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
@@ -17378,6 +17605,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => SortOrder, { nullable: true })
 ], CourseMinOrderByAggregateInput.prototype, "chatId", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => SortOrder, { nullable: true })
+], CourseMinOrderByAggregateInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => SortOrder, { nullable: true })
 ], CourseMinOrderByAggregateInput.prototype, "subjectId", void 0);
@@ -17413,6 +17643,9 @@ __decorate([
 ], CourseOrderByWithAggregationInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => SortOrder, { nullable: true })
+], CourseOrderByWithAggregationInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => SortOrder, { nullable: true })
 ], CourseOrderByWithAggregationInput.prototype, "subjectId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => SortOrder, { nullable: true })
@@ -17444,6 +17677,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => SortOrderInput, { nullable: true })
 ], CourseOrderByWithRelationInput.prototype, "chatId", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => SortOrder, { nullable: true })
+], CourseOrderByWithRelationInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => SortOrder, { nullable: true })
 ], CourseOrderByWithRelationInput.prototype, "subjectId", void 0);
@@ -17493,6 +17729,9 @@ __decorate([
     (0, graphql_1.Field)(() => UuidNullableWithAggregatesFilter, { nullable: true })
 ], CourseScalarWhereWithAggregatesInput.prototype, "chatId", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => StringWithAggregatesFilter, { nullable: true })
+], CourseScalarWhereWithAggregatesInput.prototype, "name", void 0);
+__decorate([
     (0, graphql_1.Field)(() => UuidWithAggregatesFilter, { nullable: true })
 ], CourseScalarWhereWithAggregatesInput.prototype, "subjectId", void 0);
 __decorate([
@@ -17525,6 +17764,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => UuidNullableFilter, { nullable: true })
 ], CourseScalarWhereInput.prototype, "chatId", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringFilter, { nullable: true })
+], CourseScalarWhereInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => UuidFilter, { nullable: true })
 ], CourseScalarWhereInput.prototype, "subjectId", void 0);
@@ -17650,6 +17892,9 @@ __decorate([
 ], CourseUncheckedCreateWithoutChatInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: false })
+], CourseUncheckedCreateWithoutChatInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
 ], CourseUncheckedCreateWithoutChatInput.prototype, "subjectId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: false })
@@ -17680,6 +17925,9 @@ __decorate([
 ], CourseUncheckedCreateWithoutClassesInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: false })
+], CourseUncheckedCreateWithoutClassesInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
 ], CourseUncheckedCreateWithoutClassesInput.prototype, "subjectId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: false })
@@ -17705,6 +17953,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
 ], CourseUncheckedCreateWithoutMembersInput.prototype, "chatId", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
+], CourseUncheckedCreateWithoutMembersInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: false })
 ], CourseUncheckedCreateWithoutMembersInput.prototype, "subjectId", void 0);
@@ -17734,6 +17985,9 @@ __decorate([
 ], CourseUncheckedCreateWithoutSubjectInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: false })
+], CourseUncheckedCreateWithoutSubjectInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
 ], CourseUncheckedCreateWithoutSubjectInput.prototype, "teacherId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => ClassUncheckedCreateNestedManyWithoutCoursesInput, { nullable: true })
@@ -17761,6 +18015,9 @@ __decorate([
 ], CourseUncheckedCreateWithoutTeacherInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: false })
+], CourseUncheckedCreateWithoutTeacherInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
 ], CourseUncheckedCreateWithoutTeacherInput.prototype, "subjectId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => ClassUncheckedCreateNestedManyWithoutCoursesInput, { nullable: true })
@@ -17786,6 +18043,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
 ], CourseUncheckedCreateInput.prototype, "chatId", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
+], CourseUncheckedCreateInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: false })
 ], CourseUncheckedCreateInput.prototype, "subjectId", void 0);
@@ -17865,6 +18125,9 @@ __decorate([
 ], CourseUncheckedUpdateManyWithoutChatInput.prototype, "updatedAt", void 0);
 __decorate([
     (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUncheckedUpdateManyWithoutChatInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
 ], CourseUncheckedUpdateManyWithoutChatInput.prototype, "subjectId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
@@ -17935,6 +18198,9 @@ __decorate([
 ], CourseUncheckedUpdateManyWithoutClassesInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUncheckedUpdateManyWithoutClassesInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
 ], CourseUncheckedUpdateManyWithoutClassesInput.prototype, "subjectId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
@@ -18003,6 +18269,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], CourseUncheckedUpdateManyWithoutMembersInput.prototype, "chatId", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUncheckedUpdateManyWithoutMembersInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
 ], CourseUncheckedUpdateManyWithoutMembersInput.prototype, "subjectId", void 0);
@@ -18079,6 +18348,9 @@ __decorate([
 ], CourseUncheckedUpdateManyWithoutSubjectInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUncheckedUpdateManyWithoutSubjectInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
 ], CourseUncheckedUpdateManyWithoutSubjectInput.prototype, "teacherId", void 0);
 CourseUncheckedUpdateManyWithoutSubjectInput = __decorate([
     (0, graphql_5.InputType)()
@@ -18150,6 +18422,9 @@ __decorate([
 ], CourseUncheckedUpdateManyWithoutTeacherInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUncheckedUpdateManyWithoutTeacherInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
 ], CourseUncheckedUpdateManyWithoutTeacherInput.prototype, "subjectId", void 0);
 CourseUncheckedUpdateManyWithoutTeacherInput = __decorate([
     (0, graphql_5.InputType)()
@@ -18171,6 +18446,9 @@ __decorate([
 ], CourseUncheckedUpdateManyInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUncheckedUpdateManyInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
 ], CourseUncheckedUpdateManyInput.prototype, "subjectId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
@@ -18190,6 +18468,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], CourseUncheckedUpdateWithoutChatInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUncheckedUpdateWithoutChatInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
 ], CourseUncheckedUpdateWithoutChatInput.prototype, "subjectId", void 0);
@@ -18222,6 +18503,9 @@ __decorate([
 ], CourseUncheckedUpdateWithoutClassesInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUncheckedUpdateWithoutClassesInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
 ], CourseUncheckedUpdateWithoutClassesInput.prototype, "subjectId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
@@ -18247,6 +18531,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], CourseUncheckedUpdateWithoutMembersInput.prototype, "chatId", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUncheckedUpdateWithoutMembersInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
 ], CourseUncheckedUpdateWithoutMembersInput.prototype, "subjectId", void 0);
@@ -18276,6 +18563,9 @@ __decorate([
 ], CourseUncheckedUpdateWithoutSubjectInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUncheckedUpdateWithoutSubjectInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
 ], CourseUncheckedUpdateWithoutSubjectInput.prototype, "teacherId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => ClassUncheckedUpdateManyWithoutCoursesNestedInput, { nullable: true })
@@ -18301,6 +18591,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
 ], CourseUncheckedUpdateWithoutTeacherInput.prototype, "chatId", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUncheckedUpdateWithoutTeacherInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
 ], CourseUncheckedUpdateWithoutTeacherInput.prototype, "subjectId", void 0);
@@ -18330,6 +18623,9 @@ __decorate([
 ], CourseUncheckedUpdateInput.prototype, "chatId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUncheckedUpdateInput.prototype, "name", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
 ], CourseUncheckedUpdateInput.prototype, "subjectId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
@@ -18355,6 +18651,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], CourseUpdateManyMutationInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUpdateManyMutationInput.prototype, "name", void 0);
 CourseUpdateManyMutationInput = __decorate([
     (0, graphql_5.InputType)()
 ], CourseUpdateManyMutationInput);
@@ -18753,6 +19052,9 @@ __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], CourseUpdateWithoutChatInput.prototype, "updatedAt", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUpdateWithoutChatInput.prototype, "name", void 0);
+__decorate([
     (0, graphql_1.Field)(() => ClassUpdateManyWithoutCoursesNestedInput, { nullable: true })
 ], CourseUpdateWithoutChatInput.prototype, "classes", void 0);
 __decorate([
@@ -18779,6 +19081,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], CourseUpdateWithoutClassesInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUpdateWithoutClassesInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => ChatUpdateOneWithoutCoursesNestedInput, { nullable: true })
 ], CourseUpdateWithoutClassesInput.prototype, "chat", void 0);
@@ -18807,6 +19112,9 @@ __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], CourseUpdateWithoutMembersInput.prototype, "updatedAt", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUpdateWithoutMembersInput.prototype, "name", void 0);
+__decorate([
     (0, graphql_1.Field)(() => ChatUpdateOneWithoutCoursesNestedInput, { nullable: true })
 ], CourseUpdateWithoutMembersInput.prototype, "chat", void 0);
 __decorate([
@@ -18833,6 +19141,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], CourseUpdateWithoutSubjectInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUpdateWithoutSubjectInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => ChatUpdateOneWithoutCoursesNestedInput, { nullable: true })
 ], CourseUpdateWithoutSubjectInput.prototype, "chat", void 0);
@@ -18861,6 +19172,9 @@ __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], CourseUpdateWithoutTeacherInput.prototype, "updatedAt", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUpdateWithoutTeacherInput.prototype, "name", void 0);
+__decorate([
     (0, graphql_1.Field)(() => ChatUpdateOneWithoutCoursesNestedInput, { nullable: true })
 ], CourseUpdateWithoutTeacherInput.prototype, "chat", void 0);
 __decorate([
@@ -18887,6 +19201,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
 ], CourseUpdateInput.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => StringFieldUpdateOperationsInput, { nullable: true })
+], CourseUpdateInput.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => ChatUpdateOneWithoutCoursesNestedInput, { nullable: true })
 ], CourseUpdateInput.prototype, "chat", void 0);
@@ -19020,6 +19337,9 @@ __decorate([
     (0, graphql_1.Field)(() => UuidNullableFilter, { nullable: true })
 ], CourseWhereUniqueInput.prototype, "chatId", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => StringFilter, { nullable: true })
+], CourseWhereUniqueInput.prototype, "name", void 0);
+__decorate([
     (0, graphql_1.Field)(() => UuidFilter, { nullable: true })
 ], CourseWhereUniqueInput.prototype, "subjectId", void 0);
 __decorate([
@@ -19068,6 +19388,9 @@ __decorate([
     (0, graphql_1.Field)(() => UuidNullableFilter, { nullable: true })
 ], CourseWhereInput.prototype, "chatId", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => StringFilter, { nullable: true })
+], CourseWhereInput.prototype, "name", void 0);
+__decorate([
     (0, graphql_1.Field)(() => UuidFilter, { nullable: true })
 ], CourseWhereInput.prototype, "subjectId", void 0);
 __decorate([
@@ -19106,6 +19429,9 @@ __decorate([
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: true })
 ], Course.prototype, "chatId", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: false })
+], Course.prototype, "name", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String, { nullable: false })
 ], Course.prototype, "subjectId", void 0);

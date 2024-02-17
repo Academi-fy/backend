@@ -280,6 +280,7 @@ type ClubCountAggregate {
   id: Int!
   createdAt: Int!
   updatedAt: Int!
+  avatar: Int!
   chatId: Int!
   coverImage: Int!
   description: Int!
@@ -303,6 +304,7 @@ type ClubMaxAggregate {
   id: String
   createdAt: DateTime
   updatedAt: DateTime
+  avatar: String
   chatId: String
   coverImage: String
   description: String
@@ -328,6 +330,7 @@ type ClubMinAggregate {
   id: String
   createdAt: DateTime
   updatedAt: DateTime
+  avatar: String
   chatId: String
   coverImage: String
   description: String
@@ -342,6 +345,7 @@ type Club {
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  avatar: String
   chatId: String
   coverImage: String
   description: String
@@ -400,6 +404,7 @@ type CourseCountAggregate {
   createdAt: Int!
   updatedAt: Int!
   chatId: Int!
+  name: Int!
   subjectId: Int!
   teacherId: Int!
   _all: Int!
@@ -415,6 +420,7 @@ type CourseMaxAggregate {
   createdAt: DateTime
   updatedAt: DateTime
   chatId: String
+  name: String
   subjectId: String
   teacherId: String
 }
@@ -424,6 +430,7 @@ type CourseMinAggregate {
   createdAt: DateTime
   updatedAt: DateTime
   chatId: String
+  name: String
   subjectId: String
   teacherId: String
 }
@@ -433,6 +440,7 @@ type Course {
   createdAt: DateTime!
   updatedAt: DateTime!
   chatId: String
+  name: String!
   subjectId: String!
   teacherId: String!
   chat: Chat
@@ -997,7 +1005,7 @@ type Mutation {
   editChat(id: String!, chat: EditChatDto!): Chat!
   deleteChat(id: String!): Chat!
   createChatActivity(chatActivity: CreateChatActivityDto!): ChatActivity!
-  editChatActivity(id: String!, chatActivity: CreateChatActivityDto!): ChatActivity!
+  editChatActivity(id: String!, chatActivity: EditChatActivityDto!): ChatActivity!
   deleteChatActivity(id: String!): ChatActivity!
   createClass(class: CreateClassDto!): Class!
   editClass(id: String!, class: EditClassDto!): Class!
@@ -1095,7 +1103,18 @@ input CreateChatActivityDto {
   executor: String!
   readBy: [String!]
   type: ChatActivityType!
-  value: String!
+  value: JSON!
+  starred: Boolean
+}
+
+input EditChatActivityDto {
+  answeredBy: String
+  answerTo: String
+  chat: String
+  executor: String
+  readBy: [String!]
+  type: ChatActivityType
+  value: JSON!
   starred: Boolean
 }
 
@@ -1166,6 +1185,7 @@ input CreateCourseDto {
   chat: String
   classes: [String!]!
   members: [String!]!
+  name: String!
   subject: String!
   teacher: String!
 }
@@ -1174,6 +1194,7 @@ input EditCourseDto {
   chat: String
   classes: [String!]
   members: [String!]
+  name: String
   subject: String
   teacher: String
 }

@@ -5,7 +5,7 @@ export class GatewayMessage<T> {
   sender: string;
 
   @IsString()
-  modifyId?: string;
+  modifyId: string;
 
   value: T;
 }

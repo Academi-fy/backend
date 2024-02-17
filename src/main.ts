@@ -29,7 +29,7 @@ async function bootstrap() {
   return app.listen(port);
 }
 bootstrap().then(() => {
-  appLogger.log(`Application is listening on port ${port}`);
+  appLogger.debug(`Application is listening on port ${port}`);
 });
 
 export const clients: Map<string, Socket> = new Map<string, Socket>();

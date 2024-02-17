@@ -33,7 +33,7 @@ export class ChatActivityController {
 
   @Post()
   async createChatActivity(
-    @Body() dto: CreateChatActivityDto,
+    @Body() dto: CreateChatActivityDto<any>,
   ): Promise<ChatActivity> {
     return this.chatActivityService.createChatActivity(dto);
   }
@@ -41,7 +41,7 @@ export class ChatActivityController {
   @Patch(':id')
   async updateChatActivity(
     @Param('id') chatActivityId: string,
-    @Body() dto: EditChatActivityDto,
+    @Body() dto: EditChatActivityDto<any>,
   ): Promise<ChatActivity> {
     return this.chatActivityService.editChatActivity(chatActivityId, dto);
   }

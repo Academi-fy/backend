@@ -2,7 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { ChatActivity } from '@/@generated-types';
 import { ChatActivityService } from './chat-activity.service';
-import { CreateChatActivityDto } from './dto';
+import { CreateChatActivityDto, EditChatActivityDto } from './dto';
 
 @Resolver(() => ChatActivity)
 export class ChatActivityResolver {
@@ -20,7 +20,7 @@ export class ChatActivityResolver {
 
   @Mutation(() => ChatActivity)
   async createChatActivity(
-    @Args('chatActivity') chatActivity: CreateChatActivityDto,
+    @Args('chatActivity') chatActivity: CreateChatActivityDto<any>,
   ): Promise<ChatActivity> {
     return this.chatActivityService.createChatActivity(chatActivity);
   }
@@ -28,7 +28,7 @@ export class ChatActivityResolver {
   @Mutation(() => ChatActivity)
   async editChatActivity(
     @Args('id') id: string,
-    @Args('chatActivity') chatActivity: CreateChatActivityDto,
+    @Args('chatActivity') chatActivity: EditChatActivityDto<any>,
   ): Promise<ChatActivity> {
     return this.chatActivityService.editChatActivity(id, chatActivity);
   }

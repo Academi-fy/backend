@@ -38,6 +38,8 @@ export class ClassGateway extends Gateway {
         .map((course: Course) => course.id)
         .concat(data.value.courseId),
     });
+    if (!modifiedClass)
+      throw new Error(`Class '${classId}' could not be modified`);
 
     for (const member of modifiedClass.members) {
       this.emit(member.id, 'RECEIVED_CLASS_COURSE_ADD', data);
@@ -67,6 +69,8 @@ export class ClassGateway extends Gateway {
         .map((course: Course) => course.id)
         .filter((courseId: string) => courseId !== data.value.courseId),
     });
+    if (!modifiedClass)
+      throw new Error(`Class '${classId}' could not be modified`);
 
     for (const member of modifiedClass.members) {
       this.emit(member.id, 'RECEIVED_CLASS_COURSE_REMOVE', data);
@@ -96,6 +100,8 @@ export class ClassGateway extends Gateway {
         .map((member: User) => member.id)
         .concat(data.value.userId),
     });
+    if (!modifiedClass)
+      throw new Error(`Class '${classId}' could not be modified`);
 
     for (const member of modifiedClass.members) {
       this.emit(member.id, 'RECEIVED_CLASS_USER_ADD', data);
@@ -125,6 +131,8 @@ export class ClassGateway extends Gateway {
         .map((member: User) => member.id)
         .filter((memberId: string) => memberId !== data.value.userId),
     });
+    if (!modifiedClass)
+      throw new Error(`Class '${classId}' could not be modified`);
 
     for (const member of modifiedClass.members) {
       this.emit(member.id, 'RECEIVED_CLASS_USER_REMOVE', data);

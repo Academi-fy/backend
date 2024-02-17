@@ -41,6 +41,8 @@ export class CourseGateway extends Gateway {
           .concat(data.value.userId),
       },
     );
+    if (!modifiedCourse)
+      throw new Error(`Course '${courseId}' could not be modified`);
 
     for (const member of modifiedCourse.members) {
       this.emit(member.id, 'RECEIVED_COURSE_USER_ADD', modifiedCourse);
@@ -73,6 +75,8 @@ export class CourseGateway extends Gateway {
           .filter((memberId: string) => memberId !== data.value.userId),
       },
     );
+    if (!modifiedCourse)
+      throw new Error(`Course '${courseId}' could not be modified`);
 
     for (const member of modifiedCourse.members) {
       this.emit(member.id, 'RECEIVED_COURSE_USER_REMOVE', modifiedCourse);
@@ -103,6 +107,8 @@ export class CourseGateway extends Gateway {
         chat: data.value.chatId,
       },
     );
+    if (!modifiedCourse)
+      throw new Error(`Course '${courseId}' could not be modified`);
 
     for (const member of modifiedCourse.members) {
       this.emit(member.id, 'RECEIVED_COURSE_USER_REMOVE', modifiedCourse);

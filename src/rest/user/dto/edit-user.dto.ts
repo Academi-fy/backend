@@ -61,11 +61,13 @@ export class EditUserDto {
 
   @Field(() => String, { nullable: true })
   @IsString()
-  firstName: string;
+  @IsOptional()
+  firstName?: string;
 
   @Field(() => String)
   @IsString()
-  lastName: string;
+  @IsOptional()
+  lastName?: string;
 
   @Field(() => [String], { nullable: true })
   @IsArray()
@@ -74,7 +76,8 @@ export class EditUserDto {
 
   @Field(() => [String])
   @IsArray()
-  schools: string[];
+  @IsOptional()
+  schools?: string[];
 
   @Field(() => [String], { nullable: true })
   @IsArray()
@@ -83,11 +86,13 @@ export class EditUserDto {
 
   @Field(() => String)
   @IsString()
-  type: UserType;
+  @IsOptional()
+  type?: UserType;
 
   @Field(() => String)
   @IsString()
-  userAccount: string;
+  @IsOptional()
+  userAccount?: string;
 
   @Field(() => [String], { nullable: true })
   @IsArray()

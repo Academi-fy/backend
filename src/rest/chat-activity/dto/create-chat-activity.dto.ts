@@ -1,9 +1,10 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { ChatActivityType } from '../../../@generated-types';
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { ChatActivityType } from '@/@generated-types';
+import { IsBoolean, IsObject, IsOptional, IsString } from 'class-validator';
+import { GraphQLJSON } from 'graphql-type-json';
 
 @InputType()
-export class CreateChatActivityDto {
+export class CreateChatActivityDto<T> {
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
@@ -31,9 +32,9 @@ export class CreateChatActivityDto {
   @IsString()
   type: ChatActivityType;
 
-  @Field(() => String)
-  @IsString()
-  value: any;
+  @Field(() => GraphQLJSON)
+  @IsObject()
+  value: T;
 
   @Field(() => Boolean, { nullable: true })
   @IsBoolean()

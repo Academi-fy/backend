@@ -33,12 +33,18 @@ export class BlackboardGateway extends Gateway {
       );
     if (data instanceof Error) return data;
 
-    const blackboard: Blackboard =
+    const createdBlackboard: Blackboard =
       await this.blackboardService.createBlackboard(data.value);
-    if (!blackboard)
+    if (!createdBlackboard)
       throw new Error(`Blackboard could not be created with data: ${data}`);
 
-    for (const member of blackboard.school.members) {
+    const school: School = await this.schoolService.getSchoolById(
+      createdBlackboard.school.id,
+    );
+    if (!school)
+      throw new Error(`School '${createdBlackboard.school.id}' not found`);
+
+    for (const member of school.members) {
       this.emit(member.id, 'RECEIVED_BLACKBOARD_CREATE', data);
     }
 
@@ -58,15 +64,16 @@ export class BlackboardGateway extends Gateway {
 
     const blackboardId: string = data.modifyId;
 
-    const blackboard: Blackboard = await this.blackboardService.editBlackboard(
-      blackboardId,
-      data.value,
-    );
-    if (!blackboard) throw new Error(`Blackboard '${blackboardId}' not found`);
+    const modifiedBlackboard: Blackboard =
+      await this.blackboardService.editBlackboard(blackboardId, data.value);
+    if (!modifiedBlackboard)
+      throw new Error(`Blackboard '${blackboardId}' not found`);
 
     const school: School = await this.schoolService.getSchoolById(
-      blackboard.school.id,
+      modifiedBlackboard.school.id,
     );
+    if (!school)
+      throw new Error(`School '${modifiedBlackboard.school.id}' not found`);
 
     for (const member of school.members) {
       this.emit(member.id, 'RECEIVED_BLACKBOARD_UPDATE', data);
@@ -86,11 +93,18 @@ export class BlackboardGateway extends Gateway {
 
     const blackboardId: string = data.modifyId;
 
-    const blackboard: Blackboard =
+    const deletedBlackboard: Blackboard =
       await this.blackboardService.deleteBlackboard(blackboardId);
-    if (!blackboard) throw new Error(`Blackboard '${blackboardId}' not found`);
+    if (!deletedBlackboard)
+      throw new Error(`Blackboard '${blackboardId}' not found`);
 
-    for (const member of blackboard.school.members) {
+    const school: School = await this.schoolService.getSchoolById(
+      deletedBlackboard.school.id,
+    );
+    if (!school)
+      throw new Error(`School '${deletedBlackboard.school.id}' not found`);
+
+    for (const member of school.members) {
       this.emit(member.id, 'RECEIVED_BLACKBOARD_DELETE', data);
     }
 

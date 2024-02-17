@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Course } from '@prisma/client';
 
 import { Service } from '@/service';
 import { PrismaService } from '@/prisma/prisma.service';
 
 import { clubNesting } from '../club';
 import { CreateCourseDto, EditCourseDto } from './dto';
+import { Course } from '@/@generated-types';
 
 @Injectable()
 export class CourseService extends Service {
@@ -67,6 +67,7 @@ export class CourseService extends Service {
   private mapDtoToData(dto: CreateCourseDto | EditCourseDto) {
     return {
       ...dto,
+      name: dto.name ? dto.name : undefined,
       chat: this.connectSingle(dto.chat),
       classes: this.connectArray(dto.classes),
       members: this.connectArray(dto.members),

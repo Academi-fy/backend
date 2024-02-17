@@ -170,6 +170,7 @@ export declare enum CourseScalarFieldEnum {
     createdAt = "createdAt",
     updatedAt = "updatedAt",
     chatId = "chatId",
+    name = "name",
     subjectId = "subjectId",
     teacherId = "teacherId"
 }
@@ -183,6 +184,7 @@ export declare enum ClubScalarFieldEnum {
     id = "id",
     createdAt = "createdAt",
     updatedAt = "updatedAt",
+    avatar = "avatar",
     chatId = "chatId",
     coverImage = "coverImage",
     description = "description",
@@ -3671,6 +3673,7 @@ export declare class ClubCountAggregateInput {
     id?: true;
     createdAt?: true;
     updatedAt?: true;
+    avatar?: true;
     chatId?: true;
     coverImage?: true;
     description?: true;
@@ -3686,6 +3689,7 @@ export declare class ClubCountAggregate {
     id: number;
     createdAt: number;
     updatedAt: number;
+    avatar: number;
     chatId: number;
     coverImage: number;
     description: number;
@@ -3701,6 +3705,7 @@ export declare class ClubCountOrderByAggregateInput {
     id?: keyof typeof SortOrder;
     createdAt?: keyof typeof SortOrder;
     updatedAt?: keyof typeof SortOrder;
+    avatar?: keyof typeof SortOrder;
     chatId?: keyof typeof SortOrder;
     coverImage?: keyof typeof SortOrder;
     description?: keyof typeof SortOrder;
@@ -3725,6 +3730,7 @@ export declare class ClubCreateManyChatInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     coverImage?: string;
     description?: string;
     location?: string;
@@ -3742,6 +3748,7 @@ export declare class ClubCreateManySchoolInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     chatId?: string;
     coverImage?: string;
     description?: string;
@@ -3755,6 +3762,7 @@ export declare class ClubCreateManyInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     chatId?: string;
     coverImage?: string;
     description?: string;
@@ -3825,6 +3833,7 @@ export declare class ClubCreateWithoutChatInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     coverImage?: string;
     description?: string;
     location?: string;
@@ -3842,6 +3851,7 @@ export declare class ClubCreateWithoutEventsInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     coverImage?: string;
     description?: string;
     location?: string;
@@ -3859,6 +3869,7 @@ export declare class ClubCreateWithoutLeadersInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     coverImage?: string;
     description?: string;
     location?: string;
@@ -3876,6 +3887,7 @@ export declare class ClubCreateWithoutMembersInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     coverImage?: string;
     description?: string;
     location?: string;
@@ -3893,6 +3905,7 @@ export declare class ClubCreateWithoutSchoolInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     coverImage?: string;
     description?: string;
     location?: string;
@@ -3910,6 +3923,7 @@ export declare class ClubCreateWithoutTagsInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     coverImage?: string;
     description?: string;
     location?: string;
@@ -3927,6 +3941,7 @@ export declare class ClubCreateInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     coverImage?: string;
     description?: string;
     location?: string;
@@ -3959,6 +3974,7 @@ export declare class ClubGroupBy {
     id: string;
     createdAt: Date | string;
     updatedAt: Date | string;
+    avatar?: string;
     chatId?: string;
     coverImage?: string;
     description?: string;
@@ -3981,6 +3997,7 @@ export declare class ClubMaxAggregateInput {
     id?: true;
     createdAt?: true;
     updatedAt?: true;
+    avatar?: true;
     chatId?: true;
     coverImage?: true;
     description?: true;
@@ -3994,6 +4011,7 @@ export declare class ClubMaxAggregate {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     chatId?: string;
     coverImage?: string;
     description?: string;
@@ -4007,6 +4025,7 @@ export declare class ClubMaxOrderByAggregateInput {
     id?: keyof typeof SortOrder;
     createdAt?: keyof typeof SortOrder;
     updatedAt?: keyof typeof SortOrder;
+    avatar?: keyof typeof SortOrder;
     chatId?: keyof typeof SortOrder;
     coverImage?: keyof typeof SortOrder;
     description?: keyof typeof SortOrder;
@@ -4020,6 +4039,7 @@ export declare class ClubMinAggregateInput {
     id?: true;
     createdAt?: true;
     updatedAt?: true;
+    avatar?: true;
     chatId?: true;
     coverImage?: true;
     description?: true;
@@ -4033,6 +4053,7 @@ export declare class ClubMinAggregate {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     chatId?: string;
     coverImage?: string;
     description?: string;
@@ -4046,6 +4067,7 @@ export declare class ClubMinOrderByAggregateInput {
     id?: keyof typeof SortOrder;
     createdAt?: keyof typeof SortOrder;
     updatedAt?: keyof typeof SortOrder;
+    avatar?: keyof typeof SortOrder;
     chatId?: keyof typeof SortOrder;
     coverImage?: keyof typeof SortOrder;
     description?: keyof typeof SortOrder;
@@ -4062,6 +4084,7 @@ export declare class ClubOrderByWithAggregationInput {
     id?: keyof typeof SortOrder;
     createdAt?: keyof typeof SortOrder;
     updatedAt?: keyof typeof SortOrder;
+    avatar?: InstanceType<typeof SortOrderInput>;
     chatId?: InstanceType<typeof SortOrderInput>;
     coverImage?: InstanceType<typeof SortOrderInput>;
     description?: InstanceType<typeof SortOrderInput>;
@@ -4079,6 +4102,7 @@ export declare class ClubOrderByWithRelationInput {
     id?: keyof typeof SortOrder;
     createdAt?: keyof typeof SortOrder;
     updatedAt?: keyof typeof SortOrder;
+    avatar?: InstanceType<typeof SortOrderInput>;
     chatId?: InstanceType<typeof SortOrderInput>;
     coverImage?: InstanceType<typeof SortOrderInput>;
     description?: InstanceType<typeof SortOrderInput>;
@@ -4102,6 +4126,7 @@ export declare class ClubScalarWhereWithAggregatesInput {
     id?: InstanceType<typeof UuidWithAggregatesFilter>;
     createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
     updatedAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
+    avatar?: InstanceType<typeof StringNullableWithAggregatesFilter>;
     chatId?: InstanceType<typeof UuidNullableWithAggregatesFilter>;
     coverImage?: InstanceType<typeof StringNullableWithAggregatesFilter>;
     description?: InstanceType<typeof StringNullableWithAggregatesFilter>;
@@ -4119,6 +4144,7 @@ export declare class ClubScalarWhereInput {
     id?: InstanceType<typeof UuidFilter>;
     createdAt?: InstanceType<typeof DateTimeFilter>;
     updatedAt?: InstanceType<typeof DateTimeFilter>;
+    avatar?: InstanceType<typeof StringNullableFilter>;
     chatId?: InstanceType<typeof UuidNullableFilter>;
     coverImage?: InstanceType<typeof StringNullableFilter>;
     description?: InstanceType<typeof StringNullableFilter>;
@@ -4165,6 +4191,7 @@ export declare class ClubUncheckedCreateWithoutChatInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     coverImage?: string;
     description?: string;
     location?: string;
@@ -4182,6 +4209,7 @@ export declare class ClubUncheckedCreateWithoutEventsInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     chatId?: string;
     coverImage?: string;
     description?: string;
@@ -4199,6 +4227,7 @@ export declare class ClubUncheckedCreateWithoutLeadersInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     chatId?: string;
     coverImage?: string;
     description?: string;
@@ -4216,6 +4245,7 @@ export declare class ClubUncheckedCreateWithoutMembersInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     chatId?: string;
     coverImage?: string;
     description?: string;
@@ -4233,6 +4263,7 @@ export declare class ClubUncheckedCreateWithoutSchoolInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     chatId?: string;
     coverImage?: string;
     description?: string;
@@ -4250,6 +4281,7 @@ export declare class ClubUncheckedCreateWithoutTagsInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     chatId?: string;
     coverImage?: string;
     description?: string;
@@ -4267,6 +4299,7 @@ export declare class ClubUncheckedCreateInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    avatar?: string;
     chatId?: string;
     coverImage?: string;
     description?: string;
@@ -4298,6 +4331,7 @@ export declare class ClubUncheckedUpdateManyWithoutChatInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     location?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4323,6 +4357,7 @@ export declare class ClubUncheckedUpdateManyWithoutEventsInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4349,6 +4384,7 @@ export declare class ClubUncheckedUpdateManyWithoutLeadersInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4375,6 +4411,7 @@ export declare class ClubUncheckedUpdateManyWithoutMembersInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4402,6 +4439,7 @@ export declare class ClubUncheckedUpdateManyWithoutSchoolInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4427,6 +4465,7 @@ export declare class ClubUncheckedUpdateManyWithoutTagsInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4441,6 +4480,7 @@ export declare class ClubUncheckedUpdateManyInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4455,6 +4495,7 @@ export declare class ClubUncheckedUpdateWithoutChatInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     location?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4472,6 +4513,7 @@ export declare class ClubUncheckedUpdateWithoutEventsInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4489,6 +4531,7 @@ export declare class ClubUncheckedUpdateWithoutLeadersInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4506,6 +4549,7 @@ export declare class ClubUncheckedUpdateWithoutMembersInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4523,6 +4567,7 @@ export declare class ClubUncheckedUpdateWithoutSchoolInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4540,6 +4585,7 @@ export declare class ClubUncheckedUpdateWithoutTagsInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4557,6 +4603,7 @@ export declare class ClubUncheckedUpdateInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4575,6 +4622,7 @@ export declare class ClubUpdateManyMutationInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     location?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4709,6 +4757,7 @@ export declare class ClubUpdateWithoutChatInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     location?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4726,6 +4775,7 @@ export declare class ClubUpdateWithoutEventsInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     location?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4743,6 +4793,7 @@ export declare class ClubUpdateWithoutLeadersInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     location?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4760,6 +4811,7 @@ export declare class ClubUpdateWithoutMembersInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     location?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4777,6 +4829,7 @@ export declare class ClubUpdateWithoutSchoolInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     location?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4794,6 +4847,7 @@ export declare class ClubUpdateWithoutTagsInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     location?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4811,6 +4865,7 @@ export declare class ClubUpdateInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    avatar?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     coverImage?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     description?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     location?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
@@ -4866,6 +4921,7 @@ export declare class ClubWhereUniqueInput {
     NOT?: Array<ClubWhereInput>;
     createdAt?: InstanceType<typeof DateTimeFilter>;
     updatedAt?: InstanceType<typeof DateTimeFilter>;
+    avatar?: InstanceType<typeof StringNullableFilter>;
     chatId?: InstanceType<typeof UuidNullableFilter>;
     coverImage?: InstanceType<typeof StringNullableFilter>;
     description?: InstanceType<typeof StringNullableFilter>;
@@ -4889,6 +4945,7 @@ export declare class ClubWhereInput {
     id?: InstanceType<typeof UuidFilter>;
     createdAt?: InstanceType<typeof DateTimeFilter>;
     updatedAt?: InstanceType<typeof DateTimeFilter>;
+    avatar?: InstanceType<typeof StringNullableFilter>;
     chatId?: InstanceType<typeof UuidNullableFilter>;
     coverImage?: InstanceType<typeof StringNullableFilter>;
     description?: InstanceType<typeof StringNullableFilter>;
@@ -4909,6 +4966,7 @@ export declare class Club {
     id: string;
     createdAt: Date;
     updatedAt: Date;
+    avatar: string | null;
     chatId: string | null;
     coverImage: string | null;
     description: string | null;
@@ -5349,6 +5407,7 @@ export declare class CourseCountAggregateInput {
     createdAt?: true;
     updatedAt?: true;
     chatId?: true;
+    name?: true;
     subjectId?: true;
     teacherId?: true;
     _all?: true;
@@ -5358,6 +5417,7 @@ export declare class CourseCountAggregate {
     createdAt: number;
     updatedAt: number;
     chatId: number;
+    name: number;
     subjectId: number;
     teacherId: number;
     _all: number;
@@ -5367,6 +5427,7 @@ export declare class CourseCountOrderByAggregateInput {
     createdAt?: keyof typeof SortOrder;
     updatedAt?: keyof typeof SortOrder;
     chatId?: keyof typeof SortOrder;
+    name?: keyof typeof SortOrder;
     subjectId?: keyof typeof SortOrder;
     teacherId?: keyof typeof SortOrder;
 }
@@ -5382,6 +5443,7 @@ export declare class CourseCreateManyChatInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    name: string;
     subjectId: string;
     teacherId: string;
 }
@@ -5394,6 +5456,7 @@ export declare class CourseCreateManySubjectInput {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     chatId?: string;
+    name: string;
     teacherId: string;
 }
 export declare class CourseCreateManyTeacherInputEnvelope {
@@ -5405,6 +5468,7 @@ export declare class CourseCreateManyTeacherInput {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     chatId?: string;
+    name: string;
     subjectId: string;
 }
 export declare class CourseCreateManyInput {
@@ -5412,6 +5476,7 @@ export declare class CourseCreateManyInput {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     chatId?: string;
+    name: string;
     subjectId: string;
     teacherId: string;
 }
@@ -5467,6 +5532,7 @@ export declare class CourseCreateWithoutChatInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    name: string;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutCoursesInput>;
     members?: InstanceType<typeof UserCreateNestedManyWithoutCoursesInput>;
     subject: InstanceType<typeof SubjectCreateNestedOneWithoutCoursesInput>;
@@ -5476,6 +5542,7 @@ export declare class CourseCreateWithoutClassesInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    name: string;
     chat?: InstanceType<typeof ChatCreateNestedOneWithoutCoursesInput>;
     members?: InstanceType<typeof UserCreateNestedManyWithoutCoursesInput>;
     subject: InstanceType<typeof SubjectCreateNestedOneWithoutCoursesInput>;
@@ -5485,6 +5552,7 @@ export declare class CourseCreateWithoutMembersInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    name: string;
     chat?: InstanceType<typeof ChatCreateNestedOneWithoutCoursesInput>;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutCoursesInput>;
     subject: InstanceType<typeof SubjectCreateNestedOneWithoutCoursesInput>;
@@ -5494,6 +5562,7 @@ export declare class CourseCreateWithoutSubjectInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    name: string;
     chat?: InstanceType<typeof ChatCreateNestedOneWithoutCoursesInput>;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutCoursesInput>;
     members?: InstanceType<typeof UserCreateNestedManyWithoutCoursesInput>;
@@ -5503,6 +5572,7 @@ export declare class CourseCreateWithoutTeacherInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    name: string;
     chat?: InstanceType<typeof ChatCreateNestedOneWithoutCoursesInput>;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutCoursesInput>;
     members?: InstanceType<typeof UserCreateNestedManyWithoutCoursesInput>;
@@ -5512,6 +5582,7 @@ export declare class CourseCreateInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    name: string;
     chat?: InstanceType<typeof ChatCreateNestedOneWithoutCoursesInput>;
     classes?: InstanceType<typeof ClassCreateNestedManyWithoutCoursesInput>;
     members?: InstanceType<typeof UserCreateNestedManyWithoutCoursesInput>;
@@ -5534,6 +5605,7 @@ export declare class CourseGroupBy {
     createdAt: Date | string;
     updatedAt: Date | string;
     chatId?: string;
+    name: string;
     subjectId: string;
     teacherId: string;
     _count?: InstanceType<typeof CourseCountAggregate>;
@@ -5550,6 +5622,7 @@ export declare class CourseMaxAggregateInput {
     createdAt?: true;
     updatedAt?: true;
     chatId?: true;
+    name?: true;
     subjectId?: true;
     teacherId?: true;
 }
@@ -5558,6 +5631,7 @@ export declare class CourseMaxAggregate {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     chatId?: string;
+    name?: string;
     subjectId?: string;
     teacherId?: string;
 }
@@ -5566,6 +5640,7 @@ export declare class CourseMaxOrderByAggregateInput {
     createdAt?: keyof typeof SortOrder;
     updatedAt?: keyof typeof SortOrder;
     chatId?: keyof typeof SortOrder;
+    name?: keyof typeof SortOrder;
     subjectId?: keyof typeof SortOrder;
     teacherId?: keyof typeof SortOrder;
 }
@@ -5574,6 +5649,7 @@ export declare class CourseMinAggregateInput {
     createdAt?: true;
     updatedAt?: true;
     chatId?: true;
+    name?: true;
     subjectId?: true;
     teacherId?: true;
 }
@@ -5582,6 +5658,7 @@ export declare class CourseMinAggregate {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     chatId?: string;
+    name?: string;
     subjectId?: string;
     teacherId?: string;
 }
@@ -5590,6 +5667,7 @@ export declare class CourseMinOrderByAggregateInput {
     createdAt?: keyof typeof SortOrder;
     updatedAt?: keyof typeof SortOrder;
     chatId?: keyof typeof SortOrder;
+    name?: keyof typeof SortOrder;
     subjectId?: keyof typeof SortOrder;
     teacherId?: keyof typeof SortOrder;
 }
@@ -5601,6 +5679,7 @@ export declare class CourseOrderByWithAggregationInput {
     createdAt?: keyof typeof SortOrder;
     updatedAt?: keyof typeof SortOrder;
     chatId?: InstanceType<typeof SortOrderInput>;
+    name?: keyof typeof SortOrder;
     subjectId?: keyof typeof SortOrder;
     teacherId?: keyof typeof SortOrder;
     _count?: InstanceType<typeof CourseCountOrderByAggregateInput>;
@@ -5612,6 +5691,7 @@ export declare class CourseOrderByWithRelationInput {
     createdAt?: keyof typeof SortOrder;
     updatedAt?: keyof typeof SortOrder;
     chatId?: InstanceType<typeof SortOrderInput>;
+    name?: keyof typeof SortOrder;
     subjectId?: keyof typeof SortOrder;
     teacherId?: keyof typeof SortOrder;
     chat?: InstanceType<typeof ChatOrderByWithRelationInput>;
@@ -5628,6 +5708,7 @@ export declare class CourseScalarWhereWithAggregatesInput {
     createdAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
     updatedAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
     chatId?: InstanceType<typeof UuidNullableWithAggregatesFilter>;
+    name?: InstanceType<typeof StringWithAggregatesFilter>;
     subjectId?: InstanceType<typeof UuidWithAggregatesFilter>;
     teacherId?: InstanceType<typeof UuidWithAggregatesFilter>;
 }
@@ -5639,6 +5720,7 @@ export declare class CourseScalarWhereInput {
     createdAt?: InstanceType<typeof DateTimeFilter>;
     updatedAt?: InstanceType<typeof DateTimeFilter>;
     chatId?: InstanceType<typeof UuidNullableFilter>;
+    name?: InstanceType<typeof StringFilter>;
     subjectId?: InstanceType<typeof UuidFilter>;
     teacherId?: InstanceType<typeof UuidFilter>;
 }
@@ -5674,6 +5756,7 @@ export declare class CourseUncheckedCreateWithoutChatInput {
     id?: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    name: string;
     subjectId: string;
     teacherId: string;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutCoursesInput>;
@@ -5684,6 +5767,7 @@ export declare class CourseUncheckedCreateWithoutClassesInput {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     chatId?: string;
+    name: string;
     subjectId: string;
     teacherId: string;
     members?: InstanceType<typeof UserUncheckedCreateNestedManyWithoutCoursesInput>;
@@ -5693,6 +5777,7 @@ export declare class CourseUncheckedCreateWithoutMembersInput {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     chatId?: string;
+    name: string;
     subjectId: string;
     teacherId: string;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutCoursesInput>;
@@ -5702,6 +5787,7 @@ export declare class CourseUncheckedCreateWithoutSubjectInput {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     chatId?: string;
+    name: string;
     teacherId: string;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutCoursesInput>;
     members?: InstanceType<typeof UserUncheckedCreateNestedManyWithoutCoursesInput>;
@@ -5711,6 +5797,7 @@ export declare class CourseUncheckedCreateWithoutTeacherInput {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     chatId?: string;
+    name: string;
     subjectId: string;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutCoursesInput>;
     members?: InstanceType<typeof UserUncheckedCreateNestedManyWithoutCoursesInput>;
@@ -5720,6 +5807,7 @@ export declare class CourseUncheckedCreateInput {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     chatId?: string;
+    name: string;
     subjectId: string;
     teacherId: string;
     classes?: InstanceType<typeof ClassUncheckedCreateNestedManyWithoutCoursesInput>;
@@ -5742,6 +5830,7 @@ export declare class CourseUncheckedUpdateManyWithoutChatInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     subjectId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     teacherId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
 }
@@ -5762,6 +5851,7 @@ export declare class CourseUncheckedUpdateManyWithoutClassesInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     subjectId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     teacherId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
 }
@@ -5782,6 +5872,7 @@ export declare class CourseUncheckedUpdateManyWithoutMembersInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     subjectId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     teacherId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
 }
@@ -5803,6 +5894,7 @@ export declare class CourseUncheckedUpdateManyWithoutSubjectInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     teacherId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
 }
 export declare class CourseUncheckedUpdateManyWithoutTeacherNestedInput {
@@ -5823,6 +5915,7 @@ export declare class CourseUncheckedUpdateManyWithoutTeacherInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     subjectId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
 }
 export declare class CourseUncheckedUpdateManyInput {
@@ -5830,6 +5923,7 @@ export declare class CourseUncheckedUpdateManyInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     subjectId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     teacherId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
 }
@@ -5837,6 +5931,7 @@ export declare class CourseUncheckedUpdateWithoutChatInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     subjectId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     teacherId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutCoursesNestedInput>;
@@ -5847,6 +5942,7 @@ export declare class CourseUncheckedUpdateWithoutClassesInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     subjectId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     teacherId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     members?: InstanceType<typeof UserUncheckedUpdateManyWithoutCoursesNestedInput>;
@@ -5856,6 +5952,7 @@ export declare class CourseUncheckedUpdateWithoutMembersInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     subjectId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     teacherId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutCoursesNestedInput>;
@@ -5865,6 +5962,7 @@ export declare class CourseUncheckedUpdateWithoutSubjectInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     teacherId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutCoursesNestedInput>;
     members?: InstanceType<typeof UserUncheckedUpdateManyWithoutCoursesNestedInput>;
@@ -5874,6 +5972,7 @@ export declare class CourseUncheckedUpdateWithoutTeacherInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     subjectId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutCoursesNestedInput>;
     members?: InstanceType<typeof UserUncheckedUpdateManyWithoutCoursesNestedInput>;
@@ -5883,6 +5982,7 @@ export declare class CourseUncheckedUpdateInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     chatId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     subjectId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     teacherId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     classes?: InstanceType<typeof ClassUncheckedUpdateManyWithoutCoursesNestedInput>;
@@ -5892,6 +5992,7 @@ export declare class CourseUpdateManyMutationInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
 }
 export declare class CourseUpdateManyWithWhereWithoutChatInput {
     where: InstanceType<typeof CourseScalarWhereInput>;
@@ -6000,6 +6101,7 @@ export declare class CourseUpdateWithoutChatInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutCoursesNestedInput>;
     members?: InstanceType<typeof UserUpdateManyWithoutCoursesNestedInput>;
     subject?: InstanceType<typeof SubjectUpdateOneRequiredWithoutCoursesNestedInput>;
@@ -6009,6 +6111,7 @@ export declare class CourseUpdateWithoutClassesInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     chat?: InstanceType<typeof ChatUpdateOneWithoutCoursesNestedInput>;
     members?: InstanceType<typeof UserUpdateManyWithoutCoursesNestedInput>;
     subject?: InstanceType<typeof SubjectUpdateOneRequiredWithoutCoursesNestedInput>;
@@ -6018,6 +6121,7 @@ export declare class CourseUpdateWithoutMembersInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     chat?: InstanceType<typeof ChatUpdateOneWithoutCoursesNestedInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutCoursesNestedInput>;
     subject?: InstanceType<typeof SubjectUpdateOneRequiredWithoutCoursesNestedInput>;
@@ -6027,6 +6131,7 @@ export declare class CourseUpdateWithoutSubjectInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     chat?: InstanceType<typeof ChatUpdateOneWithoutCoursesNestedInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutCoursesNestedInput>;
     members?: InstanceType<typeof UserUpdateManyWithoutCoursesNestedInput>;
@@ -6036,6 +6141,7 @@ export declare class CourseUpdateWithoutTeacherInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     chat?: InstanceType<typeof ChatUpdateOneWithoutCoursesNestedInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutCoursesNestedInput>;
     members?: InstanceType<typeof UserUpdateManyWithoutCoursesNestedInput>;
@@ -6045,6 +6151,7 @@ export declare class CourseUpdateInput {
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
+    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     chat?: InstanceType<typeof ChatUpdateOneWithoutCoursesNestedInput>;
     classes?: InstanceType<typeof ClassUpdateManyWithoutCoursesNestedInput>;
     members?: InstanceType<typeof UserUpdateManyWithoutCoursesNestedInput>;
@@ -6084,6 +6191,7 @@ export declare class CourseWhereUniqueInput {
     createdAt?: InstanceType<typeof DateTimeFilter>;
     updatedAt?: InstanceType<typeof DateTimeFilter>;
     chatId?: InstanceType<typeof UuidNullableFilter>;
+    name?: InstanceType<typeof StringFilter>;
     subjectId?: InstanceType<typeof UuidFilter>;
     teacherId?: InstanceType<typeof UuidFilter>;
     chat?: InstanceType<typeof ChatNullableRelationFilter>;
@@ -6100,6 +6208,7 @@ export declare class CourseWhereInput {
     createdAt?: InstanceType<typeof DateTimeFilter>;
     updatedAt?: InstanceType<typeof DateTimeFilter>;
     chatId?: InstanceType<typeof UuidNullableFilter>;
+    name?: InstanceType<typeof StringFilter>;
     subjectId?: InstanceType<typeof UuidFilter>;
     teacherId?: InstanceType<typeof UuidFilter>;
     chat?: InstanceType<typeof ChatNullableRelationFilter>;
@@ -6113,6 +6222,7 @@ export declare class Course {
     createdAt: Date;
     updatedAt: Date;
     chatId: string | null;
+    name: string;
     subjectId: string;
     teacherId: string;
     chat?: InstanceType<typeof Chat> | null;

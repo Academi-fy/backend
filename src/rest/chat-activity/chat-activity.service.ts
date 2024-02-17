@@ -39,7 +39,9 @@ export class ChatActivityService extends Service {
     });
   }
 
-  async createChatActivity(dto: CreateChatActivityDto): Promise<ChatActivity> {
+  async createChatActivity(
+    dto: CreateChatActivityDto<any>,
+  ): Promise<ChatActivity> {
     return this.prisma.chatActivity.create({
       data: {
         ...this.mapDtoToData(dto),
@@ -52,7 +54,7 @@ export class ChatActivityService extends Service {
 
   async editChatActivity(
     chatActivityId: string,
-    dto: EditChatActivityDto,
+    dto: EditChatActivityDto<any>,
   ): Promise<ChatActivity> {
     return this.prisma.chatActivity.update({
       where: { id: chatActivityId },
@@ -74,7 +76,9 @@ export class ChatActivityService extends Service {
     });
   }
 
-  private mapDtoToData(dto: CreateChatActivityDto | EditChatActivityDto) {
+  private mapDtoToData(
+    dto: CreateChatActivityDto<any> | EditChatActivityDto<any>,
+  ) {
     return {
       ...dto,
       answeredBy: this.connectSingle(dto.answeredBy),

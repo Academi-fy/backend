@@ -21,6 +21,11 @@ export class EditCourseDto {
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
+  name?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsString()
+  @IsOptional()
   subject?: string;
 
   @Field(() => String, { nullable: true })

@@ -18,6 +18,10 @@ export class CreateCourseDto {
 
   @Field(() => String)
   @IsString()
+  name: string;
+
+  @Field(() => String)
+  @IsString()
   subject: string;
 
   @Field(() => String)

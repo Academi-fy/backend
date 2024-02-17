@@ -8,7 +8,6 @@ import { ConnectGateway } from './gateways/connect.gateway';
 import { CourseGateway } from './gateways/course.gateway';
 import { ErrorGateway } from './gateways/error.gateway';
 import { EventGateway } from './gateways/event.gateway';
-import { UserGateway } from './gateways/user.gateway';
 
 import { RestModule } from '@/rest/rest.module';
 
@@ -21,7 +20,6 @@ import { RestModule } from '@/rest/rest.module';
     CourseGateway,
     ErrorGateway,
     EventGateway,
-    UserGateway,
     ConnectGateway,
   ],
   imports: [RestModule],
