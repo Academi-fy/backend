@@ -29,7 +29,7 @@ Follow these steps to install the project:
 
     > Replace the values with your own.
 
-4. Run the following command to generate the Prisma client:
+4. Run the following command to generate the Prisma client and all TypeScript interface:
 
     ```bash
     npx prisma generate
