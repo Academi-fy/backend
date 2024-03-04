@@ -7,7 +7,7 @@ generator client {
 
 generator nestgraphql {
   provider                              = "node node_modules/prisma-nestjs-graphql"
-  output                                = "../src/@generated-chat-mutations"
+  output                                = "../src/@generated-types"
   fields_Validator_from                 = "class-validator"
   fields_Validator_input                = true
   requireSingleFieldsInWhereUniqueInput = true
@@ -61,7 +61,7 @@ model Chat {
   courses      Course[]   @relation("CourseChat")
   name         String
   targets      UserChat[] @relation("ChatTarget")
-  type         String
+  type         ChatType
 
   @@map("chats")
 }
@@ -74,7 +74,8 @@ model ChatActivity {
   chat   Chat    @relation("ChatActivity", fields: [chatId], references: [id])
   chatId String  @db.Uuid
 
-  executor User[] @relation("UserChatActivity")
+  executor User @relation("UserChatActivity", fields: [executorId], references: [id])
+  executorId String @db.Uuid
 
   readBy User[] @relation("ReadChatActivity")
 
@@ -84,7 +85,7 @@ model ChatActivity {
   answeredBy ChatActivity[] @relation("ChatActivityAnswer")
 
   type   ChatActivityType
-  value  Json[]
+  activityContent  Json[]
 
   starred Boolean @default(false)
 
@@ -260,10 +261,10 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  activities          ChatActivity[] @relation("UserChatActivity")
   avatar              String?
   blackboards         Blackboard[]  @relation("BlackboardAuthor")
   blackboardsReceived Blackboard[]  @relation("BlackboardTarget")
+  chatActivitiesCreated ChatActivity[] @relation("UserChatActivity")
   classes             Class[]       @relation("ClassMember")
   clubs               Club[]        @relation("ClubMember")
   clubsAsLeader       Club[]        @relation("ClubLeader")
@@ -384,4 +385,10 @@ enum ChatActivityType {
   CHAT_CLUB_REMOVE
   CHAT_NAME_CHANGE
   CHAT_AVATAR_CHANGE
+}
+
+enum ChatType {
+  GROUP
+  PRIVATE
+  COURSE
 }

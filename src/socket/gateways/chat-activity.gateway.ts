@@ -7,14 +7,15 @@ import { SOCKET_PORT } from '@/constants';
 import { Gateway } from '@/socket/entities';
 import { ChatActivityService } from '@/rest/chat-activity/chat-activity.service';
 import { GatewayMessage } from '@/socket/entities/gateway';
-import { Chat, ChatActivity } from '@/@generated-types';
+import { Chat, ChatActivity, ChatActivityType } from '@/@generated-types';
 import { ChatService } from '@/rest/chat/chat.service';
 import {
   CreateChatActivityDto,
   EditChatActivityDto,
 } from '@/rest/chat-activity';
-import { MessageMutation } from '@/socket/entities/chat-activity/event-entities/message-mutation.entity';
-import { MessageDelete } from '@/socket/entities/chat-activity/event-entities/message-delete.entity';
+import { MessageUpdate } from '@/socket/entities/chat-activity/event-entities/message/message-update.entity';
+import { MessageDelete } from '@/socket/entities/chat-activity/event-entities/message/message-delete.entity';
+import { MessageSend } from '@/socket/entities/chat-activity/event-entities/message/message-send.entity';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ChatActivityGateway extends Gateway {
@@ -37,79 +38,77 @@ export class ChatActivityGateway extends Gateway {
 
     const createdChatActivity: ChatActivity =
       await this.chatActivityService.createChatActivity(data.value);
-    if (!createdChatActivity)
-      throw new Error(`ChatActivity could not be created with data: ${data}`);
 
     const chat: Chat = await this.chatService.getChatById(
       createdChatActivity.chatId,
     );
-    if (!chat)
-      throw new Error(`Chat with id ${createdChatActivity.chatId} not found`);
 
     for (const member of chat.targets) {
-      this.emit(member.userId, 'RECEIVED_CHAT_ACTIVITY_CREATE', data);
+      this.emit(member.userId, 'RECEIVED_CHAT_ACTIVITY_CREATE', {
+        data,
+      });
     }
 
-    return body;
+    return data;
   }
 
   @SubscribeMessage('MESSAGE_SEND')
   async handleMessageSend(
-    @MessageBody() body: GatewayMessage<CreateChatActivityDto<MessageMutation>>,
-  ): Promise<GatewayMessage<CreateChatActivityDto<MessageMutation>> | Error> {
-    const data: GatewayMessage<CreateChatActivityDto<MessageMutation>> | Error =
-      await this.validateData<
-        GatewayMessage<CreateChatActivityDto<MessageMutation>>
-      >(body, GatewayMessage<CreateChatActivityDto<MessageMutation>>);
+    @MessageBody() body: GatewayMessage<MessageSend>,
+  ): Promise<GatewayMessage<MessageSend> | Error> {
+    const data: GatewayMessage<MessageSend> | Error = await this.validateData<
+      GatewayMessage<MessageSend>
+    >(body, GatewayMessage<MessageSend>);
     if (data instanceof Error) return data;
 
-    const createdChatActivity: ChatActivity =
-      await this.chatActivityService.createChatActivity(data.value);
-    if (!createdChatActivity)
-      throw new Error(`ChatActivity could not be created with data: ${data}`);
+    await this.handleChatActivityCreate<MessageSend>({
+      sender: data.sender,
+      value: {
+        ...data.value,
+        chat: data.value.chatId,
+        type: ChatActivityType.MESSAGE_SEND,
+        executor: data.sender,
+        activityContent: {
+          chatId: data.value.chatId,
+          content: data.value.content,
+        },
+      },
+    });
 
-    const chat: Chat = await this.chatService.getChatById(
-      createdChatActivity.chatId,
-    );
-    if (!chat)
-      throw new Error(`Chat with id ${createdChatActivity.chatId} not found`);
-
-    for (const member of chat.targets) {
-      this.emit(member.userId, 'RECEIVED_CHAT_ACTIVITY_SEND', data);
-    }
-
-    return body;
+    return data;
   }
 
   @SubscribeMessage('MESSAGE_UPDATE')
   async handleMessageUpdate(
-    @MessageBody() body: GatewayMessage<EditChatActivityDto<MessageMutation>>,
-  ): Promise<GatewayMessage<EditChatActivityDto<MessageMutation>> | Error> {
-    const data: GatewayMessage<EditChatActivityDto<MessageMutation>> | Error =
-      await this.validateData<
-        GatewayMessage<EditChatActivityDto<MessageMutation>>
-      >(body, GatewayMessage<EditChatActivityDto<MessageMutation>>);
+    @MessageBody() body: GatewayMessage<MessageUpdate>,
+  ): Promise<GatewayMessage<MessageUpdate> | Error> {
+    const data: GatewayMessage<MessageUpdate> | Error = await this.validateData<
+      GatewayMessage<MessageUpdate>
+    >(body, GatewayMessage<MessageUpdate>);
     if (data instanceof Error) return data;
 
-    const createdChatActivity: ChatActivity =
-      await this.chatActivityService.editChatActivity(
-        data.modifyId,
-        data.value,
-      );
-    if (!createdChatActivity)
-      throw new Error(`ChatActivity could not be updated with data: ${data}`);
+    const modifiedChatActivity: ChatActivity =
+      await this.chatActivityService.editChatActivity(data.value.chatId, {
+        activityContent: {
+          content: data.value.content,
+        },
+      });
 
-    const chat: Chat = await this.chatService.getChatById(
-      createdChatActivity.chatId,
-    );
-    if (!chat)
-      throw new Error(`Chat with id ${createdChatActivity.chatId} not found`);
+    await this.handleChatActivityCreate<MessageUpdate>({
+      sender: data.sender,
+      value: {
+        ...data.value,
+        chat: modifiedChatActivity.chatId,
+        executor: data.sender,
+        type: ChatActivityType.MESSAGE_EDIT,
+        activityContent: {
+          chatId: modifiedChatActivity.chatId,
+          content: data.value.content,
+        },
+      },
+    });
 
-    for (const member of chat.targets) {
-      this.emit(member.userId, 'RECEIVED_CHAT_ACTIVITY_UPDATE', data);
-    }
-
-    return body;
+    return data;
   }
 
   @SubscribeMessage('MESSAGE_DELETE')
@@ -122,21 +121,21 @@ export class ChatActivityGateway extends Gateway {
     if (data instanceof Error) return data;
 
     const deletedChatActivity: ChatActivity =
-      await this.chatActivityService.deleteChatActivity(data.modifyId);
-    if (!deletedChatActivity)
-      throw new Error(`ChatActivity could not be deleted with data: ${data}`);
+      await this.chatActivityService.deleteChatActivity(data.value.deletedId);
 
-    const chat: Chat = await this.chatService.getChatById(
-      deletedChatActivity.chatId,
-    );
-    if (!chat)
-      throw new Error(`Chat with id ${deletedChatActivity.chatId} not found`);
+    await this.handleChatActivityCreate<MessageDelete>({
+      sender: data.sender,
+      value: {
+        chat: deletedChatActivity.chatId,
+        type: ChatActivityType.MESSAGE_DELETE,
+        executor: data.sender,
+        activityContent: {
+          deletedId: deletedChatActivity.id,
+        },
+      },
+    });
 
-    for (const member of chat.targets) {
-      this.emit(member.userId, 'RECEIVED_CHAT_ACTIVITY_DELETE', data);
-    }
-
-    return body;
+    return data;
   }
 
   @SubscribeMessage('MESSAGE_ANSWER')

@@ -2,6 +2,12 @@ import { IsString } from 'class-validator';
 
 export class ActivityChatTargetAdd {
   @IsString()
+  chatId: string;
+
+  @IsString()
+  targetId: string;
+
+  @IsString()
   firstName: string;
 
   @IsString()
@@ -12,6 +18,12 @@ export class ActivityChatTargetAdd {
 }
 
 export class ActivityChatTargetRemove {
+  @IsString()
+  chatId: string;
+
+  @IsString()
+  targetId: string;
+
   @IsString()
   firstName: string;
 

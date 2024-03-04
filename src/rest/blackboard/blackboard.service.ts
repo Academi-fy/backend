@@ -15,15 +15,18 @@ export class BlackboardService extends Service {
   }
 
   async getAllBlackboards(): Promise<Blackboard[]> {
-    return this.prisma.blackboard.findMany({
+    const blackboards: Blackboard[] = await this.prisma.blackboard.findMany({
       include: {
         ...blackboardNesting,
       },
     });
+
+    if (!blackboards) throw new Error('No blackboards found');
+    return blackboards;
   }
 
   async getLastBlackboards(sort: SortOrder, limit: number, lastId?: string) {
-    return this.prisma.blackboard.findMany({
+    const blackboards: Blackboard[] = await this.prisma.blackboard.findMany({
       orderBy: {
         [sort]: 'desc',
       },
@@ -31,19 +34,28 @@ export class BlackboardService extends Service {
       cursor: lastId ? { id: lastId } : undefined,
       skip: lastId ? 1 : 0,
     });
+
+    if (!blackboards)
+      throw new Error(
+        `No blackboards found: sort: ${sort}, limit: ${limit}, lastId: ${lastId}`,
+      );
+    return blackboards;
   }
 
   async getBlackboardById(blackboardId: string): Promise<Blackboard> {
-    return this.prisma.blackboard.findUnique({
+    const blackboard: Blackboard = await this.prisma.blackboard.findUnique({
       where: { id: blackboardId },
       include: {
         ...blackboardNesting,
       },
     });
+
+    if (!blackboard) throw new Error(`Blackboard '${blackboardId}' not found`);
+    return blackboard;
   }
 
   async createBlackboard(dto: CreateBlackboardDto): Promise<Blackboard> {
-    return this.prisma.blackboard.create({
+    const createdBlackboard: Blackboard = await this.prisma.blackboard.create({
       data: {
         ...this.mapDtoToData(dto),
       },
@@ -51,13 +63,17 @@ export class BlackboardService extends Service {
         ...blackboardNesting,
       },
     });
+
+    if (!createdBlackboard)
+      throw new Error(`Blackboard could not be created with data: ${dto}`);
+    return createdBlackboard;
   }
 
   async editBlackboard(
     blackboardId: string,
     dto: EditBlackboardDto,
   ): Promise<Blackboard> {
-    return this.prisma.blackboard.update({
+    const modifiedBlackboard: Blackboard = await this.prisma.blackboard.update({
       where: { id: blackboardId },
       data: {
         ...this.mapDtoToData(dto),
@@ -66,15 +82,23 @@ export class BlackboardService extends Service {
         ...blackboardNesting,
       },
     });
+
+    if (!modifiedBlackboard)
+      throw new Error(`Blackboard '${blackboardId}' not found`);
+    return modifiedBlackboard;
   }
 
   async deleteBlackboard(blackboardId: string): Promise<Blackboard> {
-    return this.prisma.blackboard.delete({
+    const deletedBlackboard: Blackboard = await this.prisma.blackboard.delete({
       where: { id: blackboardId },
       include: {
         ...blackboardNesting,
       },
     });
+
+    if (!deletedBlackboard)
+      throw new Error(`Blackboard '${blackboardId}' not found`);
+    return deletedBlackboard;
   }
 
   private mapDtoToData(dto: CreateBlackboardDto | EditBlackboardDto) {

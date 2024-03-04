@@ -14,33 +14,42 @@ export class SchoolService extends Service {
   }
 
   async getAllSchools(): Promise<School[]> {
-    return this.prisma.school.findMany({
+    const schools: School[] = await this.prisma.school.findMany({
       include: {
         ...schoolNesting,
       },
     });
+
+    if (!schools) throw new Error('No schools found');
+    return schools;
   }
 
   async getSchoolById(schoolId: string): Promise<School> {
-    return this.prisma.school.findUnique({
+    const school: School = await this.prisma.school.findUnique({
       where: { id: schoolId },
       include: {
         ...schoolNesting,
       },
     });
+
+    if (!school) throw new Error(`School '${schoolId}' not found`);
+    return school;
   }
 
   async getSchoolByName(schoolName: string): Promise<School> {
-    return this.prisma.school.findUnique({
+    const school: School = await this.prisma.school.findUnique({
       where: { name: schoolName },
       include: {
         ...schoolNesting,
       },
     });
+
+    if (!school) throw new Error(`School '${schoolName}' not found`);
+    return school;
   }
 
   async createSchool(dto: CreateSchoolDto): Promise<School> {
-    return this.prisma.school.create({
+    const createdSchool: School = await this.prisma.school.create({
       data: {
         ...this.mapDtoToData(dto),
       },
@@ -48,10 +57,13 @@ export class SchoolService extends Service {
         ...schoolNesting,
       },
     });
+
+    if (!createdSchool) throw new Error('School not created');
+    return createdSchool;
   }
 
   async editSchool(schoolId: string, dto: EditSchoolDto): Promise<School> {
-    return this.prisma.school.update({
+    const modifiedSchool: School = await this.prisma.school.update({
       where: { id: schoolId },
       data: {
         ...this.mapDtoToData(dto),
@@ -60,15 +72,21 @@ export class SchoolService extends Service {
         ...schoolNesting,
       },
     });
+
+    if (!modifiedSchool) throw new Error(`School '${schoolId}' not found`);
+    return modifiedSchool;
   }
 
   async deleteSchool(schoolId: string): Promise<School> {
-    return this.prisma.school.delete({
+    const deletedSchool: School = await this.prisma.school.delete({
       where: { id: schoolId },
       include: {
         ...schoolNesting,
       },
     });
+
+    if (!deletedSchool) throw new Error(`School '${schoolId}' not found`);
+    return deletedSchool;
   }
 
   private mapDtoToData(dto: CreateSchoolDto | EditSchoolDto) {

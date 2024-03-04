@@ -14,6 +14,9 @@ export class ErrorGateway extends Gateway {
   async handleError(
     @MessageBody() body: GatewayMessage<Error>,
   ): Promise<GatewayMessage<Error> | Error> {
-    throw new InternalServerErrorException(body);
+    throw new InternalServerErrorException({
+      information: 'Message received from client is an error.',
+      ...body,
+    });
   }
 }

@@ -20,8 +20,8 @@ import {
 } from '../entities';
 import { GatewayMessage } from '../entities/gateway';
 import { Typing } from '../entities/chat/typing.entity';
-import { ChatService } from 'src/rest/chat/chat.service';
-import { SOCKET_PORT } from 'src/constants';
+import { ChatService } from '@/rest/chat/chat.service';
+import { SOCKET_PORT } from '@/constants';
 import { ChatActivityGateway } from '@/socket/gateways/chat-activity.gateway';
 import { UserService } from '@/rest/user/user.service';
 import { ActivityChatAdd } from '@/socket/entities/chat-activity/activity-chat-add.entity';
@@ -31,7 +31,10 @@ import {
 } from '@/socket/entities/chat-activity/chat-mutations/activity-chat-target.entity';
 import { ActivityChatRemove } from '@/socket/entities/chat-activity/activity-chat-remove.entity';
 import { CourseService } from '@/rest/course/course.service';
-import { ActivityChatCourseAdd } from '@/socket/entities/chat-activity/chat-mutations/activity-chat-course.entity';
+import {
+  ActivityChatCourseAdd,
+  ActivityChatCourseRemove,
+} from '@/socket/entities/chat-activity/chat-mutations/activity-chat-course.entity';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ChatGateway extends Gateway {
@@ -57,15 +60,12 @@ export class ChatGateway extends Gateway {
     const chatId: string = data.value.chatId;
 
     const chat: Chat = await this.chatService.getChatById(chatId);
-    if (!chat) throw new Error(`Chat '${chatId}' not found`);
 
     const modifiedChat: Chat = await this.chatService.editChat(chatId, {
       targets: chat.targets
         .map((targetChat: UserChat) => targetChat.userId)
         .concat(data.value.targetId),
     });
-    if (!modifiedChat)
-      throw new Error(`Chat '${chatId}' could not be modified`);
 
     for (const targetChat of modifiedChat.targets) {
       this.emit(targetChat.userId, 'RECEIVED_CHAT_TARGET_ADD', modifiedChat);
@@ -79,13 +79,14 @@ export class ChatGateway extends Gateway {
       ActivityChatAdd<ActivityChatTargetAdd>
     >({
       sender: data.sender,
-      modifyId: chatId,
       value: {
         chat: chatId,
         type: ChatActivityType.CHAT_TARGET_ADD,
         executor: data.sender,
-        value: {
+        activityContent: {
           added: {
+            chatId: chatId,
+            targetId: target.id,
             firstName: target.firstName,
             lastName: target.lastName,
             avatar: target.avatar,
@@ -112,15 +113,12 @@ export class ChatGateway extends Gateway {
     const chatId: string = data.value.chatId;
 
     const chat: Chat = await this.chatService.getChatById(chatId);
-    if (!chat) throw new Error(`Chat '${chatId}' not found`);
 
     const modifiedChat: Chat = await this.chatService.editChat(chatId, {
       targets: chat.targets
         .map((targetChat: UserChat) => targetChat.userId)
         .filter((userId: string) => userId !== data.value.targetId),
     });
-    if (!modifiedChat)
-      throw new Error(`Chat '${chatId}' could not be modified`);
 
     for (const targetChat of modifiedChat.targets) {
       this.emit(targetChat.userId, 'RECEIVED_CHAT_TARGET_REMOVE', modifiedChat);
@@ -134,13 +132,14 @@ export class ChatGateway extends Gateway {
       ActivityChatRemove<ActivityChatTargetRemove>
     >({
       sender: data.sender,
-      modifyId: chatId,
       value: {
         chat: chatId,
-        type: ChatActivityType.CHAT_TARGET_ADD,
+        type: ChatActivityType.CHAT_TARGET_REMOVE,
         executor: data.sender,
-        value: {
+        activityContent: {
           removed: {
+            chatId: chatId,
+            targetId: target.id,
             firstName: target.firstName,
             lastName: target.lastName,
             avatar: target.avatar,
@@ -165,17 +164,13 @@ export class ChatGateway extends Gateway {
     if (data instanceof Error) return data;
 
     const chatId: string = data.value.chatId;
-
-    const chat: Chat = await this.findChat(chatId);
-    if (!chat) throw new Error(`Chat '${chatId}' not found`);
+    const chat: Chat = await this.chatService.getChatById(chatId);
 
     const modifiedChat: Chat = await this.chatService.editChat(chatId, {
       targets: chat.courses
         .map((course: Course) => course.id)
         .concat(data.value.courseId),
     });
-    if (!modifiedChat)
-      throw new Error(`Chat '${chatId}' could not be modified`);
 
     for (const targetChat of chat.targets) {
       this.emit(targetChat.userId, 'RECEIVED_CHAT_COURSE_ADD', modifiedChat);
@@ -189,13 +184,14 @@ export class ChatGateway extends Gateway {
       ActivityChatAdd<ActivityChatCourseAdd>
     >({
       sender: data.sender,
-      modifyId: chatId,
       value: {
         chat: chatId,
-        type: ChatActivityType.CHAT_TARGET_ADD,
+        type: ChatActivityType.CHAT_COURSE_ADD,
         executor: data.sender,
-        value: {
+        activityContent: {
           added: {
+            chatId: chatId,
+            courseId: course.id,
             name: course.name,
           },
           addedId: data.value.courseId,
@@ -218,21 +214,40 @@ export class ChatGateway extends Gateway {
     if (data instanceof Error) return data;
 
     const chatId: string = data.value.chatId;
-
-    const chat: Chat = await this.findChat(chatId);
-    if (!chat) throw new Error(`Chat '${chatId}' not found`);
+    const chat: Chat = await this.chatService.getChatById(chatId);
 
     const modifiedChat: Chat = await this.chatService.editChat(chatId, {
       targets: chat.courses
         .map((course: Course) => course.id)
         .filter((courseId: string) => courseId !== data.value.courseId),
     });
-    if (!modifiedChat)
-      throw new Error(`Chat '${chatId}' could not be modified`);
 
     for (const targetChat of chat.targets) {
       this.emit(targetChat.userId, 'RECEIVED_CHAT_COURSE_REMOVE', modifiedChat);
     }
+
+    const course: Course = await this.courseService.getCourseById(
+      data.value.courseId,
+    );
+
+    await ChatActivityGateway.prototype.handleChatActivityCreate<
+      ActivityChatRemove<ActivityChatCourseRemove>
+    >({
+      sender: data.sender,
+      value: {
+        chat: chatId,
+        type: ChatActivityType.CHAT_COURSE_REMOVE,
+        executor: data.sender,
+        activityContent: {
+          removed: {
+            chatId: chatId,
+            courseId: course.id,
+            name: course.name,
+          },
+          removedId: data.value.courseId,
+        },
+      },
+    });
 
     return data;
   }
@@ -249,17 +264,13 @@ export class ChatGateway extends Gateway {
     if (data instanceof Error) return data;
 
     const chatId: string = data.value.chatId;
-
-    const chat: Chat = await this.findChat(chatId);
-    if (!chat) throw new Error(`Chat '${chatId}' not found`);
+    const chat: Chat = await this.chatService.getChatById(chatId);
 
     const modifiedChat: Chat = await this.chatService.editChat(chatId, {
       targets: chat.clubs
         .map((club: Club) => club.id)
         .concat(data.value.clubId),
     });
-    if (!modifiedChat)
-      throw new Error(`Chat '${chatId}' could not be modified`);
 
     for (const targetChat of chat.targets) {
       this.emit(targetChat.userId, 'RECEIVED_CHAT_CLUB_ADD', modifiedChat);
@@ -279,15 +290,16 @@ export class ChatGateway extends Gateway {
       );
     if (data instanceof Error) return data;
 
-    const chat: Chat = await this.findChat(data.value.chatId);
+    const chat: Chat = await this.chatService.getChatById(data.value.chatId);
 
-    const modifiedChat: Chat = await this.chatService.editChat(data.modifyId, {
-      targets: chat.clubs
-        .map((club: Club) => club.id)
-        .filter((clubId: string) => clubId !== data.value.clubId),
-    });
-    if (!modifiedChat)
-      throw new Error(`Chat '${data.value.chatId}' could not be modified`);
+    const modifiedChat: Chat = await this.chatService.editChat(
+      data.value.chatId,
+      {
+        targets: chat.clubs
+          .map((club: Club) => club.id)
+          .filter((clubId: string) => clubId !== data.value.clubId),
+      },
+    );
 
     for (const targetChat of chat.targets) {
       this.emit(targetChat.userId, 'RECEIVED_CHAT_CLUB_REMOVE', modifiedChat);
@@ -306,18 +318,11 @@ export class ChatGateway extends Gateway {
     if (data instanceof Error) return data;
 
     const chat: Chat = await this.chatService.getChatById(data.value.chatId);
-    if (!chat) throw new Error(`Chat '${data.value.chatId}' not found`);
 
     for (const targetChat of chat.targets) {
       this.emit(targetChat.userId, 'RECEIVED_TYPING', data);
     }
 
     return data;
-  }
-
-  private async findChat(chatId: string): Promise<Chat> {
-    const chat: Chat = await this.chatService.getChatById(chatId);
-    if (!chat) throw new Error(`Chat '${chatId}' not found`);
-    return chat;
   }
 }
