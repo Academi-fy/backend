@@ -55,18 +55,6 @@ model Chat {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-<<<<<<< Updated upstream
-  activities   ChatActivity[] @relation("ChatActivity")
-  avatar       String?
-  clubs        Club[]     @relation("ClubChat")
-  courses      Course[]   @relation("CourseChat")
-  name         String
-  targets      UserChat[] @relation("ChatTarget")
-<<<<<<< Updated upstream
-  type         ChatType
-=======
-  type         String
-=======
   activities ChatActivity[] @relation("ChatActivity")
   avatar     String?
   clubs      Club[]         @relation("ClubChat")
@@ -74,8 +62,6 @@ model Chat {
   name       String
   targets    UserChat[]     @relation("ChatTarget")
   type       ChatType
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 
   @@map("chats")
 }
@@ -88,17 +74,8 @@ model ChatActivity {
   chat   Chat   @relation("ChatActivity", fields: [chatId], references: [id])
   chatId String @db.Uuid
 
-<<<<<<< Updated upstream
-  executor User @relation("UserChatActivity", fields: [executorId], references: [id])
-  executorId String @db.Uuid
-=======
-<<<<<<< Updated upstream
-  executor User[] @relation("UserChatActivity")
-=======
   executor   User   @relation("UserChatActivity", fields: [executorId], references: [id])
   executorId String @db.Uuid
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 
   readBy User[] @relation("ReadChatActivity")
 
@@ -107,17 +84,8 @@ model ChatActivity {
 
   answeredBy ChatActivity[] @relation("ChatActivityAnswer")
 
-<<<<<<< Updated upstream
-  type   ChatActivityType
-<<<<<<< Updated upstream
-  activityContent  Json[]
-=======
-  value  Json[]
-=======
   type            ChatActivityType
   activityContent Json[]
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 
   starred Boolean @default(false)
 
@@ -293,31 +261,6 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-  activities          ChatActivity[] @relation("UserChatActivity")
->>>>>>> Stashed changes
-  avatar              String?
-  blackboards         Blackboard[]  @relation("BlackboardAuthor")
-  blackboardsReceived Blackboard[]  @relation("BlackboardTarget")
-  chatActivitiesCreated ChatActivity[] @relation("UserChatActivity")
-  classes             Class[]       @relation("ClassMember")
-  clubs               Club[]        @relation("ClubMember")
-  clubsAsLeader       Club[]        @relation("ClubLeader")
-  courses             Course[]      @relation("CourseMember")
-  coursesAsTeacher    Course[]      @relation("CourseTeacher")
-  events              Event[]       @relation("EventSubscriber")
-  eventTickets        EventTicket[] @relation("EventTicketBuyer")
-  firstName           String
-  lastName            String
-  readActivities      ChatActivity[] @relation("ReadChatActivity")
-  schools             School[]      @relation("SchoolMember")
-  type                UserType
-  userAccount         UserAccount   @relation("UserUserAccount", fields: [userAccountId], references: [id])
-  userAccountId       String        @unique @db.Uuid
-  userChats           UserChat[]   @relation("UserUserChat")
-=======
   avatar                String?
   blackboards           Blackboard[]   @relation("BlackboardAuthor")
   blackboardsReceived   Blackboard[]   @relation("BlackboardTarget")
@@ -337,7 +280,6 @@ model User {
   userAccount           UserAccount    @relation("UserUserAccount", fields: [userAccountId], references: [id])
   userAccountId         String         @unique @db.Uuid
   userChats             UserChat[]     @relation("UserUserChat")
->>>>>>> Stashed changes
 
   @@map("users")
 }
@@ -439,25 +381,15 @@ enum ChatActivityType {
   CHAT_TARGET_REMOVE
   CHAT_COURSE_ADD
   CHAT_COURSE_REMOVE
+
   CHAT_CLUB_ADD
   CHAT_CLUB_REMOVE
   CHAT_NAME_CHANGE
   CHAT_AVATAR_CHANGE
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-}
-=======
->>>>>>> Stashed changes
 }
 
 enum ChatType {
   GROUP
   PRIVATE
   COURSE
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes
->>>>>>> Stashed changes

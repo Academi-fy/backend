@@ -4,15 +4,15 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { SOCKET_PORT } from '@/constants';
-import { Gateway } from '@/socket/entities';
+import { Gateway } from '@/socket/entities/gateway.entity';
 import { EventService } from '@/rest/event/event.service';
-import { GatewayMessage } from '@/socket/entities/gateway';
 import { Event, School } from '@/@generated-types';
 import { CreateEventDto } from '@/rest/event';
 import { SchoolService } from '@/rest/school/school.service';
 import { PingCreate } from '@/socket/entities/event/ping-create.entity';
 import { EventStart } from '@/socket/entities/event/event-start.entity';
 import { EventUpdate } from '@/socket/entities/event/event-update.entity';
+import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 
 @WebSocketGateway(SOCKET_PORT)
 export class EventGateway extends Gateway {

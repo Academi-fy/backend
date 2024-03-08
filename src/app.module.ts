@@ -6,10 +6,10 @@ import { Module } from '@nestjs/common';
 import { join } from 'path';
 import { GraphQLJSON } from 'graphql-type-json';
 
-import { AuthModule } from './';
 import { PrismaModule } from './prisma/prisma.module';
 import { RestModule } from './rest/rest.module';
 import { SocketModule } from './socket/socket.module';
+import { AuthModule } from '@/auth/auth.module';
 
 @Module({
   imports: [

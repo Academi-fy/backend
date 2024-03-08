@@ -117,7 +117,13 @@ type ChatMaxAggregate {
   updatedAt: DateTime
   avatar: String
   name: String
-  type: String
+  type: ChatType
+}
+
+enum ChatType {
+  GROUP
+  PRIVATE
+  COURSE
 }
 
 type ChatMinAggregate {
@@ -126,7 +132,7 @@ type ChatMinAggregate {
   updatedAt: DateTime
   avatar: String
   name: String
-  type: String
+  type: ChatType
 }
 
 type Chat {
@@ -135,7 +141,7 @@ type Chat {
   updatedAt: DateTime!
   avatar: String
   name: String!
-  type: String!
+  type: ChatType!
   activities: [ChatActivity!]
   clubs: [Club!]
   courses: [Course!]
@@ -148,15 +154,16 @@ type ChatActivityCountAggregate {
   createdAt: Int!
   updatedAt: Int!
   chatId: Int!
+  executorId: Int!
   answerToId: Int!
   type: Int!
+  activityContent: Int!
   value: Int!
   starred: Int!
   _all: Int!
 }
 
 type ChatActivityCount {
-  executor: Int!
   readBy: Int!
   answeredBy: Int!
 }
@@ -166,6 +173,7 @@ type ChatActivityMaxAggregate {
   createdAt: DateTime
   updatedAt: DateTime
   chatId: String
+  executorId: String
   answerToId: String
   type: ChatActivityType
   starred: Boolean
@@ -202,6 +210,7 @@ type ChatActivityMinAggregate {
   createdAt: DateTime
   updatedAt: DateTime
   chatId: String
+  executorId: String
   answerToId: String
   type: ChatActivityType
   starred: Boolean
@@ -212,12 +221,14 @@ type ChatActivity {
   createdAt: DateTime!
   updatedAt: DateTime!
   chatId: String!
+  executorId: String!
   answerToId: String
   type: ChatActivityType!
+  activityContent: [JSON!]
   value: [JSON!]
   starred: Boolean!
   chat: Chat!
-  executor: [User!]
+  executor: User!
   readBy: [User!]
   answerTo: ChatActivity
   answeredBy: [ChatActivity!]
@@ -786,9 +797,9 @@ type UserCountAggregate {
 }
 
 type UserCount {
-  activities: Int!
   blackboards: Int!
   blackboardsReceived: Int!
+  chatActivitiesCreated: Int!
   classes: Int!
   clubs: Int!
   clubsAsLeader: Int!
@@ -839,9 +850,9 @@ type User {
   lastName: String!
   type: UserType!
   userAccountId: String!
-  activities: [ChatActivity!]
   blackboards: [Blackboard!]
   blackboardsReceived: [Blackboard!]
+  chatActivitiesCreated: [ChatActivity!]
   classes: [Class!]
   clubs: [Club!]
   clubsAsLeader: [Club!]
@@ -1083,7 +1094,7 @@ input CreateChatDto {
   courses: [String!]
   name: String!
   targets: [String!]
-  type: String!
+  type: ChatType!
 }
 
 input EditChatDto {
@@ -1093,28 +1104,28 @@ input EditChatDto {
   courses: [String!]
   name: String
   targets: [String!]
-  type: String
+  type: ChatType
 }
 
 input CreateChatActivityDto {
+  activityContent: JSON!
   answeredBy: String
   answerTo: String
   chat: String!
   executor: String!
   readBy: [String!]
   type: ChatActivityType!
-  value: JSON!
   starred: Boolean
 }
 
 input EditChatActivityDto {
+  activityContent: JSON
   answeredBy: String
   answerTo: String
   chat: String
   executor: String
   readBy: [String!]
   type: ChatActivityType
-  value: JSON!
   starred: Boolean
 }
 
@@ -1305,10 +1316,10 @@ input EditSubjectDto {
 }
 
 input CreateUserDto {
-  activities: [String!]
   avatar: String
   blackboards: [String!]
   blackboardsReceived: [String!]
+  chatActivitiesCreated: [String!]!
   classes: [String!]
   clubs: [String!]
   clubsAsLeader: [String!]
@@ -1331,6 +1342,7 @@ input EditUserDto {
   avatar: String
   blackboards: [String!]
   blackboardsReceived: [String!]
+  chatActivitiesCreated: [String!]
   classes: [String!]
   clubs: [String!]
   clubsAsLeader: [String!]

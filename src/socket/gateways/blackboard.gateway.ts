@@ -8,12 +8,12 @@ import { Blackboard, School } from '@/@generated-types';
 import { BlackboardService } from '@/rest/blackboard/blackboard.service';
 import { CreateBlackboardDto } from '@/rest/blackboard';
 
-import { Gateway } from '../entities';
-import { GatewayMessage } from '../entities/gateway';
+import { Gateway } from '../entities/gateway.entity';
 import { SOCKET_PORT } from '@/constants';
 import { SchoolService } from '@/rest/school/school.service';
 import { BlackboardUpdate } from '@/socket/entities/blackboard/blackboard-update.entity';
 import { BlackboardDelete } from '@/socket/entities/blackboard/blackboard-delete.entity';
+import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 
 @WebSocketGateway(SOCKET_PORT)
 export class BlackboardGateway extends Gateway {

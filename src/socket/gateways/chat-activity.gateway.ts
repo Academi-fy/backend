@@ -4,32 +4,19 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { SOCKET_PORT } from '@/constants';
-import { Gateway } from '@/socket/entities';
+import { Gateway } from '@/socket/entities/gateway.entity';
 import { ChatActivityService } from '@/rest/chat-activity/chat-activity.service';
-import { GatewayMessage } from '@/socket/entities/gateway';
 import { Chat, ChatActivity, ChatActivityType } from '@/@generated-types';
 import { ChatService } from '@/rest/chat/chat.service';
-<<<<<<< Updated upstream
-import {
-  CreateChatActivityDto,
-  EditChatActivityDto,
-} from '@/rest/chat-activity';
-<<<<<<< Updated upstream
-import { MessageUpdate } from '@/socket/entities/chat-activity/event-entities/message/message-update.entity';
-import { MessageDelete } from '@/socket/entities/chat-activity/event-entities/message/message-delete.entity';
-import { MessageSend } from '@/socket/entities/chat-activity/event-entities/message/message-send.entity';
-=======
-import { MessageMutation } from '@/socket/entities/chat-activity/event-entities/message-mutation.entity';
-import { MessageDelete } from '@/socket/entities/chat-activity/event-entities/message-delete.entity';
-=======
 import { CreateChatActivityDto } from '@/rest/chat-activity';
-import { MessageUpdate } from '@/socket/entities/chat-activity/event-entities/message/message-update.entity';
-import { MessageDelete } from '@/socket/entities/chat-activity/event-entities/message/message-delete.entity';
-import { MessageSend } from '@/socket/entities/chat-activity/event-entities/message/message-send.entity';
-import { MessageAnswer } from '@/socket/entities/chat-activity/event-entities/message/message-answer.entity';
-import { ActivityStar } from '@/socket/entities/chat-activity/event-entities/activity/activity-star.entity';
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+import { MessageUpdate } from '@/socket/entities/chat-activity/message/message-update.entity';
+import { MessageDelete } from '@/socket/entities/chat-activity/message/message-delete.entity';
+import { MessageSend } from '@/socket/entities/chat-activity/message/message-send.entity';
+import { ActivityStar } from '@/socket/entities/chat-activity/activity/activity-star.entity';
+import { MessageAnswer } from '@/socket/entities/chat-activity/message/message-answer.entity';
+import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
+
+console.log(Gateway);
 
 @WebSocketGateway(SOCKET_PORT)
 export class ChatActivityGateway extends Gateway {
@@ -38,6 +25,7 @@ export class ChatActivityGateway extends Gateway {
     private readonly chatService: ChatService,
   ) {
     super();
+    this.eventEmitter.on('createChatActivity', this.createChatActivity);
   }
 
   async handleChatActivityCreate<T>(
@@ -75,7 +63,7 @@ export class ChatActivityGateway extends Gateway {
     >(body, GatewayMessage<MessageSend>);
     if (data instanceof Error) return data;
 
-    await this.handleChatActivityCreate<MessageSend>({
+    await this.createChatActivity<MessageSend>({
       sender: data.sender,
       value: {
         ...data.value,
@@ -101,30 +89,6 @@ export class ChatActivityGateway extends Gateway {
     >(body, GatewayMessage<MessageUpdate>);
     if (data instanceof Error) return data;
 
-<<<<<<< Updated upstream
-    const modifiedChatActivity: ChatActivity =
-      await this.chatActivityService.editChatActivity(data.value.chatId, {
-        activityContent: {
-          content: data.value.content,
-        },
-      });
-
-=======
-<<<<<<< Updated upstream
-    const createdChatActivity: ChatActivity =
-      await this.chatActivityService.editChatActivity(
-        data.modifyId,
-        data.value,
-      );
-    if (!createdChatActivity)
-      throw new Error(`ChatActivity could not be updated with data: ${data}`);
-
-    const chat: Chat = await this.chatService.getChatById(
-      createdChatActivity.chatId,
-    );
-    if (!chat)
-      throw new Error(`Chat with id ${createdChatActivity.chatId} not found`);
-=======
     const modifiedChatActivity: ChatActivity =
       await this.chatActivityService.editChatActivity(data.value.activityId, {
         activityContent: {
@@ -132,8 +96,7 @@ export class ChatActivityGateway extends Gateway {
         },
       });
 
->>>>>>> Stashed changes
-    await this.handleChatActivityCreate<MessageUpdate>({
+    await this.createChatActivity<MessageUpdate>({
       sender: data.sender,
       value: {
         ...data.value,
@@ -141,19 +104,11 @@ export class ChatActivityGateway extends Gateway {
         executor: data.sender,
         type: ChatActivityType.MESSAGE_EDIT,
         activityContent: {
-<<<<<<< Updated upstream
-          chatId: modifiedChatActivity.chatId,
-=======
           activityId: modifiedChatActivity.id,
->>>>>>> Stashed changes
           content: data.value.content,
         },
       },
     });
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 
     return data;
   }
@@ -170,7 +125,7 @@ export class ChatActivityGateway extends Gateway {
     const deletedChatActivity: ChatActivity =
       await this.chatActivityService.deleteChatActivity(data.value.deletedId);
 
-    await this.handleChatActivityCreate<MessageDelete>({
+    await this.createChatActivity<MessageDelete>({
       sender: data.sender,
       value: {
         chat: deletedChatActivity.chatId,
@@ -202,7 +157,7 @@ export class ChatActivityGateway extends Gateway {
         },
       });
 
-    await this.handleChatActivityCreate<MessageAnswer>({
+    await this.createChatActivity<MessageAnswer>({
       sender: data.sender,
       value: {
         chat: modifiedChatActivity.chatId,
@@ -219,6 +174,7 @@ export class ChatActivityGateway extends Gateway {
   }
 
   @SubscribeMessage('ACTIVITY_STAR')
+  @SubscribeMessage('ACTIVITY_UNSTAR')
   async handleActivityStar(
     @MessageBody() body: GatewayMessage<ActivityStar>,
   ): Promise<GatewayMessage<ActivityStar> | Error> {
@@ -229,20 +185,24 @@ export class ChatActivityGateway extends Gateway {
 
     const modifiedChatActivity: ChatActivity =
       await this.chatActivityService.editChatActivity(data.value.activityId, {
-        starred: data.value.starred,
+        activityContent: {
+          starredId: data.value.activityId,
+        },
       });
 
-    await this.handleChatActivityCreate<ActivityStar>({
+    const starred: boolean = data.value.starred;
+
+    await this.createChatActivity<ActivityStar>({
       sender: data.sender,
       value: {
         chat: modifiedChatActivity.chatId,
-        type: data.value.starred
+        type: starred
           ? ChatActivityType.ACTIVITY_STAR
           : ChatActivityType.ACTIVITY_UNSTAR,
         executor: data.sender,
         activityContent: {
           activityId: data.value.activityId,
-          starred: data.value.starred,
+          starred: starred,
         },
       },
     });
@@ -255,4 +215,17 @@ export class ChatActivityGateway extends Gateway {
 
   @SubscribeMessage('POLL_EDIT')
   async handlePollEdit() {}
+
+  @SubscribeMessage('POLL_VOTE')
+  @SubscribeMessage('POLL_UNVOTE')
+  async handlePollVote() {}
+
+  @SubscribeMessage('POLL_CLOSE')
+  async handlePollClose() {}
+
+  @SubscribeMessage('POLL_REOPEN')
+  async handlePollReopen() {}
+
+  @SubscribeMessage('POLL_RESULT')
+  async handlePollResult() {}
 }

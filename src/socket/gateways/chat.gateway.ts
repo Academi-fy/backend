@@ -16,25 +16,28 @@ import {
   ChatClubMutation,
   ChatCourseMutation,
   ChatTargetMutation,
-  Gateway,
-} from '../entities';
+} from '../entities/chat/';
 import { GatewayMessage } from '../entities/gateway';
 import { Typing } from '../entities/chat/typing.entity';
 import { ChatService } from '@/rest/chat/chat.service';
 import { SOCKET_PORT } from '@/constants';
-import { ChatActivityGateway } from '@/socket/gateways/chat-activity.gateway';
 import { UserService } from '@/rest/user/user.service';
-import { ActivityChatAdd } from '@/socket/entities/chat-activity/activity-chat-add.entity';
+import {
+  ActivityChatAddAction,
+  ActivityChatRemoveAction,
+} from '@/socket/entities/chat-activity/chat/activity-chat-actions.entity';
 import {
   ActivityChatTargetAdd,
   ActivityChatTargetRemove,
-} from '@/socket/entities/chat-activity/chat-mutations/activity-chat-target.entity';
-import { ActivityChatRemove } from '@/socket/entities/chat-activity/activity-chat-remove.entity';
+} from '@/socket/entities/chat-activity/chat/chat-target-actions.entity';
 import { CourseService } from '@/rest/course/course.service';
 import {
   ActivityChatCourseAdd,
   ActivityChatCourseRemove,
-} from '@/socket/entities/chat-activity/chat-mutations/activity-chat-course.entity';
+} from '@/socket/entities/chat-activity/chat/chat-course-actions.entity';
+import { Gateway } from '@/socket/entities/gateway.entity';
+import { ClubService } from '@/rest/club/club.service';
+import { ActivityChatClubMutation } from '@/socket/entities/chat-activity/chat/chat-club-actions.entity';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ChatGateway extends Gateway {
@@ -42,6 +45,7 @@ export class ChatGateway extends Gateway {
     private readonly chatService: ChatService,
     private readonly userService: UserService,
     private readonly courseService: CourseService,
+    private readonly clubService: ClubService,
   ) {
     super();
   }
@@ -75,26 +79,27 @@ export class ChatGateway extends Gateway {
       data.value.targetId,
     );
 
-    await ChatActivityGateway.prototype.handleChatActivityCreate<
-      ActivityChatAdd<ActivityChatTargetAdd>
-    >({
-      sender: data.sender,
-      value: {
-        chat: chatId,
-        type: ChatActivityType.CHAT_TARGET_ADD,
-        executor: data.sender,
-        activityContent: {
-          added: {
-            chatId: chatId,
-            targetId: target.id,
-            firstName: target.firstName,
-            lastName: target.lastName,
-            avatar: target.avatar,
+    await this.createChatActivity<ActivityChatAddAction<ActivityChatTargetAdd>>(
+      {
+        sender: data.sender,
+        value: {
+          chat: chatId,
+          type: ChatActivityType.CHAT_TARGET_ADD,
+          executor: data.sender,
+          activityContent: {
+            chatName: modifiedChat.name,
+            added: {
+              chatId: chatId,
+              targetId: target.id,
+              firstName: target.firstName,
+              lastName: target.lastName,
+              avatar: target.avatar,
+            },
+            addedId: data.value.targetId,
           },
-          addedId: data.value.targetId,
         },
       },
-    });
+    );
 
     return data;
   }
@@ -128,8 +133,8 @@ export class ChatGateway extends Gateway {
       data.value.targetId,
     );
 
-    await ChatActivityGateway.prototype.handleChatActivityCreate<
-      ActivityChatRemove<ActivityChatTargetRemove>
+    await this.createChatActivity<
+      ActivityChatRemoveAction<ActivityChatTargetRemove>
     >({
       sender: data.sender,
       value: {
@@ -137,6 +142,7 @@ export class ChatGateway extends Gateway {
         type: ChatActivityType.CHAT_TARGET_REMOVE,
         executor: data.sender,
         activityContent: {
+          chatName: modifiedChat.name,
           removed: {
             chatId: chatId,
             targetId: target.id,
@@ -180,24 +186,25 @@ export class ChatGateway extends Gateway {
       data.value.courseId,
     );
 
-    await ChatActivityGateway.prototype.handleChatActivityCreate<
-      ActivityChatAdd<ActivityChatCourseAdd>
-    >({
-      sender: data.sender,
-      value: {
-        chat: chatId,
-        type: ChatActivityType.CHAT_COURSE_ADD,
-        executor: data.sender,
-        activityContent: {
-          added: {
-            chatId: chatId,
-            courseId: course.id,
-            name: course.name,
+    await this.createChatActivity<ActivityChatAddAction<ActivityChatCourseAdd>>(
+      {
+        sender: data.sender,
+        value: {
+          chat: chatId,
+          type: ChatActivityType.CHAT_COURSE_ADD,
+          executor: data.sender,
+          activityContent: {
+            chatName: modifiedChat.name,
+            added: {
+              chatId: chatId,
+              courseId: course.id,
+              name: course.name,
+            },
+            addedId: data.value.courseId,
           },
-          addedId: data.value.courseId,
         },
       },
-    });
+    );
 
     return data;
   }
@@ -230,8 +237,8 @@ export class ChatGateway extends Gateway {
       data.value.courseId,
     );
 
-    await ChatActivityGateway.prototype.handleChatActivityCreate<
-      ActivityChatRemove<ActivityChatCourseRemove>
+    await this.createChatActivity<
+      ActivityChatRemoveAction<ActivityChatCourseRemove>
     >({
       sender: data.sender,
       value: {
@@ -239,6 +246,7 @@ export class ChatGateway extends Gateway {
         type: ChatActivityType.CHAT_COURSE_REMOVE,
         executor: data.sender,
         activityContent: {
+          chatName: modifiedChat.name,
           removed: {
             chatId: chatId,
             courseId: course.id,
@@ -276,6 +284,9 @@ export class ChatGateway extends Gateway {
       this.emit(targetChat.userId, 'RECEIVED_CHAT_CLUB_ADD', modifiedChat);
     }
 
+    const club: Club = await this.clubService.getClubById(data.value.clubId);
+    await this.handleChatClubMutation(data, club, modifiedChat);
+
     return data;
   }
 
@@ -305,7 +316,31 @@ export class ChatGateway extends Gateway {
       this.emit(targetChat.userId, 'RECEIVED_CHAT_CLUB_REMOVE', modifiedChat);
     }
 
+    const club: Club = await this.clubService.getClubById(data.value.clubId);
+    await this.handleChatClubMutation(data, club, modifiedChat);
+
     return data;
+  }
+
+  private async handleChatClubMutation(data, club, modifiedChat) {
+    await this.createChatActivity<
+      ActivityChatRemoveAction<ActivityChatClubMutation>
+    >({
+      sender: data.sender,
+      value: {
+        chat: data.value.chatId,
+        type: ChatActivityType.CHAT_CLUB_REMOVE,
+        executor: data.sender,
+        activityContent: {
+          chatName: modifiedChat.name,
+          removed: {
+            name: club.name,
+            avatar: club.avatar,
+          },
+          removedId: data.value.clubId,
+        },
+      },
+    });
   }
 
   @SubscribeMessage('TYPING')

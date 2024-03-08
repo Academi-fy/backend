@@ -27,6 +27,11 @@ export class EditUserDto {
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
+  chatActivitiesCreated?: string[];
+
+  @Field(() => [String], { nullable: true })
+  @IsArray()
+  @IsOptional()
   classes?: string[];
 
   @Field(() => [String], { nullable: true })

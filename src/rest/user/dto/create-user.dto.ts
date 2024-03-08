@@ -19,10 +19,9 @@ export class CreateUserDto {
   @IsOptional()
   blackboardsReceived?: string[];
 
-  @Field(() => [String], { nullable: true })
+  @Field(() => [String])
   @IsArray()
-  @IsOptional()
-  chatActivitiesCreated?: string[];
+  chatActivitiesCreated: string[];
 
   @Field(() => [String], { nullable: true })
   @IsArray()

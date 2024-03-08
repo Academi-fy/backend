@@ -1,14 +1,16 @@
-import { Args, Mutation, Query } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserChat } from '@/@generated-types';
 
 import { CreateUserChatDto, EditUserChatDto } from './dto';
 import { UserChatService } from './user-chat.service';
 
+@Resolver(() => UserChat)
 export class UserChatResolver {
   constructor(private userChatService: UserChatService) {}
 
   @Query(() => [UserChat])
   async getAllUserChats(): Promise<UserChat[]> {
+    console.log(this.userChatService);
     return this.userChatService.getAllUserChats();
   }
 
