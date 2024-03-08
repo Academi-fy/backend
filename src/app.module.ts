@@ -10,13 +10,13 @@ import { PrismaModule } from './prisma/prisma.module';
 import { RestModule } from './rest/rest.module';
 import { SocketModule } from './socket/socket.module';
 import { AuthModule } from '@/auth/auth.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
@@ -27,6 +27,12 @@ import { AuthModule } from '@/auth/auth.module';
     DevtoolsModule.register({
       http: process.env.NODE_ENV !== 'production',
     }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 10,
+      },
+    ]),
     AuthModule,
     PrismaModule,
     RestModule,
