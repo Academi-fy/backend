@@ -6,10 +6,10 @@ import {
 
 import { Club, Event, User } from '@/@generated-types';
 import { ClubEventMutation, ClubUserMutation } from '../entities/club';
-import { Gateway } from '../entities';
-import { GatewayMessage } from '../entities/gateway';
+import { Gateway } from '../entities/gateway.entity';
 import { ClubService } from '@/rest/club/club.service';
 import { SOCKET_PORT } from '@/constants';
+import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ClubGateway extends Gateway {

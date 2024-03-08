@@ -1,14 +1,9 @@
-import { UserType } from '../../../@generated-types';
 import { Field, InputType } from '@nestjs/graphql';
 import { IsArray, IsOptional, IsString } from 'class-validator';
+import { UserType } from '@/@generated-types';
 
 @InputType()
 export class CreateUserDto {
-  @Field(() => [String], { nullable: true })
-  @IsArray()
-  @IsOptional()
-  activities?: string[];
-
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
@@ -23,6 +18,10 @@ export class CreateUserDto {
   @IsArray()
   @IsOptional()
   blackboardsReceived?: string[];
+
+  @Field(() => [String])
+  @IsArray()
+  chatActivitiesCreated: string[];
 
   @Field(() => [String], { nullable: true })
   @IsArray()

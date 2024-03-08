@@ -14,35 +14,49 @@ export class ChatActivityService extends Service {
   }
 
   async getAllChatActivities(): Promise<ChatActivity[]> {
-    return this.prisma.chatActivity.findMany({
-      include: {
-        ...chatActivityNesting,
-      },
-    });
+    const chatActivities: ChatActivity[] =
+      await this.prisma.chatActivity.findMany({
+        include: {
+          ...chatActivityNesting,
+        },
+      });
+
+    if (!chatActivities) throw new Error('No chat activities found!');
+    return chatActivities;
   }
 
   async getChatActivityById(chatActivityId: string): Promise<ChatActivity> {
-    return this.prisma.chatActivity.findUnique({
-      where: { id: chatActivityId },
-      include: {
-        ...chatActivityNesting,
-      },
-    });
+    const chatActivity: ChatActivity =
+      await this.prisma.chatActivity.findUnique({
+        where: { id: chatActivityId },
+        include: {
+          ...chatActivityNesting,
+        },
+      });
+
+    if (!chatActivity)
+      throw new Error(`ChatActivity with id ${chatActivityId} not found`);
+    return chatActivity;
   }
 
   async getChatActivityByChatId(chatId: string): Promise<ChatActivity[]> {
-    return this.prisma.chatActivity.findMany({
-      where: { chatId },
-      include: {
-        ...chatActivityNesting,
-      },
-    });
+    const chatActivities: ChatActivity[] =
+      await this.prisma.chatActivity.findMany({
+        where: { chatId },
+        include: {
+          ...chatActivityNesting,
+        },
+      });
+
+    if (!chatActivities)
+      throw new Error(`ChatActivity with chatId ${chatId} not found`);
+    return chatActivities;
   }
 
   async createChatActivity(
     dto: CreateChatActivityDto<any>,
   ): Promise<ChatActivity> {
-    return this.prisma.chatActivity.create({
+    const chatActivity: ChatActivity = await this.prisma.chatActivity.create({
       data: {
         ...this.mapDtoToData(dto),
       },
@@ -50,30 +64,44 @@ export class ChatActivityService extends Service {
         ...chatActivityNesting,
       },
     });
+    if (!chatActivity)
+      throw new Error(`ChatActivity could not be created with data: ${dto}`);
+
+    return chatActivity;
   }
 
   async editChatActivity(
     chatActivityId: string,
     dto: EditChatActivityDto<any>,
   ): Promise<ChatActivity> {
-    return this.prisma.chatActivity.update({
-      where: { id: chatActivityId },
-      data: {
-        ...this.mapDtoToData(dto),
-      },
-      include: {
-        ...chatActivityNesting,
-      },
-    });
+    const modifiedChatActivity: ChatActivity =
+      await this.prisma.chatActivity.update({
+        where: { id: chatActivityId },
+        data: {
+          ...this.mapDtoToData(dto),
+        },
+        include: {
+          ...chatActivityNesting,
+        },
+      });
+
+    if (!modifiedChatActivity)
+      throw new Error(`ChatActivity could not be updated with data: ${dto}`);
+    return modifiedChatActivity;
   }
 
   async deleteChatActivity(chatActivityId: string): Promise<ChatActivity> {
-    return this.prisma.chatActivity.delete({
-      where: { id: chatActivityId },
-      include: {
-        ...chatActivityNesting,
-      },
-    });
+    const deletedChatActivity: ChatActivity =
+      await this.prisma.chatActivity.delete({
+        where: { id: chatActivityId },
+        include: {
+          ...chatActivityNesting,
+        },
+      });
+
+    if (!deletedChatActivity)
+      throw new Error(`ChatActivity with id ${chatActivityId} not found`);
+    return deletedChatActivity;
   }
 
   private mapDtoToData(

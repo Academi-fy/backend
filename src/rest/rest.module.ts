@@ -17,7 +17,7 @@ import { UserModule } from './user/user.module';
 import { UserAccountModule } from './user-account/user-account.module';
 import { UserChatModule } from './user-chat/user-chat.module';
 import { ChatActivityModule } from './chat-activity/chat-activity.module';
-import { PrismaModule } from '../prisma/prisma.module';
+import { PrismaModule } from '@/prisma/prisma.module';
 
 @Module({
   imports: [

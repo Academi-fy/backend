@@ -4,14 +4,15 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { SOCKET_PORT } from '@/constants';
-import { Gateway } from '@/socket/entities';
+import { Gateway } from '@/socket/entities/gateway.entity';
 import { EventService } from '@/rest/event/event.service';
-import { GatewayMessage } from '@/socket/entities/gateway';
 import { Event, School } from '@/@generated-types';
-import { CreateEventDto, EditEventDto } from '@/rest/event';
+import { CreateEventDto } from '@/rest/event';
 import { SchoolService } from '@/rest/school/school.service';
 import { PingCreate } from '@/socket/entities/event/ping-create.entity';
 import { EventStart } from '@/socket/entities/event/event-start.entity';
+import { EventUpdate } from '@/socket/entities/event/event-update.entity';
+import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 
 @WebSocketGateway(SOCKET_PORT)
 export class EventGateway extends Gateway {
@@ -52,14 +53,14 @@ export class EventGateway extends Gateway {
 
   @SubscribeMessage('EVENT_UPDATE')
   async handleEventUpdate(
-    @MessageBody() body: GatewayMessage<EditEventDto>,
-  ): Promise<GatewayMessage<EditEventDto> | Error> {
-    const data: GatewayMessage<EditEventDto> | Error = await this.validateData<
-      GatewayMessage<EditEventDto>
-    >(body, GatewayMessage<EditEventDto>);
+    @MessageBody() body: GatewayMessage<EventUpdate>,
+  ): Promise<GatewayMessage<EventUpdate> | Error> {
+    const data: GatewayMessage<EventUpdate> | Error = await this.validateData<
+      GatewayMessage<EventUpdate>
+    >(body, GatewayMessage<EventUpdate>);
     if (data instanceof Error) return data;
 
-    const eventId: string = data.modifyId;
+    const eventId: string = data.value.eventId;
 
     const event: Event = await this.eventService.getEventById(eventId);
     if (!event) throw new Error(`Event with id ${eventId} not found`);
@@ -105,7 +106,7 @@ export class EventGateway extends Gateway {
     return this.handleSimpleEvent<EventStart>(body, 'EVENT_END');
   }
 
-  private async handleSimpleEvent<T>(
+  private async handleSimpleEvent<T extends EventUpdate>(
     body: GatewayMessage<T>,
     eventName: string,
   ): Promise<GatewayMessage<T> | Error> {
@@ -114,7 +115,7 @@ export class EventGateway extends Gateway {
     >(body, GatewayMessage);
     if (data instanceof Error) return data;
 
-    const eventId: string = data.modifyId;
+    const eventId: string = data.value.eventId;
     const event: Event = await this.eventService.getEventById(eventId);
     if (!event) throw new Error(`Event with id ${eventId} not found`);
 

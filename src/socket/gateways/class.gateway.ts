@@ -6,10 +6,10 @@ import {
 
 import { Class, Course, User } from '@/@generated-types';
 import { ClassCourseMutation, ClassUserMutation } from '../entities/class';
-import { Gateway } from '../entities';
-import { GatewayMessage } from '../entities/gateway';
+import { Gateway } from '../entities/gateway.entity';
 import { ClassService } from 'src/rest/class/class.service';
 import { SOCKET_PORT } from '@/constants';
+import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ClassGateway extends Gateway {

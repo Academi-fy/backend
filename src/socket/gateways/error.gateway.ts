@@ -4,9 +4,9 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { SOCKET_PORT } from '@/constants';
-import { Gateway } from '@/socket/entities';
-import { GatewayMessage } from '@/socket/entities/gateway';
+import { Gateway } from '@/socket/entities/gateway.entity';
 import { InternalServerErrorException } from '@nestjs/common';
+import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ErrorGateway extends Gateway {
@@ -14,6 +14,9 @@ export class ErrorGateway extends Gateway {
   async handleError(
     @MessageBody() body: GatewayMessage<Error>,
   ): Promise<GatewayMessage<Error> | Error> {
-    throw new InternalServerErrorException(body);
+    throw new InternalServerErrorException({
+      information: 'Message received from client is an error.',
+      ...body,
+    });
   }
 }

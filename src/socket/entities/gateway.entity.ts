@@ -3,17 +3,35 @@ import { plainToInstance } from 'class-transformer';
 import { validateOrReject } from 'class-validator';
 import { BadRequestException, Logger } from '@nestjs/common';
 import { clients } from '@/main';
+import { CreateChatActivityDto } from '@/rest/chat-activity';
+import { Socket } from 'socket.io';
+import { EventEmitter } from 'events';
+import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 
 export class Gateway {
   @WebSocketServer()
-  server: any;
+  public server: any;
 
   public gatewayLogger: Logger = new Logger('Gateway');
 
-  clients = clients;
+  public clients: Map<string, Socket[]> = clients;
+
+  public eventEmitter: EventEmitter;
+
+  constructor() {
+    this.eventEmitter = new EventEmitter();
+  }
+
+  async createChatActivity<T>(
+    body: GatewayMessage<CreateChatActivityDto<T>>,
+  ): Promise<void> {
+    this.eventEmitter.emit('createChatActivity', body);
+  }
 
   emit(target: string, event: string, data: any) {
-    this.clients.get(target)?.emit(event, data);
+    this.clients.get(target)?.forEach((client: Socket) => {
+      client.emit(event, data);
+    });
   }
 
   async validateData<X extends object>(

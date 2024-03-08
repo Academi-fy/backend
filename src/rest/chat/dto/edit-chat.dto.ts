@@ -1,5 +1,6 @@
 import { IsArray, IsOptional, IsString } from 'class-validator';
 import { Field, InputType } from '@nestjs/graphql';
+import { ChatType } from '@/@generated-types';
 
 @InputType()
 export class EditChatDto {
@@ -33,8 +34,8 @@ export class EditChatDto {
   @IsOptional()
   targets?: string[];
 
-  @Field(() => String, { nullable: true })
+  @Field(() => ChatType, { nullable: true })
   @IsString()
   @IsOptional()
-  type?: string;
+  type?: ChatType;
 }

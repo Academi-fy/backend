@@ -11,6 +11,7 @@ export const userRawNesting = {
   activities: true,
   blackboards: true,
   blackboardsReceived: true,
+  chatActivitiesCreated: true,
   classes: true,
   clubs: true,
   clubsAsLeader: true,
@@ -38,6 +39,11 @@ export const userNesting = {
   blackboardsReceived: {
     include: {
       ...blackboardRawNesting,
+    },
+  },
+  chatActivitiesCreated: {
+    include: {
+      ...chatActivityRawNesting,
     },
   },
   classes: {

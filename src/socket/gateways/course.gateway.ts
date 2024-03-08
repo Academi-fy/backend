@@ -4,12 +4,12 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { SOCKET_PORT } from '@/constants';
-import { GatewayMessage } from '@/socket/entities/gateway';
 import { Course, User } from '@/@generated-types';
-import { Gateway } from '@/socket/entities';
+import { Gateway } from '@/socket/entities/gateway.entity';
 import { CourseService } from '@/rest/course/course.service';
 import { CourseUserMutation } from '@/socket/entities/course/course-user-mutation.entity';
 import { CourseChatMutation } from '@/socket/entities/course/course-chat-mutation.entity';
+import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 
 @WebSocketGateway(SOCKET_PORT)
 export class CourseGateway extends Gateway {

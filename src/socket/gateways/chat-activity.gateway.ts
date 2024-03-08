@@ -4,17 +4,19 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { SOCKET_PORT } from '@/constants';
-import { Gateway } from '@/socket/entities';
+import { Gateway } from '@/socket/entities/gateway.entity';
 import { ChatActivityService } from '@/rest/chat-activity/chat-activity.service';
-import { GatewayMessage } from '@/socket/entities/gateway';
-import { Chat, ChatActivity } from '@/@generated-types';
+import { Chat, ChatActivity, ChatActivityType } from '@/@generated-types';
 import { ChatService } from '@/rest/chat/chat.service';
-import {
-  CreateChatActivityDto,
-  EditChatActivityDto,
-} from '@/rest/chat-activity';
-import { MessageMutation } from '@/socket/entities/chat-activity/event-entities/message-mutation.entity';
-import { MessageDelete } from '@/socket/entities/chat-activity/event-entities/message-delete.entity';
+import { CreateChatActivityDto } from '@/rest/chat-activity';
+import { MessageUpdate } from '@/socket/entities/chat-activity/message/message-update.entity';
+import { MessageDelete } from '@/socket/entities/chat-activity/message/message-delete.entity';
+import { MessageSend } from '@/socket/entities/chat-activity/message/message-send.entity';
+import { ActivityStar } from '@/socket/entities/chat-activity/activity/activity-star.entity';
+import { MessageAnswer } from '@/socket/entities/chat-activity/message/message-answer.entity';
+import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
+
+console.log(Gateway);
 
 @WebSocketGateway(SOCKET_PORT)
 export class ChatActivityGateway extends Gateway {
@@ -23,6 +25,7 @@ export class ChatActivityGateway extends Gateway {
     private readonly chatService: ChatService,
   ) {
     super();
+    this.eventEmitter.on('createChatActivity', this.createChatActivity);
   }
 
   async handleChatActivityCreate<T>(
@@ -37,79 +40,77 @@ export class ChatActivityGateway extends Gateway {
 
     const createdChatActivity: ChatActivity =
       await this.chatActivityService.createChatActivity(data.value);
-    if (!createdChatActivity)
-      throw new Error(`ChatActivity could not be created with data: ${data}`);
 
     const chat: Chat = await this.chatService.getChatById(
       createdChatActivity.chatId,
     );
-    if (!chat)
-      throw new Error(`Chat with id ${createdChatActivity.chatId} not found`);
 
     for (const member of chat.targets) {
-      this.emit(member.userId, 'RECEIVED_CHAT_ACTIVITY_CREATE', data);
+      this.emit(member.userId, 'RECEIVED_CHAT_ACTIVITY_CREATE', {
+        data,
+      });
     }
 
-    return body;
+    return data;
   }
 
   @SubscribeMessage('MESSAGE_SEND')
   async handleMessageSend(
-    @MessageBody() body: GatewayMessage<CreateChatActivityDto<MessageMutation>>,
-  ): Promise<GatewayMessage<CreateChatActivityDto<MessageMutation>> | Error> {
-    const data: GatewayMessage<CreateChatActivityDto<MessageMutation>> | Error =
-      await this.validateData<
-        GatewayMessage<CreateChatActivityDto<MessageMutation>>
-      >(body, GatewayMessage<CreateChatActivityDto<MessageMutation>>);
+    @MessageBody() body: GatewayMessage<MessageSend>,
+  ): Promise<GatewayMessage<MessageSend> | Error> {
+    const data: GatewayMessage<MessageSend> | Error = await this.validateData<
+      GatewayMessage<MessageSend>
+    >(body, GatewayMessage<MessageSend>);
     if (data instanceof Error) return data;
 
-    const createdChatActivity: ChatActivity =
-      await this.chatActivityService.createChatActivity(data.value);
-    if (!createdChatActivity)
-      throw new Error(`ChatActivity could not be created with data: ${data}`);
+    await this.createChatActivity<MessageSend>({
+      sender: data.sender,
+      value: {
+        ...data.value,
+        chat: data.value.chatId,
+        type: ChatActivityType.MESSAGE_SEND,
+        executor: data.sender,
+        activityContent: {
+          chatId: data.value.chatId,
+          content: data.value.content,
+        },
+      },
+    });
 
-    const chat: Chat = await this.chatService.getChatById(
-      createdChatActivity.chatId,
-    );
-    if (!chat)
-      throw new Error(`Chat with id ${createdChatActivity.chatId} not found`);
-
-    for (const member of chat.targets) {
-      this.emit(member.userId, 'RECEIVED_CHAT_ACTIVITY_SEND', data);
-    }
-
-    return body;
+    return data;
   }
 
   @SubscribeMessage('MESSAGE_UPDATE')
   async handleMessageUpdate(
-    @MessageBody() body: GatewayMessage<EditChatActivityDto<MessageMutation>>,
-  ): Promise<GatewayMessage<EditChatActivityDto<MessageMutation>> | Error> {
-    const data: GatewayMessage<EditChatActivityDto<MessageMutation>> | Error =
-      await this.validateData<
-        GatewayMessage<EditChatActivityDto<MessageMutation>>
-      >(body, GatewayMessage<EditChatActivityDto<MessageMutation>>);
+    @MessageBody() body: GatewayMessage<MessageUpdate>,
+  ): Promise<GatewayMessage<MessageUpdate> | Error> {
+    const data: GatewayMessage<MessageUpdate> | Error = await this.validateData<
+      GatewayMessage<MessageUpdate>
+    >(body, GatewayMessage<MessageUpdate>);
     if (data instanceof Error) return data;
 
-    const createdChatActivity: ChatActivity =
-      await this.chatActivityService.editChatActivity(
-        data.modifyId,
-        data.value,
-      );
-    if (!createdChatActivity)
-      throw new Error(`ChatActivity could not be updated with data: ${data}`);
+    const modifiedChatActivity: ChatActivity =
+      await this.chatActivityService.editChatActivity(data.value.activityId, {
+        activityContent: {
+          content: data.value.content,
+        },
+      });
 
-    const chat: Chat = await this.chatService.getChatById(
-      createdChatActivity.chatId,
-    );
-    if (!chat)
-      throw new Error(`Chat with id ${createdChatActivity.chatId} not found`);
+    await this.createChatActivity<MessageUpdate>({
+      sender: data.sender,
+      value: {
+        ...data.value,
+        chat: modifiedChatActivity.chatId,
+        executor: data.sender,
+        type: ChatActivityType.MESSAGE_EDIT,
+        activityContent: {
+          activityId: modifiedChatActivity.id,
+          content: data.value.content,
+        },
+      },
+    });
 
-    for (const member of chat.targets) {
-      this.emit(member.userId, 'RECEIVED_CHAT_ACTIVITY_UPDATE', data);
-    }
-
-    return body;
+    return data;
   }
 
   @SubscribeMessage('MESSAGE_DELETE')
@@ -122,27 +123,109 @@ export class ChatActivityGateway extends Gateway {
     if (data instanceof Error) return data;
 
     const deletedChatActivity: ChatActivity =
-      await this.chatActivityService.deleteChatActivity(data.modifyId);
-    if (!deletedChatActivity)
-      throw new Error(`ChatActivity could not be deleted with data: ${data}`);
+      await this.chatActivityService.deleteChatActivity(data.value.deletedId);
 
-    const chat: Chat = await this.chatService.getChatById(
-      deletedChatActivity.chatId,
-    );
-    if (!chat)
-      throw new Error(`Chat with id ${deletedChatActivity.chatId} not found`);
+    await this.createChatActivity<MessageDelete>({
+      sender: data.sender,
+      value: {
+        chat: deletedChatActivity.chatId,
+        type: ChatActivityType.MESSAGE_DELETE,
+        executor: data.sender,
+        activityContent: {
+          deletedId: deletedChatActivity.id,
+        },
+      },
+    });
 
-    for (const member of chat.targets) {
-      this.emit(member.userId, 'RECEIVED_CHAT_ACTIVITY_DELETE', data);
-    }
-
-    return body;
+    return data;
   }
 
   @SubscribeMessage('MESSAGE_ANSWER')
   async handleMessageAnswer(
-    @MessageBody() body: GatewayMessage<EditChatActivityDto<never>>,
-  ): Promise<GatewayMessage<EditChatActivityDto<never>> | Error> {
-    return body;
+    @MessageBody() body: GatewayMessage<MessageAnswer>,
+  ): Promise<GatewayMessage<MessageAnswer> | Error> {
+    const data: GatewayMessage<MessageAnswer> | Error = await this.validateData<
+      GatewayMessage<MessageAnswer>
+    >(body, GatewayMessage<MessageAnswer>);
+    if (data instanceof Error) return data;
+
+    const modifiedChatActivity: ChatActivity =
+      await this.chatActivityService.editChatActivity(data.value.answeredId, {
+        activityContent: {
+          answeredId: data.value.answeredId,
+          content: data.value.content,
+        },
+      });
+
+    await this.createChatActivity<MessageAnswer>({
+      sender: data.sender,
+      value: {
+        chat: modifiedChatActivity.chatId,
+        type: ChatActivityType.MESSAGE_ANSWER,
+        executor: data.sender,
+        activityContent: {
+          answeredId: data.value.answeredId,
+          content: data.value.content,
+        },
+      },
+    });
+
+    return data;
   }
+
+  @SubscribeMessage('ACTIVITY_STAR')
+  @SubscribeMessage('ACTIVITY_UNSTAR')
+  async handleActivityStar(
+    @MessageBody() body: GatewayMessage<ActivityStar>,
+  ): Promise<GatewayMessage<ActivityStar> | Error> {
+    const data: GatewayMessage<ActivityStar> | Error = await this.validateData<
+      GatewayMessage<ActivityStar>
+    >(body, GatewayMessage<ActivityStar>);
+    if (data instanceof Error) return data;
+
+    const modifiedChatActivity: ChatActivity =
+      await this.chatActivityService.editChatActivity(data.value.activityId, {
+        activityContent: {
+          starredId: data.value.activityId,
+        },
+      });
+
+    const starred: boolean = data.value.starred;
+
+    await this.createChatActivity<ActivityStar>({
+      sender: data.sender,
+      value: {
+        chat: modifiedChatActivity.chatId,
+        type: starred
+          ? ChatActivityType.ACTIVITY_STAR
+          : ChatActivityType.ACTIVITY_UNSTAR,
+        executor: data.sender,
+        activityContent: {
+          activityId: data.value.activityId,
+          starred: starred,
+        },
+      },
+    });
+
+    return data;
+  }
+
+  @SubscribeMessage('POLL_SEND')
+  async handlePollSend() {}
+
+  @SubscribeMessage('POLL_EDIT')
+  async handlePollEdit() {}
+
+  @SubscribeMessage('POLL_VOTE')
+  @SubscribeMessage('POLL_UNVOTE')
+  async handlePollVote() {}
+
+  @SubscribeMessage('POLL_CLOSE')
+  async handlePollClose() {}
+
+  @SubscribeMessage('POLL_REOPEN')
+  async handlePollReopen() {}
+
+  @SubscribeMessage('POLL_RESULT')
+  async handlePollResult() {}
 }

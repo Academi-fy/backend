@@ -7,7 +7,7 @@ generator client {
 
 generator nestgraphql {
   provider                              = "node node_modules/prisma-nestjs-graphql"
-  output                                = "../src/@generated-chat-mutations"
+  output                                = "../src/@generated-types"
   fields_Validator_from                 = "class-validator"
   fields_Validator_input                = true
   requireSingleFieldsInWhereUniqueInput = true
@@ -45,7 +45,7 @@ model BlackboardTag {
   updatedAt DateTime @updatedAt
 
   blackboards Blackboard[] @relation("BlackboardBlackboardTag")
-  name        String      @unique
+  name        String       @unique
 
   @@map("blackboard_tags")
 }
@@ -55,13 +55,13 @@ model Chat {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  activities   ChatActivity[] @relation("ChatActivity")
-  avatar       String?
-  clubs        Club[]     @relation("ClubChat")
-  courses      Course[]   @relation("CourseChat")
-  name         String
-  targets      UserChat[] @relation("ChatTarget")
-  type         String
+  activities ChatActivity[] @relation("ChatActivity")
+  avatar     String?
+  clubs      Club[]         @relation("ClubChat")
+  courses    Course[]       @relation("CourseChat")
+  name       String
+  targets    UserChat[]     @relation("ChatTarget")
+  type       ChatType
 
   @@map("chats")
 }
@@ -71,20 +71,21 @@ model ChatActivity {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  chat   Chat    @relation("ChatActivity", fields: [chatId], references: [id])
-  chatId String  @db.Uuid
+  chat   Chat   @relation("ChatActivity", fields: [chatId], references: [id])
+  chatId String @db.Uuid
 
-  executor User[] @relation("UserChatActivity")
+  executor   User   @relation("UserChatActivity", fields: [executorId], references: [id])
+  executorId String @db.Uuid
 
   readBy User[] @relation("ReadChatActivity")
 
-  answerTo ChatActivity? @relation("ChatActivityAnswer", fields: [answerToId], references: [id])
-  answerToId String? @db.Uuid
+  answerTo   ChatActivity? @relation("ChatActivityAnswer", fields: [answerToId], references: [id])
+  answerToId String?       @db.Uuid
 
   answeredBy ChatActivity[] @relation("ChatActivityAnswer")
 
-  type   ChatActivityType
-  value  Json[]
+  type            ChatActivityType
+  activityContent Json[]
 
   starred Boolean @default(false)
 
@@ -221,7 +222,7 @@ model School {
   events         Event[]      @relation("EventSchool")
   grades         Grade[]      @relation("SchoolGrade")
   members        User[]       @relation("SchoolMember")
-  name           String      @unique
+  name           String       @unique
   setupAccount   SetupAccount @relation("SchoolSetupAccount", fields: [setupAccountId], references: [id])
   setupAccountId String       @unique @db.Uuid
   subjects       Subject[]    @relation("SubjectSchool")
@@ -236,7 +237,7 @@ model SetupAccount {
 
   school     School? @relation("SchoolSetupAccount")
   schoolId   String? @db.Uuid
-  schoolName String @unique
+  schoolName String  @unique
 
   @@map("setup_accounts")
 }
@@ -260,25 +261,25 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  activities          ChatActivity[] @relation("UserChatActivity")
-  avatar              String?
-  blackboards         Blackboard[]  @relation("BlackboardAuthor")
-  blackboardsReceived Blackboard[]  @relation("BlackboardTarget")
-  classes             Class[]       @relation("ClassMember")
-  clubs               Club[]        @relation("ClubMember")
-  clubsAsLeader       Club[]        @relation("ClubLeader")
-  courses             Course[]      @relation("CourseMember")
-  coursesAsTeacher    Course[]      @relation("CourseTeacher")
-  events              Event[]       @relation("EventSubscriber")
-  eventTickets        EventTicket[] @relation("EventTicketBuyer")
-  firstName           String
-  lastName            String
-  readActivities      ChatActivity[] @relation("ReadChatActivity")
-  schools             School[]      @relation("SchoolMember")
-  type                UserType
-  userAccount         UserAccount   @relation("UserUserAccount", fields: [userAccountId], references: [id])
-  userAccountId       String        @unique @db.Uuid
-  userChats           UserChat[]   @relation("UserUserChat")
+  avatar                String?
+  blackboards           Blackboard[]   @relation("BlackboardAuthor")
+  blackboardsReceived   Blackboard[]   @relation("BlackboardTarget")
+  chatActivitiesCreated ChatActivity[] @relation("UserChatActivity")
+  classes               Class[]        @relation("ClassMember")
+  clubs                 Club[]         @relation("ClubMember")
+  clubsAsLeader         Club[]         @relation("ClubLeader")
+  courses               Course[]       @relation("CourseMember")
+  coursesAsTeacher      Course[]       @relation("CourseTeacher")
+  events                Event[]        @relation("EventSubscriber")
+  eventTickets          EventTicket[]  @relation("EventTicketBuyer")
+  firstName             String
+  lastName              String
+  readActivities        ChatActivity[] @relation("ReadChatActivity")
+  schools               School[]       @relation("SchoolMember")
+  type                  UserType
+  userAccount           UserAccount    @relation("UserUserAccount", fields: [userAccountId], references: [id])
+  userAccountId         String         @unique @db.Uuid
+  userChats             UserChat[]     @relation("UserUserChat")
 
   @@map("users")
 }
@@ -380,8 +381,15 @@ enum ChatActivityType {
   CHAT_TARGET_REMOVE
   CHAT_COURSE_ADD
   CHAT_COURSE_REMOVE
+
   CHAT_CLUB_ADD
   CHAT_CLUB_REMOVE
   CHAT_NAME_CHANGE
   CHAT_AVATAR_CHANGE
+}
+
+enum ChatType {
+  GROUP
+  PRIVATE
+  COURSE
 }

@@ -14,24 +14,30 @@ export class ChatService extends Service {
   }
 
   async getAllChats(): Promise<Chat[]> {
-    return this.prisma.chat.findMany({
+    const chats: Chat[] = await this.prisma.chat.findMany({
       include: {
         ...chatNesting,
       },
     });
+
+    if (!chats) throw new Error('No chats found');
+    return chats;
   }
 
   async getChatById(chatId: string): Promise<Chat> {
-    return this.prisma.chat.findUnique({
+    const chat: Chat = await this.prisma.chat.findUnique({
       where: { id: chatId },
       include: {
         ...chatNesting,
       },
     });
+
+    if (!chat) throw new Error(`Chat with id ${chatId} not found`);
+    return chat;
   }
 
   async createChat(dto: CreateChatDto): Promise<Chat> {
-    return this.prisma.chat.create({
+    const createdChat: Chat = await this.prisma.chat.create({
       data: {
         ...this.mapDtoToData(dto),
       },
@@ -39,10 +45,14 @@ export class ChatService extends Service {
         ...chatNesting,
       },
     });
+
+    if (!createdChat)
+      throw new Error(`Chat could not be created with data: ${dto}`);
+    return createdChat;
   }
 
   async editChat(chatId: string, dto: EditChatDto): Promise<Chat> {
-    return this.prisma.chat.update({
+    const modifiedChat: Chat = await this.prisma.chat.update({
       where: { id: chatId },
       data: {
         ...this.mapDtoToData(dto),
@@ -51,15 +61,23 @@ export class ChatService extends Service {
         ...chatNesting,
       },
     });
+
+    if (!modifiedChat)
+      throw new Error(`Chat with id ${chatId} could not be modified`);
+    return modifiedChat;
   }
 
   async deleteChat(chatId: string): Promise<Chat> {
-    return this.prisma.chat.delete({
+    const deletedChat: Chat = await this.prisma.chat.delete({
       where: { id: chatId },
       include: {
         ...chatNesting,
       },
     });
+
+    if (!deletedChat)
+      throw new Error(`Chat with id ${chatId} could not be deleted`);
+    return deletedChat;
   }
 
   private mapDtoToData(dto: CreateChatDto | EditChatDto) {

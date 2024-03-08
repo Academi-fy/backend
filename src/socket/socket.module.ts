@@ -10,10 +10,12 @@ import { ErrorGateway } from './gateways/error.gateway';
 import { EventGateway } from './gateways/event.gateway';
 
 import { RestModule } from '@/rest/rest.module';
+import { ChatActivityGateway } from '@/socket/gateways/chat-activity.gateway';
 
 @Module({
   providers: [
     BlackboardGateway,
+    ChatActivityGateway,
     ChatGateway,
     ClassGateway,
     ClubGateway,

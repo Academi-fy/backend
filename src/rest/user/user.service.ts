@@ -65,10 +65,11 @@ export class UserService extends Service {
   private mapDtoToData(dto: CreateUserDto | EditUserDto) {
     return {
       ...dto,
-      activities: this.connectArray(dto.activities),
+
       avatar: dto.avatar ? dto.avatar : undefined,
       blackboards: this.connectArray(dto.blackboards),
       blackboardsReceived: this.connectArray(dto.blackboardsReceived),
+      chatActivitiesCreated: this.connectArray(dto.chatActivitiesCreated),
       classes: this.connectArray(dto.classes),
       clubs: this.connectArray(dto.clubs),
       clubsAsLeader: this.connectArray(dto.clubsAsLeader),
