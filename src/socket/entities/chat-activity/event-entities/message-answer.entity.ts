@@ -1,15 +1,11 @@
 import { IsArray, IsString } from 'class-validator';
-import { Poll } from '@/rest/chat-activity/entities/message/poll.entity';
 import { Attachment } from '@/rest/chat-activity/entities/message/attachment.entity';
+import { Poll } from '@/rest/chat-activity/entities/message/poll.entity';
 import { TextMessage } from '@/rest/chat-activity/entities/message/text-message.entity';
 
-export class MessageUpdate {
+export class MessageAnswer {
   @IsString()
-<<<<<<< Updated upstream
-  chatId: string;
-=======
-  activityId: string;
->>>>>>> Stashed changes
+  answeredId: string;
 
   @IsArray()
   content: (Attachment | Poll | TextMessage)[];

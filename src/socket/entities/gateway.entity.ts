@@ -3,6 +3,9 @@ import { plainToInstance } from 'class-transformer';
 import { validateOrReject } from 'class-validator';
 import { BadRequestException, Logger } from '@nestjs/common';
 import { clients } from '@/main';
+import { GatewayMessage } from '@/socket/entities/gateway';
+import { CreateChatActivityDto } from '@/rest/chat-activity';
+import { ChatActivityGateway } from '@/socket/gateways/chat-activity.gateway';
 
 export class Gateway {
   @WebSocketServer()
@@ -34,5 +37,9 @@ export class Gateway {
       return error;
     }
     return event;
+  }
+
+  async createChatActivity<T>(body: GatewayMessage<CreateChatActivityDto<T>>) {
+    return ChatActivityGateway.prototype.handleChatActivityCreate<T>(body);
   }
 }

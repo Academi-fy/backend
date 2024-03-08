@@ -32,4 +32,4 @@ bootstrap().then(() => {
   appLogger.debug(`Application is listening on port ${port}`);
 });
 
-export const clients: Map<string, Socket> = new Map<string, Socket>();
+export const clients: Map<string, Socket[]> = new Map<string, Socket[]>();
