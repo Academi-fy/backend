@@ -38,6 +38,8 @@ import {
 import { Gateway } from '@/socket/entities/gateway.entity';
 import { ClubService } from '@/rest/club/club.service';
 import { ActivityChatClubMutation } from '@/socket/entities/chat-activity/chat/chat-club-actions.entity';
+import { ChatNameChange } from '@/socket/entities/chat-activity/chat/chat-name-change.entity';
+import { ChatAvatarChange } from '@/socket/entities/chat-activity/chat/chat-avatar-change.entity';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ChatGateway extends Gateway {
@@ -322,7 +324,11 @@ export class ChatGateway extends Gateway {
     return data;
   }
 
-  private async handleChatClubMutation(data, club, modifiedChat) {
+  private async handleChatClubMutation(
+    data: GatewayMessage<ChatClubMutation>,
+    club: Club,
+    modifiedChat: Chat,
+  ) {
     await this.createChatActivity<
       ActivityChatRemoveAction<ActivityChatClubMutation>
     >({
@@ -341,6 +347,85 @@ export class ChatGateway extends Gateway {
         },
       },
     });
+  }
+
+  @SubscribeMessage('CHAT_NAME_CHANGE')
+  async handleChatNameChange(
+    @MessageBody() body: GatewayMessage<ChatNameChange>,
+  ): Promise<GatewayMessage<ChatNameChange> | Error> {
+    const data: Error | GatewayMessage<ChatNameChange> =
+      await this.validateData<GatewayMessage<ChatNameChange>>(
+        body,
+        GatewayMessage<ChatNameChange>,
+      );
+    if (data instanceof Error) return data;
+
+    const chat: Chat = await this.chatService.getChatById(data.value.chatId);
+
+    const modifiedChat: Chat = await this.chatService.editChat(
+      data.value.chatId,
+      {
+        name: data.value.name,
+      },
+    );
+
+    for (const targetChat of modifiedChat.targets) {
+      this.emit(targetChat.userId, 'RECEIVED_CHAT_NAME_CHANGE', modifiedChat);
+    }
+
+    await this.createChatActivity<ChatNameChange>({
+      sender: data.sender,
+      value: {
+        chat: modifiedChat.id,
+        type: ChatActivityType.CHAT_NAME_CHANGE,
+        executor: data.sender,
+        activityContent: {
+          chatId: modifiedChat.id,
+          name: modifiedChat.name,
+          oldName: chat.name,
+        },
+      },
+    });
+
+    return data;
+  }
+
+  @SubscribeMessage('CHAT_AVATAR_CHANGE')
+  async handleAvatarNameChange(
+    @MessageBody() body: GatewayMessage<ChatAvatarChange>,
+  ): Promise<GatewayMessage<ChatAvatarChange> | Error> {
+    const data: Error | GatewayMessage<ChatAvatarChange> =
+      await this.validateData<GatewayMessage<ChatAvatarChange>>(
+        body,
+        GatewayMessage<ChatAvatarChange>,
+      );
+    if (data instanceof Error) return data;
+
+    const modifiedChat: Chat = await this.chatService.editChat(
+      data.value.chatId,
+      {
+        avatar: data.value.avatar,
+      },
+    );
+
+    for (const targetChat of modifiedChat.targets) {
+      this.emit(targetChat.userId, 'RECEIVED_CHAT_AVATAR_CHANGE', modifiedChat);
+    }
+
+    await this.createChatActivity<ChatAvatarChange>({
+      sender: data.sender,
+      value: {
+        chat: modifiedChat.id,
+        type: ChatActivityType.CHAT_AVATAR_CHANGE,
+        executor: data.sender,
+        activityContent: {
+          chatId: modifiedChat.id,
+          avatar: modifiedChat.avatar,
+        },
+      },
+    });
+
+    return data;
   }
 
   @SubscribeMessage('TYPING')
