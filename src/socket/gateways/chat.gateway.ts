@@ -17,7 +17,7 @@ import {
   ChatCourseMutation,
   ChatTargetMutation,
 } from '../entities/chat/';
-import { GatewayMessage } from '../entities/gateway';
+import { GatewayMessage } from '../entities/gateway-message.entity';
 import { Typing } from '../entities/chat/typing.entity';
 import { ChatService } from '@/rest/chat/chat.service';
 import { SOCKET_PORT } from '@/constants';
