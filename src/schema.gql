@@ -158,7 +158,6 @@ type ChatActivityCountAggregate {
   answerToId: Int!
   type: Int!
   activityContent: Int!
-  value: Int!
   starred: Int!
   _all: Int!
 }
@@ -225,7 +224,6 @@ type ChatActivity {
   answerToId: String
   type: ChatActivityType!
   activityContent: [JSON!]
-  value: [JSON!]
   starred: Boolean!
   chat: Chat!
   executor: User!

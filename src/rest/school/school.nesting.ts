@@ -4,7 +4,7 @@ import { clubRawNesting } from '../club';
 import { eventRawNesting } from '../event';
 import { gradeRawNesting } from '../grade';
 import { userRawNesting } from '../user';
-import { subjectRawNesting } from '../subject/subject.nesting';
+import { subjectRawNesting } from '../subject';
 
 export const schoolRawNesting = {
   blackboards: true,
