@@ -5,5 +5,8 @@ export class Typing {
   chatId: string;
 
   @IsString()
+  userId: string;
+
+  @IsString()
   typing: boolean;
 }
