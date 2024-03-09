@@ -348,6 +348,7 @@ enum SubjectType {
   HISTORY
   IMP
   ITALIAN
+  LATIN
   MATHS
   MUSIC
   NWT
