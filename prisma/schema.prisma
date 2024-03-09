@@ -330,6 +330,8 @@ enum GradeLevel {
   G8
   G9
   G10
+  G11
+  G12
 }
 
 enum SubjectType {
