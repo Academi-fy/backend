@@ -12,7 +12,7 @@ import {
 import { Blackboard } from '@/@generated-types';
 import { CreateBlackboardDto, EditBlackboardDto } from './dto';
 import { JwtGuard } from '@/auth/guard';
-import { BlackboardService } from './blackboard.service';
+import { BlackboardService } from './services/blackboard.service';
 
 @UseGuards(JwtGuard)
 @Controller('blackboard')

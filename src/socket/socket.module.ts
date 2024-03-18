@@ -11,6 +11,10 @@ import { EventGateway } from './gateways/event.gateway';
 
 import { RestModule } from '@/rest/rest.module';
 import { ChatActivityGateway } from '@/socket/gateways/chat-activity.gateway';
+import { CreateChatActivityService } from '@/socket/gateways/services/create-chat-activity.service';
+import { ChatClubService } from '@/socket/gateways/services/chat/chat-club.service';
+import { ChatCourseService } from '@/socket/gateways/services/chat/chat-course.service';
+import { ChatTargetService } from '@/socket/gateways/services/chat/chat-target.service';
 
 @Module({
   providers: [
@@ -23,6 +27,10 @@ import { ChatActivityGateway } from '@/socket/gateways/chat-activity.gateway';
     ErrorGateway,
     EventGateway,
     ConnectGateway,
+    CreateChatActivityService,
+    ChatClubService,
+    ChatCourseService,
+    ChatTargetService,
   ],
   imports: [RestModule],
 })

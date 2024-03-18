@@ -39,7 +39,7 @@ export class ChatActivityGateway extends Gateway {
     if (data instanceof Error) return data;
 
     const createdChatActivity: ChatActivity =
-      await this.chatActivityService.createChatActivity(data.value);
+      await this.chatActivityService.processCreateChatActivity(data.value);
 
     const chat: Chat = await this.chatService.getChatById(
       createdChatActivity.chatId,

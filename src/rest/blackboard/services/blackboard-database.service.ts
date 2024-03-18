@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-
-import { Blackboard } from '@/@generated-types';
-import { Service } from '@/service';
-import { SortOrder } from '@/prisma';
-
-import { blackboardNesting } from './';
-import { CreateBlackboardDto, EditBlackboardDto } from './dto';
 import { PrismaService } from '@/prisma/prisma.service';
+import { Blackboard, SortOrder } from '@/@generated-types';
+import {
+  blackboardNesting,
+  CreateBlackboardDto,
+  EditBlackboardDto,
+} from '@/rest/blackboard';
+import { Service } from '@/service';
 
 @Injectable()
-export class BlackboardService extends Service {
+export class BlackboardDatabaseService extends Service {
   constructor(private prisma: PrismaService) {
     super();
   }
@@ -20,12 +20,28 @@ export class BlackboardService extends Service {
         ...blackboardNesting,
       },
     });
-
     if (!blackboards) throw new Error('No blackboards found');
+
     return blackboards;
   }
 
-  async getLastBlackboards(sort: SortOrder, limit: number, lastId?: string) {
+  async getUniqueBlackboard(id: string): Promise<Blackboard> {
+    const blackboard: Blackboard = await this.prisma.blackboard.findUnique({
+      where: { id },
+      include: {
+        ...blackboardNesting,
+      },
+    });
+    if (!blackboard) throw new Error(`Blackboard with id ${id} not found`);
+
+    return blackboard;
+  }
+
+  async getLastBlackboards(
+    sort: SortOrder,
+    limit: number,
+    lastId?: string,
+  ): Promise<Blackboard[]> {
     const blackboards: Blackboard[] = await this.prisma.blackboard.findMany({
       orderBy: {
         [sort]: 'desc',
@@ -42,39 +58,26 @@ export class BlackboardService extends Service {
     return blackboards;
   }
 
-  async getBlackboardById(blackboardId: string): Promise<Blackboard> {
-    const blackboard: Blackboard = await this.prisma.blackboard.findUnique({
-      where: { id: blackboardId },
+  async createBlackboard(dto: CreateBlackboardDto): Promise<Blackboard> {
+    const blackboard: Blackboard = await this.prisma.blackboard.create({
+      data: {
+        ...this.mapDtoToData(dto),
+      },
       include: {
         ...blackboardNesting,
       },
     });
+    if (!blackboard) throw new Error('Blackboard not created');
 
-    if (!blackboard) throw new Error(`Blackboard '${blackboardId}' not found`);
     return blackboard;
   }
 
-  async createBlackboard(dto: CreateBlackboardDto): Promise<Blackboard> {
-    const createdBlackboard: Blackboard = await this.prisma.blackboard.create({
-      data: {
-        ...this.mapDtoToData(dto),
-      },
-      include: {
-        ...blackboardNesting,
-      },
-    });
-
-    if (!createdBlackboard)
-      throw new Error(`Blackboard could not be created with data: ${dto}`);
-    return createdBlackboard;
-  }
-
   async editBlackboard(
-    blackboardId: string,
+    id: string,
     dto: EditBlackboardDto,
   ): Promise<Blackboard> {
-    const modifiedBlackboard: Blackboard = await this.prisma.blackboard.update({
-      where: { id: blackboardId },
+    const blackboard: Blackboard = await this.prisma.blackboard.update({
+      where: { id },
       data: {
         ...this.mapDtoToData(dto),
       },
@@ -82,23 +85,21 @@ export class BlackboardService extends Service {
         ...blackboardNesting,
       },
     });
+    if (!blackboard) throw new Error(`Blackboard with id ${id} not updated`);
 
-    if (!modifiedBlackboard)
-      throw new Error(`Blackboard '${blackboardId}' not found`);
-    return modifiedBlackboard;
+    return blackboard;
   }
 
-  async deleteBlackboard(blackboardId: string): Promise<Blackboard> {
-    const deletedBlackboard: Blackboard = await this.prisma.blackboard.delete({
-      where: { id: blackboardId },
+  async deleteBlackboard(id: string): Promise<Blackboard> {
+    const blackboard: Blackboard = await this.prisma.blackboard.delete({
+      where: { id },
       include: {
         ...blackboardNesting,
       },
     });
+    if (!blackboard) throw new Error(`Blackboard with id ${id} not deleted`);
 
-    if (!deletedBlackboard)
-      throw new Error(`Blackboard '${blackboardId}' not found`);
-    return deletedBlackboard;
+    return blackboard;
   }
 
   private mapDtoToData(dto: CreateBlackboardDto | EditBlackboardDto) {

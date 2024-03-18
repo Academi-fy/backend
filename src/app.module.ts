@@ -11,6 +11,7 @@ import { RestModule } from './rest/rest.module';
 import { SocketModule } from './socket/socket.module';
 import { AuthModule } from '@/auth/auth.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -33,6 +34,9 @@ import { ThrottlerModule } from '@nestjs/throttler';
         limit: 10,
       },
     ]),
+    CacheModule.register({
+      isGlobal: true,
+    }),
     AuthModule,
     PrismaModule,
     RestModule,

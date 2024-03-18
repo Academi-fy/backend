@@ -997,10 +997,9 @@ type Query {
   getUserChat(id: String!): UserChat!
 }
 
-"""The sort order (createdAt, updatedAt)"""
 enum SortOrder {
-  createdAt
-  updatedAt
+  asc
+  desc
 }
 
 type Mutation {

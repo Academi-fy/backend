@@ -4,14 +4,7 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 
-import {
-  Chat,
-  ChatActivityType,
-  Club,
-  Course,
-  User,
-  UserChat,
-} from '@/@generated-types';
+import { Chat, User, UserChat } from '@/@generated-types';
 import {
   ChatClubMutation,
   ChatCourseMutation,
@@ -21,33 +14,25 @@ import { GatewayMessage } from '../entities/gateway-message.entity';
 import { Typing } from '../entities/chat/typing.entity';
 import { ChatService } from '@/rest/chat/chat.service';
 import { SOCKET_PORT } from '@/constants';
-import { UserService } from '@/rest/user/user.service';
-import {
-  ActivityChatAddAction,
-  ActivityChatRemoveAction,
-} from '@/socket/entities/chat-activity/chat/activity-chat-actions.entity';
-import {
-  ActivityChatTargetAdd,
-  ActivityChatTargetRemove,
-} from '@/socket/entities/chat-activity/chat/chat-target-actions.entity';
-import { CourseService } from '@/rest/course/course.service';
-import {
-  ActivityChatCourseAdd,
-  ActivityChatCourseRemove,
-} from '@/socket/entities/chat-activity/chat/chat-course-actions.entity';
 import { Gateway } from '@/socket/entities/gateway.entity';
-import { ClubService } from '@/rest/club/club.service';
-import { ActivityChatClubMutation } from '@/socket/entities/chat-activity/chat/chat-club-actions.entity';
 import { ChatNameChange } from '@/socket/entities/chat-activity/chat/chat-name-change.entity';
 import { ChatAvatarChange } from '@/socket/entities/chat-activity/chat/chat-avatar-change.entity';
+import { CreateChatActivityService } from '@/socket/gateways/services/create-chat-activity.service';
+import { ChatTargetService } from '@/socket/gateways/services/chat/chat-target.service';
+import { ChatTargetResult } from '@/socket/gateways/services/chat/entities/chat-target-result.entity';
+import { ChatCourseResult } from '@/socket/gateways/services/chat/entities/chat-course-result.entity';
+import { ChatCourseService } from '@/socket/gateways/services/chat/chat-course.service';
+import { ChatClubResult } from '@/socket/gateways/services/chat/entities/chat-club-result.entity';
+import { ChatClubService } from '@/socket/gateways/services/chat/chat-club.service';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ChatGateway extends Gateway {
   constructor(
     private readonly chatService: ChatService,
-    private readonly userService: UserService,
-    private readonly courseService: CourseService,
-    private readonly clubService: ClubService,
+    private readonly createChatActivityService: CreateChatActivityService,
+    private readonly chatTargetService: ChatTargetService,
+    private readonly chatCourseService: ChatCourseService,
+    private readonly chatClubService: ChatClubService,
   ) {
     super();
   }
@@ -56,51 +41,22 @@ export class ChatGateway extends Gateway {
   async handleChatTargetAdd(
     @MessageBody() body: GatewayMessage<ChatTargetMutation>,
   ): Promise<GatewayMessage<ChatTargetMutation> | Error> {
-    const data: Error | GatewayMessage<ChatTargetMutation> =
-      await this.validateData<GatewayMessage<ChatTargetMutation>>(
-        body,
-        GatewayMessage<ChatTargetMutation>,
-      );
-    if (data instanceof Error) return data;
+    const result: Error | ChatTargetResult =
+      await this.chatTargetService.executeChatCourseAdd(body);
 
-    const chatId: string = data.value.chatId;
+    if (result instanceof Error) return result;
+    const { data, modifiedChat, target } = result;
 
-    const chat: Chat = await this.chatService.getChatById(chatId);
-
-    const modifiedChat: Chat = await this.chatService.editChat(chatId, {
-      targets: chat.targets
-        .map((targetChat: UserChat) => targetChat.userId)
-        .concat(data.value.targetId),
-    });
-
-    for (const targetChat of modifiedChat.targets) {
-      this.emit(targetChat.userId, 'RECEIVED_CHAT_TARGET_ADD', modifiedChat);
-    }
-
-    const target: User = await this.userService.getUserById(
-      data.value.targetId,
+    await this.createChatActivityService.sendActivityChatTargetAdd(
+      data,
+      modifiedChat,
+      target,
     );
 
-    await this.createChatActivity<ActivityChatAddAction<ActivityChatTargetAdd>>(
-      {
-        sender: data.sender,
-        value: {
-          chat: chatId,
-          type: ChatActivityType.CHAT_TARGET_ADD,
-          executor: data.sender,
-          activityContent: {
-            chatName: modifiedChat.name,
-            added: {
-              chatId: chatId,
-              targetId: target.id,
-              firstName: target.firstName,
-              lastName: target.lastName,
-              avatar: target.avatar,
-            },
-            addedId: data.value.targetId,
-          },
-        },
-      },
+    this.emitToList(
+      modifiedChat.targets.map((targetChat: UserChat) => targetChat.userId),
+      'RECEIVED_CHAT_TARGET_ADD',
+      modifiedChat,
     );
 
     return data;
@@ -110,52 +66,23 @@ export class ChatGateway extends Gateway {
   async handleChatTargetRemove(
     @MessageBody() body: GatewayMessage<ChatTargetMutation>,
   ): Promise<GatewayMessage<ChatTargetMutation> | Error> {
-    const data: Error | GatewayMessage<ChatTargetMutation> =
-      await this.validateData<GatewayMessage<ChatTargetMutation>>(
-        body,
-        GatewayMessage<ChatTargetMutation>,
-      );
-    if (data instanceof Error) return data;
+    const result: Error | ChatTargetResult =
+      await this.chatTargetService.executeChatCourseRemove(body);
 
-    const chatId: string = data.value.chatId;
+    if (result instanceof Error) return result;
+    const { data, modifiedChat, target } = result;
 
-    const chat: Chat = await this.chatService.getChatById(chatId);
-
-    const modifiedChat: Chat = await this.chatService.editChat(chatId, {
-      targets: chat.targets
-        .map((targetChat: UserChat) => targetChat.userId)
-        .filter((userId: string) => userId !== data.value.targetId),
-    });
-
-    for (const targetChat of modifiedChat.targets) {
-      this.emit(targetChat.userId, 'RECEIVED_CHAT_TARGET_REMOVE', modifiedChat);
-    }
-
-    const target: User = await this.userService.getUserById(
-      data.value.targetId,
+    await this.createChatActivityService.sendActivityChatTargetRemove(
+      data,
+      modifiedChat,
+      target,
     );
 
-    await this.createChatActivity<
-      ActivityChatRemoveAction<ActivityChatTargetRemove>
-    >({
-      sender: data.sender,
-      value: {
-        chat: chatId,
-        type: ChatActivityType.CHAT_TARGET_REMOVE,
-        executor: data.sender,
-        activityContent: {
-          chatName: modifiedChat.name,
-          removed: {
-            chatId: chatId,
-            targetId: target.id,
-            firstName: target.firstName,
-            lastName: target.lastName,
-            avatar: target.avatar,
-          },
-          removedId: data.value.targetId,
-        },
-      },
-    });
+    this.emitToList(
+      modifiedChat.targets.map((targetChat: UserChat) => targetChat.userId),
+      'RECEIVED_CHAT_TARGET_REMOVE',
+      modifiedChat,
+    );
 
     return data;
   }
@@ -164,48 +91,22 @@ export class ChatGateway extends Gateway {
   async handleChatCourseAdd(
     @MessageBody() body: GatewayMessage<ChatCourseMutation>,
   ): Promise<GatewayMessage<ChatCourseMutation> | Error> {
-    const data: Error | GatewayMessage<ChatCourseMutation> =
-      await this.validateData<GatewayMessage<ChatCourseMutation>>(
-        body,
-        GatewayMessage<ChatCourseMutation>,
-      );
-    if (data instanceof Error) return data;
+    const result: Error | ChatCourseResult =
+      await this.chatCourseService.executeChatCourseAdd(body);
 
-    const chatId: string = data.value.chatId;
-    const chat: Chat = await this.chatService.getChatById(chatId);
+    if (result instanceof Error) return result;
+    const { data, modifiedChat, course } = result;
 
-    const modifiedChat: Chat = await this.chatService.editChat(chatId, {
-      targets: chat.courses
-        .map((course: Course) => course.id)
-        .concat(data.value.courseId),
-    });
-
-    for (const targetChat of chat.targets) {
-      this.emit(targetChat.userId, 'RECEIVED_CHAT_COURSE_ADD', modifiedChat);
-    }
-
-    const course: Course = await this.courseService.getCourseById(
-      data.value.courseId,
+    await this.createChatActivityService.sendActivityChatCourseAdd(
+      data,
+      modifiedChat,
+      course,
     );
 
-    await this.createChatActivity<ActivityChatAddAction<ActivityChatCourseAdd>>(
-      {
-        sender: data.sender,
-        value: {
-          chat: chatId,
-          type: ChatActivityType.CHAT_COURSE_ADD,
-          executor: data.sender,
-          activityContent: {
-            chatName: modifiedChat.name,
-            added: {
-              chatId: chatId,
-              courseId: course.id,
-              name: course.name,
-            },
-            addedId: data.value.courseId,
-          },
-        },
-      },
+    this.emitToList(
+      course.members.map((member: User) => member.id),
+      'RECEIVED_CHAT_COURSE_ADD',
+      modifiedChat,
     );
 
     return data;
@@ -215,49 +116,23 @@ export class ChatGateway extends Gateway {
   async handleChatCourseRemove(
     @MessageBody() body: GatewayMessage<ChatCourseMutation>,
   ): Promise<GatewayMessage<ChatCourseMutation> | Error> {
-    const data: Error | GatewayMessage<ChatCourseMutation> =
-      await this.validateData<GatewayMessage<ChatCourseMutation>>(
-        body,
-        GatewayMessage<ChatCourseMutation>,
-      );
-    if (data instanceof Error) return data;
+    const result: Error | ChatCourseResult =
+      await this.chatCourseService.executeChatCourseRemove(body);
 
-    const chatId: string = data.value.chatId;
-    const chat: Chat = await this.chatService.getChatById(chatId);
+    if (result instanceof Error) return result;
+    const { data, modifiedChat, course } = result;
 
-    const modifiedChat: Chat = await this.chatService.editChat(chatId, {
-      targets: chat.courses
-        .map((course: Course) => course.id)
-        .filter((courseId: string) => courseId !== data.value.courseId),
-    });
-
-    for (const targetChat of chat.targets) {
-      this.emit(targetChat.userId, 'RECEIVED_CHAT_COURSE_REMOVE', modifiedChat);
-    }
-
-    const course: Course = await this.courseService.getCourseById(
-      data.value.courseId,
+    await this.createChatActivityService.sendActivityChatCourseRemove(
+      data,
+      modifiedChat,
+      course,
     );
 
-    await this.createChatActivity<
-      ActivityChatRemoveAction<ActivityChatCourseRemove>
-    >({
-      sender: data.sender,
-      value: {
-        chat: chatId,
-        type: ChatActivityType.CHAT_COURSE_REMOVE,
-        executor: data.sender,
-        activityContent: {
-          chatName: modifiedChat.name,
-          removed: {
-            chatId: chatId,
-            courseId: course.id,
-            name: course.name,
-          },
-          removedId: data.value.courseId,
-        },
-      },
-    });
+    this.emitToList(
+      course.members.map((member: User) => member.id),
+      'RECEIVED_CHAT_COURSE_REMOVE',
+      modifiedChat,
+    );
 
     return data;
   }
@@ -266,28 +141,23 @@ export class ChatGateway extends Gateway {
   async handleChatClubAdd(
     @MessageBody() body: GatewayMessage<ChatClubMutation>,
   ): Promise<GatewayMessage<ChatClubMutation> | Error> {
-    const data: Error | GatewayMessage<ChatClubMutation> =
-      await this.validateData<GatewayMessage<ChatClubMutation>>(
-        body,
-        GatewayMessage<ChatClubMutation>,
-      );
-    if (data instanceof Error) return data;
+    const result: Error | ChatClubResult =
+      await this.chatClubService.executeChatClubAdd(body);
 
-    const chatId: string = data.value.chatId;
-    const chat: Chat = await this.chatService.getChatById(chatId);
+    if (result instanceof Error) return result;
+    const { data, modifiedChat, club } = result;
 
-    const modifiedChat: Chat = await this.chatService.editChat(chatId, {
-      targets: chat.clubs
-        .map((club: Club) => club.id)
-        .concat(data.value.clubId),
-    });
+    await this.createChatActivityService.sendActivityChatClubAdd(
+      data,
+      modifiedChat,
+      club,
+    );
 
-    for (const targetChat of chat.targets) {
-      this.emit(targetChat.userId, 'RECEIVED_CHAT_CLUB_ADD', modifiedChat);
-    }
-
-    const club: Club = await this.clubService.getClubById(data.value.clubId);
-    await this.handleChatClubMutation(data, club, modifiedChat);
+    this.emitToList(
+      club.members.map((member: User) => member.id),
+      'RECEIVED_CHAT_CLUB_ADD',
+      modifiedChat,
+    );
 
     return data;
   }
@@ -296,57 +166,25 @@ export class ChatGateway extends Gateway {
   async handleChatClubRemove(
     @MessageBody() body: GatewayMessage<ChatClubMutation>,
   ): Promise<GatewayMessage<ChatClubMutation> | Error> {
-    const data: Error | GatewayMessage<ChatClubMutation> =
-      await this.validateData<GatewayMessage<ChatClubMutation>>(
-        body,
-        GatewayMessage<ChatClubMutation>,
-      );
-    if (data instanceof Error) return data;
+    const result: Error | ChatClubResult =
+      await this.chatClubService.chatClubRemove(body);
 
-    const chat: Chat = await this.chatService.getChatById(data.value.chatId);
+    if (result instanceof Error) return result;
+    const { data, modifiedChat, club } = result;
 
-    const modifiedChat: Chat = await this.chatService.editChat(
-      data.value.chatId,
-      {
-        targets: chat.clubs
-          .map((club: Club) => club.id)
-          .filter((clubId: string) => clubId !== data.value.clubId),
-      },
+    await this.createChatActivityService.sendActivityChatClubRemove(
+      data,
+      modifiedChat,
+      club,
     );
 
-    for (const targetChat of chat.targets) {
-      this.emit(targetChat.userId, 'RECEIVED_CHAT_CLUB_REMOVE', modifiedChat);
-    }
-
-    const club: Club = await this.clubService.getClubById(data.value.clubId);
-    await this.handleChatClubMutation(data, club, modifiedChat);
+    this.emitToList(
+      club.members.map((member: User) => member.id),
+      'RECEIVED_CHAT_CLUB_REMOVE',
+      modifiedChat,
+    );
 
     return data;
-  }
-
-  private async handleChatClubMutation(
-    data: GatewayMessage<ChatClubMutation>,
-    club: Club,
-    modifiedChat: Chat,
-  ) {
-    await this.createChatActivity<
-      ActivityChatRemoveAction<ActivityChatClubMutation>
-    >({
-      sender: data.sender,
-      value: {
-        chat: data.value.chatId,
-        type: ChatActivityType.CHAT_CLUB_REMOVE,
-        executor: data.sender,
-        activityContent: {
-          chatName: modifiedChat.name,
-          removed: {
-            name: club.name,
-            avatar: club.avatar,
-          },
-          removedId: data.value.clubId,
-        },
-      },
-    });
   }
 
   @SubscribeMessage('CHAT_NAME_CHANGE')
@@ -360,8 +198,6 @@ export class ChatGateway extends Gateway {
       );
     if (data instanceof Error) return data;
 
-    const chat: Chat = await this.chatService.getChatById(data.value.chatId);
-
     const modifiedChat: Chat = await this.chatService.editChat(
       data.value.chatId,
       {
@@ -369,23 +205,16 @@ export class ChatGateway extends Gateway {
       },
     );
 
-    for (const targetChat of modifiedChat.targets) {
-      this.emit(targetChat.userId, 'RECEIVED_CHAT_NAME_CHANGE', modifiedChat);
-    }
+    await this.createChatActivityService.sendActivityChatNameChange(
+      data,
+      modifiedChat,
+    );
 
-    await this.createChatActivity<ChatNameChange>({
-      sender: data.sender,
-      value: {
-        chat: modifiedChat.id,
-        type: ChatActivityType.CHAT_NAME_CHANGE,
-        executor: data.sender,
-        activityContent: {
-          chatId: modifiedChat.id,
-          name: modifiedChat.name,
-          oldName: chat.name,
-        },
-      },
-    });
+    this.emitToList(
+      modifiedChat.targets.map((targetChat: UserChat) => targetChat.userId),
+      'RECEIVED_CHAT_NAME_CHANGE',
+      modifiedChat,
+    );
 
     return data;
   }
@@ -408,22 +237,16 @@ export class ChatGateway extends Gateway {
       },
     );
 
-    for (const targetChat of modifiedChat.targets) {
-      this.emit(targetChat.userId, 'RECEIVED_CHAT_AVATAR_CHANGE', modifiedChat);
-    }
+    await this.createChatActivityService.sendChatAvatarChange(
+      data,
+      modifiedChat,
+    );
 
-    await this.createChatActivity<ChatAvatarChange>({
-      sender: data.sender,
-      value: {
-        chat: modifiedChat.id,
-        type: ChatActivityType.CHAT_AVATAR_CHANGE,
-        executor: data.sender,
-        activityContent: {
-          chatId: modifiedChat.id,
-          avatar: modifiedChat.avatar,
-        },
-      },
-    });
+    this.emitToList(
+      modifiedChat.targets.map((targetChat: UserChat) => targetChat.userId),
+      'RECEIVED_CHAT_AVATAR_CHANGE',
+      modifiedChat,
+    );
 
     return data;
   }
@@ -439,9 +262,11 @@ export class ChatGateway extends Gateway {
 
     const chat: Chat = await this.chatService.getChatById(data.value.chatId);
 
-    for (const targetChat of chat.targets) {
-      this.emit(targetChat.userId, 'RECEIVED_TYPING', data);
-    }
+    this.emitToList(
+      chat.targets.map((targetChat: UserChat) => targetChat.userId),
+      'RECEIVED_TYPING',
+      data,
+    );
 
     return data;
   }

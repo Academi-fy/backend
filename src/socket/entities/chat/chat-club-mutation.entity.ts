@@ -6,4 +6,7 @@ export class ChatClubMutation {
 
   @IsString()
   clubId: string;
+
+  @IsString()
+  clubName: string;
 }

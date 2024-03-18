@@ -1,9 +1,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { SortOrder } from '@/prisma';
 
-import { Blackboard } from '@/@generated-types';
+import { Blackboard, SortOrder } from '@/@generated-types';
 import { CreateBlackboardDto, EditBlackboardDto } from './dto';
-import { BlackboardService } from './blackboard.service';
+import { BlackboardService } from './services/blackboard.service';
 
 @Resolver(() => Blackboard)
 export class BlackboardResolver {

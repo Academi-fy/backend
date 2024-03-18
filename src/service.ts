@@ -1,4 +1,16 @@
-export class Service {
+import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
+import { CreateChatActivityDto } from '@/rest/chat-activity';
+import { EventEmitter } from 'events';
+import { ValidateData } from '@/validate-data';
+
+export class Service extends ValidateData {
+  public eventEmitter: EventEmitter;
+
+  constructor() {
+    super();
+    this.eventEmitter = new EventEmitter();
+  }
+
   connectSingle(id: string): { connect: { id: string } } | undefined {
     return id ? { connect: { id } } : undefined;
   }
@@ -19,5 +31,11 @@ export class Service {
 
   stringifyArray(content: any[]): string[] | undefined {
     return content ? content.map((item) => JSON.stringify(item)) : undefined;
+  }
+
+  async createChatActivity<T>(
+    body: GatewayMessage<CreateChatActivityDto<T>>,
+  ): Promise<void> {
+    this.eventEmitter.emit('createChatActivity', body);
   }
 }
