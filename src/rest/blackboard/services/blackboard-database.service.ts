@@ -26,6 +26,8 @@ export class BlackboardDatabaseService extends Service {
   }
 
   async getUniqueBlackboard(id: string): Promise<Blackboard> {
+    console.log('id', id);
+
     const blackboard: Blackboard = await this.prisma.blackboard.findUnique({
       where: { id },
       include: {

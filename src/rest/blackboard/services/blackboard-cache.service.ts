@@ -12,16 +12,21 @@ export class BlackboardCacheService {
   ) {}
 
   async getAllBlackboards(): Promise<Blackboard[]> {
-    const blackboardIds: string = await this.cacheManager.get('blackboard_ids');
+    let blackboardIds: string[] = await this.cacheManager.get('blackboard_ids');
     let blackboards: Blackboard[] = [];
 
     if (!blackboardIds) {
       blackboards = await this.blackboardDatabaseService.getAllBlackboards();
-      await this.cacheManager.set(
-        'blackboard_ids',
-        blackboards.map((blackboard: Blackboard) => blackboard.id),
-        3600,
-      );
+      blackboardIds = blackboards
+        .sort((a, b) => {
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        })
+        .map((blackboard: Blackboard) => blackboard.id);
+
+      await this.cacheManager.set('blackboard_ids', blackboardIds, 3600);
+      return blackboards;
     }
 
     for (const id of blackboardIds) {
@@ -39,7 +44,6 @@ export class BlackboardCacheService {
       }
       blackboards.push(currentBlackboard);
     }
-
     return blackboards;
   }
 
