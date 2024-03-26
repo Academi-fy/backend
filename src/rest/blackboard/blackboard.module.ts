@@ -6,6 +6,9 @@ import { BlackboardResolver } from './blackboard.resolver';
 import { BlackboardCacheService } from '@/rest/blackboard/services/blackboard-cache.service';
 import { BlackboardDatabaseService } from '@/rest/blackboard/services/blackboard-database.service';
 
+/**
+ * @description The blackboard module summarizing all blackboard related services.
+ * */
 @Module({
   providers: [
     BlackboardService,

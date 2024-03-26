@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { BlackboardTagService } from './blackboard-tag.service';
+import { BlackboardTagService } from './services/blackboard-tag.service';
 import { BlackboardTag } from '@/@generated-types';
 import { CreateBlackboardTagDto } from './dto';
 

@@ -12,7 +12,7 @@ import {
 import { BlackboardTag } from '@/@generated-types';
 import { CreateBlackboardTagDto, EditBlackboardTagDto } from './dto';
 import { JwtGuard } from '@/auth/guard';
-import { BlackboardTagService } from './blackboard-tag.service';
+import { BlackboardTagService } from './services/blackboard-tag.service';
 
 @UseGuards(JwtGuard)
 @Controller('blackboard-tags')

@@ -953,7 +953,7 @@ type UserChat {
 type Query {
   getAllBlackboards: [Blackboard!]!
   getLastBlackboards(sort: SortOrder!, limit: Float!, lastId: String): [Blackboard!]!
-  getBlackboard(id: String!): Blackboard!
+  getBlackboardById(id: String!): Blackboard!
   getAllBlackboardTags: [BlackboardTag!]!
   getBlackboardTag(
     """OPTIONAL"""
