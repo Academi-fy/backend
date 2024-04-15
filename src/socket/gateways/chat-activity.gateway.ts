@@ -165,6 +165,7 @@ export class ChatActivityGateway extends Gateway {
         executor: data.sender,
         activityContent: {
           answeredId: data.value.answeredId,
+          chatId: data.value.chatId,
           content: data.value.content,
         },
       },

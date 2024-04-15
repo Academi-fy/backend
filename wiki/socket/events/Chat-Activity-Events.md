@@ -3,7 +3,7 @@
 Das `RECEIVED_CHAT_ACTIVITY_CREATE` Event wird vom Socket an alle Clients gesendet, die sich in im relevanten Chat befinden.
 
 ```typescript
-interface Receive {
+interface ReceiveChatActivityCreate {
   event: 'RECEIVED_CHAT_ACTIVITY_CREATE',
   data: {
     sender: string,
@@ -26,6 +26,30 @@ interface Receive {
 > - [ChatActivityType](../../types/ChatActivityType.md)
 
 # Chat Activity Types
+
+## Message Answer
+
+Das `MESSAGE_ANSWER` Event wird verwendet, wenn eine Nachricht auf eine andere antwortet.
+Der Inhalt der Nachricht können [Abstimmungen](../../types/messages/Poll.md), [Dateien](../../types/messages/Attachment.md) oder [Text](../../types/messages/TextMessage.md) sein.
+
+```typescript
+interface MessageAnswer {
+  event: 'MESSAGE_ANSWER',
+  data: {
+    sender: string,
+    value: {
+      answeredId: string,
+      chatId: string,
+      content: (Attachment | Poll | TextMessage)[],
+    }
+  }
+}
+```
+
+> erwähnte Types
+> - [Attachment](../../types/messages/Attachment.md)
+> - [Poll](../../types/messages/Poll.md)
+> - [TextMessage](../../types/messages/TextMessage.md)
 
 ## Message Delete
 
@@ -79,6 +103,7 @@ interface MessageUpdate {
     sender: string,
     value: {
       activityId: string, 
+      chatId: string,
       content: (Attachment | Poll | TextMessage)[],
     }
   }

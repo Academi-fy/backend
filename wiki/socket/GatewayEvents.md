@@ -35,4 +35,4 @@ Events, die mit dem Blackboard in Verbindung stehen und für [Blackboards](../ty
 
 ### Course Events
 
-### Schul-Event Events
+### Event Events
