@@ -3,7 +3,7 @@ import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 import { ChatTargetMutation } from '@/socket/entities/chat';
 import { Chat, User, UserChat } from '@/@generated-types';
 import { UserChatService } from '@/rest/user-chat/user-chat.service';
-import { ChatService } from '@/rest/chat/chat.service';
+import { ChatService } from '@/rest/chat/services/chat.service';
 import { UserService } from '@/rest/user/user.service';
 import { ChatTargetResult } from '@/socket/gateways/services/chat/entities/chat-target-result.entity';
 

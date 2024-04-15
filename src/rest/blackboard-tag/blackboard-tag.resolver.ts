@@ -4,15 +4,28 @@ import { BlackboardTagService } from './services/blackboard-tag.service';
 import { BlackboardTag } from '@/@generated-types';
 import { CreateBlackboardTagDto } from './dto';
 
+/**
+ * @description The blackboard tag resolver handling GraphQL access to
+ * blackboard tags.
+ * */
 @Resolver()
 export class BlackboardTagResolver {
   constructor(private blackboardTagService: BlackboardTagService) {}
 
+  /**
+   * @description Get all blackboard tags.
+   * */
   @Query(() => [BlackboardTag])
   async getAllBlackboardTags(): Promise<BlackboardTag[]> {
     return this.blackboardTagService.getAllBlackboardTags();
   }
 
+  /**
+   * @description Get a blackboard tag by its id or tag name.
+   *
+   * @param id The id of the blackboard tag.
+   * @param tagName The name of the blackboard tag.
+   * */
   @Query(() => BlackboardTag)
   async getBlackboardTag(
     @Args('id', { nullable: true, description: 'OPTIONAL' }) id?: string,
@@ -26,6 +39,11 @@ export class BlackboardTagResolver {
     } else throw new Error('No id or tagName provided');
   }
 
+  /**
+   * @description Create a new blackboard tag.
+   *
+   * @param createBlackboardTagDto The data to create the blackboard tag.
+   * */
   @Mutation(() => BlackboardTag)
   async createBlackboardTag(
     @Args('blackboardTag')
@@ -36,11 +54,18 @@ export class BlackboardTagResolver {
     );
   }
 
+  /**
+   * @description Edit a blackboard tag by its id or tag name.
+   *
+   * @param editBlackboardTagDto The data to edit the blackboard tag.
+   * @param id The id of the blackboard tag.
+   * @param tag The name of the blackboard tag.
+   * */
   @Mutation(() => BlackboardTag)
-  async editBlackboardTagById(
+  async editBlackboardTag(
     @Args('blackboardTag') editBlackboardTagDto: CreateBlackboardTagDto,
-    @Args('id', { nullable: true }) id?: string,
-    @Args('tag', { nullable: true }) tag?: string,
+    @Args('id', { nullable: true, description: 'OPTIONAL' }) id?: string,
+    @Args('tag', { nullable: true, description: 'OPTIONAL' }) tag?: string,
   ): Promise<BlackboardTag> {
     if (id) {
       return this.blackboardTagService.editBlackboardTagById(
@@ -55,10 +80,16 @@ export class BlackboardTagResolver {
     } else throw new Error('No id or tag provided');
   }
 
+  /**
+   * @description Delete a blackboard tag by its id or tag name.
+   *
+   * @param id The id of the blackboard tag.
+   * @param tag The name of the blackboard tag.
+   * */
   @Mutation(() => BlackboardTag)
-  async deleteBlackboardTagById(
-    @Args('id', { nullable: true }) id?: string,
-    @Args('tag', { nullable: true }) tag?: string,
+  async deleteBlackboardTag(
+    @Args('id', { nullable: true, description: 'OPTIONAL' }) id?: string,
+    @Args('tag', { nullable: true, description: 'OPTIONAL' }) tag?: string,
   ): Promise<BlackboardTag> {
     if (id) {
       return this.blackboardTagService.deleteBlackboardTagById(id);

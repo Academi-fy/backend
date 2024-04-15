@@ -69,6 +69,7 @@ export class BlackboardTagCacheService implements CacheService {
       }
       blackboardTags.push(currentBlackboardTag);
     }
+
     return blackboardTags;
   }
 

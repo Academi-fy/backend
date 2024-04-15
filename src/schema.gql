@@ -1007,8 +1007,22 @@ type Mutation {
   editBlackboard(id: String!, blackboard: EditBlackboardDto!): Blackboard!
   deleteBlackboard(id: String!): Blackboard!
   createBlackboardTag(blackboardTag: CreateBlackboardTagDto!): BlackboardTag!
-  editBlackboardTagById(blackboardTag: CreateBlackboardTagDto!, id: String, tag: String): BlackboardTag!
-  deleteBlackboardTagById(id: String, tag: String): BlackboardTag!
+  editBlackboardTag(
+    blackboardTag: CreateBlackboardTagDto!
+
+    """OPTIONAL"""
+    id: String
+
+    """OPTIONAL"""
+    tag: String
+  ): BlackboardTag!
+  deleteBlackboardTag(
+    """OPTIONAL"""
+    id: String
+
+    """OPTIONAL"""
+    tag: String
+  ): BlackboardTag!
   createChat(chat: CreateChatDto!): Chat!
   editChat(id: String!, chat: EditChatDto!): Chat!
   deleteChat(id: String!): Chat!

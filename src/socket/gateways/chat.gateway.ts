@@ -12,7 +12,7 @@ import {
 } from '../entities/chat/';
 import { GatewayMessage } from '../entities/gateway-message.entity';
 import { Typing } from '../entities/chat/typing.entity';
-import { ChatService } from '@/rest/chat/chat.service';
+import { ChatService } from '@/rest/chat/services/chat.service';
 import { SOCKET_PORT } from '@/constants';
 import { Gateway } from '@/socket/entities/gateway.entity';
 import { ChatNameChange } from '@/socket/entities/chat-activity/chat/chat-name-change.entity';

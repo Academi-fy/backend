@@ -6,7 +6,7 @@ import { Chat, Club } from '@/@generated-types';
 import { ChatClubResult } from '@/socket/gateways/services/chat/entities/chat-club-result.entity';
 import { UserChatService } from '@/rest/user-chat/user-chat.service';
 import { ClubService } from '@/rest/club/club.service';
-import { ChatService } from '@/rest/chat/chat.service';
+import { ChatService } from '@/rest/chat/services/chat.service';
 
 @Injectable()
 export class ChatClubService extends Service {
