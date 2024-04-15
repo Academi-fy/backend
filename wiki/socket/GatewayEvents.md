@@ -21,7 +21,7 @@ Received Events schicken immer das modifizierte Objekt zurück.
 
 ### Blackboard Events
 
-Events, die mit dem Blackboard in Verbindung stehen und für Blackboards relevante Operationen überwachen, die synchron zu Verfügung stehen müssen.
+Events, die mit dem Blackboard in Verbindung stehen und für [Blackboards](../types/Blackboard.md) relevante Operationen überwachen, die synchron zu Verfügung stehen müssen.
 
 - `BLACKBOARD_CREATE`: [Erstellt](events/Blackboard-Events.md#create-blackboard) ein Blackboard
 - `BLACKBOARD_DELETE`: [Löscht](events/Blackboard-Events.md#delete-blackboard) ein Blackboard

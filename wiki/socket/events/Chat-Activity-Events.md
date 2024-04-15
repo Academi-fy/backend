@@ -1,6 +1,4 @@
-# Chat Activity Events
-
-## Chat Activity Receive
+# Chat Activity Receive
 
 Das `RECEIVED_CHAT_ACTIVITY_CREATE` Event wird vom Socket an alle Clients gesendet, die sich in im relevanten Chat befinden.
 
@@ -27,6 +25,25 @@ interface Receive {
 > erwähnte Types
 > - [ChatActivityType](../../types/ChatActivityType.md)
 
+# Chat Activity Types
+
+## Message Delete
+
+Das `MESSAGE_DELETE` Event wird verwendet, um eine Nachricht in einem Chat zu löschen. \
+Sie wird endgültig gelöscht.
+
+```typescript
+interface MessageDelete {
+  event: 'MESSAGE_DELETE',
+  data: {
+    sender: string,
+    value: {
+      activityId: string
+    }
+  }
+}
+```
+
 ## Message Send
 
 Das `MESSAGE_SEND` Event wird verwendet, um eine Nachricht in einem Chat zu senden. \
@@ -38,7 +55,7 @@ interface MessageSend {
   data: {
     sender: string,
     value: {
-      chatId: string, // chat id
+      chatId: string, 
       content: (Attachment | Poll | TextMessage)[],
     }
   }
@@ -54,3 +71,21 @@ interface MessageSend {
 
 Das `MESSAGE_UPDATE` Event wird verwendet, um eine Nachricht im Chat zu aktualisieren. \
 Dabei kann nur der `content` bearbeitet werden.
+
+```typescript
+interface MessageUpdate {
+  event: 'MESSAGE_UPDATE',
+  data: {
+    sender: string,
+    value: {
+      activityId: string, 
+      content: (Attachment | Poll | TextMessage)[],
+    }
+  }
+}
+```
+
+> erwähnte Types
+> - [Attachment](../../types/messages/Attachment.md)
+> - [Poll](../../types/messages/Poll.md)
+> - [TextMessage](../../types/messages/TextMessage.md)
