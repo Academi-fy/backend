@@ -29,6 +29,7 @@ export class ConnectGateway
   }
 
   handleConnection(client: Socket): void {
+    client.setMaxListeners(20);
     const userId: string = this.getUserId(client);
 
     const userClients: Socket[] = this.clients.get(userId) || [];

@@ -14,24 +14,30 @@ export class CourseService extends Service {
   }
 
   async getAllCourses(): Promise<Course[]> {
-    return this.prisma.course.findMany({
+    const courses: Course[] = await this.prisma.course.findMany({
       include: {
         ...clubNesting,
       },
     });
+    if (!courses) throw new Error('Courses not found');
+
+    return courses;
   }
 
   async getCourseById(courseId: string): Promise<Course> {
-    return this.prisma.course.findUnique({
+    const course: Course = await this.prisma.course.findUnique({
       where: { id: courseId },
       include: {
         ...clubNesting,
       },
     });
+    if (!course) throw new Error(`Course '${courseId}' not found`);
+
+    return course;
   }
 
   async createCourse(dto: CreateCourseDto): Promise<Course> {
-    return this.prisma.course.create({
+    const newCourse: Course = await this.prisma.course.create({
       data: {
         ...this.mapDtoToData(dto),
       },
@@ -39,10 +45,13 @@ export class CourseService extends Service {
         ...clubNesting,
       },
     });
+    if (!newCourse) throw new Error('Course could not be created');
+
+    return newCourse;
   }
 
   async editCourse(courseId: string, dto: EditCourseDto): Promise<Course> {
-    return this.prisma.course.update({
+    const modifiedCourse: Course = await this.prisma.course.update({
       where: {
         id: courseId,
       },
@@ -53,15 +62,23 @@ export class CourseService extends Service {
         ...clubNesting,
       },
     });
+    if (!modifiedCourse)
+      throw new Error(`Course '${courseId}' could not be modified`);
+
+    return modifiedCourse;
   }
 
   async deleteCourse(courseId: string): Promise<Course> {
-    return this.prisma.course.delete({
+    const deletedCourse: Course = await this.prisma.course.delete({
       where: { id: courseId },
       include: {
         ...clubNesting,
       },
     });
+    if (!deletedCourse)
+      throw new Error(`Course '${courseId}' could not be deleted`);
+
+    return deletedCourse;
   }
 
   private mapDtoToData(dto: CreateCourseDto | EditCourseDto) {

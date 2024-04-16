@@ -53,7 +53,7 @@ export class ChatActivityService extends Service {
     return chatActivities;
   }
 
-  async createChatActivity(
+  async processCreateChatActivity(
     dto: CreateChatActivityDto<any>,
   ): Promise<ChatActivity> {
     const chatActivity: ChatActivity = await this.prisma.chatActivity.create({

@@ -11,9 +11,6 @@
         "watchAssets": true
       }
     ],
-    "watchAssets": true,
-    "watchOptions": {
-      "watchFile": "fixedPollingInterval"
-    }
+    "watchAssets": true
   }
 }

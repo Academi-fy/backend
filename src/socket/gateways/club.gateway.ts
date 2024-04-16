@@ -31,15 +31,12 @@ export class ClubGateway extends Gateway {
     const clubId: string = data.value.clubId;
 
     const club: Club = await this.clubService.getClubById(clubId);
-    if (!club) throw new Error(`Club '${clubId}' not found`);
 
     const modifiedClub: Club = await this.clubService.editClub(clubId, {
       members: club.members
         .map((member: User) => member.id)
         .concat(data.value.userId),
     });
-    if (!modifiedClub)
-      throw new Error(`Club '${clubId}' could not be modified`);
 
     for (const member of modifiedClub.members) {
       this.emit(member.id, 'RECEIVED_CLUB_USER_ADD', modifiedClub);
@@ -62,15 +59,12 @@ export class ClubGateway extends Gateway {
     const clubId: string = data.value.clubId;
 
     const club: Club = await this.clubService.getClubById(clubId);
-    if (!club) throw new Error(`Club '${clubId}' not found`);
 
     const modifiedClub: Club = await this.clubService.editClub(clubId, {
       members: club.members
         .map((member: User) => member.id)
         .filter((memberId: string) => memberId !== data.value.userId),
     });
-    if (!modifiedClub)
-      throw new Error(`Club '${clubId}' could not be modified`);
 
     for (const member of modifiedClub.members) {
       this.emit(member.id, 'RECEIVED_CLUB_USER_REMOVE', modifiedClub);
@@ -93,15 +87,12 @@ export class ClubGateway extends Gateway {
     const clubId: string = data.value.clubId;
 
     const club: Club = await this.clubService.getClubById(clubId);
-    if (!club) throw new Error(`Club '${clubId}' not found`);
 
     const modifiedClub: Club = await this.clubService.editClub(clubId, {
       members: club.events
         .map((event: Event) => event.id)
         .concat(data.value.eventId),
     });
-    if (!modifiedClub)
-      throw new Error(`Club '${clubId}' could not be modified`);
 
     for (const member of modifiedClub.members) {
       this.emit(member.id, 'RECEIVED_CLUB_EVENT_ADD', modifiedClub);
@@ -124,15 +115,12 @@ export class ClubGateway extends Gateway {
     const clubId: string = data.value.clubId;
 
     const club: Club = await this.clubService.getClubById(clubId);
-    if (!club) throw new Error(`Club '${clubId}' not found`);
 
     const modifiedClub: Club = await this.clubService.editClub(clubId, {
       members: club.events
         .map((event: Event) => event.id)
         .filter((eventId: string) => eventId !== data.value.eventId),
     });
-    if (!modifiedClub)
-      throw new Error(`Club '${clubId}' could not be modified`);
 
     for (const member of modifiedClub.members) {
       this.emit(member.id, 'RECEIVED_CLUB_EVENT_REMOVE', modifiedClub);

@@ -30,6 +30,18 @@ export class UserChatService extends Service {
     });
   }
 
+  async getUserChatByCredentials(
+    targetId: string,
+    chatId: string,
+  ): Promise<UserChat> {
+    return this.prisma.userChat.findFirst({
+      where: { userId: targetId, chatId },
+      include: {
+        ...userChatNesting,
+      },
+    });
+  }
+
   async createUserChat(dto: CreateUserChatDto): Promise<UserChat> {
     return this.prisma.userChat.create({
       data: {
@@ -60,6 +72,19 @@ export class UserChatService extends Service {
         ...userChatNesting,
       },
     });
+  }
+
+  async deleteUserChatByCredentials(
+    targetId: string,
+    chatId: string,
+  ): Promise<UserChat> {
+    const chatToDelete: UserChat = await this.getUserChatByCredentials(
+      targetId,
+      chatId,
+    );
+    if (!chatToDelete) throw new Error('User chat not found');
+
+    return this.deleteUserChat(chatToDelete.id);
   }
 
   private mapDtoToData(dto: CreateUserChatDto | EditUserChatDto) {

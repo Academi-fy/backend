@@ -22,7 +22,7 @@ export class ChatActivityResolver {
   async createChatActivity(
     @Args('chatActivity') chatActivity: CreateChatActivityDto<any>,
   ): Promise<ChatActivity> {
-    return this.chatActivityService.createChatActivity(chatActivity);
+    return this.chatActivityService.processCreateChatActivity(chatActivity);
   }
 
   @Mutation(() => ChatActivity)

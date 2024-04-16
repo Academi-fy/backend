@@ -953,7 +953,7 @@ type UserChat {
 type Query {
   getAllBlackboards: [Blackboard!]!
   getLastBlackboards(sort: SortOrder!, limit: Float!, lastId: String): [Blackboard!]!
-  getBlackboard(id: String!): Blackboard!
+  getBlackboardById(id: String!): Blackboard!
   getAllBlackboardTags: [BlackboardTag!]!
   getBlackboardTag(
     """OPTIONAL"""
@@ -997,10 +997,9 @@ type Query {
   getUserChat(id: String!): UserChat!
 }
 
-"""The sort order (createdAt, updatedAt)"""
 enum SortOrder {
-  createdAt
-  updatedAt
+  asc
+  desc
 }
 
 type Mutation {
@@ -1008,8 +1007,22 @@ type Mutation {
   editBlackboard(id: String!, blackboard: EditBlackboardDto!): Blackboard!
   deleteBlackboard(id: String!): Blackboard!
   createBlackboardTag(blackboardTag: CreateBlackboardTagDto!): BlackboardTag!
-  editBlackboardTagById(blackboardTag: CreateBlackboardTagDto!, id: String, tag: String): BlackboardTag!
-  deleteBlackboardTagById(id: String, tag: String): BlackboardTag!
+  editBlackboardTag(
+    blackboardTag: CreateBlackboardTagDto!
+
+    """OPTIONAL"""
+    id: String
+
+    """OPTIONAL"""
+    tag: String
+  ): BlackboardTag!
+  deleteBlackboardTag(
+    """OPTIONAL"""
+    id: String
+
+    """OPTIONAL"""
+    tag: String
+  ): BlackboardTag!
   createChat(chat: CreateChatDto!): Chat!
   editChat(id: String!, chat: EditChatDto!): Chat!
   deleteChat(id: String!): Chat!

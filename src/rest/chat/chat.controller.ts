@@ -12,7 +12,7 @@ import { Chat } from '@/@generated-types';
 
 import { CreateChatDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';
-import { ChatService } from './chat.service';
+import { ChatService } from './services/chat.service';
 
 @UseGuards(JwtGuard)
 @Controller('chats')
