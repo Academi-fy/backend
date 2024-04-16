@@ -2,7 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { Chat } from '@/@generated-types';
 import { CreateChatDto, EditChatDto } from './dto';
-import { ChatService } from './chat.service';
+import { ChatService } from './services/chat.service';
 
 @Resolver(() => Chat)
 export class ChatResolver {

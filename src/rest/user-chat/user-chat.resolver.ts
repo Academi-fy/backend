@@ -10,7 +10,6 @@ export class UserChatResolver {
 
   @Query(() => [UserChat])
   async getAllUserChats(): Promise<UserChat[]> {
-    console.log(this.userChatService);
     return this.userChatService.getAllUserChats();
   }
 

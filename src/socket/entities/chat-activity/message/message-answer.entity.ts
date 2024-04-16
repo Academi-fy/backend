@@ -7,6 +7,9 @@ export class MessageAnswer {
   @IsString()
   answeredId: string;
 
+  @IsString()
+  chatId: string;
+
   @IsArray()
   content: (Attachment | Poll | TextMessage)[];
 }

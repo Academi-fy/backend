@@ -7,7 +7,7 @@ import { SOCKET_PORT } from '@/constants';
 import { Gateway } from '@/socket/entities/gateway.entity';
 import { ChatActivityService } from '@/rest/chat-activity/chat-activity.service';
 import { Chat, ChatActivity, ChatActivityType } from '@/@generated-types';
-import { ChatService } from '@/rest/chat/chat.service';
+import { ChatService } from '@/rest/chat/services/chat.service';
 import { CreateChatActivityDto } from '@/rest/chat-activity';
 import { MessageUpdate } from '@/socket/entities/chat-activity/message/message-update.entity';
 import { MessageDelete } from '@/socket/entities/chat-activity/message/message-delete.entity';
@@ -25,7 +25,7 @@ export class ChatActivityGateway extends Gateway {
     private readonly chatService: ChatService,
   ) {
     super();
-    this.eventEmitter.on('createChatActivity', this.createChatActivity);
+    this.eventEmitter.on('createChatActivity', this.handleChatActivityCreate); //TODO: check if works
   }
 
   async handleChatActivityCreate<T>(
@@ -39,7 +39,7 @@ export class ChatActivityGateway extends Gateway {
     if (data instanceof Error) return data;
 
     const createdChatActivity: ChatActivity =
-      await this.chatActivityService.createChatActivity(data.value);
+      await this.chatActivityService.processCreateChatActivity(data.value);
 
     const chat: Chat = await this.chatService.getChatById(
       createdChatActivity.chatId,
@@ -165,6 +165,7 @@ export class ChatActivityGateway extends Gateway {
         executor: data.sender,
         activityContent: {
           answeredId: data.value.answeredId,
+          chatId: data.value.chatId,
           content: data.value.content,
         },
       },

@@ -8,7 +8,7 @@ export class ActivityChatCourseAdd {
   courseId: string;
 
   @IsString()
-  name: string;
+  courseName: string;
 }
 
 export class ActivityChatCourseRemove {
@@ -19,5 +19,5 @@ export class ActivityChatCourseRemove {
   courseId: string;
 
   @IsString()
-  name: string;
+  courseName: string;
 }

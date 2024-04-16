@@ -5,7 +5,7 @@ import {
 } from '@nestjs/websockets';
 
 import { Blackboard, School } from '@/@generated-types';
-import { BlackboardService } from '@/rest/blackboard/blackboard.service';
+import { BlackboardService } from '@/rest/blackboard/services/blackboard.service';
 import { CreateBlackboardDto } from '@/rest/blackboard';
 
 import { Gateway } from '../entities/gateway.entity';

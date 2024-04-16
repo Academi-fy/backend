@@ -1,14 +1,13 @@
 import { WebSocketServer } from '@nestjs/websockets';
-import { plainToInstance } from 'class-transformer';
-import { validateOrReject } from 'class-validator';
-import { BadRequestException, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { clients } from '@/main';
 import { CreateChatActivityDto } from '@/rest/chat-activity';
 import { Socket } from 'socket.io';
 import { EventEmitter } from 'events';
 import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
+import { ValidateData } from '@/validate-data';
 
-export class Gateway {
+export class Gateway extends ValidateData {
   @WebSocketServer()
   public server: any;
 
@@ -19,6 +18,7 @@ export class Gateway {
   public eventEmitter: EventEmitter;
 
   constructor() {
+    super();
     this.eventEmitter = new EventEmitter();
   }
 
@@ -28,29 +28,15 @@ export class Gateway {
     this.eventEmitter.emit('createChatActivity', body);
   }
 
-  emit(target: string, event: string, data: any) {
-    this.clients.get(target)?.forEach((client: Socket) => {
+  emit(target: string, event: string, data: any): void {
+    this.clients.get(target)?.forEach((client: Socket): void => {
       client.emit(event, data);
     });
   }
 
-  async validateData<X extends object>(
-    data: any,
-    validator: new () => X,
-  ): Promise<X | Error> {
-    const event: X = plainToInstance(validator, data);
-    try {
-      await validateOrReject(event);
-    } catch (errors) {
-      const error: BadRequestException = new BadRequestException({
-        message: `'Validation failed`,
-        event,
-        errors,
-      });
-
-      this.gatewayLogger.error(error.stack + JSON.stringify(error, null, 2));
-      return error;
-    }
-    return event;
+  emitToList(targets: string[], event: string, data: any): void {
+    targets.forEach((target: string): void => {
+      this.emit(target, event, data);
+    });
   }
 }

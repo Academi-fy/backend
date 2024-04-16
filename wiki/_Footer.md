@@ -1,0 +1,1 @@
+&copy; Daniel Dopatka, Linus Bung (2024)

@@ -14,24 +14,30 @@ export class ClubService extends Service {
   }
 
   async getAllClubs(): Promise<Club[]> {
-    return this.prisma.club.findMany({
+    const clubs = this.prisma.club.findMany({
       include: {
         ...clubNesting,
       },
     });
+    if (!clubs) throw new Error('No clubs found');
+
+    return clubs;
   }
 
   async getClubById(clubId: string): Promise<Club> {
-    return this.prisma.club.findUnique({
+    const club = this.prisma.club.findUnique({
       where: { id: clubId },
       include: {
         ...clubNesting,
       },
     });
+    if (!club) throw new Error(`Club '${clubId}' not found`);
+
+    return club;
   }
 
   async createClub(dto: CreateClubDto): Promise<Club> {
-    return this.prisma.club.create({
+    const club = this.prisma.club.create({
       data: {
         ...this.mapDtoToData(dto),
       },
@@ -39,10 +45,16 @@ export class ClubService extends Service {
         ...clubNesting,
       },
     });
+    if (!club)
+      throw new Error(
+        `Club could not be created \n${JSON.stringify(dto, null, 2)}`,
+      );
+
+    return club;
   }
 
   async editClub(clubId: string, dto: EditClubDto): Promise<Club> {
-    return this.prisma.club.update({
+    const club = this.prisma.club.update({
       where: { id: clubId },
       data: {
         ...this.mapDtoToData(dto),
@@ -51,15 +63,24 @@ export class ClubService extends Service {
         ...clubNesting,
       },
     });
+    if (!club)
+      throw new Error(
+        `Club '${clubId}' could not be modified \n${JSON.stringify(dto, null, 2)}`,
+      );
+
+    return club;
   }
 
   async deleteClub(clubId: string): Promise<Club> {
-    return this.prisma.club.delete({
+    const club = this.prisma.club.delete({
       where: { id: clubId },
       include: {
         ...clubNesting,
       },
     });
+    if (!club) throw new Error(`Club '${clubId}' could not be deleted`);
+
+    return club;
   }
 
   private mapDtoToData(dto: CreateClubDto | EditClubDto) {
