@@ -74,4 +74,4 @@ The backend provides two interfaces for retrieving data: REST API and GraphQL.
 
 ### WebSocket
 
-> coming soon...
+- Socket.io at `http://localhost:port`
