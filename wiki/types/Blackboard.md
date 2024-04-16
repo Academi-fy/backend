@@ -38,7 +38,7 @@ Der Zugriff über REST erfolgt entweder über den [Controller](../rest/Controlle
 
 ### Socket Zugriff
 
-Der Zugriff über den Socket erfolgt durch [GatewayMessages](../socket/GatewayMessage.md) durch [Gateways](../socket/Gateway.md).
+Der Zugriff über den Socket erfolgt durch [GatewayMessages](../socket/Gateway-Message) durch [Gateways](../socket/Gateway.md).
 
 [Gateways](../socket/Gateway.md) abonnieren Messages bzw. Events, über die dann die Socket-Aktion ausgeführt wird. Für Blackboards sind das:
 - `BLACKBOARD_CREATE` - zum Erstellen von Blackboards

@@ -23,14 +23,32 @@ interface ReceiveChatActivityCreate {
 }
 ```
 > erwähnte Types
-> - [ChatActivityType](../../types/ChatActivityType.md)
+> - [ChatActivityType](https://github.com/Academi-fy/backend/wiki/Chat-Activity-Type)
 
 # Chat Activity Types
+
+## Activity Star
+
+Das `ACTIVITY_STAR` bzw. `ACTIVITY_UNSTAR` Event wird verwendet, um eine Nachricht in einem Chat mit einem Stern zu markieren bzw. den Stern zu entfernen. \
+Mit Stern markierte Nachrichten sind für alle Nutzer des Chats als solche einsehbar und in der Chat-Info zu sehen. Sterne sind mit einem Anpinnen zu vergleichen
+
+```typescript
+interface MessageAnswer {
+  event: 'ATIVITY_STAR' | 'ACTIVITY_UNSTAR',
+  data: {
+    sender: string,
+    value: {
+      activityId: string,
+      starred: boolean,
+    }
+  }
+}
+```
 
 ## Message Answer
 
 Das `MESSAGE_ANSWER` Event wird verwendet, wenn eine Nachricht auf eine andere antwortet.
-Der Inhalt der Nachricht können [Abstimmungen](../../types/messages/Poll.md), [Dateien](../../types/messages/Attachment.md) oder [Text](../../types/messages/TextMessage.md) sein.
+Der Inhalt der Nachricht können [Abstimmungen](https://github.com/Academi-fy/backend/wiki/Poll), [Dateien](https://github.com/Academi-fy/backend/wiki/Attachment) oder [Text](https://github.com/Academi-fy/backend/wiki/TextMessage) sein.
 
 ```typescript
 interface MessageAnswer {
@@ -47,9 +65,9 @@ interface MessageAnswer {
 ```
 
 > erwähnte Types
-> - [Attachment](../../types/messages/Attachment.md)
-> - [Poll](../../types/messages/Poll.md)
-> - [TextMessage](../../types/messages/TextMessage.md)
+> - [Attachment](https://github.com/Academi-fy/backend/wiki/Attachment)
+> - [Poll](https://github.com/Academi-fy/backend/wiki/Poll)
+> - [TextMessage](https://github.com/Academi-fy/backend/wiki/TextMessage)
 
 ## Message Delete
 
@@ -71,7 +89,7 @@ interface MessageDelete {
 ## Message Send
 
 Das `MESSAGE_SEND` Event wird verwendet, um eine Nachricht in einem Chat zu senden. \
-Der Inhalt der Nachricht können [Abstimmungen](../../types/messages/Poll.md), [Dateien](../../types/messages/Attachment.md) oder [Text](../../types/messages/TextMessage.md) sein.
+Der Inhalt der Nachricht können [Abstimmungen](https://github.com/Academi-fy/backend/wiki/Poll), [Dateien](https://github.com/Academi-fy/backend/wiki/Attachment) oder [Text](https://github.com/Academi-fy/backend/wiki/TextMessage) sein.
 
 ```typescript
 interface MessageSend {
@@ -87,9 +105,9 @@ interface MessageSend {
 ```
 
 > erwähnte Types
-> - [Attachment](../../types/messages/Attachment.md)
-> - [Poll](../../types/messages/Poll.md)
-> - [TextMessage](../../types/messages/TextMessage.md)
+> - [Attachment](https://github.com/Academi-fy/backend/wiki/Attachment)
+> - [Poll](https://github.com/Academi-fy/backend/wiki/Poll)
+> - [TextMessage](https://github.com/Academi-fy/backend/wiki/TextMessage)
 
 ## Message Update
 
@@ -111,6 +129,6 @@ interface MessageUpdate {
 ```
 
 > erwähnte Types
-> - [Attachment](../../types/messages/Attachment.md)
-> - [Poll](../../types/messages/Poll.md)
-> - [TextMessage](../../types/messages/TextMessage.md)
+> - [Attachment](https://github.com/Academi-fy/backend/wiki/Attachment)
+> - [Poll](https://github.com/Academi-fy/backend/wiki/Poll)
+> - [TextMessage](https://github.com/Academi-fy/backend/wiki/TextMessage)
