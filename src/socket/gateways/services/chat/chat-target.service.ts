@@ -16,7 +16,7 @@ export class ChatTargetService extends Service {
     super();
   }
 
-  async executeChatCourseAdd(
+  async executeChatUserAdd(
     body: GatewayMessage<ChatTargetMutation>,
   ): Promise<Error | ChatTargetResult> {
     const data: Error | GatewayMessage<ChatTargetMutation> =
@@ -47,7 +47,7 @@ export class ChatTargetService extends Service {
     return { data, modifiedChat, target };
   }
 
-  async executeChatCourseRemove(
+  async executeChatUserRemove(
     body: GatewayMessage<ChatTargetMutation>,
   ): Promise<Error | ChatTargetResult> {
     const data: Error | GatewayMessage<ChatTargetMutation> =

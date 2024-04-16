@@ -4,7 +4,7 @@
 
 Das `BLACKBOARD_CREATE` Event wird verwendet, um ein neues Blackboard zu erstellen. 
 
-```javascript
+```typescript
 interface BlackboardCreate {
     event: 'BLACKBOARD_CREATE',
     data: {
@@ -26,7 +26,7 @@ interface BlackboardCreate {
 
 Das `BLACKBOARD_UPDATE` Event wird verwendet, um ein Blackboard zu aktualisieren. 
 
-```javascript
+```typescript
 interface BlackboardUpdate {
     event: 'BLACKBOARD_UPDATE',
     data: {
@@ -48,7 +48,7 @@ interface BlackboardUpdate {
 
 Das `BLACKBOARD_DELETE` Event wird verwendet, um ein Blackboard zu löschen.
 
-```javascript
+```typescript
 interface BlackboardDelete {
     event: 'BLACKBOARD_DELETE',
     data: {

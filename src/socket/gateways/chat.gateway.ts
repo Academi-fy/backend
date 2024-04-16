@@ -42,7 +42,7 @@ export class ChatGateway extends Gateway {
     @MessageBody() body: GatewayMessage<ChatTargetMutation>,
   ): Promise<GatewayMessage<ChatTargetMutation> | Error> {
     const result: Error | ChatTargetResult =
-      await this.chatTargetService.executeChatCourseAdd(body);
+      await this.chatTargetService.executeChatUserAdd(body);
 
     if (result instanceof Error) return result;
     const { data, modifiedChat, target } = result;
@@ -67,7 +67,7 @@ export class ChatGateway extends Gateway {
     @MessageBody() body: GatewayMessage<ChatTargetMutation>,
   ): Promise<GatewayMessage<ChatTargetMutation> | Error> {
     const result: Error | ChatTargetResult =
-      await this.chatTargetService.executeChatCourseRemove(body);
+      await this.chatTargetService.executeChatUserRemove(body);
 
     if (result instanceof Error) return result;
     const { data, modifiedChat, target } = result;
