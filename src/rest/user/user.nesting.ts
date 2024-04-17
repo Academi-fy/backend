@@ -80,11 +80,7 @@ export const userNesting = {
       ...chatActivityRawNesting,
     },
   },
-  schools: {
-    include: {
-      id: true,
-    },
-  },
+  schools: true,
   userAccount: {
     include: {
       user: true,
