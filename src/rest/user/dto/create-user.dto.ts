@@ -19,6 +19,11 @@ export class CreateUserDto {
   @IsOptional()
   blackboardsReceived?: string[];
 
+  @Field(() => String)
+  @IsString()
+  @IsOptional()
+  birthday?: string;
+
   @Field(() => [String])
   @IsArray()
   chatActivitiesCreated: string[];

@@ -24,6 +24,11 @@ export class EditUserDto {
   @IsOptional()
   blackboardsReceived?: string[];
 
+  @Field(() => String)
+  @IsString()
+  @IsOptional()
+  birthday?: string;
+
   @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()

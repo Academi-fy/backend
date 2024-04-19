@@ -5,6 +5,11 @@ import { Field, InputType } from '@nestjs/graphql';
 export class CreateUserAccountDto {
   @Field(() => String)
   @IsString()
+  @IsOptional()
+  email?: string;
+
+  @Field(() => String)
+  @IsString()
   password: string;
 
   @Field(() => String, { nullable: true })
