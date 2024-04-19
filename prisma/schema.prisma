@@ -264,6 +264,7 @@ model User {
   avatar                String?
   blackboards           Blackboard[]   @relation("BlackboardAuthor")
   blackboardsReceived   Blackboard[]   @relation("BlackboardTarget")
+  birthday              String?
   chatActivitiesCreated ChatActivity[] @relation("UserChatActivity")
   classes               Class[]        @relation("ClassMember")
   clubs                 Club[]         @relation("ClubMember")
@@ -289,6 +290,7 @@ model UserAccount {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  email    String? @unique
   password String
   user     User?   @relation("UserUserAccount")
   userId   String? @db.Uuid

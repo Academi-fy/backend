@@ -19,7 +19,7 @@ export const userRawNesting = {
   events: true,
   eventTickets: true,
   readActivities: true,
-  schools: false,
+  schools: true,
   userAccount: true,
   userChats: true,
 };
