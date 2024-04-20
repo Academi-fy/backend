@@ -12,9 +12,9 @@ Dabei werden sie in Form einer [GatewayMessage](Gateway-Message) übermittelt.
 |-------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
 | `BLACKBOARD_CREATE`<br>`BLACKBOARD_DELETE`<br>`BLACKBOARD_UPDATE` | `ACTIVITY_STAR`<br>`ACTIVITY_UNSTAR`<br>`MESSAGE_ANSWER`<br>`MESSAGE_SEND`<br>`MESSAGE_UPDATE`<br>...TODO | `CHAT_TARGET_ADD`<br>`CHAT_TARGET_REMOVE`<br>`CHAT_COURSE_ADD`<br>`CHAT_COURSE_REMOVE`<br>`CHAT_CLUB_ADD`<br>`CHAT_CLUB_REMOVE`<br>`CHAT_NAME_CHANGE`<br>`TYPING` | `CLASS_COURSE_ADD`<br>`CLASS_COURSE_REMOVE`<br>`CLASS_USER_ADD`<br>`CLASS_USER_REMOVE` |         
 
-| [Cub](#club-events)                                                               | [Course](#course-events)                                       | [Event](#event-events) |
-|-----------------------------------------------------------------------------------|----------------------------------------------------------------|------------------------|
-| `CLUB_USER_ADD`<br>`CLUB_USER_REMOVE`<br>`CLUB_EVENT_ADD`<br>`CLASS_EVENT_REMOVE` | `COURSE_USER_ADD`<br>`COURSE_USER_REMOVE`<br>`COURSE_CHAT_SET` | TODO                   |
+| [Cub](#club-events)                                                               | [Course](#course-events)                                       | [Event](#event-events)                                                                  |
+|-----------------------------------------------------------------------------------|----------------------------------------------------------------|-----------------------------------------------------------------------------------------|
+| `CLUB_USER_ADD`<br>`CLUB_USER_REMOVE`<br>`CLUB_EVENT_ADD`<br>`CLASS_EVENT_REMOVE` | `COURSE_USER_ADD`<br>`COURSE_USER_REMOVE`<br>`COURSE_CHAT_SET` | `EVENT_CREATE`<br>`EVENT_UPDATE`<br>`EVENT_PING_CREATE`<br>`EVENT_START`<br>`EVENT_END` |
 
 ## Events
 
@@ -41,8 +41,8 @@ Events, die mit dem [Blackboard](https://github.com/Academi-fy/backend/wiki/Blac
 
 Events, die mit [Chat Activities](https://github.com/Academi-fy/backend/wiki/Chat-Activity) in Verbindung stehen.
 
-- `ACTIVITY_STAR` | `ACTIVITY_UNSTAR`: Nachricht[hervorheben](https://github.com/Academi-fy/backend/wiki/Chat-Activity-Events#activity-star)
-- `MESSAGE_ANSWER`: Auf Nachricht[antworten](https://github.com/Academi-fy/backend/wiki/Chat-Activity-Events#message-answer)
+- `ACTIVITY_STAR` | `ACTIVITY_UNSTAR`: Nachricht [hervorheben](https://github.com/Academi-fy/backend/wiki/Chat-Activity-Events#activity-star)
+- `MESSAGE_ANSWER`: Auf Nachricht [antworten](https://github.com/Academi-fy/backend/wiki/Chat-Activity-Events#message-answer)
 - `MESSAGE_SEND`: Nachricht [senden](https://github.com/Academi-fy/backend/wiki/Chat-Activity-Events#message-send)
 - `MESSAGE_UPDATE`: Nachricht [bearbeiten](https://github.com/Academi-fy/backend/wiki/Chat-Activity-Events#message-update)
 
@@ -64,12 +64,16 @@ Events, die mit [Chats](https://github.com/Academi-fy/backend/wiki/Chat) in Verb
 
 ### [Class Events](https://github.com/Academi-fy/backend/wiki/Class-Events)
 
+Events, die mit [Classes](https://github.com/Academi-fy/backend/wiki/Class) in Verbindung stehen.
+
 - `CLASS_COURSE_ADD` | `CLASS_COURSE_REMOVE`: Course einer Class [hinzufügen/entfernen](https://github.com/Academi-fy/backend/wiki/Chat-Events#addremove-course) 
   - [&rarr; [Course](https://github.com/Academi-fy/backend/wiki/Course)]
 - `CLASS_USER_ADD` | `CLASS_USER_REMOVE`: User einer Class [hinzufügen/entfernen](https://github.com/Academi-fy/backend/wiki/Chat-Events#addremove-user) 
   - [&rarr; [User](https://github.com/Academi-fy/backend/wiki/User)]
 
 ### [Club Events](https://github.com/Academi-fy/backend/wiki/Club-Events)
+
+Events, die mit [Clubs](https://github.com/Academi-fy/backend/wiki/Clubs) in Verbindung stehen.
 
 - `CLUB_USER_ADD` | `CLUB_USER_REMOVE`: User eines Clubs [hinzufügen/entfernen](https://github.com/Academi-fy/backend/wiki/Club-Events#addremove-user)
   - [&rarr; [User](https://github.com/Academi-fy/backend/wiki/User)]
@@ -78,9 +82,18 @@ Events, die mit [Chats](https://github.com/Academi-fy/backend/wiki/Chat) in Verb
 
 ### [Course Events](https://github.com/Academi-fy/backend/wiki/Course-Events)
 
+Events, die mit [Courses](https://github.com/Academi-fy/backend/wiki/Course) in Verbindung stehen.
+
 - `COURSE_USER_ADD` | `COURSE_USER_REMOVE`: User eines Courses [hinzufügen/entfernen](https://github.com/Academi-fy/backend/wiki/Course-Events#addremove-user)
   - [&rarr; [User](https://github.com/Academi-fy/backend/wiki/User)]
 - `COURSE_CHAT_SET`: Chat eines Courses [setzen](https://github.com/Academi-fy/backend/wiki/Course-Events#set-chat)
   - [&rarr; [Chat](https://github.com/Academi-fy/backend/wiki/User)]
 
 ### [Event Events](https://github.com/Academi-fy/backend/wiki/Event-Events)
+
+Events, die mit [Events](https://github.com/Academi-fy/backend/wiki/Event) in Verbindung stehen.
+
+- `EVENT_CREATE`: Ein Event [erstellen](https://github.com/Academi-fy/backend/wiki/Evet-Events#create-event)
+- `EVENT_UPDATE`: Ein Event [bearbeiten](https://github.com/Academi-fy/backend/wiki/Evet-Events#create-event)
+- `EVENT_PING_CREATE`: Eine [Push-Benachrichtigung](https://github.com/Academi-fy/backend/wiki/Evet-Events#create-ping) für ein Event [verschicken](https://github.com/Academi-fy/backend/wiki/Evet-Events#create-ping)
+- `EVENT_START` | `EVENT_END`: Ein Event [manuell starten/beenden](https://github.com/Academi-fy/backend/wiki/Evet-Events#startend-event)

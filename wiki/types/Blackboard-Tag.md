@@ -25,3 +25,32 @@ Auf Blackboard-Tags kann nur vom [REST Client](../rest/REST.md) zugegriffen werd
 ### REST Zugriff
 
 Der Zugriff über REST erfolgt entweder über den [Controller](../rest/Controllers.md) oder den [Resolver](../rest/Resolvers.md).
+
+#### Routes
+
+##### getAllBlackboardTags:
+```http request
+GET /blackboard-tag/
+```
+
+##### getBlackboardTagById:
+```http request
+GET /blackboard-tag/:id
+```
+
+##### createBlackboardTag:
+```http request
+POST /blackboard-tag/
+```
+mit JSON Body: [CreateBlackboardTagDto](https://github.com/Academi-fy/backend/blob/master/src/rest/blackboard-tag/dto/create-blackboard-tag.dto.ts)
+
+##### editBlackboardTag:
+```http request
+PATCH /blackboard-tag/:id
+```
+mit JSON Body: [EditBlackboardTagDto](https://github.com/Academi-fy/backend/blob/master/src/rest/blackboard-tag/dto/edit-blackboard-tag.dto.ts)
+
+##### deleteBlackboardTag:
+```http request
+DELETE /blackboard-tag/:id
+```

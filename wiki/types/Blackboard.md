@@ -36,11 +36,40 @@ Auf Blackboards kann sowohl vom [REST Client](https://github.com/Academi-fy/back
 
 Der Zugriff über REST erfolgt entweder über den [Controller](https://github.com/Academi-fy/backend/wiki/Controllers) oder den [Resolver](https://github.com/Academi-fy/backend/wiki/Resolvers).
 
+#### Routes
+
+##### getAllBlackboards:
+```http request
+GET /blackboard/
+```
+
+##### getBlackboardById:
+```http request
+GET /blackboard/:id
+```
+
+##### createBlackboard:
+```http request
+POST /blackboard/
+```
+mit JSON Body: [CreateBlackboardDto](https://github.com/Academi-fy/backend/blob/master/src/rest/blackboard/dto/create-blackboard.dto.ts)
+
+##### editBlackboard:
+```http request
+PATCH /blackboard/:id
+```
+mit JSON Body: [EditBlackboardDto](https://github.com/Academi-fy/backend/blob/master/src/rest/blackboard/dto/edit-blackboard.dto.ts)
+
+##### deleteBlackboard:
+```http request
+DELETE /blackboard/:id
+```
+
 ### Socket Zugriff
 
-Der Zugriff über den Socket erfolgt durch [GatewayMessages](https://github.com/Academi-fy/backend/wiki/Gateway-Message) durch [Gateways](https://github.com/Academi-fy/backend/wiki/Gateway).
+Der Zugriff über den Socket erfolgt durch [GatewayMessages](https://github.com/Academi-fy/backend/wiki/Gateway-Message) in [Gateways](https://github.com/Academi-fy/backend/wiki/Gateway).
 
-[Gateways](../socket/Gateway) abonnieren Messages bzw. Events, über die dann die Socket-Aktion ausgeführt wird. Für Blackboards sind das:
+[Gateways](https://github.com/Academi-fy/backend/wiki/Gateway) abonnieren Messages bzw. Events, über die dann die Socket-Aktion ausgeführt wird. Für Blackboards sind das:
 - `BLACKBOARD_CREATE` - zum Erstellen von Blackboards
 - `BLACKBOARD_UPDATE` - zum Aktualisieren von Blackboards
 - `BLACKBOARD_DELETE` - zum Löschen von Blackboards

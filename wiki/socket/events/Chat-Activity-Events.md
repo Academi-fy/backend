@@ -132,3 +132,7 @@ interface MessageUpdate {
 > - [Attachment](https://github.com/Academi-fy/backend/wiki/Attachment)
 > - [Poll](https://github.com/Academi-fy/backend/wiki/Poll)
 > - [TextMessage](https://github.com/Academi-fy/backend/wiki/TextMessage)
+
+...
+
+1. [ ] &rarr; TODO

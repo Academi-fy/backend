@@ -5,7 +5,7 @@
 Das `EVENT_CREATE` Event wird verwendet, um ein [Event](https://github.com/Academi-fy/backend/wiki/Event) zu erstellen.
 
 ```typescript
-interface ClassCourseMutation {
+interface EventCreate {
     event: `EVENT_CREATE`,
     data: {
       sender: string,
@@ -34,7 +34,7 @@ interface ClassCourseMutation {
 Das `EVENT_UPDATE` Event wird verwendet, um ein [Event](https://github.com/Academi-fy/backend/wiki/Event) zu bearbeiten.
 
 ```typescript
-interface ClassCourseMutation {
+interface EventUpdate {
     event: `EVENT_UPDATE`,
     data: {
       sender: string,
@@ -63,7 +63,7 @@ interface ClassCourseMutation {
 Das `EVENT_PING_CREATE` Event wird verwendet, um Ping, also eine Push-Benachrichtigung mit eigenem Text, für ein [Event](https://github.com/Academi-fy/backend/wiki/Event) zu erstellen.
 
 ```typescript
-interface ClassCourseMutation {
+interface EventPingCreate {
     event: `EVENT_UPDATE`,
     data: {
       sender: string,
@@ -76,4 +76,20 @@ interface ClassCourseMutation {
 }
 ```
 
-...TODO
+## Start/End Event
+
+Das `EVENT_START` bzw. `EVENT_END` Event wird verwendet, um ein [Event](https://github.com/Academi-fy/backend/wiki/Event) manuell zu starten bzw. zu beenden.
+
+```typescript
+interface EventStart {
+    event: `EVENT_START` | `EVENT_END`,
+    data: {
+      sender: string,
+      value: {
+        eventId: string,
+        start: boolean,
+        message: string,
+      }
+    }
+}
+```
