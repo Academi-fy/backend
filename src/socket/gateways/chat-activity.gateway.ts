@@ -15,6 +15,7 @@ import { MessageSend } from '@/socket/entities/chat-activity/message/message-sen
 import { ActivityStar } from '@/socket/entities/chat-activity/activity/activity-star.entity';
 import { MessageAnswer } from '@/socket/entities/chat-activity/message/message-answer.entity';
 import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
+import { PollSend } from '@/socket/entities/chat-activity/poll/poll-send.entity';
 
 console.log(Gateway);
 
@@ -28,6 +29,11 @@ export class ChatActivityGateway extends Gateway {
     this.eventEmitter.on('createChatActivity', this.handleChatActivityCreate); //TODO: check if works
   }
 
+  /**
+   * Handles the creation of a chat activity.
+   * `RECEIVED_CHAT_ACTIVITY_CREATE` event is
+   * emitted to all chat members.
+   * */
   async handleChatActivityCreate<T>(
     body: GatewayMessage<CreateChatActivityDto<T>>,
   ): Promise<GatewayMessage<CreateChatActivityDto<T>> | Error> {
@@ -212,7 +218,30 @@ export class ChatActivityGateway extends Gateway {
   }
 
   @SubscribeMessage('POLL_SEND')
-  async handlePollSend() {}
+  async handlePollSend(
+    @MessageBody() body: GatewayMessage<PollSend>,
+  ): Promise<GatewayMessage<PollSend> | Error> {
+    const data: GatewayMessage<PollSend> | Error = await this.validateData<
+      GatewayMessage<PollSend>
+    >(body, GatewayMessage<PollSend>);
+    if (data instanceof Error) return data;
+
+    await this.createChatActivity<PollSend>({
+      sender: data.sender,
+      value: {
+        chat: data.value.chatId,
+        type: ChatActivityType.POLL_SEND,
+        executor: data.value.creator,
+        activityContent: {
+          poll: data.value.poll,
+          chatId: data.value.chatId,
+          creator: data.value.creator,
+        },
+      },
+    });
+
+    return data;
+  }
 
   @SubscribeMessage('POLL_EDIT')
   async handlePollEdit() {}
@@ -221,11 +250,9 @@ export class ChatActivityGateway extends Gateway {
   @SubscribeMessage('POLL_UNVOTE')
   async handlePollVote() {}
 
+  @SubscribeMessage('POLL_REOPEN')
   @SubscribeMessage('POLL_CLOSE')
   async handlePollClose() {}
-
-  @SubscribeMessage('POLL_REOPEN')
-  async handlePollReopen() {}
 
   @SubscribeMessage('POLL_RESULT')
   async handlePollResult() {}

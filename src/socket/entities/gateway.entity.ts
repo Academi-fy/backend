@@ -22,6 +22,10 @@ export class Gateway extends ValidateData {
     this.eventEmitter = new EventEmitter();
   }
 
+  /**
+   * Calls the eventEmitter to create a chat activity through
+   * `handleChatActivityCreate<T>(){}` in **src/socket/gateway/chat-activity-gateway.ts**
+   * */
   async createChatActivity<T>(
     body: GatewayMessage<CreateChatActivityDto<T>>,
   ): Promise<void> {
