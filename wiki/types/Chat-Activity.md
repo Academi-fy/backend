@@ -13,20 +13,20 @@ Daher reichen einfache "Message" Objekte nicht aus. Chronologisch müssen daher 
 
 ```typescript
 class ChatActivity {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  chatId: string;
-  executorId: string;
-  answerToId?: string;
-  type: ChatActivityType;
-  activityContent: any; // hängt vom "type" ab
-  starred: boolean;
-  chat?: Chat;
-  executor?: User;
-  readBy?: User[];
+  activityContent: any;
   answerTo?: ChatActivity;
+  answerToId?: string;
   answeredBy?: ChatActivity[];
+  chat?: Chat;
+  chatId: string;
+  createdAt: Date;
+  executor?: User;
+  executorId: string;
+  id: string;
+  readBy?: User[];
+  starred: boolean;
+  type: ChatActivityType;
+  updatedAt: Date;
 }
 ```
 > erwähnte Types

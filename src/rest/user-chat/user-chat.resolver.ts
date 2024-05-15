@@ -18,6 +18,13 @@ export class UserChatResolver {
     return this.userChatService.getUserChatById(id);
   }
 
+  @Query(() => [UserChat])
+  async getUserChatsByUser(
+    @Args('userId') userId: string,
+  ): Promise<UserChat[]> {
+    return this.userChatService.getUserChatsByUser(userId);
+  }
+
   @Mutation(() => UserChat)
   async createUserChat(
     @Args('userChat') createUserChatDto: CreateUserChatDto,

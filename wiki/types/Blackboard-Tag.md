@@ -1,12 +1,11 @@
 # Blackboard-Tag
 
-Blackboard-Tags beschreiben Kategorien für [Blackboards](Blackboard.md). Sie werden [Blackboards](Blackboard.md) vom Autor zugewiesen. Nach Erstellung können [User](User.md) danach filtern.
+Blackboard-Tags beschreiben Kategorien für [Blackboards](https://github.com/Academi-fy/backend/wiki/Blackboard). Sie werden [https://github.com/Academi-fy/backend/wiki/Blackboards](Blackboard) vom Autor zugewiesen. Nach Erstellung können [https://github.com/Academi-fy/backend/wiki/User](User) danach filtern.
 
 ## Model
 
 ```typescript
 class BlackboardTag {
-  _count?: number;
   blackboards?: Blackboard[];
   createdAt: Date;
   id: string;
@@ -15,16 +14,16 @@ class BlackboardTag {
 }
 ```
 > erwähnte Types
-> - [Blackboard](Blackboard.md)
-> - [Date](js/Date.md)
+> - [Blackboard](https://github.com/Academi-fy/backend/wiki/Blackboard)
+> - [Date](https://github.com/Academi-fy/backend/wiki/Date)
 
 ## Zugriff
 
-Auf Blackboard-Tags kann nur vom [REST Client](../rest/REST.md) zugegriffen werden.
+Auf Blackboard-Tags kann nur vom [REST Client](https://github.com/Academi-fy/backend/wiki/REST) zugegriffen werden.
 
 ### REST Zugriff
 
-Der Zugriff über REST erfolgt entweder über den [Controller](../rest/Controllers.md) oder den [Resolver](../rest/Resolvers.md).
+Der Zugriff über REST erfolgt entweder über den [Controller](https://github.com/Academi-fy/backend/wiki/Controllers) oder den [Resolver](https://github.com/Academi-fy/backend/wiki/Resolvers).
 
 #### Routes
 

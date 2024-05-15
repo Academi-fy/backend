@@ -7,5 +7,6 @@ import { UserAccountResolver } from './user-account.resolver';
 @Module({
   controllers: [UserAccountController],
   providers: [UserAccountService, UserAccountResolver],
+  exports: [UserAccountService],
 })
 export class UserAccountModule {}

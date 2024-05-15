@@ -606,6 +606,8 @@ enum GradeLevel {
   G8
   G9
   G10
+  G11
+  G12
 }
 
 type GradeMinAggregate {
@@ -751,6 +753,7 @@ enum SubjectType {
   HISTORY
   IMP
   ITALIAN
+  LATIN
   MATHS
   MUSIC
   NWT
@@ -787,6 +790,7 @@ type UserCountAggregate {
   createdAt: Int!
   updatedAt: Int!
   avatar: Int!
+  birthday: Int!
   firstName: Int!
   lastName: Int!
   type: Int!
@@ -815,6 +819,7 @@ type UserMaxAggregate {
   createdAt: DateTime
   updatedAt: DateTime
   avatar: String
+  birthday: String
   firstName: String
   lastName: String
   type: UserType
@@ -833,6 +838,7 @@ type UserMinAggregate {
   createdAt: DateTime
   updatedAt: DateTime
   avatar: String
+  birthday: String
   firstName: String
   lastName: String
   type: UserType
@@ -844,6 +850,7 @@ type User {
   createdAt: DateTime!
   updatedAt: DateTime!
   avatar: String
+  birthday: String
   firstName: String!
   lastName: String!
   type: UserType!
@@ -869,6 +876,7 @@ type UserAccountCountAggregate {
   id: Int!
   createdAt: Int!
   updatedAt: Int!
+  email: Int!
   password: Int!
   userId: Int!
   username: Int!
@@ -879,6 +887,7 @@ type UserAccountMaxAggregate {
   id: String
   createdAt: DateTime
   updatedAt: DateTime
+  email: String
   password: String
   userId: String
   username: String
@@ -888,6 +897,7 @@ type UserAccountMinAggregate {
   id: String
   createdAt: DateTime
   updatedAt: DateTime
+  email: String
   password: String
   userId: String
   username: String
@@ -897,6 +907,7 @@ type UserAccount {
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  email: String
   password: String!
   userId: String
   username: String!
@@ -951,6 +962,8 @@ type UserChat {
 }
 
 type Query {
+  getAllUserAccounts: [UserAccount!]!
+  getUserAccount(id: String, username: String): UserAccount!
   getAllBlackboards: [Blackboard!]!
   getLastBlackboards(sort: SortOrder!, limit: Float!, lastId: String): [Blackboard!]!
   getBlackboardById(id: String!): Blackboard!
@@ -991,10 +1004,9 @@ type Query {
   getSubject(id: String, type: SubjectType): Subject!
   getAllUsers: [User!]!
   getUserById(id: String!): User!
-  getAllUserAccounts: [UserAccount!]!
-  getUserAccount(id: String, username: String): UserAccount!
   getAllUserChats: [UserChat!]!
   getUserChat(id: String!): UserChat!
+  getUserChatsByUser(userId: String!): [UserChat!]!
 }
 
 enum SortOrder {
@@ -1003,6 +1015,9 @@ enum SortOrder {
 }
 
 type Mutation {
+  createUserAccount(userAccount: CreateUserAccountDto!): UserAccount!
+  editUseraccount(id: String!, userAccount: CreateUserAccountDto!): UserAccount!
+  deleteUserAccount(id: String!): UserAccount!
   createBlackboard(blackboard: CreateBlackboardDto!): Blackboard!
   editBlackboard(id: String!, blackboard: EditBlackboardDto!): Blackboard!
   deleteBlackboard(id: String!): Blackboard!
@@ -1062,15 +1077,19 @@ type Mutation {
   createUser(user: CreateUserDto!): User!
   editUser(id: String!, user: EditUserDto!): User!
   deleteUser(id: String!): User!
-  createUserAccount(userAccount: CreateUserAccountDto!): UserAccount!
-  editUseraccount(id: String!, userAccount: CreateUserAccountDto!): UserAccount!
-  deleteUserAccount(id: String!): UserAccount!
   createUserChat(userChat: CreateUserChatDto!): UserChat!
   editUserChat(id: String!, userChat: EditUserChatDto!): UserChat!
   hideUserChat(id: String!, hide: Boolean!): UserChat!
   pinUserChat(id: String!, pin: Boolean!): UserChat!
   readUserChat(id: String!, read: Boolean!): UserChat!
   deleteUserChat(id: String!): UserChat!
+}
+
+input CreateUserAccountDto {
+  email: String!
+  password: String!
+  user: String
+  username: String!
 }
 
 input CreateBlackboardDto {
@@ -1330,6 +1349,7 @@ input CreateUserDto {
   avatar: String
   blackboards: [String!]
   blackboardsReceived: [String!]
+  birthday: String!
   chatActivitiesCreated: [String!]!
   classes: [String!]
   clubs: [String!]
@@ -1353,6 +1373,7 @@ input EditUserDto {
   avatar: String
   blackboards: [String!]
   blackboardsReceived: [String!]
+  birthday: String!
   chatActivitiesCreated: [String!]
   classes: [String!]
   clubs: [String!]
@@ -1369,12 +1390,6 @@ input EditUserDto {
   type: String!
   userAccount: String!
   userChats: [String!]
-}
-
-input CreateUserAccountDto {
-  password: String!
-  user: String
-  username: String!
 }
 
 input CreateUserChatDto {

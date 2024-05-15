@@ -5,12 +5,12 @@ import { Prisma, UserAccount } from '@prisma/client';
 
 import { AuthDto } from './dto';
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from '@/prisma/prisma.service';
+import { UserAccountService } from '@/rest/user-account/user-account.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private prisma: PrismaService,
+    private userAccountService: UserAccountService,
     private jwt: JwtService,
     private config: ConfigService,
   ) {}
@@ -19,11 +19,9 @@ export class AuthService {
     let userAccount: UserAccount;
     try {
       const hashedPassword = await argon.hash(dto.password);
-      userAccount = await this.prisma.userAccount.create({
-        data: {
-          username: dto.username,
-          password: hashedPassword,
-        },
+      userAccount = await this.userAccountService.createUserAccount({
+        username: dto.username,
+        password: hashedPassword,
       });
 
       return this.signToken(userAccount.id, userAccount.username);
@@ -41,12 +39,21 @@ export class AuthService {
     }
   }
 
-  async signin(dto: AuthDto) {
-    const userAccount = await this.prisma.userAccount.findUnique({
-      where: {
-        username: dto.username,
-      },
-    });
+  /**
+   * @description To sign in, an object containing username and password must
+   * be provided.
+   * The provided password must already be hashed by the client. It is then
+   * verified and compared to the hashed password in the database through the
+   * argon2 hashing algorithm.
+   *
+   * @hashing Passwords are hashed by the client prior to being transmitted to
+   * this backend server. The received passwords are then hashed again to be
+   * stored in the database.
+   * */
+  async signin(dto: AuthDto): Promise<string> {
+    const userAccount = await this.userAccountService.getUserAccountByUsername(
+      dto.username,
+    );
 
     if (!userAccount) {
       throw new ForbiddenException('Credentials incorrect');
@@ -64,17 +71,12 @@ export class AuthService {
     return this.signToken(userAccount.id, userAccount.username);
   }
 
-  async signToken(
-    userAccountId: string,
-    username: string,
-  ): Promise<{ access_token: string }> {
+  async signToken(userAccountId: string, username: string): Promise<string> {
     const payload = { sub: userAccountId, username };
 
-    return {
-      access_token: await this.jwt.signAsync(payload, {
-        expiresIn: '90d',
-        secret: this.config.get('JWT_SECRET'),
-      }),
-    };
+    return await this.jwt.signAsync(payload, {
+      expiresIn: '90d',
+      secret: this.config.get('JWT_SECRET'),
+    });
   }
 }

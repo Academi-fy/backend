@@ -30,6 +30,17 @@ export class UserChatService extends Service {
     });
   }
 
+  async getUserChatsByUser(userId: string): Promise<UserChat[]> {
+    return this.prisma.userChat.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        ...userChatNesting,
+      },
+    });
+  }
+
   async getUserChatByCredentials(
     targetId: string,
     chatId: string,

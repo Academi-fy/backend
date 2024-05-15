@@ -29,6 +29,11 @@ export class UserChatController {
     return this.userChatService.getUserChatById(id);
   }
 
+  @Get('/user/:id')
+  async getUserChatsByUser(@Param('id') userId: string): Promise<UserChat[]> {
+    return this.userChatService.getUserChatsByUser(userId);
+  }
+
   @Post()
   async createUserChat(@Body() dto: CreateUserChatDto): Promise<UserChat> {
     return this.userChatService.createUserChat(dto);

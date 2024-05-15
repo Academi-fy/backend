@@ -16,6 +16,12 @@ import { ActivityStar } from '@/socket/entities/chat-activity/activity/activity-
 import { MessageAnswer } from '@/socket/entities/chat-activity/message/message-answer.entity';
 import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 import { PollSend } from '@/socket/entities/chat-activity/poll/poll-send.entity';
+import { PollEdit } from '@/socket/entities/chat-activity/poll/poll-edit.entity';
+import { PollVote } from '@/socket/entities/chat-activity/poll/poll-vote.entity';
+import { PollUser } from '@/rest/chat-activity/entities/poll-user.entity';
+import { PollOption } from '@/rest/chat-activity/entities/content-types/poll.entity';
+import { PollOpenClose } from '@/socket/entities/chat-activity/poll/poll-openclose.entity';
+import { PollPublishResult } from '@/socket/entities/chat-activity/poll/poll-publish-result.entity';
 
 console.log(Gateway);
 
@@ -244,16 +250,179 @@ export class ChatActivityGateway extends Gateway {
   }
 
   @SubscribeMessage('POLL_EDIT')
-  async handlePollEdit() {}
+  async handlePollEdit(
+    @MessageBody() body: GatewayMessage<PollEdit>,
+  ): Promise<GatewayMessage<PollEdit> | Error> {
+    const data: GatewayMessage<PollEdit> | Error = await this.validateData<
+      GatewayMessage<PollEdit>
+    >(body, GatewayMessage<PollEdit>);
+    if (data instanceof Error) return data;
+
+    const pollActivity: ChatActivity =
+      await this.chatActivityService.getChatActivityById(data.value.activityId);
+    if (!this.isPoll(pollActivity))
+      return new Error(`ChatActivity '${pollActivity.id}' is not a Poll`);
+
+    const modifiedChatActivity: ChatActivity =
+      await this.chatActivityService.editChatActivity(data.value.activityId, {
+        activityContent: {
+          poll: data.value.poll,
+        },
+      });
+
+    await this.createChatActivity<PollEdit>({
+      sender: data.sender,
+      value: {
+        chat: modifiedChatActivity.chatId,
+        type: ChatActivityType.POLL_EDIT,
+        executor: data.sender,
+        activityContent: {
+          activityId: data.value.activityId,
+          poll: data.value.poll,
+        },
+      },
+    });
+
+    return data;
+  }
 
   @SubscribeMessage('POLL_VOTE')
   @SubscribeMessage('POLL_UNVOTE')
-  async handlePollVote() {}
+  async handlePollVote(
+    @MessageBody() body: GatewayMessage<PollVote>,
+  ): Promise<GatewayMessage<PollVote> | Error> {
+    const data: GatewayMessage<PollVote> | Error = await this.validateData<
+      GatewayMessage<PollVote>
+    >(body, GatewayMessage<PollVote>);
+    if (data instanceof Error) return data;
+
+    const voted: boolean = data.value.voteDeleted;
+
+    const chatActivity: ChatActivity =
+      await this.chatActivityService.getChatActivityById(data.value.activityId);
+    if (!this.isPoll(chatActivity))
+      return new Error(`ChatActivity '${chatActivity.id}' is not a Poll`);
+
+    // @ts-ignore
+    const updatedOptions = chatActivity.activityContent.poll.options.map(
+      (option: PollOption) => {
+        if (option.id === data.value.optionId) {
+          option.votedBy = option.votedBy.filter(
+            (user: PollUser) => user.userId !== data.value.userId,
+          );
+          option.votes = option.votedBy.length;
+        }
+        return option;
+      },
+    );
+
+    const modifiedChatActivity: ChatActivity =
+      await this.chatActivityService.editChatActivity(data.value.activityId, {
+        activityContent: {
+          poll: {
+            options: updatedOptions,
+          },
+        },
+      });
+
+    await this.createChatActivity<PollVote>({
+      sender: data.sender,
+      value: {
+        chat: modifiedChatActivity.chatId,
+        type: voted ? ChatActivityType.POLL_VOTE : ChatActivityType.POLL_UNVOTE,
+        executor: data.sender,
+        activityContent: {
+          activityId: data.value.activityId,
+          voteDeleted: data.value.voteDeleted,
+          optionId: data.value.optionId,
+          userId: data.value.userId,
+        },
+      },
+    });
+
+    return data;
+  }
 
   @SubscribeMessage('POLL_REOPEN')
   @SubscribeMessage('POLL_CLOSE')
-  async handlePollClose() {}
+  async handlePollClose(
+    @MessageBody() body: GatewayMessage<PollOpenClose>,
+  ): Promise<GatewayMessage<PollOpenClose> | Error> {
+    const data: GatewayMessage<PollOpenClose> | Error = await this.validateData<
+      GatewayMessage<PollOpenClose>
+    >(body, GatewayMessage<PollOpenClose>);
+    if (data instanceof Error) return data;
+
+    const pollActivity: ChatActivity =
+      await this.chatActivityService.getChatActivityById(data.value.activityId);
+    if (!this.isPoll(pollActivity))
+      return new Error(`ChatActivity '${pollActivity.id}' is not a Poll`);
+
+    const modifiedChatActivity: ChatActivity =
+      await this.chatActivityService.editChatActivity(data.value.activityId, {
+        activityContent: {
+          closed: data.value.isClosed,
+        },
+      });
+
+    await this.createChatActivity<PollOpenClose>({
+      sender: data.sender,
+      value: {
+        chat: modifiedChatActivity.chatId,
+        type: data.value.isClosed
+          ? ChatActivityType.POLL_CLOSE
+          : ChatActivityType.POLL_REOPEN,
+        executor: data.sender,
+        activityContent: {
+          activityId: data.value.activityId,
+          isClosed: data.value.isClosed,
+        },
+      },
+    });
+
+    return data;
+  }
 
   @SubscribeMessage('POLL_RESULT')
-  async handlePollResult() {}
+  async handlePollResult(
+    @MessageBody() body: GatewayMessage<PollPublishResult>,
+  ): Promise<GatewayMessage<PollPublishResult> | Error> {
+    const data: GatewayMessage<PollPublishResult> | Error =
+      await this.validateData<GatewayMessage<PollPublishResult>>(
+        body,
+        GatewayMessage<PollPublishResult>,
+      );
+    if (data instanceof Error) return data;
+
+    const pollActivity: ChatActivity =
+      await this.chatActivityService.getChatActivityById(data.value.activityId);
+    if (!this.isPoll(pollActivity))
+      return new Error(`ChatActivity '${pollActivity.id}' is not a Poll`);
+
+    const modifiedChatActivity: ChatActivity =
+      await this.chatActivityService.editChatActivity(data.value.activityId, {
+        activityContent: {
+          result_published: data.value.result_published,
+        },
+      });
+
+    await this.createChatActivity<PollPublishResult>({
+      sender: data.sender,
+      value: {
+        chat: modifiedChatActivity.chatId,
+        type: ChatActivityType.POLL_RESULT,
+        executor: data.sender,
+        activityContent: {
+          activityId: data.value.activityId,
+          result_published: data.value.result_published,
+        },
+      },
+    });
+
+    return data;
+  }
+
+  private isPoll(activity: ChatActivity): boolean {
+    return activity.type != ChatActivityType.POLL_SEND;
+  }
 }
