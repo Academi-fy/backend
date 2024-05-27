@@ -6,9 +6,7 @@ import {
 import { SOCKET_PORT } from '@/constants';
 import { Gateway } from '@/socket/entities/gateway.entity';
 import { ChatActivityService } from '@/rest/chat-activity/chat-activity.service';
-import { Chat, ChatActivity, ChatActivityType } from '@/@generated-types';
-import { ChatService } from '@/rest/chat/services/chat.service';
-import { CreateChatActivityDto } from '@/rest/chat-activity';
+import { ChatActivity, ChatActivityType } from '@/@generated-types';
 import { MessageUpdate } from '@/socket/entities/chat-activity/message/message-update.entity';
 import { MessageDelete } from '@/socket/entities/chat-activity/message/message-delete.entity';
 import { MessageSend } from '@/socket/entities/chat-activity/message/message-send.entity';
@@ -22,48 +20,19 @@ import { PollUser } from '@/rest/chat-activity/entities/poll-user.entity';
 import { PollOption } from '@/rest/chat-activity/entities/content-types/poll.entity';
 import { PollOpenClose } from '@/socket/entities/chat-activity/poll/poll-openclose.entity';
 import { PollPublishResult } from '@/socket/entities/chat-activity/poll/poll-publish-result.entity';
-
-console.log(Gateway);
+import { HandleChatActivityCreateService } from '@/socket/gateways/services/handle-chat-activity-create.service';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ChatActivityGateway extends Gateway {
   constructor(
     private readonly chatActivityService: ChatActivityService,
-    private readonly chatService: ChatService,
+    private readonly handleChatActiviyCreateService: HandleChatActivityCreateService,
   ) {
     super();
-    this.eventEmitter.on('createChatActivity', this.handleChatActivityCreate); //TODO: check if works
-  }
-
-  /**
-   * Handles the creation of a chat activity.
-   * `RECEIVED_CHAT_ACTIVITY_CREATE` event is
-   * emitted to all chat members.
-   * */
-  async handleChatActivityCreate<T>(
-    body: GatewayMessage<CreateChatActivityDto<T>>,
-  ): Promise<GatewayMessage<CreateChatActivityDto<T>> | Error> {
-    const data: GatewayMessage<CreateChatActivityDto<T>> | Error =
-      await this.validateData<GatewayMessage<CreateChatActivityDto<T>>>(
-        body,
-        GatewayMessage<CreateChatActivityDto<T>>,
-      );
-    if (data instanceof Error) return data;
-
-    const createdChatActivity: ChatActivity =
-      await this.chatActivityService.processCreateChatActivity(data.value);
-
-    const chat: Chat = await this.chatService.getChatById(
-      createdChatActivity.chatId,
+    this.eventEmitter.on(
+      'createChatActivity',
+      this.handleChatActiviyCreateService.handleChatActivityCreate,
     );
-
-    for (const member of chat.targets) {
-      this.emit(member.userId, 'RECEIVED_CHAT_ACTIVITY_CREATE', {
-        data,
-      });
-    }
-
-    return data;
   }
 
   @SubscribeMessage('MESSAGE_SEND')
@@ -75,19 +44,20 @@ export class ChatActivityGateway extends Gateway {
     >(body, GatewayMessage<MessageSend>);
     if (data instanceof Error) return data;
 
-    await this.createChatActivity<MessageSend>({
-      sender: data.sender,
-      value: {
-        ...data.value,
-        chat: data.value.chatId,
-        type: ChatActivityType.MESSAGE_SEND,
-        executor: data.sender,
-        activityContent: {
-          chatId: data.value.chatId,
-          content: data.value.content,
+    await this.handleChatActiviyCreateService.handleChatActivityCreate<MessageSend>(
+      {
+        sender: data.sender,
+        value: {
+          chat: data.value.chatId,
+          type: ChatActivityType.MESSAGE_SEND,
+          executor: data.sender,
+          activityContent: {
+            chatId: data.value.chatId,
+            content: data.value.content,
+          },
         },
       },
-    });
+    );
 
     return data;
   }
@@ -108,19 +78,21 @@ export class ChatActivityGateway extends Gateway {
         },
       });
 
-    await this.createChatActivity<MessageUpdate>({
-      sender: data.sender,
-      value: {
-        ...data.value,
-        chat: modifiedChatActivity.chatId,
-        executor: data.sender,
-        type: ChatActivityType.MESSAGE_EDIT,
-        activityContent: {
-          activityId: modifiedChatActivity.id,
-          content: data.value.content,
+    await this.handleChatActiviyCreateService.handleChatActivityCreate<MessageUpdate>(
+      {
+        sender: data.sender,
+        value: {
+          ...data.value,
+          chat: modifiedChatActivity.chatId,
+          executor: data.sender,
+          type: ChatActivityType.MESSAGE_EDIT,
+          activityContent: {
+            activityId: modifiedChatActivity.id,
+            content: data.value.content,
+          },
         },
       },
-    });
+    );
 
     return data;
   }
@@ -137,17 +109,19 @@ export class ChatActivityGateway extends Gateway {
     const deletedChatActivity: ChatActivity =
       await this.chatActivityService.deleteChatActivity(data.value.deletedId);
 
-    await this.createChatActivity<MessageDelete>({
-      sender: data.sender,
-      value: {
-        chat: deletedChatActivity.chatId,
-        type: ChatActivityType.MESSAGE_DELETE,
-        executor: data.sender,
-        activityContent: {
-          deletedId: deletedChatActivity.id,
+    await this.handleChatActiviyCreateService.handleChatActivityCreate<MessageDelete>(
+      {
+        sender: data.sender,
+        value: {
+          chat: deletedChatActivity.chatId,
+          type: ChatActivityType.MESSAGE_DELETE,
+          executor: data.sender,
+          activityContent: {
+            deletedId: deletedChatActivity.id,
+          },
         },
       },
-    });
+    );
 
     return data;
   }
@@ -169,19 +143,21 @@ export class ChatActivityGateway extends Gateway {
         },
       });
 
-    await this.createChatActivity<MessageAnswer>({
-      sender: data.sender,
-      value: {
-        chat: modifiedChatActivity.chatId,
-        type: ChatActivityType.MESSAGE_ANSWER,
-        executor: data.sender,
-        activityContent: {
-          answeredId: data.value.answeredId,
-          chatId: data.value.chatId,
-          content: data.value.content,
+    await this.handleChatActiviyCreateService.handleChatActivityCreate<MessageAnswer>(
+      {
+        sender: data.sender,
+        value: {
+          chat: modifiedChatActivity.chatId,
+          type: ChatActivityType.MESSAGE_ANSWER,
+          executor: data.sender,
+          activityContent: {
+            answeredId: data.value.answeredId,
+            chatId: data.value.chatId,
+            content: data.value.content,
+          },
         },
       },
-    });
+    );
 
     return data;
   }
@@ -205,20 +181,22 @@ export class ChatActivityGateway extends Gateway {
 
     const starred: boolean = data.value.starred;
 
-    await this.createChatActivity<ActivityStar>({
-      sender: data.sender,
-      value: {
-        chat: modifiedChatActivity.chatId,
-        type: starred
-          ? ChatActivityType.ACTIVITY_STAR
-          : ChatActivityType.ACTIVITY_UNSTAR,
-        executor: data.sender,
-        activityContent: {
-          activityId: data.value.activityId,
-          starred: starred,
+    await this.handleChatActiviyCreateService.handleChatActivityCreate<ActivityStar>(
+      {
+        sender: data.sender,
+        value: {
+          chat: modifiedChatActivity.chatId,
+          type: starred
+            ? ChatActivityType.ACTIVITY_STAR
+            : ChatActivityType.ACTIVITY_UNSTAR,
+          executor: data.sender,
+          activityContent: {
+            activityId: data.value.activityId,
+            starred: starred,
+          },
         },
       },
-    });
+    );
 
     return data;
   }
@@ -232,19 +210,21 @@ export class ChatActivityGateway extends Gateway {
     >(body, GatewayMessage<PollSend>);
     if (data instanceof Error) return data;
 
-    await this.createChatActivity<PollSend>({
-      sender: data.sender,
-      value: {
-        chat: data.value.chatId,
-        type: ChatActivityType.POLL_SEND,
-        executor: data.value.creator,
-        activityContent: {
-          poll: data.value.poll,
-          chatId: data.value.chatId,
-          creator: data.value.creator,
+    await this.handleChatActiviyCreateService.handleChatActivityCreate<PollSend>(
+      {
+        sender: data.sender,
+        value: {
+          chat: data.value.chatId,
+          type: ChatActivityType.POLL_SEND,
+          executor: data.value.creator,
+          activityContent: {
+            poll: data.value.poll,
+            chatId: data.value.chatId,
+            creator: data.value.creator,
+          },
         },
       },
-    });
+    );
 
     return data;
   }
@@ -270,18 +250,20 @@ export class ChatActivityGateway extends Gateway {
         },
       });
 
-    await this.createChatActivity<PollEdit>({
-      sender: data.sender,
-      value: {
-        chat: modifiedChatActivity.chatId,
-        type: ChatActivityType.POLL_EDIT,
-        executor: data.sender,
-        activityContent: {
-          activityId: data.value.activityId,
-          poll: data.value.poll,
+    await this.handleChatActiviyCreateService.handleChatActivityCreate<PollEdit>(
+      {
+        sender: data.sender,
+        value: {
+          chat: modifiedChatActivity.chatId,
+          type: ChatActivityType.POLL_EDIT,
+          executor: data.sender,
+          activityContent: {
+            activityId: data.value.activityId,
+            poll: data.value.poll,
+          },
         },
       },
-    });
+    );
 
     return data;
   }
@@ -325,20 +307,24 @@ export class ChatActivityGateway extends Gateway {
         },
       });
 
-    await this.createChatActivity<PollVote>({
-      sender: data.sender,
-      value: {
-        chat: modifiedChatActivity.chatId,
-        type: voted ? ChatActivityType.POLL_VOTE : ChatActivityType.POLL_UNVOTE,
-        executor: data.sender,
-        activityContent: {
-          activityId: data.value.activityId,
-          voteDeleted: data.value.voteDeleted,
-          optionId: data.value.optionId,
-          userId: data.value.userId,
+    await this.handleChatActiviyCreateService.handleChatActivityCreate<PollVote>(
+      {
+        sender: data.sender,
+        value: {
+          chat: modifiedChatActivity.chatId,
+          type: voted
+            ? ChatActivityType.POLL_VOTE
+            : ChatActivityType.POLL_UNVOTE,
+          executor: data.sender,
+          activityContent: {
+            activityId: data.value.activityId,
+            voteDeleted: data.value.voteDeleted,
+            optionId: data.value.optionId,
+            userId: data.value.userId,
+          },
         },
       },
-    });
+    );
 
     return data;
   }
@@ -365,20 +351,22 @@ export class ChatActivityGateway extends Gateway {
         },
       });
 
-    await this.createChatActivity<PollOpenClose>({
-      sender: data.sender,
-      value: {
-        chat: modifiedChatActivity.chatId,
-        type: data.value.isClosed
-          ? ChatActivityType.POLL_CLOSE
-          : ChatActivityType.POLL_REOPEN,
-        executor: data.sender,
-        activityContent: {
-          activityId: data.value.activityId,
-          isClosed: data.value.isClosed,
+    await this.handleChatActiviyCreateService.handleChatActivityCreate<PollOpenClose>(
+      {
+        sender: data.sender,
+        value: {
+          chat: modifiedChatActivity.chatId,
+          type: data.value.isClosed
+            ? ChatActivityType.POLL_CLOSE
+            : ChatActivityType.POLL_REOPEN,
+          executor: data.sender,
+          activityContent: {
+            activityId: data.value.activityId,
+            isClosed: data.value.isClosed,
+          },
         },
       },
-    });
+    );
 
     return data;
   }
@@ -406,18 +394,20 @@ export class ChatActivityGateway extends Gateway {
         },
       });
 
-    await this.createChatActivity<PollPublishResult>({
-      sender: data.sender,
-      value: {
-        chat: modifiedChatActivity.chatId,
-        type: ChatActivityType.POLL_RESULT,
-        executor: data.sender,
-        activityContent: {
-          activityId: data.value.activityId,
-          result_published: data.value.result_published,
+    await this.handleChatActiviyCreateService.handleChatActivityCreate<PollPublishResult>(
+      {
+        sender: data.sender,
+        value: {
+          chat: modifiedChatActivity.chatId,
+          type: ChatActivityType.POLL_RESULT,
+          executor: data.sender,
+          activityContent: {
+            activityId: data.value.activityId,
+            result_published: data.value.result_published,
+          },
         },
       },
-    });
+    );
 
     return data;
   }

@@ -36,12 +36,20 @@ export class ConnectGateway
     userClients.push(client);
 
     this.clients.set(userId, userClients);
-    this.connectLogger.log(`Client '${userId}': connected`);
+
+    this.connectLogger.log(
+      `Client '${userId} (${this.clients.get(userId).length})': connected`,
+    );
   }
 
   handleDisconnect(client: Socket): void {
     const userId: string = this.getUserId(client);
-    this.clients.delete(userId);
-    this.connectLogger.log(`Client '${userId}': disconnected`);
+
+    const userClients: Socket[] = this.clients.get(userId) || [];
+    userClients.splice(userClients.indexOf(client), 1);
+
+    this.connectLogger.log(
+      `Client '${userId} (${this.clients.get(userId).length})': disconnected`,
+    );
   }
 }

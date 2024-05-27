@@ -6,15 +6,12 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { Club } from '@/@generated-types';
 
 import { CreateClubDto, EditClubDto } from './dto';
-import { JwtGuard } from 'src/auth/guard';
 import { ClubService } from './club.service';
 
-@UseGuards(JwtGuard)
 @Controller('clubs')
 export class ClubController {
   constructor(private clubService: ClubService) {}

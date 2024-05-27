@@ -6,15 +6,12 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { Event } from '@/@generated-types';
 
 import { CreateEventDto } from './dto';
-import { JwtGuard } from '@/auth/guard';
 import { EventService } from './event.service';
 
-@UseGuards(JwtGuard)
 @Controller('events')
 export class EventController {
   constructor(private eventService: EventService) {}

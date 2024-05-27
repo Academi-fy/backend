@@ -6,15 +6,12 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { User } from '@/@generated-types';
 
 import { CreateUserDto } from './dto';
-import { JwtGuard } from '@/auth/guard';
 import { UserService } from './user.service';
 
-@UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
   constructor(private userService: UserService) {}

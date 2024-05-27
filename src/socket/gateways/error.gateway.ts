@@ -14,10 +14,13 @@ export class ErrorGateway extends Gateway {
   async handleError(
     @MessageBody() body: GatewayMessage<Error>,
   ): Promise<GatewayMessage<Error> | Error> {
-    console.error('ErrorGateway: handleError', body);
-    throw new InternalServerErrorException({
-      information: 'Message received from client is an error.',
-      ...body,
-    });
+    const error: InternalServerErrorException =
+      new InternalServerErrorException({
+        information: 'Message received from client is an error.',
+        body,
+      });
+
+    console.error(error);
+    return error;
   }
 }

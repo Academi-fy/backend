@@ -6,15 +6,12 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { Course } from '@/@generated-types';
 
 import { CreateCourseDto, EditCourseDto } from './dto';
-import { JwtGuard } from '@/auth/guard';
 import { CourseService } from './course.service';
 
-@UseGuards(JwtGuard)
 @Controller('courses')
 export class CourseController {
   constructor(private courseService: CourseService) {}

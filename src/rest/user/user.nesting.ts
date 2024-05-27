@@ -8,6 +8,7 @@ import { eventTicketRawNesting } from '../event-ticket';
 import { userChatRawNesting } from '../user-chat';
 
 export const userRawNesting = {
+  badges: true,
   blackboards: true,
   blackboardsReceived: true,
   chatActivitiesCreated: true,
@@ -25,6 +26,7 @@ export const userRawNesting = {
 };
 
 export const userNesting = {
+  badges: true,
   blackboards: {
     include: {
       ...blackboardRawNesting,

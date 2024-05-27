@@ -6,7 +6,9 @@ import { UserChatService } from '@/rest/user-chat/user-chat.service';
 import { ChatService } from '@/rest/chat/services/chat.service';
 import { UserService } from '@/rest/user/user.service';
 import { ChatTargetResult } from '@/socket/gateways/services/chat/entities/chat-target-result.entity';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class ChatTargetService extends Service {
   constructor(
     private readonly chatService: ChatService,

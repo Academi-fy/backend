@@ -7,6 +7,10 @@ import { registerEnums } from './register-enums';
 import { SocketAdapter } from './socket/SocketAdapter';
 import { Socket } from 'socket.io';
 
+import * as passport from 'passport';
+import * as session from 'express-session';
+import * as cookieParser from 'cookie-parser';
+
 const appLogger: Logger = new Logger('NestApplication');
 
 const port: number = Number.parseInt(process.env.REST_PORT) || 3000;
@@ -25,6 +29,18 @@ async function bootstrap(): Promise<NestApplication> {
   registerEnums();
 
   app.enableCors();
+
+  app.use(
+    session({
+      secret: process.env.JWT_SECRET,
+      resave: false,
+      saveUninitialized: false,
+      cookie: { maxAge: 3600000 },
+    }),
+  );
+
+  app.use(passport.initialize());
+  app.use(cookieParser());
 
   return app.listen(port);
 }

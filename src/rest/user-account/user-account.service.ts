@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { UserAccount } from '@prisma/client';
 
 import { Service } from '@/service';
 import { PrismaService } from '@/prisma/prisma.service';
 
 import { userAccountNesting } from './user-account.nesting';
 import { CreateUserAccountDto, EditUserAccountDto } from './dto';
+import { UserAccount } from '@/@generated-types';
 
 @Injectable()
 export class UserAccountService extends Service {
@@ -32,7 +32,7 @@ export class UserAccountService extends Service {
 
   async getUserAccountByUsername(username: string): Promise<UserAccount> {
     return this.prisma.userAccount.findUnique({
-      where: { username },
+      where: { username: username },
       include: {
         ...userAccountNesting,
       },
@@ -80,6 +80,7 @@ export class UserAccountService extends Service {
       user: dto.user ? { connect: { id: dto.user } } : undefined,
       password: dto.password ? dto.password : undefined,
       username: dto.username ? dto.username : undefined,
+      refreshTokens: this.connectArray(dto.refreshTokens),
     };
   }
 }

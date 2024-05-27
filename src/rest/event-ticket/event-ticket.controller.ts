@@ -6,15 +6,12 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { EventTicket } from '@/@generated-types';
 
 import { CreateEventTicketDto, EditEventTicketDto } from './dto';
-import { JwtGuard } from '@/auth/guard';
 import { EventTicketService } from './event-ticket.service';
 
-@UseGuards(JwtGuard)
 @Controller('event-tickets')
 export class EventTicketController {
   constructor(private eventTicketService: EventTicketService) {}

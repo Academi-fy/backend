@@ -6,24 +6,15 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { UserAccount } from '@/@generated-types';
 
 import { CreateUserAccountDto, EditUserAccountDto } from './dto';
-import { GetUserAccount } from '@/auth/decorator';
-import { JwtGuard } from '@/auth/guard';
 import { UserAccountService } from './user-account.service';
 
-@UseGuards(JwtGuard)
 @Controller('user-accounts')
 export class UserAccountController {
   constructor(private userAccountService: UserAccountService) {}
-
-  @Get('me')
-  getMe(@GetUserAccount() user: UserAccount): UserAccount {
-    return user;
-  }
 
   @Get()
   getAllUserAccounts(): Promise<UserAccount[]> {

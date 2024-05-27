@@ -3,37 +3,14 @@
 <head>
   <script src="https://cdn.socket.io/4.3.2/socket.io.min.js" integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs" crossorigin="anonymous"></script>
   <script>
-    const socket = io('http://localhost:8080', {
-      query: {
-        userId: '55c75f37-a29f-41dd-8d0a-d424aaaadab7'
-      }
-    });
-    socket.on('connect', function() {
-      console.log('Connected');
+    const socket = io('http://localhost:8080', { query: { userId: 1 } });
 
-      /*socket.emit('BLACKBOARD_UPDATE', {
-        "sender": "55c75f37-a29f-41dd-8d0a-d424aaaadab7",
-        "modifyId": "0aef699f-06fa-4a9c-8ca2-1a42d9e92093",
-        "value": {
-          "authors": ["55c75f37-a29f-41dd-8d0a-d424aaaadab7"],
-          "coverImage": "https://www.adorama.com/alc/wp-content/uploads/2018/11/landscape-photography-tips-yosemite-valley-feature.jpg",
-          "tags": ["0c00f22a-e251-46a5-b9e0-a930274457df"],
-          "targets": ["55c75f37-a29f-41dd-8d0a-d424aaaadab7"],
-          "title": "Titel",
-          "text": "Text"
-        }
-      }, function(response) {
-        console.log('Server response:', response);
-      });*/
-
+    socket.on('connect', () => {
+      console.log('Connected to the server');
     });
 
-
-    socket.onAny((event, data) => {
-      console.log(`Event: ${event}`, data);
-    });
-    socket.on('disconnect', function() {
-      console.log('Disconnected');
+    socket.on('disconnect', () => {
+      console.log('Disconnected from the server');
     });
   </script>
   <style>

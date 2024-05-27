@@ -9,9 +9,9 @@ import { GraphQLJSON } from 'graphql-type-json';
 import { PrismaModule } from './prisma/prisma.module';
 import { RestModule } from './rest/rest.module';
 import { SocketModule } from './socket/socket.module';
-import { AuthModule } from '@/auth/auth.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { CacheModule } from '@nestjs/cache-manager';
+import { AuthModule } from '@/authentication/auth.module';
 
 @Module({
   imports: [
