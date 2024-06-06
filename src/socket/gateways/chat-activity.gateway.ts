@@ -6,9 +6,7 @@ import {
 import { SOCKET_PORT } from '@/constants';
 import { Gateway } from '@/socket/entities/gateway.entity';
 import { ChatActivityService } from '@/rest/chat-activity/chat-activity.service';
-import { Chat, ChatActivity, ChatActivityType } from '@/@generated-types';
-import { ChatService } from '@/rest/chat/services/chat.service';
-import { CreateChatActivityDto } from '@/rest/chat-activity';
+import { ChatActivity, ChatActivityType } from '@/@generated-types';
 import { MessageUpdate } from '@/socket/entities/chat-activity/message/message-update.entity';
 import { MessageDelete } from '@/socket/entities/chat-activity/message/message-delete.entity';
 import { MessageSend } from '@/socket/entities/chat-activity/message/message-send.entity';
@@ -22,63 +20,21 @@ import { PollUser } from '@/rest/chat-activity/entities/poll-user.entity';
 import { PollOption } from '@/rest/chat-activity/entities/content-types/poll.entity';
 import { PollOpenClose } from '@/socket/entities/chat-activity/poll/poll-openclose.entity';
 import { PollPublishResult } from '@/socket/entities/chat-activity/poll/poll-publish-result.entity';
-<<<<<<< Updated upstream
-
-console.log(Gateway);
-=======
 import { HandleChatActivityCreateService } from '@/socket/gateways/services/handle-chat-activity-create.service';
 import { GatewayResponse } from '@/socket/entities/gateway-response.entity';
 import response_codes from '@/response-codes.json';
->>>>>>> Stashed changes
 
 @WebSocketGateway(SOCKET_PORT)
 export class ChatActivityGateway extends Gateway {
   constructor(
     private readonly chatActivityService: ChatActivityService,
-<<<<<<< Updated upstream
-    private readonly chatService: ChatService,
-  ) {
-    super();
-    this.eventEmitter.on('createChatActivity', this.handleChatActivityCreate); //TODO: check if works
-  }
-
-  /**
-   * Handles the creation of a chat activity.
-   * `RECEIVED_CHAT_ACTIVITY_CREATE` event is
-   * emitted to all chat members.
-   * */
-  async handleChatActivityCreate<T>(
-    body: GatewayMessage<CreateChatActivityDto<T>>,
-  ): Promise<GatewayMessage<CreateChatActivityDto<T>> | Error> {
-    const data: GatewayMessage<CreateChatActivityDto<T>> | Error =
-      await this.validateData<GatewayMessage<CreateChatActivityDto<T>>>(
-        body,
-        GatewayMessage<CreateChatActivityDto<T>>,
-      );
-    if (data instanceof Error) return data;
-
-    const createdChatActivity: ChatActivity =
-      await this.chatActivityService.processCreateChatActivity(data.value);
-
-    const chat: Chat = await this.chatService.getChatById(
-      createdChatActivity.chatId,
-=======
     private readonly handleChatActivityCreateService: HandleChatActivityCreateService,
   ) {
     super();
     this.eventEmitter.on(
       'createChatActivity',
       this.handleChatActivityCreateService.handleChatActivityCreate,
->>>>>>> Stashed changes
     );
-
-    for (const member of chat.targets) {
-      this.emit(member.userId, 'RECEIVED_CHAT_ACTIVITY_CREATE', {
-        data,
-      });
-    }
-
-    return data;
   }
 
   @SubscribeMessage('MESSAGE_SEND')
@@ -95,18 +51,6 @@ export class ChatActivityGateway extends Gateway {
         data,
       );
 
-<<<<<<< Updated upstream
-    await this.createChatActivity<MessageSend>({
-      sender: data.sender,
-      value: {
-        ...data.value,
-        chat: data.value.chatId,
-        type: ChatActivityType.MESSAGE_SEND,
-        executor: data.sender,
-        activityContent: {
-          chatId: data.value.chatId,
-          content: data.value.content,
-=======
     await this.handleChatActivityCreateService.handleChatActivityCreate<MessageSend>(
       {
         sender: data.sender,
@@ -118,10 +62,9 @@ export class ChatActivityGateway extends Gateway {
             chatId: data.value.chatId,
             content: data.value.content,
           },
->>>>>>> Stashed changes
         },
       },
-    });
+    );
 
     return new GatewayResponse(
       false,
@@ -150,18 +93,6 @@ export class ChatActivityGateway extends Gateway {
         },
       });
 
-<<<<<<< Updated upstream
-    await this.createChatActivity<MessageUpdate>({
-      sender: data.sender,
-      value: {
-        ...data.value,
-        chat: modifiedChatActivity.chatId,
-        executor: data.sender,
-        type: ChatActivityType.MESSAGE_EDIT,
-        activityContent: {
-          activityId: modifiedChatActivity.id,
-          content: data.value.content,
-=======
     await this.handleChatActivityCreateService.handleChatActivityCreate<MessageUpdate>(
       {
         sender: data.sender,
@@ -174,10 +105,9 @@ export class ChatActivityGateway extends Gateway {
             activityId: modifiedChatActivity.id,
             content: data.value.content,
           },
->>>>>>> Stashed changes
         },
       },
-    });
+    );
 
     return new GatewayResponse(
       false,
@@ -202,16 +132,6 @@ export class ChatActivityGateway extends Gateway {
     const deletedChatActivity: ChatActivity =
       await this.chatActivityService.deleteChatActivity(data.value.deletedId);
 
-<<<<<<< Updated upstream
-    await this.createChatActivity<MessageDelete>({
-      sender: data.sender,
-      value: {
-        chat: deletedChatActivity.chatId,
-        type: ChatActivityType.MESSAGE_DELETE,
-        executor: data.sender,
-        activityContent: {
-          deletedId: deletedChatActivity.id,
-=======
     await this.handleChatActivityCreateService.handleChatActivityCreate<MessageDelete>(
       {
         sender: data.sender,
@@ -222,10 +142,9 @@ export class ChatActivityGateway extends Gateway {
           activityContent: {
             deletedId: deletedChatActivity.id,
           },
->>>>>>> Stashed changes
         },
       },
-    });
+    );
 
     return new GatewayResponse(
       false,
@@ -255,18 +174,6 @@ export class ChatActivityGateway extends Gateway {
         },
       });
 
-<<<<<<< Updated upstream
-    await this.createChatActivity<MessageAnswer>({
-      sender: data.sender,
-      value: {
-        chat: modifiedChatActivity.chatId,
-        type: ChatActivityType.MESSAGE_ANSWER,
-        executor: data.sender,
-        activityContent: {
-          answeredId: data.value.answeredId,
-          chatId: data.value.chatId,
-          content: data.value.content,
-=======
     await this.handleChatActivityCreateService.handleChatActivityCreate<MessageAnswer>(
       {
         sender: data.sender,
@@ -279,10 +186,9 @@ export class ChatActivityGateway extends Gateway {
             chatId: data.value.chatId,
             content: data.value.content,
           },
->>>>>>> Stashed changes
         },
       },
-    });
+    );
 
     return new GatewayResponse(
       false,
@@ -314,19 +220,6 @@ export class ChatActivityGateway extends Gateway {
 
     const starred: boolean = data.value.starred;
 
-<<<<<<< Updated upstream
-    await this.createChatActivity<ActivityStar>({
-      sender: data.sender,
-      value: {
-        chat: modifiedChatActivity.chatId,
-        type: starred
-          ? ChatActivityType.ACTIVITY_STAR
-          : ChatActivityType.ACTIVITY_UNSTAR,
-        executor: data.sender,
-        activityContent: {
-          activityId: data.value.activityId,
-          starred: starred,
-=======
     await this.handleChatActivityCreateService.handleChatActivityCreate<ActivityStar>(
       {
         sender: data.sender,
@@ -340,10 +233,9 @@ export class ChatActivityGateway extends Gateway {
             activityId: data.value.activityId,
             starred: starred,
           },
->>>>>>> Stashed changes
         },
       },
-    });
+    );
 
     return new GatewayResponse(
       false,
@@ -365,18 +257,6 @@ export class ChatActivityGateway extends Gateway {
         data,
       );
 
-<<<<<<< Updated upstream
-    await this.createChatActivity<PollSend>({
-      sender: data.sender,
-      value: {
-        chat: data.value.chatId,
-        type: ChatActivityType.POLL_SEND,
-        executor: data.value.creator,
-        activityContent: {
-          poll: data.value.poll,
-          chatId: data.value.chatId,
-          creator: data.value.creator,
-=======
     await this.handleChatActivityCreateService.handleChatActivityCreate<PollSend>(
       {
         sender: data.sender,
@@ -389,10 +269,9 @@ export class ChatActivityGateway extends Gateway {
             chatId: data.value.chatId,
             creator: data.value.creator,
           },
->>>>>>> Stashed changes
         },
       },
-    });
+    );
 
     return new GatewayResponse(
       false,
@@ -430,17 +309,6 @@ export class ChatActivityGateway extends Gateway {
         },
       });
 
-<<<<<<< Updated upstream
-    await this.createChatActivity<PollEdit>({
-      sender: data.sender,
-      value: {
-        chat: modifiedChatActivity.chatId,
-        type: ChatActivityType.POLL_EDIT,
-        executor: data.sender,
-        activityContent: {
-          activityId: data.value.activityId,
-          poll: data.value.poll,
-=======
     await this.handleChatActivityCreateService.handleChatActivityCreate<PollEdit>(
       {
         sender: data.sender,
@@ -452,10 +320,9 @@ export class ChatActivityGateway extends Gateway {
             activityId: data.value.activityId,
             poll: data.value.poll,
           },
->>>>>>> Stashed changes
         },
       },
-    });
+    );
 
     return new GatewayResponse(
       false,
@@ -512,19 +379,6 @@ export class ChatActivityGateway extends Gateway {
         },
       });
 
-<<<<<<< Updated upstream
-    await this.createChatActivity<PollVote>({
-      sender: data.sender,
-      value: {
-        chat: modifiedChatActivity.chatId,
-        type: voted ? ChatActivityType.POLL_VOTE : ChatActivityType.POLL_UNVOTE,
-        executor: data.sender,
-        activityContent: {
-          activityId: data.value.activityId,
-          voteDeleted: data.value.voteDeleted,
-          optionId: data.value.optionId,
-          userId: data.value.userId,
-=======
     await this.handleChatActivityCreateService.handleChatActivityCreate<PollVote>(
       {
         sender: data.sender,
@@ -540,10 +394,9 @@ export class ChatActivityGateway extends Gateway {
             optionId: data.value.optionId,
             userId: data.value.userId,
           },
->>>>>>> Stashed changes
         },
       },
-    });
+    );
 
     return new GatewayResponse(
       false,
@@ -582,19 +435,6 @@ export class ChatActivityGateway extends Gateway {
         },
       });
 
-<<<<<<< Updated upstream
-    await this.createChatActivity<PollOpenClose>({
-      sender: data.sender,
-      value: {
-        chat: modifiedChatActivity.chatId,
-        type: data.value.isClosed
-          ? ChatActivityType.POLL_CLOSE
-          : ChatActivityType.POLL_REOPEN,
-        executor: data.sender,
-        activityContent: {
-          activityId: data.value.activityId,
-          isClosed: data.value.isClosed,
-=======
     await this.handleChatActivityCreateService.handleChatActivityCreate<PollOpenClose>(
       {
         sender: data.sender,
@@ -608,10 +448,9 @@ export class ChatActivityGateway extends Gateway {
             activityId: data.value.activityId,
             isClosed: data.value.isClosed,
           },
->>>>>>> Stashed changes
         },
       },
-    });
+    );
 
     return new GatewayResponse(
       false,
@@ -651,17 +490,6 @@ export class ChatActivityGateway extends Gateway {
         },
       });
 
-<<<<<<< Updated upstream
-    await this.createChatActivity<PollPublishResult>({
-      sender: data.sender,
-      value: {
-        chat: modifiedChatActivity.chatId,
-        type: ChatActivityType.POLL_RESULT,
-        executor: data.sender,
-        activityContent: {
-          activityId: data.value.activityId,
-          result_published: data.value.result_published,
-=======
     await this.handleChatActivityCreateService.handleChatActivityCreate<PollPublishResult>(
       {
         sender: data.sender,
@@ -673,10 +501,9 @@ export class ChatActivityGateway extends Gateway {
             activityId: data.value.activityId,
             result_published: data.value.result_published,
           },
->>>>>>> Stashed changes
         },
       },
-    });
+    );
 
     return new GatewayResponse(
       false,

@@ -6,19 +6,17 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 
 import { BlackboardTag } from '@/@generated-types';
 import { CreateBlackboardTagDto, EditBlackboardTagDto } from './dto';
-import { JwtGuard } from '@/auth/guard';
 import { BlackboardTagService } from './services/blackboard-tag.service';
 
 /**
  * @description The blackboard tag controller handling direct HTTP access to
  * blackboard tags.
  * */
-@UseGuards(JwtGuard)
+
 @Controller('blackboard-tags')
 export class BlackboardTagController {
   constructor(private blackboardTagService: BlackboardTagService) {}

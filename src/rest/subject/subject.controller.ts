@@ -6,15 +6,12 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { Subject } from '@/@generated-types';
 
 import { CreateSubjectDto } from './dto';
-import { JwtGuard } from '@/auth/guard';
 import { SubjectService } from './subject.service';
 
-@UseGuards(JwtGuard)
 @Controller('subjects')
 export class SubjectController {
   constructor(private subjectService: SubjectService) {}

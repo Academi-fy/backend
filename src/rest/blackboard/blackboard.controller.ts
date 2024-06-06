@@ -6,18 +6,16 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 
 import { Blackboard } from '@/@generated-types';
 import { CreateBlackboardDto, EditBlackboardDto } from './dto';
-import { JwtGuard } from '@/auth/guard';
 import { BlackboardService } from './services/blackboard.service';
 
 /**
  * @description The blackboard controller handling direct HTTP access to blackboards.
  * */
-@UseGuards(JwtGuard)
+
 @Controller('blackboard')
 export class BlackboardController {
   constructor(private blackboardService: BlackboardService) {}

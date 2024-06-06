@@ -6,15 +6,12 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { Grade } from '@/@generated-types';
 
 import { CreateGradeDto } from './dto';
-import { JwtGuard } from '../../auth/guard';
 import { GradeService } from './grade.service';
 
-@UseGuards(JwtGuard)
 @Controller('grades')
 export class GradeController {
   constructor(private gradeService: GradeService) {}

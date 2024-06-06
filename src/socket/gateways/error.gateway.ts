@@ -13,17 +13,8 @@ export class ErrorGateway extends Gateway {
   @SubscribeMessage('ERROR')
   async handleError(
     @MessageBody() body: GatewayMessage<Error>,
-<<<<<<< Updated upstream
-  ): Promise<GatewayMessage<Error> | Error> {
-    console.error('ErrorGateway: handleError', body);
-    throw new InternalServerErrorException({
-      information: 'Message received from client is an error.',
-      ...body,
-    });
-=======
   ): Promise<GatewayResponse> {
     console.error(body);
     return new GatewayResponse(true, '1', body);
->>>>>>> Stashed changes
   }
 }

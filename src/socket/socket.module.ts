@@ -15,6 +15,7 @@ import { CreateChatActivityService } from '@/socket/gateways/services/create-cha
 import { ChatClubService } from '@/socket/gateways/services/chat/chat-club.service';
 import { ChatCourseService } from '@/socket/gateways/services/chat/chat-course.service';
 import { ChatTargetService } from '@/socket/gateways/services/chat/chat-target.service';
+import { GatewayServicesModule } from '@/socket/gateways/services/gateway-services.module';
 
 @Module({
   providers: [
@@ -32,6 +33,6 @@ import { ChatTargetService } from '@/socket/gateways/services/chat/chat-target.s
     ChatCourseService,
     ChatTargetService,
   ],
-  imports: [RestModule],
+  imports: [RestModule, GatewayServicesModule],
 })
 export class SocketModule {}

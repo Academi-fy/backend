@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsArray, IsOptional, IsString } from 'class-validator';
-import { UserType } from '../../../@generated-types';
+import { UserType } from '@/@generated-types';
 
 @InputType()
 export class EditUserDto {

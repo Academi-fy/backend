@@ -6,15 +6,12 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { ChatActivity } from '@/@generated-types';
 
 import { CreateChatActivityDto, EditChatActivityDto } from './dto';
-import { JwtGuard } from '@/auth/guard';
 import { ChatActivityService } from './chat-activity.service';
 
-@UseGuards(JwtGuard)
 @Controller('chat-activity')
 export class ChatActivityController {
   constructor(private chatActivityService: ChatActivityService) {}

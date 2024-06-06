@@ -2,6 +2,54 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type BadgeCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  description: Int!
+  image: Int!
+  name: Int!
+  _all: Int!
+}
+
+type BadgeCount {
+  users: Int!
+}
+
+type BadgeMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  description: String
+  image: String
+  name: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type BadgeMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  description: String
+  image: String
+  name: String
+}
+
+type Badge {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  description: String!
+  image: String!
+  name: String!
+  users: [User!]
+  _count: BadgeCount!
+}
+
 type BlackboardCountAggregate {
   id: Int!
   createdAt: Int!
@@ -28,11 +76,6 @@ type BlackboardMaxAggregate {
   text: String
   title: String
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type BlackboardMinAggregate {
   id: String
@@ -629,6 +672,44 @@ type Grade {
   _count: GradeCount!
 }
 
+type RefreshTokenCountAggregate {
+  id: Int!
+  createdAt: Int!
+  updatedAt: Int!
+  expiresAt: Int!
+  token: Int!
+  userAccountId: Int!
+  _all: Int!
+}
+
+type RefreshTokenMaxAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  expiresAt: DateTime
+  token: String
+  userAccountId: String
+}
+
+type RefreshTokenMinAggregate {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  expiresAt: DateTime
+  token: String
+  userAccountId: String
+}
+
+type RefreshToken {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  expiresAt: DateTime!
+  token: String!
+  userAccountId: String!
+  userAccount: UserAccount!
+}
+
 type SchoolCountAggregate {
   id: Int!
   createdAt: Int!
@@ -799,6 +880,7 @@ type UserCountAggregate {
 }
 
 type UserCount {
+  badges: Int!
   blackboards: Int!
   blackboardsReceived: Int!
   chatActivitiesCreated: Int!
@@ -855,6 +937,7 @@ type User {
   lastName: String!
   type: UserType!
   userAccountId: String!
+  badges: [Badge!]
   blackboards: [Blackboard!]
   blackboardsReceived: [Blackboard!]
   chatActivitiesCreated: [ChatActivity!]
@@ -881,6 +964,10 @@ type UserAccountCountAggregate {
   userId: Int!
   username: Int!
   _all: Int!
+}
+
+type UserAccountCount {
+  refreshTokens: Int!
 }
 
 type UserAccountMaxAggregate {
@@ -912,6 +999,8 @@ type UserAccount {
   userId: String
   username: String!
   user: User
+  refreshTokens: [RefreshToken!]
+  _count: UserAccountCount!
 }
 
 type UserChatCountAggregate {
@@ -1090,6 +1179,7 @@ input CreateUserAccountDto {
   password: String!
   user: String
   username: String!
+  refreshTokens: [String!]
 }
 
 input CreateBlackboardDto {
