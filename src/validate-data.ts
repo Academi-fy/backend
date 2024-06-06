@@ -19,7 +19,12 @@ export class ValidateData {
 
       console.error(error.stack + JSON.stringify(error, null, 2));
       return error;
+<<<<<<< Updated upstream
     }
     return event;
+=======
+    }*/
+    return data;
+>>>>>>> Stashed changes
   }
 }

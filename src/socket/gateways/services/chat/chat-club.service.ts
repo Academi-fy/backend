@@ -39,9 +39,7 @@ export class ChatClubService extends Service {
     }
 
     const modifiedChat: Chat = await this.chatService.editChat(chat.id, {
-      targets: chat.clubs
-        .map((club: Club) => club.id)
-        .concat(data.value.clubId),
+      clubs: chat.clubs.map((club: Club) => club.id).concat(data.value.clubId),
     });
 
     return { data, modifiedChat, club };

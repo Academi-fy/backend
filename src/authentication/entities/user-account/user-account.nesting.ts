@@ -1,4 +1,4 @@
-import { userRawNesting } from '../user';
+import { userRawNesting } from '../../../rest/user';
 
 export const userAccountNesting = {
   user: {

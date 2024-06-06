@@ -24,6 +24,8 @@ import { ChatCourseResult } from '@/socket/gateways/services/chat/entities/chat-
 import { ChatCourseService } from '@/socket/gateways/services/chat/chat-course.service';
 import { ChatClubResult } from '@/socket/gateways/services/chat/entities/chat-club-result.entity';
 import { ChatClubService } from '@/socket/gateways/services/chat/chat-club.service';
+import { GatewayResponse } from '@/socket/entities/gateway-response.entity';
+import response_codes from '@/response-codes.json';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ChatGateway extends Gateway {
@@ -40,11 +42,16 @@ export class ChatGateway extends Gateway {
   @SubscribeMessage('CHAT_TARGET_ADD')
   async handleChatTargetAdd(
     @MessageBody() body: GatewayMessage<ChatTargetMutation>,
-  ): Promise<GatewayMessage<ChatTargetMutation> | Error> {
+  ): Promise<GatewayResponse> {
     const result: Error | ChatTargetResult =
       await this.chatTargetService.executeChatUserAdd(body);
 
-    if (result instanceof Error) return result;
+    if (result instanceof Error)
+      return new GatewayResponse(
+        true,
+        response_codes.chat.target.add.failed,
+        result,
+      );
     const { data, modifiedChat, target } = result;
 
     await this.createChatActivityService.sendActivityChatTargetAdd(
@@ -59,17 +66,22 @@ export class ChatGateway extends Gateway {
       modifiedChat,
     );
 
-    return data;
+    return new GatewayResponse(false, response_codes.chat.target.add.success);
   }
 
   @SubscribeMessage('CHAT_TARGET_REMOVE')
   async handleChatTargetRemove(
     @MessageBody() body: GatewayMessage<ChatTargetMutation>,
-  ): Promise<GatewayMessage<ChatTargetMutation> | Error> {
+  ): Promise<GatewayResponse> {
     const result: Error | ChatTargetResult =
       await this.chatTargetService.executeChatUserRemove(body);
 
-    if (result instanceof Error) return result;
+    if (result instanceof Error)
+      return new GatewayResponse(
+        true,
+        response_codes.chat.target.remove.failed,
+        result,
+      );
     const { data, modifiedChat, target } = result;
 
     await this.createChatActivityService.sendActivityChatTargetRemove(
@@ -84,17 +96,25 @@ export class ChatGateway extends Gateway {
       modifiedChat,
     );
 
-    return data;
+    return new GatewayResponse(
+      false,
+      response_codes.chat.target.remove.success,
+    );
   }
 
   @SubscribeMessage('CHAT_COURSE_ADD')
   async handleChatCourseAdd(
     @MessageBody() body: GatewayMessage<ChatCourseMutation>,
-  ): Promise<GatewayMessage<ChatCourseMutation> | Error> {
+  ): Promise<GatewayResponse> {
     const result: Error | ChatCourseResult =
       await this.chatCourseService.executeChatCourseAdd(body);
 
-    if (result instanceof Error) return result;
+    if (result instanceof Error)
+      return new GatewayResponse(
+        true,
+        response_codes.chat.course_action.add.failed,
+        result,
+      );
     const { data, modifiedChat, course } = result;
 
     await this.createChatActivityService.sendActivityChatCourseAdd(
@@ -109,17 +129,25 @@ export class ChatGateway extends Gateway {
       modifiedChat,
     );
 
-    return data;
+    return new GatewayResponse(
+      false,
+      response_codes.chat.course_action.add.success,
+    );
   }
 
   @SubscribeMessage('CHAT_COURSE_REMOVE')
   async handleChatCourseRemove(
     @MessageBody() body: GatewayMessage<ChatCourseMutation>,
-  ): Promise<GatewayMessage<ChatCourseMutation> | Error> {
+  ): Promise<GatewayResponse> {
     const result: Error | ChatCourseResult =
       await this.chatCourseService.executeChatCourseRemove(body);
 
-    if (result instanceof Error) return result;
+    if (result instanceof Error)
+      return new GatewayResponse(
+        true,
+        response_codes.chat.course_action.remove.failed,
+        result,
+      );
     const { data, modifiedChat, course } = result;
 
     await this.createChatActivityService.sendActivityChatCourseRemove(
@@ -134,17 +162,25 @@ export class ChatGateway extends Gateway {
       modifiedChat,
     );
 
-    return data;
+    return new GatewayResponse(
+      false,
+      response_codes.chat.course_action.remove.success,
+    );
   }
 
   @SubscribeMessage('CHAT_CLUB_ADD')
   async handleChatClubAdd(
     @MessageBody() body: GatewayMessage<ChatClubMutation>,
-  ): Promise<GatewayMessage<ChatClubMutation> | Error> {
+  ): Promise<GatewayResponse> {
     const result: Error | ChatClubResult =
       await this.chatClubService.executeChatClubAdd(body);
 
-    if (result instanceof Error) return result;
+    if (result instanceof Error)
+      return new GatewayResponse(
+        true,
+        response_codes.chat.club_action.add.failed,
+        result,
+      );
     const { data, modifiedChat, club } = result;
 
     await this.createChatActivityService.sendActivityChatClubAdd(
@@ -159,17 +195,25 @@ export class ChatGateway extends Gateway {
       modifiedChat,
     );
 
-    return data;
+    return new GatewayResponse(
+      false,
+      response_codes.chat.club_action.add.success,
+    );
   }
 
   @SubscribeMessage('CHAT_CLUB_REMOVE')
   async handleChatClubRemove(
     @MessageBody() body: GatewayMessage<ChatClubMutation>,
-  ): Promise<GatewayMessage<ChatClubMutation> | Error> {
+  ): Promise<GatewayResponse> {
     const result: Error | ChatClubResult =
       await this.chatClubService.chatClubRemove(body);
 
-    if (result instanceof Error) return result;
+    if (result instanceof Error)
+      return new GatewayResponse(
+        true,
+        response_codes.chat.club_action.remove.failed,
+        result,
+      );
     const { data, modifiedChat, club } = result;
 
     await this.createChatActivityService.sendActivityChatClubRemove(
@@ -184,19 +228,27 @@ export class ChatGateway extends Gateway {
       modifiedChat,
     );
 
-    return data;
+    return new GatewayResponse(
+      false,
+      response_codes.chat.club_action.remove.success,
+    );
   }
 
   @SubscribeMessage('CHAT_NAME_CHANGE')
   async handleChatNameChange(
     @MessageBody() body: GatewayMessage<ChatNameChange>,
-  ): Promise<GatewayMessage<ChatNameChange> | Error> {
+  ): Promise<GatewayResponse> {
     const data: Error | GatewayMessage<ChatNameChange> =
       await this.validateData<GatewayMessage<ChatNameChange>>(
         body,
         GatewayMessage<ChatNameChange>,
       );
-    if (data instanceof Error) return data;
+    if (data instanceof Error)
+      return new GatewayResponse(
+        true,
+        response_codes.chat.name.change.failed,
+        data,
+      );
 
     const modifiedChat: Chat = await this.chatService.editChat(
       data.value.chatId,
@@ -216,19 +268,24 @@ export class ChatGateway extends Gateway {
       modifiedChat,
     );
 
-    return data;
+    return new GatewayResponse(false, response_codes.chat.name.change.success);
   }
 
   @SubscribeMessage('CHAT_AVATAR_CHANGE')
   async handleAvatarNameChange(
     @MessageBody() body: GatewayMessage<ChatAvatarChange>,
-  ): Promise<GatewayMessage<ChatAvatarChange> | Error> {
+  ): Promise<GatewayResponse> {
     const data: Error | GatewayMessage<ChatAvatarChange> =
       await this.validateData<GatewayMessage<ChatAvatarChange>>(
         body,
         GatewayMessage<ChatAvatarChange>,
       );
-    if (data instanceof Error) return data;
+    if (data instanceof Error)
+      return new GatewayResponse(
+        true,
+        response_codes.chat.avatar.change.failed,
+        data,
+      );
 
     const modifiedChat: Chat = await this.chatService.editChat(
       data.value.chatId,
@@ -248,17 +305,21 @@ export class ChatGateway extends Gateway {
       modifiedChat,
     );
 
-    return data;
+    return new GatewayResponse(
+      false,
+      response_codes.chat.avatar.change.success,
+    );
   }
 
   @SubscribeMessage('TYPING')
   async handleTyping(
     @MessageBody() body: GatewayMessage<Typing>,
-  ): Promise<GatewayMessage<Typing> | Error> {
+  ): Promise<GatewayResponse> {
     const data: Error | GatewayMessage<Typing> = await this.validateData<
       GatewayMessage<Typing>
     >(body, GatewayMessage<Typing>);
-    if (data instanceof Error) return data;
+    if (data instanceof Error)
+      return new GatewayResponse(true, response_codes.chat.typing.failed, data);
 
     const chat: Chat = await this.chatService.getChatById(data.value.chatId);
 
@@ -268,6 +329,6 @@ export class ChatGateway extends Gateway {
       data,
     );
 
-    return data;
+    return new GatewayResponse(false, response_codes.chat.typing.success);
   }
 }

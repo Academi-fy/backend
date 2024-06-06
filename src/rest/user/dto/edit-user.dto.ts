@@ -24,7 +24,7 @@ export class EditUserDto {
   @IsOptional()
   blackboardsReceived?: string[];
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
   birthday?: string;
@@ -74,7 +74,7 @@ export class EditUserDto {
   @IsOptional()
   firstName?: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
   lastName?: string;
@@ -84,7 +84,7 @@ export class EditUserDto {
   @IsOptional()
   readActivities?: string[];
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
   schools?: string[];
@@ -94,12 +94,12 @@ export class EditUserDto {
   @IsOptional()
   targetActivities?: string[];
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
   type?: UserType;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
   userAccount?: string;

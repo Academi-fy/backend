@@ -109,7 +109,7 @@ export class BlackboardDatabaseService extends Service {
         ...blackboardNesting,
       },
     });
-    if (!blackboard) throw new Error(`Blackboard with id ${id} not updated`);
+    if (!blackboard) return null;
 
     return blackboard;
   }
@@ -126,7 +126,7 @@ export class BlackboardDatabaseService extends Service {
         ...blackboardNesting,
       },
     });
-    if (!blackboard) throw new Error(`Blackboard with id ${id} not deleted`);
+    if (!blackboard) return null;
 
     return blackboard;
   }

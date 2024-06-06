@@ -1,0 +1,143 @@
+{
+  "blackboard": {
+    "notFound": "001.000",
+    "creation": {
+      "failed": "001.001.1",
+      "success": "001.001.0"
+    },
+    "deletion": {
+      "failed": "001.002.1",
+      "success": "001.002.0"
+    },
+    "update": {
+      "failed": "001.003.1",
+      "success": "001.003.0"
+    }
+  },
+  "chat":{
+    "notFound": "002.000",
+    "creation": {
+      "failed": "002.001.1",
+      "success": "002.001.0"
+    },
+    "deletion": {
+      "failed": "002.002.1",
+      "success": "002.002.0"
+    },
+    "update": {
+      "failed": "002.003.1",
+      "success": "002.003.0"
+    },
+    "target":{
+      "notFound": "002.40",
+      "add": {
+        "failed": "002.004.001.1",
+        "success": "002.004.001.0"
+      },
+      "remove": {
+        "failed": "002.004.002.1",
+        "success": "002.004.002.0"
+      }
+    },
+    "course_action": {
+      "notFound": "002.005.0",
+      "add": {
+        "failed": "002.005.001.1",
+        "success": "002.005.001.0"
+      },
+      "remove": {
+          "failed": "002.005.002.1",
+          "success": "002.005.002.0"
+      }
+    },
+    "club_action": {
+      "notFound": "002.006.0",
+      "add": {
+        "failed": "002.006.001.1",
+        "success": "002.006.001.0"
+      },
+      "remove": {
+          "failed": "002.006.002.1",
+          "success": "002.006.002.0"
+      }
+    },
+    "name": {
+      "change": {
+        "failed": "002.007.001.1",
+        "success": "002.007.001.0"
+      }
+    },
+    "avatar": {
+      "change": {
+        "failed": "002.008.001.1",
+        "success": "002.008.001.0"
+      }
+    },
+    "typing": {
+      "success": "002.009.1",
+      "failed": "002.009.1"
+    }
+  },
+  "chat_activity": {
+    "notFound": "003.000",
+    "creation": {
+      "failed": "003.001.1",
+      "success": "003.001.0"
+    },
+    "deletion": {
+      "failed": "003.002.1",
+      "success": "003.002.0"
+    },
+    "update": {
+      "failed": "003.003.1",
+      "success": "003.003.0"
+    },
+    "message_action": {
+      "notFound": "003.004.000",
+      "send": {
+        "failed": "003.004.001.1",
+        "success": "003.004.001.0"
+      },
+      "update": {
+        "failed": "003.004.002.1",
+        "success": "003.004.002.0"
+      },
+      "delete": {
+        "failed": "003.004.003.1",
+        "success": "003.004.003.0"
+      },
+      "answer": {
+        "failed": "003.004.004.1",
+        "success": "003.004.004.0"
+      },
+      "star": {
+        "failed": "003.004.005.1",
+        "success": "003.004.005.0"
+      }
+    },
+    "poll_action": {
+      "notFound": "003.005.000",
+      "send": {
+        "failed": "003.005.001.1",
+        "success": "003.005.001.0"
+      },
+      "edit": {
+        "failed": "003.005.002.1",
+        "success": "003.005.002.0"
+      },
+      "vote": {
+        "failed": "003.005.003.1",
+        "success": "003.005.003.0"
+      },
+      "open_close": {
+        "failed": "003.005.004.1",
+        "success": "003.005.004.0"
+      },
+      "result": {
+        "failed": "003.005.005.1",
+        "success": "003.005.005.0"
+      },
+      "wrong_type": "003.005.006"
+    }
+  }
+}

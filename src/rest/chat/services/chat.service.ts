@@ -82,7 +82,6 @@ export class ChatService extends Service {
 
   private mapDtoToData(dto: CreateChatDto | EditChatDto) {
     return {
-      ...dto,
       activities: this.connectArray(dto.activities),
       clubs: this.connectArray(dto.clubs),
       courses: this.connectArray(dto.courses),

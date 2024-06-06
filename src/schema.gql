@@ -1373,7 +1373,7 @@ input EditUserDto {
   avatar: String
   blackboards: [String!]
   blackboardsReceived: [String!]
-  birthday: String!
+  birthday: String
   chatActivitiesCreated: [String!]
   classes: [String!]
   clubs: [String!]
@@ -1383,12 +1383,12 @@ input EditUserDto {
   events: [String!]
   eventTickets: [String!]
   firstName: String
-  lastName: String!
+  lastName: String
   readActivities: [String!]
-  schools: [String!]!
+  schools: [String!]
   targetActivities: [String!]
-  type: String!
-  userAccount: String!
+  type: String
+  userAccount: String
   userChats: [String!]
 }
 

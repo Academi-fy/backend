@@ -14,6 +14,8 @@ import { SchoolService } from '@/rest/school/school.service';
 import { BlackboardUpdate } from '@/socket/entities/blackboard/blackboard-update.entity';
 import { BlackboardDelete } from '@/socket/entities/blackboard/blackboard-delete.entity';
 import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
+import response_codes from '@/response-codes.json';
+import { GatewayResponse } from '@/socket/entities/gateway-response.entity';
 
 @WebSocketGateway(SOCKET_PORT)
 export class BlackboardGateway extends Gateway {
@@ -27,16 +29,26 @@ export class BlackboardGateway extends Gateway {
   @SubscribeMessage('BLACKBOARD_CREATE')
   async handleBlackboardCreate(
     @MessageBody() body: GatewayMessage<CreateBlackboardDto>,
-  ): Promise<GatewayMessage<CreateBlackboardDto> | Error> {
+  ): Promise<GatewayResponse> {
     const data: GatewayMessage<CreateBlackboardDto> | Error =
       await this.validateData<GatewayMessage<CreateBlackboardDto>>(
         body,
         GatewayMessage<CreateBlackboardDto>,
       );
-    if (data instanceof Error) return data;
+    if (data instanceof Error)
+      return new GatewayResponse(
+        true,
+        response_codes.blackboard.creation.failed,
+        data,
+      );
 
     const createdBlackboard: Blackboard =
       await this.blackboardService.createBlackboard(data.value);
+    if (!createdBlackboard)
+      return new GatewayResponse(
+        true,
+        response_codes.blackboard.creation.failed,
+      );
 
     const school: School = await this.schoolService.getSchoolById(
       createdBlackboard.school.id,
@@ -46,24 +58,34 @@ export class BlackboardGateway extends Gateway {
       this.emit(member.id, 'RECEIVED_BLACKBOARD_CREATE', data);
     }
 
-    return data;
+    return new GatewayResponse(
+      false,
+      response_codes.blackboard.creation.success,
+    );
   }
 
   @SubscribeMessage('BLACKBOARD_UPDATE')
   async handleBlackboardUpdate(
     @MessageBody() body: GatewayMessage<BlackboardUpdate>,
-  ): Promise<GatewayMessage<BlackboardUpdate> | Error> {
+  ): Promise<GatewayResponse> {
     const data: GatewayMessage<BlackboardUpdate> | Error =
       await this.validateData<GatewayMessage<BlackboardUpdate>>(
         body,
         GatewayMessage<BlackboardUpdate>,
       );
-    if (data instanceof Error) return data;
+    if (data instanceof Error)
+      return new GatewayResponse(
+        true,
+        response_codes.blackboard.update.failed,
+        data,
+      );
 
     const blackboardId: string = data.value.blackboardId;
 
     const modifiedBlackboard: Blackboard =
       await this.blackboardService.editBlackboard(blackboardId, data.value);
+    if (!modifiedBlackboard)
+      return new GatewayResponse(true, response_codes.blackboard.update.failed);
 
     const school: School = await this.schoolService.getSchoolById(
       modifiedBlackboard.school.id,
@@ -73,24 +95,34 @@ export class BlackboardGateway extends Gateway {
       this.emit(member.id, 'RECEIVED_BLACKBOARD_UPDATE', data);
     }
 
-    return data;
+    return new GatewayResponse(false, response_codes.blackboard.update.success);
   }
 
   @SubscribeMessage('BLACKBOARD_DELETE')
   async handleBlackboardDelete(
     @MessageBody() body: GatewayMessage<BlackboardDelete>,
-  ): Promise<GatewayMessage<BlackboardDelete> | Error> {
+  ): Promise<GatewayResponse> {
     const data: GatewayMessage<BlackboardDelete> | Error =
       await this.validateData<GatewayMessage<BlackboardDelete>>(
         body,
         GatewayMessage<never>,
       );
-    if (data instanceof Error) return data;
+    if (data instanceof Error)
+      return new GatewayResponse(
+        true,
+        response_codes.blackboard.deletion.failed,
+        data,
+      );
 
     const blackboardId: string = data.value.blackboardId;
 
     const deletedBlackboard: Blackboard =
       await this.blackboardService.deleteBlackboard(blackboardId);
+    if (!deletedBlackboard)
+      return new GatewayResponse(
+        true,
+        response_codes.blackboard.deletion.failed,
+      );
 
     const school: School = await this.schoolService.getSchoolById(
       deletedBlackboard.school.id,
@@ -100,6 +132,9 @@ export class BlackboardGateway extends Gateway {
       this.emit(member.id, 'RECEIVED_BLACKBOARD_DELETE', data);
     }
 
-    return data;
+    return new GatewayResponse(
+      false,
+      response_codes.blackboard.deletion.success,
+    );
   }
 }
