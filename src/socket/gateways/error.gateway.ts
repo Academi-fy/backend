@@ -10,9 +10,11 @@ import { GatewayResponse } from '@/socket/entities/gateway-response.entity';
 import { Logger, Req } from '@nestjs/common';
 import { Socket } from 'socket.io';
 
+import response_codes from '@/response-codes.json';
+
 @WebSocketGateway(SOCKET_PORT)
 export class ErrorGateway extends Gateway {
-  public errorLogger: Logger = new Logger('ERROR_GATEWAY');
+  public errorLogger: Logger = new Logger('ErrorGateway');
 
   @SubscribeMessage('ERROR')
   async handleError(
@@ -22,6 +24,10 @@ export class ErrorGateway extends Gateway {
     this.errorLogger.error(
       `Error received from client '${request.handshake.query.userId}': \n${body}`,
     );
-    return new GatewayResponse(true, '1', body);
+    return new GatewayResponse(
+      true,
+      response_codes.special.error_gateway.response,
+      body,
+    );
   }
 }

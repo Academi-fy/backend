@@ -139,5 +139,162 @@
       },
       "wrong_type": "003.005.006"
     }
+  },
+  "class": {
+    "notFound": "004.000",
+    "creation": {
+      "failed": "004.001.1",
+      "success": "004.001.0"
+    },
+    "deletion": {
+      "failed": "004.002.1",
+      "success": "004.002.0"
+    },
+    "update": {
+      "failed": "004.003.1",
+      "success": "004.003.0"
+    },
+    "course_action": {
+      "notFound": "004.004.0",
+      "add": {
+        "failed": "004.004.001.1",
+        "success": "004.004.001.0"
+      },
+      "remove": {
+          "failed": "004.004.002.1",
+          "success": "004.004.002.0"
+      }
+    },
+    "user_action": {
+      "notFound": "004.005.0",
+      "add": {
+        "failed": "004.005.001.1",
+        "success": "004.005.001.0"
+      },
+      "remove": {
+        "failed": "004.005.002.1",
+        "success": "004.005.002.0"
+      }
+    }
+  },
+  "club": {
+    "notFound": "005.000",
+    "creation": {
+      "failed": "005.001.1",
+      "success": "005.001.0"
+    },
+    "deletion": {
+      "failed": "005.002.1",
+      "success": "005.002.0"
+    },
+    "update": {
+      "failed": "005.003.1",
+      "success": "005.003.0"
+    },
+    "user_action": {
+      "notFound": "005.004.0",
+      "add": {
+        "failed": "005.004.001.1",
+        "success": "005.004.001.0"
+      },
+      "remove": {
+        "failed": "005.004.002.1",
+        "success": "005.004.002.0"
+      }
+    },
+    "event_action": {
+      "notFound": "005.005.0",
+      "add": {
+          "failed": "005.005.001.1",
+          "success": "005.005.001.0"
+      },
+      "remove": {
+          "failed": "005.005.002.1",
+          "success": "005.005.002.0"
+      }
+    }
+  },
+  "course": {
+    "notFound": "006.000",
+    "creation": {
+      "failed": "006.001.1",
+      "success": "006.001.0"
+    },
+    "deletion": {
+      "failed": "006.002.1",
+      "success": "006.002.0"
+    },
+    "update": {
+      "failed": "006.003.1",
+      "success": "006.003.0"
+    },
+    "user_action": {
+      "add": {
+        "failed": "006.004.001.1",
+        "success": "006.004.001.0"
+      },
+      "remove": {
+        "failed": "006.004.002.1",
+        "success": "006.004.002.0"
+      }
+    },
+    "chat_action": {
+      "notFound": "006.005.0",
+      "set": {
+        "failed": "006.005.001.1",
+        "success": "006.005.001.0"
+      }
+    }
+  },
+  "event": {
+    "notFound": "007.000",
+    "creation": {
+      "failed": "007.001.1",
+      "success": "007.001.0"
+    },
+    "deletion": {
+      "failed": "007.002.1",
+      "success": "007.002.0"
+    },
+    "update": {
+      "failed": "007.003.1",
+      "success": "007.003.0"
+    },
+    "event_action": {
+      "notFound": "007.004.0",
+      "ping_create": {
+        "failed": "007.004.001.1",
+        "success": "007.004.001.0"
+      },
+      "event_start": {
+        "failed": "007.004.002.1",
+        "success": "007.004.002.0"
+      },
+      "event_end": {
+        "failed": "007.004.003.1",
+        "success": "007.004.003.0"
+      }
+    }
+  },
+  "school": {
+    "notFound": "008.000",
+    "creation": {
+      "failed": "008.001.1",
+      "success": "008.001.0"
+    },
+    "deletion": {
+      "failed": "008.002.1",
+      "success": "008.002.0"
+    },
+    "update": {
+      "failed": "008.003.1",
+      "success": "008.003.0"
+    }
+  },
+  "special": {
+    "fail": "999.000",
+    "error_gateway": {
+      "response": "999.001.001.1"
+    }
   }
 }

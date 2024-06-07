@@ -13,6 +13,9 @@ import { PingCreate } from '@/socket/entities/event/ping-create.entity';
 import { EventStart } from '@/socket/entities/event/event-start.entity';
 import { EventUpdate } from '@/socket/entities/event/event-update.entity';
 import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
+import { GatewayResponse } from '@/socket/entities/gateway-response.entity';
+
+import response_codes from '@/response-codes.json';
 
 @WebSocketGateway(SOCKET_PORT)
 export class EventGateway extends Gateway {
@@ -26,108 +29,136 @@ export class EventGateway extends Gateway {
   @SubscribeMessage('EVENT_CREATE')
   async handleEventCreate(
     @MessageBody() body: GatewayMessage<CreateEventDto>,
-  ): Promise<GatewayMessage<CreateEventDto> | Error> {
+  ): Promise<GatewayResponse> {
     const data: GatewayMessage<CreateEventDto> | Error =
       await this.validateData<GatewayMessage<CreateEventDto>>(
         body,
         GatewayMessage<CreateEventDto>,
       );
-    if (data instanceof Error) return data;
+    if (data instanceof Error)
+      return new GatewayResponse(
+        true,
+        response_codes.event.creation.failed,
+        data,
+      );
 
     const createdEvent: Event = await this.eventService.createEvent(data.value);
     if (!createdEvent)
-      throw new Error(`Blackboard could not be created with data: ${data}`);
+      return new GatewayResponse(true, response_codes.event.creation.failed);
 
     const school: School = await this.schoolService.getSchoolById(
       createdEvent.schoolId,
     );
     if (!school)
-      throw new Error(`School with id ${createdEvent.schoolId} not found`);
+      return new GatewayResponse(true, response_codes.school.notFound);
 
     for (const member of school.members) {
       this.emit(member.id, 'RECEIVED_EVENT_CREATE', data);
     }
 
-    return data;
+    return new GatewayResponse(false, response_codes.event.creation.success);
   }
 
   @SubscribeMessage('EVENT_UPDATE')
   async handleEventUpdate(
     @MessageBody() body: GatewayMessage<EventUpdate>,
-  ): Promise<GatewayMessage<EventUpdate> | Error> {
+  ): Promise<GatewayResponse> {
     const data: GatewayMessage<EventUpdate> | Error = await this.validateData<
       GatewayMessage<EventUpdate>
     >(body, GatewayMessage<EventUpdate>);
-    if (data instanceof Error) return data;
+    if (data instanceof Error)
+      return new GatewayResponse(
+        true,
+        response_codes.event.update.failed,
+        data,
+      );
 
     const eventId: string = data.value.eventId;
 
     const event: Event = await this.eventService.getEventById(eventId);
-    if (!event) throw new Error(`Event with id ${eventId} not found`);
+    if (!event) return new GatewayResponse(true, response_codes.event.notFound);
 
     const modifiedEvent: Event = await this.eventService.editEvent(
       eventId,
       data.value,
     );
     if (!modifiedEvent)
-      throw new Error(`Event with id ${eventId} could not be modified`);
+      return new GatewayResponse(true, response_codes.event.update.failed);
 
     const school: School = await this.schoolService.getSchoolById(
       modifiedEvent.schoolId,
     );
     if (!school)
-      throw new Error(`School with id ${modifiedEvent.schoolId} not found`);
+      return new GatewayResponse(true, response_codes.school.notFound);
 
     for (const member of school.members) {
       this.emit(member.id, 'RECEIVED_EVENT_UPDATE', data);
     }
 
-    return data;
+    return new GatewayResponse(false, response_codes.event.update.success);
   }
 
   @SubscribeMessage('EVENT_PING_CREATE')
   async handleEventPingCreate(
     @MessageBody() body: GatewayMessage<PingCreate>,
-  ): Promise<GatewayMessage<PingCreate> | Error> {
-    return this.handleSimpleEvent<PingCreate>(body, 'EVENT_PING_CREATE');
+  ): Promise<GatewayResponse> {
+    return this.handleSimpleEvent<PingCreate>(
+      body,
+      'EVENT_PING_CREATE',
+      response_codes.event.event_action.ping_create,
+    );
   }
 
   @SubscribeMessage('EVENT_START')
   async handleEventStart(
     @MessageBody() body: GatewayMessage<EventStart>,
-  ): Promise<GatewayMessage<EventStart> | Error> {
-    return this.handleSimpleEvent<EventStart>(body, 'EVENT_START');
+  ): Promise<GatewayResponse> {
+    return this.handleSimpleEvent<EventStart>(
+      body,
+      'EVENT_START',
+      response_codes.event.event_action.event_start,
+    );
   }
 
   @SubscribeMessage('EVENT_END')
   async handleEventEnd(
     @MessageBody() body: GatewayMessage<EventStart>,
-  ): Promise<GatewayMessage<EventStart> | Error> {
-    return this.handleSimpleEvent<EventStart>(body, 'EVENT_END');
+  ): Promise<GatewayResponse> {
+    return this.handleSimpleEvent<EventStart>(
+      body,
+      'EVENT_END',
+      response_codes.event.event_action.event_end,
+    );
   }
 
   private async handleSimpleEvent<T extends EventUpdate>(
     body: GatewayMessage<T>,
     eventName: string,
-  ): Promise<GatewayMessage<T> | Error> {
+    responseCode: {
+      success: string;
+      failed: string;
+    },
+  ): Promise<GatewayResponse> {
     const data: GatewayMessage<T> | Error = await this.validateData<
       GatewayMessage<T>
     >(body, GatewayMessage);
-    if (data instanceof Error) return data;
+    if (data instanceof Error)
+      return new GatewayResponse(true, responseCode.failed, data);
 
     const eventId: string = data.value.eventId;
     const event: Event = await this.eventService.getEventById(eventId);
-    if (!event) throw new Error(`Event with id ${eventId} not found`);
+    if (!event) return new GatewayResponse(true, response_codes.event.notFound);
 
     const school: School = await this.schoolService.getSchoolById(
       event.schoolId,
     );
-    if (!school) throw new Error(`School with id ${event.schoolId} not found`);
+    if (!school)
+      return new GatewayResponse(true, response_codes.school.notFound);
 
     for (const member of school.members) {
       this.emit(member.id, `RECEIVED_${eventName}`, data);
     }
 
-    return data;
+    return new GatewayResponse(false, responseCode.success);
   }
 }
