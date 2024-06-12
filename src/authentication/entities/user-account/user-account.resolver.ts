@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserAccount } from '@/@generated-types';
 
-import { CreateUserAccountDto } from './dto';
+import { CreateUserAccountDto, EditUserAccountDto } from './dto';
 import { UserAccountService } from './user-account.service';
 
 @Resolver(() => UserAccount)
@@ -35,9 +35,9 @@ export class UserAccountResolver {
   @Mutation(() => UserAccount)
   async editUseraccount(
     @Args('id') id: string,
-    @Args('userAccount') createUserAccountDto: CreateUserAccountDto,
+    @Args('userAccount') editUserAccountDto: EditUserAccountDto,
   ): Promise<UserAccount> {
-    return this.userAccountService.editUserAccount(id, createUserAccountDto);
+    return this.userAccountService.editUserAccount(id, editUserAccountDto);
   }
 
   @Mutation(() => UserAccount)

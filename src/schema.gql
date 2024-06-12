@@ -1105,7 +1105,7 @@ enum SortOrder {
 
 type Mutation {
   createUserAccount(userAccount: CreateUserAccountDto!): UserAccount!
-  editUseraccount(id: String!, userAccount: CreateUserAccountDto!): UserAccount!
+  editUseraccount(id: String!, userAccount: EditUserAccountDto!): UserAccount!
   deleteUserAccount(id: String!): UserAccount!
   createBlackboard(blackboard: CreateBlackboardDto!): Blackboard!
   editBlackboard(id: String!, blackboard: EditBlackboardDto!): Blackboard!
@@ -1179,6 +1179,14 @@ input CreateUserAccountDto {
   password: String!
   user: String
   username: String!
+  refreshTokens: [String!]
+}
+
+input EditUserAccountDto {
+  email: String
+  password: String
+  user: String
+  username: String
   refreshTokens: [String!]
 }
 

@@ -3,7 +3,7 @@ import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class EditUserAccountDto {
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
   email?: string;
