@@ -213,9 +213,7 @@ export class ChatActivityGateway extends Gateway {
 
     const modifiedChatActivity: ChatActivity =
       await this.chatActivityService.editChatActivity(data.value.activityId, {
-        activityContent: {
-          starred: data.value.starred,
-        },
+        starred: data.value.starred,
       });
 
     const starred: boolean = data.value.starred;
