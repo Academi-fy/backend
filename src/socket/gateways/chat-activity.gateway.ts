@@ -214,7 +214,7 @@ export class ChatActivityGateway extends Gateway {
     const modifiedChatActivity: ChatActivity =
       await this.chatActivityService.editChatActivity(data.value.activityId, {
         activityContent: {
-          starredId: data.value.activityId,
+          starred: data.value.starred,
         },
       });
 
