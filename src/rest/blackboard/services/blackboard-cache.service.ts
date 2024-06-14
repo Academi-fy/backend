@@ -116,12 +116,12 @@ export class BlackboardCacheService implements CacheService {
    * (containing all blackboard ids for quick access to all blackboards) and
    * `blackboard_${id}` (to access specific blackboards by id).
    * */
-  async getLastBlackboards(
+  async getPaginatedBlackboards(
     sort: SortOrder,
     limit: number,
     lastId?: string,
   ): Promise<Blackboard[]> {
-    return this.blackboardDatabaseService.getLastBlackboards(
+    return this.blackboardDatabaseService.getPaginatedBlackboards(
       sort,
       limit,
       lastId,

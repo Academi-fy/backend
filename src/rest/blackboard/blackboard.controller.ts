@@ -8,7 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 
-import { Blackboard } from '@/@generated-types';
+import { Blackboard, SortOrder } from '@/@generated-types';
 import { CreateBlackboardDto, EditBlackboardDto } from './dto';
 import { BlackboardService } from './services/blackboard.service';
 
@@ -34,6 +34,15 @@ export class BlackboardController {
   @Get(':id')
   getBlackboardById(@Param('id') blackboardId: string): Promise<Blackboard> {
     return this.blackboardService.getBlackboardById(blackboardId);
+  }
+
+  @Get('paginated/lastId=:lastId&limit=:limit&sort=:sort')
+  getPaginatedBlackboards(
+    @Param('sort') sort: SortOrder,
+    @Param('limit') limit: number,
+    @Param('lastId') lastId: string,
+  ): Promise<Blackboard[]> {
+    return this.blackboardService.getPaginatedBlackboards(sort, limit, lastId);
   }
 
   /**

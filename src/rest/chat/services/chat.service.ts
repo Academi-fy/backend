@@ -1,94 +1,50 @@
 import { Injectable } from '@nestjs/common';
-import { Chat } from '@/@generated-types';
 
 import { Service } from '@/service';
-import { PrismaService } from '@/prisma/prisma.service';
-
-import { chatNesting } from '../index';
-import { CreateChatDto, EditChatDto } from '../dto';
+import { ChatCacheService } from '@/rest/chat/services/chat-cache.service';
+import { Chat } from '@/@generated-types';
+import { CreateChatDto, EditChatDto } from '@/rest/chat';
 
 @Injectable()
 export class ChatService extends Service {
-  constructor(private prisma: PrismaService) {
+  constructor(private chatCacheService: ChatCacheService) {
     super();
   }
 
+  /**
+   * @description Get all chats from cache. If not found, get them from
+   * the database and store them in cache.
+   */
   async getAllChats(): Promise<Chat[]> {
-    const chats: Chat[] = await this.prisma.chat.findMany({
-      include: {
-        ...chatNesting,
-      },
-    });
-
-    if (!chats) throw new Error('No chats found');
-    return chats;
+    return this.chatCacheService.getAllChats();
   }
 
-  async getChatById(chatId: string): Promise<Chat> {
-    const chat: Chat = await this.prisma.chat.findUnique({
-      where: { id: chatId },
-      include: {
-        ...chatNesting,
-      },
-    });
-
-    if (!chat) throw new Error(`Chat with id ${chatId} not found`);
-    return chat;
+  /**
+   * @description Get a specific chat by id from cache. If not found, get
+   * it from the database and store it in cache.
+   */
+  async getChatById(id: string): Promise<Chat> {
+    return this.chatCacheService.getChatById(id);
   }
 
-  async createChat(dto: CreateChatDto): Promise<Chat> {
-    const createdChat: Chat = await this.prisma.chat.create({
-      data: {
-        ...this.mapDtoToData(dto),
-      },
-      include: {
-        ...chatNesting,
-      },
-    });
-
-    if (!createdChat)
-      throw new Error(`Chat could not be created with data: ${dto}`);
-    return createdChat;
+  /**
+   * @description Create a new chat and store it in cache.
+   */
+  async createChat(createChatDto: CreateChatDto): Promise<Chat> {
+    return this.chatCacheService.createChat(createChatDto);
   }
 
-  async editChat(chatId: string, dto: EditChatDto): Promise<Chat> {
-    const modifiedChat: Chat = await this.prisma.chat.update({
-      where: { id: chatId },
-      data: {
-        ...this.mapDtoToData(dto),
-      },
-      include: {
-        ...chatNesting,
-      },
-    });
-
-    if (!modifiedChat)
-      throw new Error(`Chat with id ${chatId} could not be modified`);
-    return modifiedChat;
+  /**
+   * @description Edit an existing chat and update it in cache.
+   */
+  async editChat(chatId: string, editChatDto: EditChatDto): Promise<Chat> {
+    return this.chatCacheService.editChat(chatId, editChatDto);
   }
 
+  /**
+   * @description Delete a chat from cache.
+   */
   async deleteChat(chatId: string): Promise<Chat> {
-    const deletedChat: Chat = await this.prisma.chat.delete({
-      where: { id: chatId },
-      include: {
-        ...chatNesting,
-      },
-    });
-
-    if (!deletedChat)
-      throw new Error(`Chat with id ${chatId} could not be deleted`);
-    return deletedChat;
-  }
-
-  private mapDtoToData(dto: CreateChatDto | EditChatDto) {
-    return {
-      activities: this.connectArray(dto.activities),
-      clubs: this.connectArray(dto.clubs),
-      courses: this.connectArray(dto.courses),
-      targets: this.connectArray(dto.targets),
-      name: dto.name ? dto.name : undefined,
-      type: dto.type ? dto.type : undefined,
-      avatar: dto.avatar ? dto.avatar : undefined,
-    };
+    return this.chatCacheService.deleteChat(chatId);
   }
 }

@@ -251,7 +251,7 @@ export class BlackboardTagCacheService implements CacheService {
     blackboardTag: BlackboardTag,
   ): Promise<BlackboardTag> {
     await this.cacheManager.set(
-      `blackboard_${blackboardTag.id}`,
+      `blackboard-tag_${blackboardTag.id}`,
       blackboardTag,
       cacheLifetime,
     );

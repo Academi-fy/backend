@@ -27,13 +27,13 @@ export class BlackboardResolver {
    * @param lastId The id of the last blackboard to start from.
    * */
   @Query(() => [Blackboard])
-  async getLastBlackboards(
+  async getPaginatedBlackboards(
     @Args('sort', { type: () => SortOrder }) sort: SortOrder,
     @Args('limit') limit: number,
     @Args('lastId', { nullable: true })
     lastId?: string,
   ): Promise<Blackboard[]> {
-    return this.blackboardService.getLastBlackboards(sort, limit, lastId);
+    return this.blackboardService.getPaginatedBlackboards(sort, limit, lastId);
   }
 
   /**

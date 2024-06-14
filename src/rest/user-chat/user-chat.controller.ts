@@ -1,15 +1,7 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
 import { UserChat } from '@/@generated-types';
 
-import { CreateUserChatDto, EditUserChatDto } from './dto';
+import { EditUserChatDto } from './dto';
 import { UserChatService } from './user-chat.service';
 
 @Controller('user-chats')
@@ -31,10 +23,13 @@ export class UserChatController {
     return this.userChatService.getUserChatsByUser(userId);
   }
 
-  @Post()
-  async createUserChat(@Body() dto: CreateUserChatDto): Promise<UserChat> {
-    return this.userChatService.createUserChat(dto);
-  }
+  /*@Get('/check-exists/user1=:user1&user2=:user2')
+  async checkChatExists(
+    @Param('user1') user1: string,
+    @Param('user2') user2: string,
+  ): Promise<boolean> {
+    return this.userChatService.checkChatExists(user1, user2);
+  }*/
 
   @Patch(':id')
   async editUserChat(

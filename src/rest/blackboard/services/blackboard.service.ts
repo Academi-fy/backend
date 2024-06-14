@@ -32,12 +32,12 @@ export class BlackboardService extends Service {
    * @param limit The number of blackboards to return.
    * @param lastId The id of the last blackboard to start from.
    * */
-  async getLastBlackboards(
+  async getPaginatedBlackboards(
     sort: SortOrder,
     limit: number,
     lastId?: string,
   ): Promise<Blackboard[]> {
-    return this.cacheService.getLastBlackboards(sort, limit, lastId);
+    return this.cacheService.getPaginatedBlackboards(sort, limit, lastId);
   }
 
   /**
