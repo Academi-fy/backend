@@ -1054,7 +1054,7 @@ type Query {
   getAllUserAccounts: [UserAccount!]!
   getUserAccount(id: String, username: String): UserAccount!
   getAllBlackboards: [Blackboard!]!
-  getLastBlackboards(sort: SortOrder!, limit: Float!, lastId: String): [Blackboard!]!
+  getPaginatedBlackboards(sort: SortOrder!, limit: Float!, lastId: String): [Blackboard!]!
   getBlackboardById(id: String!): Blackboard!
   getAllBlackboardTags: [BlackboardTag!]!
   getBlackboardTag(
