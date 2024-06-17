@@ -108,7 +108,6 @@ export class ChatActivityService extends Service {
     dto: CreateChatActivityDto<any> | EditChatActivityDto<any>,
   ) {
     return {
-      ...dto,
       answeredBy: this.connectSingle(dto.answeredBy),
       answerTo: this.connectSingle(dto.answerTo),
       chat: this.connectSingle(dto.chat),

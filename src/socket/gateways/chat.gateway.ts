@@ -25,7 +25,7 @@ import { ChatCourseService } from '@/socket/gateways/services/chat/chat-course.s
 import { ChatClubResult } from '@/socket/gateways/services/chat/entities/chat-club-result.entity';
 import { ChatClubService } from '@/socket/gateways/services/chat/chat-club.service';
 import { GatewayResponse } from '@/socket/entities/gateway-response.entity';
-import response_codes from '@/response-codes.json';
+import * as response_codes from '@/response-codes.json';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ChatGateway extends Gateway {

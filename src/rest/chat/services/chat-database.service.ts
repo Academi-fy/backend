@@ -2,9 +2,11 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { Chat } from '@/@generated-types';
 import { chatNesting, CreateChatDto, EditChatDto } from '@/rest/chat';
 import { Service } from '@/service';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class ChatDatabaseService extends Service {
-  constructor(private prisma: PrismaService) {
+  constructor(private readonly prisma: PrismaService) {
     super();
   }
 

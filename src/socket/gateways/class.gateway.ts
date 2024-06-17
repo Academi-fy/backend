@@ -12,7 +12,7 @@ import { SOCKET_PORT } from '@/constants';
 import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 import { GatewayResponse } from '@/socket/entities/gateway-response.entity';
 
-import response_codes from '@/response-codes.json';
+import * as response_codes from '@/response-codes.json';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ClassGateway extends Gateway {

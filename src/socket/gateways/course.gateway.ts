@@ -12,7 +12,7 @@ import { CourseChatMutation } from '@/socket/entities/course/course-chat-mutatio
 import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 import { GatewayResponse } from '@/socket/entities/gateway-response.entity';
 
-import response_codes from '@/response-codes.json';
+import * as response_codes from '@/response-codes.json';
 
 @WebSocketGateway(SOCKET_PORT)
 export class CourseGateway extends Gateway {

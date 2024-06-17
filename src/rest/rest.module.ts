@@ -21,6 +21,7 @@ import { PrismaModule } from '@/prisma/prisma.module';
 
 @Module({
   imports: [
+    PrismaModule,
     BlackboardModule,
     BlackboardTagModule,
     ChatModule,
@@ -32,7 +33,6 @@ import { PrismaModule } from '@/prisma/prisma.module';
     EventModule,
     EventTicketModule,
     GradeModule,
-    PrismaModule,
     SchoolModule,
     SetupAccountModule,
     SubjectModule,

@@ -5,12 +5,12 @@ import {
 } from '@nestjs/websockets';
 import { SOCKET_PORT } from '@/constants';
 import { Gateway } from '@/socket/entities/gateway.entity';
-import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 import { GatewayResponse } from '@/socket/entities/gateway-response.entity';
 import { Logger, Req } from '@nestjs/common';
 import { Socket } from 'socket.io';
 
-import response_codes from '@/response-codes.json';
+import * as response_codes from '@/response-codes.json';
+import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ErrorGateway extends Gateway {
@@ -18,16 +18,18 @@ export class ErrorGateway extends Gateway {
 
   @SubscribeMessage('ERROR')
   async handleError(
-    @MessageBody() body: GatewayMessage<Error>,
+    @MessageBody() body: GatewayMessage<any>,
     @Req() request: Socket,
-  ): Promise<GatewayResponse | void> {
+  ): Promise<GatewayResponse> {
+    const data: any = await this.validateData<any>(body);
+
     this.errorLogger.error(
-      `Error received from client '${request.handshake.query.userId}': \n${body}`,
+      `Error received from client '${request.handshake.query.userId}': \n${JSON.stringify(data, null, 2)}`,
     );
     return new GatewayResponse(
       true,
       response_codes.special.error_gateway.response,
-      body,
+      { body },
     );
   }
 }

@@ -22,7 +22,7 @@ import { PollOpenClose } from '@/socket/entities/chat-activity/poll/poll-openclo
 import { PollPublishResult } from '@/socket/entities/chat-activity/poll/poll-publish-result.entity';
 import { HandleChatActivityCreateService } from '@/socket/gateways/services/handle-chat-activity-create.service';
 import { GatewayResponse } from '@/socket/entities/gateway-response.entity';
-import response_codes from '@/response-codes.json';
+import * as response_codes from '@/response-codes.json';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ChatActivityGateway extends Gateway {

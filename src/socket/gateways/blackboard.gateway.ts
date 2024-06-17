@@ -14,7 +14,7 @@ import { SchoolService } from '@/rest/school/school.service';
 import { BlackboardUpdate } from '@/socket/entities/blackboard/blackboard-update.entity';
 import { BlackboardDelete } from '@/socket/entities/blackboard/blackboard-delete.entity';
 import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
-import response_codes from '@/response-codes.json';
+import * as response_codes from '@/response-codes.json';
 import { GatewayResponse } from '@/socket/entities/gateway-response.entity';
 
 @WebSocketGateway(SOCKET_PORT)

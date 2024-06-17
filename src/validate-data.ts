@@ -1,7 +1,7 @@
 export class ValidateData {
   protected async validateData<X extends object>(
     data: any,
-    validator: new () => X,
+    validator?: new () => X,
   ): Promise<X | Error> {
     /*const event: X = plainToInstance(validator, data);
     try {
@@ -17,6 +17,6 @@ export class ValidateData {
       console.error(error.stack + JSON.stringify(error, null, 2));
       return error;
     }*/
-    return data;
+    return data ? (typeof data === 'string' ? JSON.parse(data) : data) : {};
   }
 }

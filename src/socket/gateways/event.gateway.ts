@@ -15,7 +15,7 @@ import { EventUpdate } from '@/socket/entities/event/event-update.entity';
 import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 import { GatewayResponse } from '@/socket/entities/gateway-response.entity';
 
-import response_codes from '@/response-codes.json';
+import * as response_codes from '@/response-codes.json';
 
 @WebSocketGateway(SOCKET_PORT)
 export class EventGateway extends Gateway {

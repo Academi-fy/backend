@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
 import { CacheService } from '@/rest/CacheService';
 import { Chat } from '@/@generated-types';
@@ -7,6 +7,7 @@ import { CreateChatDto, EditChatDto } from '@/rest/chat';
 
 const cacheLifetime: number = 1000 * 60 * 3;
 
+@Injectable()
 export class ChatCacheService implements CacheService {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
