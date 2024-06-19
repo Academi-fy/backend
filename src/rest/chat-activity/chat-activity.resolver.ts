@@ -18,6 +18,13 @@ export class ChatActivityResolver {
     return this.chatActivityService.getChatActivityById(id);
   }
 
+  @Query(() => [ChatActivity])
+  async getChatActivitiesByChatId(
+    @Args('chatId') chatId: string,
+  ): Promise<ChatActivity[]> {
+    return this.chatActivityService.getChatActivitiesByChatId(chatId);
+  }
+
   @Mutation(() => ChatActivity)
   async createChatActivity(
     @Args('chatActivity') chatActivity: CreateChatActivityDto<any>,

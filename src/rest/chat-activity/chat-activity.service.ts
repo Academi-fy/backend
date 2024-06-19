@@ -39,7 +39,7 @@ export class ChatActivityService extends Service {
     return chatActivity;
   }
 
-  async getChatActivityByChatId(chatId: string): Promise<ChatActivity[]> {
+  async getChatActivitiesByChatId(chatId: string): Promise<ChatActivity[]> {
     const chatActivities: ChatActivity[] =
       await this.prisma.chatActivity.findMany({
         where: { chatId },
@@ -108,11 +108,16 @@ export class ChatActivityService extends Service {
     dto: CreateChatActivityDto<any> | EditChatActivityDto<any>,
   ) {
     return {
-      answeredBy: this.connectSingle(dto.answeredBy),
-      answerTo: this.connectSingle(dto.answerTo),
-      chat: this.connectSingle(dto.chat),
-      executor: this.connectSingle(dto.executor),
-      readBy: this.connectArray(dto.readBy),
+      activityContent: dto.activityContent
+        ? { ...dto.activityContent }
+        : undefined,
+      answeredBy: dto.answeredBy
+        ? this.connectSingle(dto.answeredBy)
+        : undefined,
+      answerTo: dto.answerTo ? this.connectSingle(dto.answerTo) : undefined,
+      chat: dto.chat ? this.connectSingle(dto.chat) : undefined,
+      executor: dto.executor ? this.connectSingle(dto.executor) : undefined,
+      readBy: dto.readBy ? this.connectArray(dto.readBy) : undefined,
       type: dto.type ? dto.type : undefined,
     };
   }

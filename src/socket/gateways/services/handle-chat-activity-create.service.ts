@@ -31,7 +31,6 @@ export class HandleChatActivityCreateService extends Gateway {
     );
 
     for (const member of chat.targets) {
-      console.log('Emitting to member', member.userId);
       this.emit(member.userId, 'RECEIVED_CHAT_ACTIVITY_CREATE', {
         body,
       });

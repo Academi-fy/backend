@@ -354,8 +354,6 @@ export class ChatActivityGateway extends Gateway {
         new Error(`ChatActivity '${chatActivity.id}' is not a Poll`),
       );
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     const updatedOptions = chatActivity.activityContent.poll.options.map(
       (option: PollOption) => {
         if (option.id === data.value.optionId) {

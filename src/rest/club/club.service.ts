@@ -6,6 +6,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 
 import { clubNesting } from './club.nesting';
 import { CreateClubDto, EditClubDto } from './dto';
+import { ClubRequirement } from '@/rest/club/entities/club-requirement.entity';
 
 @Injectable()
 export class ClubService extends Service {
@@ -84,9 +85,14 @@ export class ClubService extends Service {
   }
 
   private mapDtoToData(dto: CreateClubDto | EditClubDto) {
+    const req = dto.requirements
+      ? dto.requirements.map((requirement: ClubRequirement) => ({
+          ...requirement,
+        }))
+      : undefined;
+
     return {
-      ...dto,
-      requirements: this.stringifyArray(dto.requirements),
+      requirements: req,
       chat: this.connectSingle(dto.chat),
       events: this.connectArray(dto.events),
       leaders: this.connectArray(dto.leaders),

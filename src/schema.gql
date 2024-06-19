@@ -266,7 +266,7 @@ type ChatActivity {
   executorId: String!
   answerToId: String
   type: ChatActivityType!
-  activityContent: [JSON!]
+  activityContent: JSON!
   starred: Boolean!
   chat: Chat!
   executor: User!
@@ -1068,6 +1068,7 @@ type Query {
   getChat(id: String!): Chat!
   getAllChatActivities: [ChatActivity!]!
   getChatActivity(id: String!): ChatActivity!
+  getChatActivitiesByChatId(chatId: String!): [ChatActivity!]!
   getAllClasses: [Class!]!
   getClass(id: String!): Class!
   getAllClubs: [Club!]!

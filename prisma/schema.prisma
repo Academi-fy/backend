@@ -98,7 +98,7 @@ model ChatActivity {
   answeredBy ChatActivity[] @relation("ChatActivityAnswer")
 
   type            ChatActivityType
-  activityContent Json[]
+  activityContent Json
 
   starred Boolean @default(false)
 
