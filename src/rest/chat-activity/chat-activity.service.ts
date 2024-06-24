@@ -108,9 +108,7 @@ export class ChatActivityService extends Service {
     dto: CreateChatActivityDto<any> | EditChatActivityDto<any>,
   ) {
     return {
-      activityContent: dto.activityContent
-        ? { ...dto.activityContent }
-        : undefined,
+      activityContent: dto.activityContent ? dto.activityContent : undefined,
       answeredBy: dto.answeredBy
         ? this.connectSingle(dto.answeredBy)
         : undefined,
