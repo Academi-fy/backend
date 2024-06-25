@@ -42,7 +42,7 @@ export class ChatTargetService extends Service {
 
     const modifiedChat: Chat = await this.chatService.editChat(chat.id, {
       targets: chat.targets
-        .map((targetChat: UserChat) => targetChat.userId)
+        .map((targetChat: UserChat) => targetChat.id)
         .concat(addedTargetChat.id),
     });
 
