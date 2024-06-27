@@ -25,7 +25,13 @@ export class ConnectGateway
   }
 
   private getUserId(client: Socket): string {
-    return client.handshake.query.userId as string;
+    const query = client.handshake.query;
+    for (const key in query) {
+      if (key.toLowerCase() === 'userid') {
+        return query[key] as string;
+      }
+    }
+    return null;
   }
 
   handleConnection(client: Socket): void {
