@@ -32,7 +32,7 @@ export class HandleChatActivityCreateService extends Gateway {
 
     for (const member of chat.targets) {
       this.emit(member.userId, 'RECEIVED_CHAT_ACTIVITY_CREATE', {
-        body,
+        createdChatActivity,
       });
     }
 
