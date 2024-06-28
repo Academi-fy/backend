@@ -12,6 +12,8 @@ import { SocketModule } from './socket/socket.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { CacheModule } from '@nestjs/cache-manager';
 import { AuthModule } from '@/authentication/auth.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -36,6 +38,13 @@ import { AuthModule } from '@/authentication/auth.module';
     ]),
     CacheModule.register({
       isGlobal: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+      serveRoot: '/public',
+    }),
+    MulterModule.register({
+      dest: './public',
     }),
     AuthModule,
     PrismaModule,
