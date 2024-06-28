@@ -4,14 +4,14 @@ import { userChatRawNesting } from '../user-chat';
 import { chatActivityRawNesting } from '../chat-activity';
 
 export const chatRawNesting = {
-  activities: true,
+  chatActivities: true,
   clubs: true,
   courses: true,
   targets: true,
 } as const;
 
 export const chatNesting = {
-  activities: {
+  chatActivities: {
     include: {
       ...chatActivityRawNesting,
     },

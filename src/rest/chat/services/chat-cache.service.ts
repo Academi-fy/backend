@@ -160,7 +160,7 @@ export class ChatCacheService implements CacheService {
       await this.cacheManager.del(`user-chat_${userChatId}`);
     }
 
-    for (const chatActivityId of chat.activities) {
+    for (const chatActivityId of chat.chatActivities) {
       await this.cacheManager.del(`chat-activity_${chatActivityId}`);
     }
 

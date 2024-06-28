@@ -4,15 +4,15 @@ import { ChatType } from '@/@generated-types';
 
 @InputType()
 export class CreateChatDto {
-  @Field(() => [String], { nullable: true })
-  @IsArray()
-  @IsOptional()
-  activities?: string[];
-
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
   avatar?: string;
+
+  @Field(() => [String], { nullable: true })
+  @IsArray()
+  @IsOptional()
+  chatActivities?: string[];
 
   @Field(() => [String], { nullable: true })
   @IsArray()

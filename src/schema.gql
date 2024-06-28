@@ -148,7 +148,7 @@ type ChatCountAggregate {
 }
 
 type ChatCount {
-  activities: Int!
+  chatActivities: Int!
   clubs: Int!
   courses: Int!
   targets: Int!
@@ -185,7 +185,7 @@ type Chat {
   avatar: String
   name: String!
   type: ChatType!
-  activities: [ChatActivity!]
+  chatActivities: [ChatActivity!]
   clubs: [Club!]
   courses: [Course!]
   targets: [UserChat!]
@@ -1217,8 +1217,8 @@ input CreateBlackboardTagDto {
 }
 
 input CreateChatDto {
-  activities: [String!]
   avatar: String
+  chatActivities: [String!]
   clubs: [String!]
   courses: [String!]
   name: String!
@@ -1227,8 +1227,8 @@ input CreateChatDto {
 }
 
 input EditChatDto {
-  activities: [String!]
   avatar: String
+  chatActivities: [String!]
   clubs: [String!]
   courses: [String!]
   name: String

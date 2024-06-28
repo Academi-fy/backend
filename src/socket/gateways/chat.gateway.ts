@@ -43,11 +43,16 @@ export class ChatGateway extends Gateway {
   async handleChatTargetAdd(
     @MessageBody() body: GatewayMessage<ChatTargetMutation>,
   ): Promise<Response> {
-    const result: Error | ChatTargetResult =
-      await this.chatTargetService.executeChatUserAdd(body);
+    let result: ChatTargetResult;
 
-    if (result instanceof Error)
-      return new Response(true, response_codes.chat.target.add.failed, result);
+    try {
+      result = await this.chatTargetService.executeChatUserAdd(body);
+    } catch (error) {
+      return new Response(true, response_codes.chat.target.add.failed, {
+        error: error.message,
+      });
+    }
+
     const { data, modifiedChat, target } = result;
 
     await this.createChatActivityService.sendActivityChatTargetAdd(

@@ -68,13 +68,13 @@ model Chat {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  activities ChatActivity[] @relation("ChatActivity")
-  avatar     String?
-  clubs      Club[]         @relation("ClubChat")
-  courses    Course[]       @relation("CourseChat")
-  name       String
-  targets    UserChat[]     @relation("ChatTarget")
-  type       ChatType
+  avatar         String?
+  chatActivities ChatActivity[] @relation("ChatActivity")
+  clubs          Club[]         @relation("ClubChat")
+  courses        Course[]       @relation("CourseChat")
+  name           String
+  targets        UserChat[]     @relation("ChatTarget")
+  type           ChatType
 
   @@map("chats")
 }

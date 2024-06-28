@@ -20,18 +20,25 @@ export class ChatTargetService extends Service {
 
   async executeChatUserAdd(
     body: GatewayMessage<ChatTargetMutation>,
-  ): Promise<Error | ChatTargetResult> {
+  ): Promise<ChatTargetResult> {
     const data: Error | GatewayMessage<ChatTargetMutation> =
       await this.validateData<GatewayMessage<ChatTargetMutation>>(
         body,
         GatewayMessage<ChatTargetMutation>,
       );
-    if (data instanceof Error) return data;
+    if (data instanceof Error) throw data;
 
     const chat: Chat = await this.chatService.getChatById(data.value.chatId);
     const target: User = await this.userService.getUserById(
       data.value.targetId,
     );
+
+    if (
+      chat.targets.some(
+        (targetChat: UserChat) => targetChat.userId === target.id,
+      )
+    )
+      throw new Error('User already in chat');
 
     const addedTargetChat: UserChat = await this.userChatService.createUserChat(
       {
@@ -51,18 +58,25 @@ export class ChatTargetService extends Service {
 
   async executeChatUserRemove(
     body: GatewayMessage<ChatTargetMutation>,
-  ): Promise<Error | ChatTargetResult> {
+  ): Promise<ChatTargetResult> {
     const data: Error | GatewayMessage<ChatTargetMutation> =
       await this.validateData<GatewayMessage<ChatTargetMutation>>(
         body,
         GatewayMessage<ChatTargetMutation>,
       );
-    if (data instanceof Error) return data;
+    if (data instanceof Error) throw data;
 
     const chat: Chat = await this.chatService.getChatById(data.value.chatId);
     const target: User = await this.userService.getUserById(
       data.value.targetId,
     );
+
+    if (
+      !chat.targets.some(
+        (targetChat: UserChat) => targetChat.userId === target.id,
+      )
+    )
+      throw new Error('User not in chat');
 
     const removedTargetChat: UserChat =
       await this.userChatService.deleteUserChatByCredentials(
