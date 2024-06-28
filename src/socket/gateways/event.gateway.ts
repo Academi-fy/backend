@@ -13,7 +13,7 @@ import { PingCreate } from '@/socket/entities/event/ping-create.entity';
 import { EventStart } from '@/socket/entities/event/event-start.entity';
 import { EventUpdate } from '@/socket/entities/event/event-update.entity';
 import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
-import { GatewayResponse } from '@/socket/entities/gateway-response.entity';
+import { Response } from '@/response.entity';
 
 import * as response_codes from '@/response-codes.json';
 
@@ -29,79 +29,69 @@ export class EventGateway extends Gateway {
   @SubscribeMessage('EVENT_CREATE')
   async handleEventCreate(
     @MessageBody() body: GatewayMessage<CreateEventDto>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: GatewayMessage<CreateEventDto> | Error =
       await this.validateData<GatewayMessage<CreateEventDto>>(
         body,
         GatewayMessage<CreateEventDto>,
       );
     if (data instanceof Error)
-      return new GatewayResponse(
-        true,
-        response_codes.event.creation.failed,
-        data,
-      );
+      return new Response(true, response_codes.event.creation.failed, data);
 
     const createdEvent: Event = await this.eventService.createEvent(data.value);
     if (!createdEvent)
-      return new GatewayResponse(true, response_codes.event.creation.failed);
+      return new Response(true, response_codes.event.creation.failed);
 
     const school: School = await this.schoolService.getSchoolById(
       createdEvent.schoolId,
     );
-    if (!school)
-      return new GatewayResponse(true, response_codes.school.notFound);
+    if (!school) return new Response(true, response_codes.school.notFound);
 
     for (const member of school.members) {
       this.emit(member.id, 'RECEIVED_EVENT_CREATE', data);
     }
 
-    return new GatewayResponse(false, response_codes.event.creation.success);
+    return new Response(false, response_codes.event.creation.success);
   }
 
   @SubscribeMessage('EVENT_UPDATE')
   async handleEventUpdate(
     @MessageBody() body: GatewayMessage<EventUpdate>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: GatewayMessage<EventUpdate> | Error = await this.validateData<
       GatewayMessage<EventUpdate>
     >(body, GatewayMessage<EventUpdate>);
     if (data instanceof Error)
-      return new GatewayResponse(
-        true,
-        response_codes.event.update.failed,
-        data,
-      );
+      return new Response(true, response_codes.event.update.failed, data);
 
     const eventId: string = data.value.eventId;
 
     const event: Event = await this.eventService.getEventById(eventId);
-    if (!event) return new GatewayResponse(true, response_codes.event.notFound);
+    if (!event) return new Response(true, response_codes.event.notFound);
 
     const modifiedEvent: Event = await this.eventService.editEvent(
       eventId,
       data.value,
     );
     if (!modifiedEvent)
-      return new GatewayResponse(true, response_codes.event.update.failed);
+      return new Response(true, response_codes.event.update.failed);
 
     const school: School = await this.schoolService.getSchoolById(
       modifiedEvent.schoolId,
     );
-    if (!school)
-      return new GatewayResponse(true, response_codes.school.notFound);
+    if (!school) return new Response(true, response_codes.school.notFound);
 
     for (const member of school.members) {
       this.emit(member.id, 'RECEIVED_EVENT_UPDATE', data);
     }
 
-    return new GatewayResponse(false, response_codes.event.update.success);
+    return new Response(false, response_codes.event.update.success);
   }
 
   @SubscribeMessage('EVENT_PING_CREATE')
   async handleEventPingCreate(
     @MessageBody() body: GatewayMessage<PingCreate>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     return this.handleSimpleEvent<PingCreate>(
       body,
       'EVENT_PING_CREATE',
@@ -112,7 +102,7 @@ export class EventGateway extends Gateway {
   @SubscribeMessage('EVENT_START')
   async handleEventStart(
     @MessageBody() body: GatewayMessage<EventStart>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     return this.handleSimpleEvent<EventStart>(
       body,
       'EVENT_START',
@@ -123,7 +113,7 @@ export class EventGateway extends Gateway {
   @SubscribeMessage('EVENT_END')
   async handleEventEnd(
     @MessageBody() body: GatewayMessage<EventStart>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     return this.handleSimpleEvent<EventStart>(
       body,
       'EVENT_END',
@@ -138,27 +128,26 @@ export class EventGateway extends Gateway {
       success: string;
       failed: string;
     },
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: GatewayMessage<T> | Error = await this.validateData<
       GatewayMessage<T>
     >(body, GatewayMessage);
     if (data instanceof Error)
-      return new GatewayResponse(true, responseCode.failed, data);
+      return new Response(true, responseCode.failed, data);
 
     const eventId: string = data.value.eventId;
     const event: Event = await this.eventService.getEventById(eventId);
-    if (!event) return new GatewayResponse(true, response_codes.event.notFound);
+    if (!event) return new Response(true, response_codes.event.notFound);
 
     const school: School = await this.schoolService.getSchoolById(
       event.schoolId,
     );
-    if (!school)
-      return new GatewayResponse(true, response_codes.school.notFound);
+    if (!school) return new Response(true, response_codes.school.notFound);
 
     for (const member of school.members) {
       this.emit(member.id, `RECEIVED_${eventName}`, data);
     }
 
-    return new GatewayResponse(false, responseCode.success);
+    return new Response(false, responseCode.success);
   }
 }

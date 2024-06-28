@@ -295,6 +295,16 @@
     "fail": "999.000",
     "error_gateway": {
       "response": "999.001.001.1"
+    },
+    "upload": {
+      "upload": {
+        "failed": "999.002.001.1",
+        "success": "999.002.001.0"
+      },
+      "delete": {
+          "failed": "999.002.002.1",
+          "success": "999.002.002.0"
+      }
     }
   }
 }

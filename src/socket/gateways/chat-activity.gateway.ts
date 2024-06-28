@@ -21,7 +21,7 @@ import { PollOption } from '@/rest/chat-activity/entities/content-types/poll.ent
 import { PollOpenClose } from '@/socket/entities/chat-activity/poll/poll-openclose.entity';
 import { PollPublishResult } from '@/socket/entities/chat-activity/poll/poll-publish-result.entity';
 import { HandleChatActivityCreateService } from '@/socket/gateways/services/handle-chat-activity-create.service';
-import { GatewayResponse } from '@/socket/entities/gateway-response.entity';
+import { Response } from '@/response.entity';
 import * as response_codes from '@/response-codes.json';
 
 @WebSocketGateway(SOCKET_PORT)
@@ -40,12 +40,12 @@ export class ChatActivityGateway extends Gateway {
   @SubscribeMessage('MESSAGE_SEND')
   async handleMessageSend(
     @MessageBody() body: GatewayMessage<MessageSend>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: GatewayMessage<MessageSend> | Error = await this.validateData<
       GatewayMessage<MessageSend>
     >(body, GatewayMessage<MessageSend>);
     if (data instanceof Error)
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.chat_activity.message_action.send.failed,
         data,
@@ -66,7 +66,7 @@ export class ChatActivityGateway extends Gateway {
       },
     );
 
-    return new GatewayResponse(
+    return new Response(
       false,
       response_codes.chat_activity.message_action.send.success,
     );
@@ -75,12 +75,12 @@ export class ChatActivityGateway extends Gateway {
   @SubscribeMessage('MESSAGE_UPDATE')
   async handleMessageUpdate(
     @MessageBody() body: GatewayMessage<MessageUpdate>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: GatewayMessage<MessageUpdate> | Error = await this.validateData<
       GatewayMessage<MessageUpdate>
     >(body, GatewayMessage<MessageUpdate>);
     if (data instanceof Error)
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.chat_activity.message_action.update.failed,
         data,
@@ -109,7 +109,7 @@ export class ChatActivityGateway extends Gateway {
       },
     );
 
-    return new GatewayResponse(
+    return new Response(
       false,
       response_codes.chat_activity.message_action.update.success,
     );
@@ -118,12 +118,12 @@ export class ChatActivityGateway extends Gateway {
   @SubscribeMessage('MESSAGE_DELETE')
   async handleMessageDelete(
     @MessageBody() body: GatewayMessage<MessageDelete>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: GatewayMessage<MessageDelete> | Error = await this.validateData<
       GatewayMessage<MessageDelete>
     >(body, GatewayMessage<MessageDelete>);
     if (data instanceof Error)
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.chat_activity.message_action.delete.failed,
         data,
@@ -146,7 +146,7 @@ export class ChatActivityGateway extends Gateway {
       },
     );
 
-    return new GatewayResponse(
+    return new Response(
       false,
       response_codes.chat_activity.message_action.delete.success,
     );
@@ -155,12 +155,12 @@ export class ChatActivityGateway extends Gateway {
   @SubscribeMessage('MESSAGE_ANSWER')
   async handleMessageAnswer(
     @MessageBody() body: GatewayMessage<MessageAnswer>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: GatewayMessage<MessageAnswer> | Error = await this.validateData<
       GatewayMessage<MessageAnswer>
     >(body, GatewayMessage<MessageAnswer>);
     if (data instanceof Error)
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.chat_activity.message_action.answer.failed,
         data,
@@ -190,7 +190,7 @@ export class ChatActivityGateway extends Gateway {
       },
     );
 
-    return new GatewayResponse(
+    return new Response(
       false,
       response_codes.chat_activity.message_action.answer.success,
     );
@@ -200,12 +200,12 @@ export class ChatActivityGateway extends Gateway {
   @SubscribeMessage('ACTIVITY_UNSTAR')
   async handleActivityStar(
     @MessageBody() body: GatewayMessage<ActivityStar>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: GatewayMessage<ActivityStar> | Error = await this.validateData<
       GatewayMessage<ActivityStar>
     >(body, GatewayMessage<ActivityStar>);
     if (data instanceof Error)
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.chat_activity.message_action.star.failed,
         data,
@@ -235,7 +235,7 @@ export class ChatActivityGateway extends Gateway {
       },
     );
 
-    return new GatewayResponse(
+    return new Response(
       false,
       response_codes.chat_activity.message_action.star.success,
     );
@@ -244,12 +244,12 @@ export class ChatActivityGateway extends Gateway {
   @SubscribeMessage('POLL_SEND')
   async handlePollSend(
     @MessageBody() body: GatewayMessage<PollSend>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: GatewayMessage<PollSend> | Error = await this.validateData<
       GatewayMessage<PollSend>
     >(body, GatewayMessage<PollSend>);
     if (data instanceof Error)
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.chat_activity.poll_action.send.failed,
         data,
@@ -271,7 +271,7 @@ export class ChatActivityGateway extends Gateway {
       },
     );
 
-    return new GatewayResponse(
+    return new Response(
       false,
       response_codes.chat_activity.poll_action.send.success,
     );
@@ -280,12 +280,12 @@ export class ChatActivityGateway extends Gateway {
   @SubscribeMessage('POLL_EDIT')
   async handlePollEdit(
     @MessageBody() body: GatewayMessage<PollEdit>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: GatewayMessage<PollEdit> | Error = await this.validateData<
       GatewayMessage<PollEdit>
     >(body, GatewayMessage<PollEdit>);
     if (data instanceof Error)
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.chat_activity.poll_action.edit.failed,
         data,
@@ -294,7 +294,7 @@ export class ChatActivityGateway extends Gateway {
     const pollActivity: ChatActivity =
       await this.chatActivityService.getChatActivityById(data.value.activityId);
     if (!this.isPoll(pollActivity))
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.chat_activity.poll_action.wrong_type,
         new Error(`ChatActivity '${pollActivity.id}' is not a Poll`),
@@ -322,7 +322,7 @@ export class ChatActivityGateway extends Gateway {
       },
     );
 
-    return new GatewayResponse(
+    return new Response(
       false,
       response_codes.chat_activity.poll_action.edit.success,
     );
@@ -332,12 +332,12 @@ export class ChatActivityGateway extends Gateway {
   @SubscribeMessage('POLL_UNVOTE')
   async handlePollVote(
     @MessageBody() body: GatewayMessage<PollVote>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: GatewayMessage<PollVote> | Error = await this.validateData<
       GatewayMessage<PollVote>
     >(body, GatewayMessage<PollVote>);
     if (data instanceof Error)
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.chat_activity.poll_action.vote.failed,
         data,
@@ -348,7 +348,7 @@ export class ChatActivityGateway extends Gateway {
     const chatActivity: ChatActivity =
       await this.chatActivityService.getChatActivityById(data.value.activityId);
     if (!this.isPoll(chatActivity))
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.chat_activity.poll_action.wrong_type,
         new Error(`ChatActivity '${chatActivity.id}' is not a Poll`),
@@ -394,7 +394,7 @@ export class ChatActivityGateway extends Gateway {
       },
     );
 
-    return new GatewayResponse(
+    return new Response(
       false,
       response_codes.chat_activity.poll_action.vote.success,
     );
@@ -404,12 +404,12 @@ export class ChatActivityGateway extends Gateway {
   @SubscribeMessage('POLL_CLOSE')
   async handlePollClose(
     @MessageBody() body: GatewayMessage<PollOpenClose>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: GatewayMessage<PollOpenClose> | Error = await this.validateData<
       GatewayMessage<PollOpenClose>
     >(body, GatewayMessage<PollOpenClose>);
     if (data instanceof Error)
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.chat_activity.poll_action.open_close.failed,
         data,
@@ -418,7 +418,7 @@ export class ChatActivityGateway extends Gateway {
     const pollActivity: ChatActivity =
       await this.chatActivityService.getChatActivityById(data.value.activityId);
     if (!this.isPoll(pollActivity))
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.chat_activity.poll_action.wrong_type,
         new Error(`ChatActivity '${pollActivity.id}' is not a Poll`),
@@ -448,7 +448,7 @@ export class ChatActivityGateway extends Gateway {
       },
     );
 
-    return new GatewayResponse(
+    return new Response(
       false,
       response_codes.chat_activity.poll_action.open_close.success,
     );
@@ -457,14 +457,14 @@ export class ChatActivityGateway extends Gateway {
   @SubscribeMessage('POLL_RESULT')
   async handlePollResult(
     @MessageBody() body: GatewayMessage<PollPublishResult>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: GatewayMessage<PollPublishResult> | Error =
       await this.validateData<GatewayMessage<PollPublishResult>>(
         body,
         GatewayMessage<PollPublishResult>,
       );
     if (data instanceof Error)
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.chat_activity.poll_action.result.failed,
         data,
@@ -473,7 +473,7 @@ export class ChatActivityGateway extends Gateway {
     const pollActivity: ChatActivity =
       await this.chatActivityService.getChatActivityById(data.value.activityId);
     if (!this.isPoll(pollActivity))
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.chat_activity.poll_action.wrong_type,
         new Error(`ChatActivity '${pollActivity.id}' is not a Poll`),
@@ -501,7 +501,7 @@ export class ChatActivityGateway extends Gateway {
       },
     );
 
-    return new GatewayResponse(
+    return new Response(
       false,
       response_codes.chat_activity.poll_action.result.success,
     );

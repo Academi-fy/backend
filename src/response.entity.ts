@@ -1,6 +1,6 @@
 import { IsBoolean, IsObject, IsString } from 'class-validator';
 
-export class GatewayResponse {
+export class Response {
   @IsBoolean()
   error: boolean;
 

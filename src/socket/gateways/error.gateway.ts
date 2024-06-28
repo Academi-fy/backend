@@ -5,7 +5,7 @@ import {
 } from '@nestjs/websockets';
 import { SOCKET_PORT } from '@/constants';
 import { Gateway } from '@/socket/entities/gateway.entity';
-import { GatewayResponse } from '@/socket/entities/gateway-response.entity';
+import { Response } from '@/response.entity';
 import { Logger, Req } from '@nestjs/common';
 import { Socket } from 'socket.io';
 
@@ -20,16 +20,14 @@ export class ErrorGateway extends Gateway {
   async handleError(
     @MessageBody() body: GatewayMessage<any>,
     @Req() request: Socket,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: any = await this.validateData<any>(body);
 
     this.errorLogger.error(
       `Error received from client '${request.handshake.query.userId}': \n${JSON.stringify(data, null, 2)}`,
     );
-    return new GatewayResponse(
-      true,
-      response_codes.special.error_gateway.response,
-      { body },
-    );
+    return new Response(true, response_codes.special.error_gateway.response, {
+      body,
+    });
   }
 }

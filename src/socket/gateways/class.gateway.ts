@@ -10,7 +10,7 @@ import { Gateway } from '../entities/gateway.entity';
 import { ClassService } from 'src/rest/class/class.service';
 import { SOCKET_PORT } from '@/constants';
 import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
-import { GatewayResponse } from '@/socket/entities/gateway-response.entity';
+import { Response } from '@/response.entity';
 
 import * as response_codes from '@/response-codes.json';
 
@@ -23,14 +23,14 @@ export class ClassGateway extends Gateway {
   @SubscribeMessage('CLASS_COURSE_ADD')
   async handleClassCourseAdd(
     @MessageBody() body: GatewayMessage<ClassCourseMutation>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: Error | GatewayMessage<ClassCourseMutation> =
       await this.validateData<GatewayMessage<ClassCourseMutation>>(
         body,
         GatewayMessage<ClassCourseMutation>,
       );
     if (data instanceof Error)
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.class.course_action.add.failed,
         data,
@@ -53,23 +53,20 @@ export class ClassGateway extends Gateway {
       this.emit(member.id, 'RECEIVED_CLASS_COURSE_ADD', data);
     }
 
-    return new GatewayResponse(
-      false,
-      response_codes.class.course_action.add.success,
-    );
+    return new Response(false, response_codes.class.course_action.add.success);
   }
 
   @SubscribeMessage('CLASS_COURSE_REMOVE')
   async handleClassCourseRemove(
     @MessageBody() body: GatewayMessage<ClassCourseMutation>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: Error | GatewayMessage<ClassCourseMutation> =
       await this.validateData<GatewayMessage<ClassCourseMutation>>(
         body,
         GatewayMessage<ClassCourseMutation>,
       );
     if (data instanceof Error)
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.class.course_action.remove.failed,
         data,
@@ -92,7 +89,7 @@ export class ClassGateway extends Gateway {
       this.emit(member.id, 'RECEIVED_CLASS_COURSE_REMOVE', data);
     }
 
-    return new GatewayResponse(
+    return new Response(
       false,
       response_codes.class.course_action.remove.success,
     );
@@ -101,14 +98,14 @@ export class ClassGateway extends Gateway {
   @SubscribeMessage('CLASS_USER_ADD')
   async handleClassUserAdd(
     @MessageBody() body: GatewayMessage<ClassUserMutation>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: Error | GatewayMessage<ClassUserMutation> =
       await this.validateData<GatewayMessage<ClassUserMutation>>(
         body,
         GatewayMessage<ClassUserMutation>,
       );
     if (data instanceof Error)
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.class.user_action.add.failed,
         data,
@@ -131,23 +128,20 @@ export class ClassGateway extends Gateway {
       this.emit(member.id, 'RECEIVED_CLASS_USER_ADD', data);
     }
 
-    return new GatewayResponse(
-      false,
-      response_codes.class.user_action.add.success,
-    );
+    return new Response(false, response_codes.class.user_action.add.success);
   }
 
   @SubscribeMessage('CLASS_USER_REMOVE')
   async handleClassUserRemove(
     @MessageBody() body: GatewayMessage<ClassUserMutation>,
-  ): Promise<GatewayResponse> {
+  ): Promise<Response> {
     const data: Error | GatewayMessage<ClassUserMutation> =
       await this.validateData<GatewayMessage<ClassUserMutation>>(
         body,
         GatewayMessage<ClassUserMutation>,
       );
     if (data instanceof Error)
-      return new GatewayResponse(
+      return new Response(
         true,
         response_codes.class.user_action.remove.failed,
         data,
@@ -170,9 +164,6 @@ export class ClassGateway extends Gateway {
       this.emit(member.id, 'RECEIVED_CLASS_USER_REMOVE', data);
     }
 
-    return new GatewayResponse(
-      false,
-      response_codes.class.user_action.remove.success,
-    );
+    return new Response(false, response_codes.class.user_action.remove.success);
   }
 }
