@@ -1,24 +1,24 @@
 import {
   Controller,
+  HttpCode,
   HttpStatus,
   Post,
-  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Response } from 'express';
 
 @Controller('upload')
 export class UploadController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file')) //TODO cap file size
-  uploadFile(@UploadedFile() file: Express.Multer.File, @Res() res: Response) {
+  @HttpCode(HttpStatus.OK)
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
     const fileUrl = `/public/${file.filename}`;
-    return res.status(HttpStatus.OK).json({
+    return {
       message: 'File has been uploaded successfully',
       relativePath: fileUrl,
-    });
+    };
   }
 
   /* TODO:
