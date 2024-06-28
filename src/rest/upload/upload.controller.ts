@@ -12,7 +12,7 @@ import { Response } from 'express';
 @Controller('upload')
 export class UploadController {
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file')) //TODO cap file size
   uploadFile(@UploadedFile() file: Express.Multer.File, @Res() res: Response) {
     const fileUrl = `/public/${file.filename}`;
     return res.status(HttpStatus.OK).json({
@@ -20,4 +20,9 @@ export class UploadController {
       relativePath: fileUrl,
     });
   }
+
+  /* TODO:
+  @Post('delete')
+  deleteFile(@UploadedFile() file: Express.Multer.File, @Res() res: Response) {
+  }*/
 }
