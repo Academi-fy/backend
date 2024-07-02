@@ -100,7 +100,7 @@ export class SchoolService extends Service {
       grades: this.connectArray(dto.grades),
       members: this.connectArray(dto.members),
       subjects: this.connectArray(dto.subjects),
-      name: dto.name ? dto.name : undefined,
+      name: dto.name,
     };
   }
 }

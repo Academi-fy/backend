@@ -78,8 +78,8 @@ export class UserAccountService extends Service {
     return {
       ...dto,
       user: dto.user ? { connect: { id: dto.user } } : undefined,
-      password: dto.password ? dto.password : undefined,
-      username: dto.username ? dto.username : undefined,
+      password: dto.password,
+      username: dto.username,
       refreshTokens: this.connectArray(dto.refreshTokens),
     };
   }

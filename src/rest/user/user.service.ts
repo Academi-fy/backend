@@ -66,7 +66,7 @@ export class UserService extends Service {
     return {
       ...dto,
 
-      avatar: dto.avatar ? dto.avatar : undefined,
+      avatar: dto.avatar,
       blackboards: this.connectArray(dto.blackboards),
       blackboardsReceived: this.connectArray(dto.blackboardsReceived),
       chatActivitiesCreated: this.connectArray(dto.chatActivitiesCreated),
@@ -77,12 +77,12 @@ export class UserService extends Service {
       coursesAsTeacher: this.connectArray(dto.coursesAsTeacher),
       events: this.connectArray(dto.events),
       eventTickets: this.connectArray(dto.eventTickets),
-      firstName: dto.firstName ? dto.firstName : undefined,
-      lastName: dto.lastName ? dto.lastName : undefined,
+      firstName: dto.firstName,
+      lastName: dto.lastName,
       readActivities: this.connectArray(dto.readActivities),
       schools: this.connectArray(dto.schools),
       targetActivities: this.connectArray(dto.targetActivities),
-      type: dto.type ? dto.type : undefined,
+      type: dto.type,
       userAccount: this.connectSingle(dto.userAccount),
       userChats: this.connectArray(dto.userChats),
     };

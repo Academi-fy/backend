@@ -76,8 +76,8 @@ export class SubjectService extends Service {
       ...dto,
       courses: this.connectArray(dto.courses),
       school: this.connectSingle(dto.school),
-      shortName: dto.shortName ? dto.shortName : undefined,
-      type: dto.type ? dto.type : undefined,
+      shortName: dto.shortName,
+      type: dto.type,
     };
   }
 }

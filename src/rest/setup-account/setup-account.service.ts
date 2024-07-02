@@ -78,7 +78,7 @@ export class SetupAccountService extends Service {
     return {
       ...dto,
       school: this.connectSingle(dto.school),
-      schoolName: dto.schoolName ? dto.schoolName : undefined,
+      schoolName: dto.schoolName,
     };
   }
 }

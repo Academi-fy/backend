@@ -142,7 +142,7 @@ export class BlackboardDatabaseService extends Service {
       tags: this.connectArray(dto.tags),
       authors: this.connectArray(dto.authors),
       targets: this.connectArray(dto.targets),
-      title: dto.title ? dto.title : undefined,
+      title: dto.title,
     };
   }
 }

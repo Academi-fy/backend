@@ -67,7 +67,7 @@ export class GradeService extends Service {
       ...dto,
       classes: this.connectArray(dto.classes),
       school: this.connectSingle(dto.school),
-      level: dto.level ? dto.level : undefined,
+      level: dto.level,
     };
   }
 }

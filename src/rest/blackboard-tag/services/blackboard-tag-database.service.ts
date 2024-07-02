@@ -148,7 +148,7 @@ export class BlackboardTagDatabaseService extends Service {
     return {
       ...dto,
       blackboards: this.connectArray(dto.blackboards),
-      name: dto.name ? dto.name.toLowerCase() : undefined,
+      name: dto.name.toLowerCase(),
     };
   }
 }

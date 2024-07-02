@@ -73,7 +73,7 @@ export class EventService extends Service {
       endDate: dto.endDate ? new Date(dto.endDate) : undefined,
       host: this.stringifySingle(dto.host),
       startDate: dto.startDate ? new Date(dto.startDate) : undefined,
-      title: dto.title ? dto.title : undefined,
+      title: dto.title,
     };
   }
 }

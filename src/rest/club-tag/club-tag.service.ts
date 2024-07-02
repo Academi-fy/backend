@@ -68,7 +68,7 @@ export class ClubTagService extends Service {
     return {
       ...dto,
       clubs: this.connectArray(dto.clubs),
-      name: dto.name ? dto.name : undefined,
+      name: dto.name,
     };
   }
 }

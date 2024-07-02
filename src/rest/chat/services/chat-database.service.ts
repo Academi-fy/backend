@@ -98,9 +98,9 @@ export class ChatDatabaseService extends Service {
       clubs: this.connectArray(dto.clubs),
       courses: this.connectArray(dto.courses),
       targets: this.connectArray(dto.targets),
-      name: dto.name ? dto.name : undefined,
-      type: dto.type ? dto.type : undefined,
-      avatar: dto.avatar ? dto.avatar : undefined,
+      name: dto.name,
+      type: dto.type,
+      avatar: dto.avatar,
     };
   }
 }

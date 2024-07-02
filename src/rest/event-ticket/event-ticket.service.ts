@@ -83,7 +83,7 @@ export class EventTicketService extends Service {
       ...dto,
       buyer: this.connectSingle(dto.buyer),
       event: this.connectSingle(dto.event),
-      price: dto.price ? dto.price : undefined,
+      price: dto.price,
       saleDate: dto.saleDate ? new Date(dto.saleDate) : undefined,
     };
   }

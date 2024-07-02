@@ -100,7 +100,7 @@ export class ClubService extends Service {
       school: this.connectSingle(dto.school),
       tags: this.connectArray(dto.tags),
 
-      name: dto.name ? dto.name : undefined,
+      name: dto.name,
     };
   }
 }

@@ -84,7 +84,7 @@ export class CourseService extends Service {
   private mapDtoToData(dto: CreateCourseDto | EditCourseDto) {
     return {
       ...dto,
-      name: dto.name ? dto.name : undefined,
+      name: dto.name,
       chat: this.connectSingle(dto.chat),
       classes: this.connectArray(dto.classes),
       members: this.connectArray(dto.members),
