@@ -66,7 +66,7 @@ export class UserChatResolver {
     @Args('read') read: boolean,
   ): Promise<UserChat> {
     return this.userChatService.editUserChat(id, {
-      read,
+      read: read,
     });
   }
 

@@ -67,9 +67,7 @@ export class UserChatService extends Service {
   async editUserChat(id: string, dto: EditUserChatDto): Promise<UserChat> {
     return this.prisma.userChat.update({
       where: { id },
-      data: {
-        ...this.mapDtoToData(dto),
-      },
+      data: this.mapDtoToData(dto),
       include: {
         ...userChatNesting,
       },
@@ -100,11 +98,10 @@ export class UserChatService extends Service {
 
   private mapDtoToData(dto: CreateUserChatDto | EditUserChatDto) {
     return {
-      ...dto,
       chat: this.connectSingle(dto.chat),
-      hidden: dto.hidden ? dto.hidden : undefined,
-      pinned: dto.pinned ? dto.pinned : undefined,
-      read: dto.read ? dto.read : undefined,
+      hidden: dto.hidden,
+      pinned: dto.pinned,
+      read: dto.read,
       user: this.connectSingle(dto.user),
     };
   }
