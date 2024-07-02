@@ -22,7 +22,7 @@ export class HandleChatActivityCreateService extends Gateway {
    * */
   async handleChatActivityCreate<T>(
     body: GatewayMessage<CreateChatActivityDto<T>>,
-  ): Promise<GatewayMessage<CreateChatActivityDto<T>> | Error> {
+  ): Promise<GatewayMessage<CreateChatActivityDto<T>>> {
     let createdChatActivity: ChatActivity;
 
     try {
@@ -30,7 +30,7 @@ export class HandleChatActivityCreateService extends Gateway {
         await this.chatActivityService.processCreateChatActivity(body.value);
     } catch (error) {
       console.error(error);
-      throw new Error(error);
+      throw error;
     }
 
     const chat: Chat = await this.chatService.getChatById(

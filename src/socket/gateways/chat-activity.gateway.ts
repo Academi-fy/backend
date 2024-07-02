@@ -54,20 +54,29 @@ export class ChatActivityGateway extends Gateway {
         data,
       );
 
-    await this.handleChatActivityCreateService.handleChatActivityCreate<MessageSend>(
-      {
-        sender: data.sender,
-        value: {
-          chat: data.value.chatId,
-          type: ChatActivityType.MESSAGE_SEND,
-          executor: data.sender,
-          activityContent: {
-            chatId: data.value.chatId,
-            content: data.value.content,
+    try {
+      await this.handleChatActivityCreateService.handleChatActivityCreate<MessageSend>(
+        {
+          sender: data.sender,
+          value: {
+            chat: data.value.chatId,
+            type: ChatActivityType.MESSAGE_SEND,
+            executor: data.sender,
+            activityContent: {
+              chatId: data.value.chatId,
+              content: data.value.content,
+            },
           },
         },
-      },
-    );
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.message_action.send.failed,
+        error,
+      );
+    }
 
     return new Response(
       false,
@@ -109,21 +118,30 @@ export class ChatActivityGateway extends Gateway {
       );
     }
 
-    await this.handleChatActivityCreateService.handleChatActivityCreate<MessageUpdate>(
-      {
-        sender: data.sender,
-        value: {
-          ...data.value,
-          chat: modifiedChatActivity.chatId,
-          executor: data.sender,
-          type: ChatActivityType.MESSAGE_EDIT,
-          activityContent: {
-            activityId: modifiedChatActivity.id,
-            content: data.value.content,
+    try {
+      await this.handleChatActivityCreateService.handleChatActivityCreate<MessageUpdate>(
+        {
+          sender: data.sender,
+          value: {
+            ...data.value,
+            chat: modifiedChatActivity.chatId,
+            executor: data.sender,
+            type: ChatActivityType.MESSAGE_EDIT,
+            activityContent: {
+              activityId: modifiedChatActivity.id,
+              content: data.value.content,
+            },
           },
         },
-      },
-    );
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.message_action.update.failed,
+        error,
+      );
+    }
 
     return new Response(
       false,
@@ -160,19 +178,28 @@ export class ChatActivityGateway extends Gateway {
       );
     }
 
-    await this.handleChatActivityCreateService.handleChatActivityCreate<MessageDelete>(
-      {
-        sender: data.sender,
-        value: {
-          chat: deletedChatActivity.chatId,
-          type: ChatActivityType.MESSAGE_DELETE,
-          executor: data.sender,
-          activityContent: {
-            deletedId: deletedChatActivity.id,
+    try {
+      await this.handleChatActivityCreateService.handleChatActivityCreate<MessageDelete>(
+        {
+          sender: data.sender,
+          value: {
+            chat: deletedChatActivity.chatId,
+            type: ChatActivityType.MESSAGE_DELETE,
+            executor: data.sender,
+            activityContent: {
+              deletedId: deletedChatActivity.id,
+            },
           },
         },
-      },
-    );
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.message_action.delete.failed,
+        error,
+      );
+    }
 
     return new Response(
       false,
@@ -214,21 +241,30 @@ export class ChatActivityGateway extends Gateway {
       );
     }
 
-    await this.handleChatActivityCreateService.handleChatActivityCreate<MessageAnswer>(
-      {
-        sender: data.sender,
-        value: {
-          chat: modifiedChatActivity.chatId,
-          type: ChatActivityType.MESSAGE_ANSWER,
-          executor: data.sender,
-          activityContent: {
-            answeredId: data.value.answeredId,
-            chatId: data.value.chatId,
-            content: data.value.content,
+    try {
+      await this.handleChatActivityCreateService.handleChatActivityCreate<MessageAnswer>(
+        {
+          sender: data.sender,
+          value: {
+            chat: modifiedChatActivity.chatId,
+            type: ChatActivityType.MESSAGE_ANSWER,
+            executor: data.sender,
+            activityContent: {
+              answeredId: data.value.answeredId,
+              chatId: data.value.chatId,
+              content: data.value.content,
+            },
           },
         },
-      },
-    );
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.message_action.answer.failed,
+        error,
+      );
+    }
 
     return new Response(
       false,
@@ -271,22 +307,31 @@ export class ChatActivityGateway extends Gateway {
 
     const starred: boolean = data.value.starred;
 
-    await this.handleChatActivityCreateService.handleChatActivityCreate<ActivityStar>(
-      {
-        sender: data.sender,
-        value: {
-          chat: modifiedChatActivity.chatId,
-          type: starred
-            ? ChatActivityType.ACTIVITY_STAR
-            : ChatActivityType.ACTIVITY_UNSTAR,
-          executor: data.sender,
-          activityContent: {
-            activityId: data.value.activityId,
-            starred: starred,
+    try {
+      await this.handleChatActivityCreateService.handleChatActivityCreate<ActivityStar>(
+        {
+          sender: data.sender,
+          value: {
+            chat: modifiedChatActivity.chatId,
+            type: starred
+              ? ChatActivityType.ACTIVITY_STAR
+              : ChatActivityType.ACTIVITY_UNSTAR,
+            executor: data.sender,
+            activityContent: {
+              activityId: data.value.activityId,
+              starred: starred,
+            },
           },
         },
-      },
-    );
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.message_action.star.failed,
+        error,
+      );
+    }
 
     return new Response(
       false,
@@ -308,21 +353,30 @@ export class ChatActivityGateway extends Gateway {
         data,
       );
 
-    await this.handleChatActivityCreateService.handleChatActivityCreate<PollSend>(
-      {
-        sender: data.sender,
-        value: {
-          chat: data.value.chatId,
-          type: ChatActivityType.POLL_SEND,
-          executor: data.value.creator,
-          activityContent: {
-            poll: data.value.poll,
-            chatId: data.value.chatId,
-            creator: data.value.creator,
+    try {
+      await this.handleChatActivityCreateService.handleChatActivityCreate<PollSend>(
+        {
+          sender: data.sender,
+          value: {
+            chat: data.value.chatId,
+            type: ChatActivityType.POLL_SEND,
+            executor: data.value.creator,
+            activityContent: {
+              poll: data.value.poll,
+              chatId: data.value.chatId,
+              creator: data.value.creator,
+            },
           },
         },
-      },
-    );
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.poll_action.send.failed,
+        error,
+      );
+    }
 
     return new Response(
       false,
@@ -373,20 +427,29 @@ export class ChatActivityGateway extends Gateway {
       );
     }
 
-    await this.handleChatActivityCreateService.handleChatActivityCreate<PollEdit>(
-      {
-        sender: data.sender,
-        value: {
-          chat: modifiedChatActivity.chatId,
-          type: ChatActivityType.POLL_EDIT,
-          executor: data.sender,
-          activityContent: {
-            activityId: data.value.activityId,
-            poll: data.value.poll,
+    try {
+      await this.handleChatActivityCreateService.handleChatActivityCreate<PollEdit>(
+        {
+          sender: data.sender,
+          value: {
+            chat: modifiedChatActivity.chatId,
+            type: ChatActivityType.POLL_EDIT,
+            executor: data.sender,
+            activityContent: {
+              activityId: data.value.activityId,
+              poll: data.value.poll,
+            },
           },
         },
-      },
-    );
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.poll_action.edit.failed,
+        error,
+      );
+    }
 
     return new Response(
       false,
@@ -454,24 +517,33 @@ export class ChatActivityGateway extends Gateway {
       );
     }
 
-    await this.handleChatActivityCreateService.handleChatActivityCreate<PollVote>(
-      {
-        sender: data.sender,
-        value: {
-          chat: modifiedChatActivity.chatId,
-          type: voted
-            ? ChatActivityType.POLL_VOTE
-            : ChatActivityType.POLL_UNVOTE,
-          executor: data.sender,
-          activityContent: {
-            activityId: data.value.activityId,
-            voteDeleted: data.value.voteDeleted,
-            optionId: data.value.optionId,
-            userId: data.value.userId,
+    try {
+      await this.handleChatActivityCreateService.handleChatActivityCreate<PollVote>(
+        {
+          sender: data.sender,
+          value: {
+            chat: modifiedChatActivity.chatId,
+            type: voted
+              ? ChatActivityType.POLL_VOTE
+              : ChatActivityType.POLL_UNVOTE,
+            executor: data.sender,
+            activityContent: {
+              activityId: data.value.activityId,
+              voteDeleted: data.value.voteDeleted,
+              optionId: data.value.optionId,
+              userId: data.value.userId,
+            },
           },
         },
-      },
-    );
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.poll_action.vote.failed,
+        error,
+      );
+    }
 
     return new Response(
       false,
@@ -523,22 +595,31 @@ export class ChatActivityGateway extends Gateway {
       );
     }
 
-    await this.handleChatActivityCreateService.handleChatActivityCreate<PollOpenClose>(
-      {
-        sender: data.sender,
-        value: {
-          chat: modifiedChatActivity.chatId,
-          type: data.value.isClosed
-            ? ChatActivityType.POLL_CLOSE
-            : ChatActivityType.POLL_REOPEN,
-          executor: data.sender,
-          activityContent: {
-            activityId: data.value.activityId,
-            isClosed: data.value.isClosed,
+    try {
+      await this.handleChatActivityCreateService.handleChatActivityCreate<PollOpenClose>(
+        {
+          sender: data.sender,
+          value: {
+            chat: modifiedChatActivity.chatId,
+            type: data.value.isClosed
+              ? ChatActivityType.POLL_CLOSE
+              : ChatActivityType.POLL_REOPEN,
+            executor: data.sender,
+            activityContent: {
+              activityId: data.value.activityId,
+              isClosed: data.value.isClosed,
+            },
           },
         },
-      },
-    );
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.poll_action.open_close.failed,
+        error,
+      );
+    }
 
     return new Response(
       false,
@@ -591,20 +672,29 @@ export class ChatActivityGateway extends Gateway {
       );
     }
 
-    await this.handleChatActivityCreateService.handleChatActivityCreate<PollPublishResult>(
-      {
-        sender: data.sender,
-        value: {
-          chat: modifiedChatActivity.chatId,
-          type: ChatActivityType.POLL_RESULT,
-          executor: data.sender,
-          activityContent: {
-            activityId: data.value.activityId,
-            result_published: data.value.result_published,
+    try {
+      await this.handleChatActivityCreateService.handleChatActivityCreate<PollPublishResult>(
+        {
+          sender: data.sender,
+          value: {
+            chat: modifiedChatActivity.chatId,
+            type: ChatActivityType.POLL_RESULT,
+            executor: data.sender,
+            activityContent: {
+              activityId: data.value.activityId,
+              result_published: data.value.result_published,
+            },
           },
         },
-      },
-    );
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.poll_action.result.failed,
+        error,
+      );
+    }
 
     return new Response(
       false,
