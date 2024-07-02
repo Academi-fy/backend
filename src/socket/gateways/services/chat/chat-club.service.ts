@@ -31,6 +31,9 @@ export class ChatClubService extends Service {
     const chat: Chat = await this.chatService.getChatById(data.value.chatId);
     const club: Club = await this.clubService.getClubById(data.value.clubId);
 
+    if (chat.clubs.some((currentClub: Club) => currentClub.id === club.id))
+      throw new Error('Club already exists in chat');
+
     for (const member of club.members) {
       await this.userChatService.createUserChat({
         chat: chat.id,
@@ -57,6 +60,9 @@ export class ChatClubService extends Service {
 
     const chat: Chat = await this.chatService.getChatById(data.value.chatId);
     const club: Club = await this.clubService.getClubById(data.value.clubId);
+
+    if (!chat.clubs.some((currentClub: Club) => currentClub.id === club.id))
+      throw new Error('Club does not exist in chat');
 
     for (const member of club.members) {
       await this.userChatService.deleteUserChatByCredentials(

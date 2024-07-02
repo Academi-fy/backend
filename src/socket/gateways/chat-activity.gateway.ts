@@ -23,6 +23,7 @@ import { PollPublishResult } from '@/socket/entities/chat-activity/poll/poll-pub
 import { HandleChatActivityCreateService } from '@/socket/gateways/services/handle-chat-activity-create.service';
 import { Response } from '@/response.entity';
 import * as response_codes from '@/response-codes.json';
+import { Logger } from '@nestjs/common';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ChatActivityGateway extends Gateway {
@@ -36,6 +37,8 @@ export class ChatActivityGateway extends Gateway {
       this.handleChatActivityCreateService.handleChatActivityCreate,
     );
   }
+
+  logger: Logger = new Logger('ChatActivityGateway');
 
   @SubscribeMessage('MESSAGE_SEND')
   async handleMessageSend(
@@ -86,12 +89,25 @@ export class ChatActivityGateway extends Gateway {
         data,
       );
 
-    const modifiedChatActivity: ChatActivity =
-      await this.chatActivityService.editChatActivity(data.value.activityId, {
-        activityContent: {
-          content: data.value.content,
+    let modifiedChatActivity: ChatActivity;
+
+    try {
+      modifiedChatActivity = await this.chatActivityService.editChatActivity(
+        data.value.activityId,
+        {
+          activityContent: {
+            content: data.value.content,
+          },
         },
-      });
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.message_action.update.failed,
+        error,
+      );
+    }
 
     await this.handleChatActivityCreateService.handleChatActivityCreate<MessageUpdate>(
       {
@@ -129,8 +145,20 @@ export class ChatActivityGateway extends Gateway {
         data,
       );
 
-    const deletedChatActivity: ChatActivity =
-      await this.chatActivityService.deleteChatActivity(data.value.deletedId);
+    let deletedChatActivity: ChatActivity;
+
+    try {
+      deletedChatActivity = await this.chatActivityService.deleteChatActivity(
+        data.value.deletedId,
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.message_action.delete.failed,
+        error,
+      );
+    }
 
     await this.handleChatActivityCreateService.handleChatActivityCreate<MessageDelete>(
       {
@@ -166,13 +194,25 @@ export class ChatActivityGateway extends Gateway {
         data,
       );
 
-    const modifiedChatActivity: ChatActivity =
-      await this.chatActivityService.editChatActivity(data.value.answeredId, {
-        activityContent: {
-          answeredId: data.value.answeredId,
-          content: data.value.content,
+    let modifiedChatActivity: ChatActivity;
+
+    try {
+      modifiedChatActivity = await this.chatActivityService.editChatActivity(
+        data.value.answeredId,
+        {
+          activityContent: {
+            answeredId: data.value.answeredId,
+          },
         },
-      });
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.message_action.answer.failed,
+        error,
+      );
+    }
 
     await this.handleChatActivityCreateService.handleChatActivityCreate<MessageAnswer>(
       {
@@ -211,10 +251,23 @@ export class ChatActivityGateway extends Gateway {
         data,
       );
 
-    const modifiedChatActivity: ChatActivity =
-      await this.chatActivityService.editChatActivity(data.value.activityId, {
-        starred: data.value.starred,
-      });
+    let modifiedChatActivity: ChatActivity;
+
+    try {
+      modifiedChatActivity = await this.chatActivityService.editChatActivity(
+        data.value.activityId,
+        {
+          starred: data.value.starred,
+        },
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.message_action.star.failed,
+        error,
+      );
+    }
 
     const starred: boolean = data.value.starred;
 
@@ -300,12 +353,25 @@ export class ChatActivityGateway extends Gateway {
         new Error(`ChatActivity '${pollActivity.id}' is not a Poll`),
       );
 
-    const modifiedChatActivity: ChatActivity =
-      await this.chatActivityService.editChatActivity(data.value.activityId, {
-        activityContent: {
-          poll: data.value.poll,
+    let modifiedChatActivity: ChatActivity;
+
+    try {
+      modifiedChatActivity = await this.chatActivityService.editChatActivity(
+        data.value.activityId,
+        {
+          activityContent: {
+            poll: data.value.poll,
+          },
         },
-      });
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.poll_action.edit.failed,
+        error,
+      );
+    }
 
     await this.handleChatActivityCreateService.handleChatActivityCreate<PollEdit>(
       {
@@ -366,14 +432,27 @@ export class ChatActivityGateway extends Gateway {
       },
     );
 
-    const modifiedChatActivity: ChatActivity =
-      await this.chatActivityService.editChatActivity(data.value.activityId, {
-        activityContent: {
-          poll: {
-            options: updatedOptions,
+    let modifiedChatActivity: ChatActivity;
+
+    try {
+      modifiedChatActivity = await this.chatActivityService.editChatActivity(
+        data.value.activityId,
+        {
+          activityContent: {
+            poll: {
+              options: updatedOptions,
+            },
           },
         },
-      });
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.poll_action.vote.failed,
+        error,
+      );
+    }
 
     await this.handleChatActivityCreateService.handleChatActivityCreate<PollVote>(
       {
@@ -424,12 +503,25 @@ export class ChatActivityGateway extends Gateway {
         new Error(`ChatActivity '${pollActivity.id}' is not a Poll`),
       );
 
-    const modifiedChatActivity: ChatActivity =
-      await this.chatActivityService.editChatActivity(data.value.activityId, {
-        activityContent: {
-          closed: data.value.isClosed,
+    let modifiedChatActivity: ChatActivity;
+
+    try {
+      modifiedChatActivity = await this.chatActivityService.editChatActivity(
+        data.value.activityId,
+        {
+          activityContent: {
+            closed: data.value.isClosed,
+          },
         },
-      });
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.poll_action.open_close.failed,
+        error,
+      );
+    }
 
     await this.handleChatActivityCreateService.handleChatActivityCreate<PollOpenClose>(
       {
@@ -479,12 +571,25 @@ export class ChatActivityGateway extends Gateway {
         new Error(`ChatActivity '${pollActivity.id}' is not a Poll`),
       );
 
-    const modifiedChatActivity: ChatActivity =
-      await this.chatActivityService.editChatActivity(data.value.activityId, {
-        activityContent: {
-          result_published: data.value.result_published,
+    let modifiedChatActivity: ChatActivity;
+
+    try {
+      modifiedChatActivity = await this.chatActivityService.editChatActivity(
+        data.value.activityId,
+        {
+          activityContent: {
+            result_published: data.value.result_published,
+          },
         },
-      });
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(
+        true,
+        response_codes.chat_activity.poll_action.result.failed,
+        error,
+      );
+    }
 
     await this.handleChatActivityCreateService.handleChatActivityCreate<PollPublishResult>(
       {

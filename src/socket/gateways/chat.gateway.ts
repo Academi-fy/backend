@@ -26,6 +26,7 @@ import { ChatClubResult } from '@/socket/gateways/services/chat/entities/chat-cl
 import { ChatClubService } from '@/socket/gateways/services/chat/chat-club.service';
 import { Response } from '@/response.entity';
 import * as response_codes from '@/response-codes.json';
+import { Logger } from '@nestjs/common';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ChatGateway extends Gateway {
@@ -39,6 +40,8 @@ export class ChatGateway extends Gateway {
     super();
   }
 
+  logger: Logger = new Logger('ChatGateway');
+
   @SubscribeMessage('CHAT_TARGET_ADD')
   async handleChatTargetAdd(
     @MessageBody() body: GatewayMessage<ChatTargetMutation>,
@@ -48,6 +51,7 @@ export class ChatGateway extends Gateway {
     try {
       result = await this.chatTargetService.executeChatUserAdd(body);
     } catch (error) {
+      this.logger.error(error);
       return new Response(true, response_codes.chat.target.add.failed, {
         error: error.message,
       });

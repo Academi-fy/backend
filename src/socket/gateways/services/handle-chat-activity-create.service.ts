@@ -23,8 +23,15 @@ export class HandleChatActivityCreateService extends Gateway {
   async handleChatActivityCreate<T>(
     body: GatewayMessage<CreateChatActivityDto<T>>,
   ): Promise<GatewayMessage<CreateChatActivityDto<T>> | Error> {
-    const createdChatActivity: ChatActivity =
-      await this.chatActivityService.processCreateChatActivity(body.value);
+    let createdChatActivity: ChatActivity;
+
+    try {
+      createdChatActivity =
+        await this.chatActivityService.processCreateChatActivity(body.value);
+    } catch (error) {
+      console.error(error);
+      throw new Error(error);
+    }
 
     const chat: Chat = await this.chatService.getChatById(
       createdChatActivity.chatId,

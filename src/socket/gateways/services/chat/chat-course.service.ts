@@ -33,6 +33,13 @@ export class ChatCourseService extends Service {
       data.value.courseId,
     );
 
+    if (
+      chat.courses.some(
+        (currentCourse: Course) => currentCourse.id === course.id,
+      )
+    )
+      throw new Error('Course already added to chat');
+
     for (const member of course.members) {
       await this.userChatService.createUserChat({
         chat: chat.id,
@@ -63,6 +70,13 @@ export class ChatCourseService extends Service {
     const course: Course = await this.courseService.getCourseById(
       data.value.courseId,
     );
+
+    if (
+      !chat.courses.some(
+        (currentCourse: Course) => currentCourse.id === course.id,
+      )
+    )
+      throw new Error('Course not in chat');
 
     for (const member of course.members) {
       await this.userChatService.deleteUserChatByCredentials(

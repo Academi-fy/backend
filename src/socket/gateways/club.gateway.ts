@@ -13,12 +13,15 @@ import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 import { Response } from '@/response.entity';
 
 import * as response_codes from '@/response-codes.json';
+import { Logger } from '@nestjs/common';
 
 @WebSocketGateway(SOCKET_PORT)
 export class ClubGateway extends Gateway {
   constructor(private readonly clubService: ClubService) {
     super();
   }
+
+  logger: Logger = new Logger('ClubGateway');
 
   @SubscribeMessage('CLUB_USER_ADD')
   async handleClubUserAdd(

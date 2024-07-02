@@ -16,6 +16,7 @@ import { BlackboardDelete } from '@/socket/entities/blackboard/blackboard-delete
 import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 import * as response_codes from '@/response-codes.json';
 import { Response } from '@/response.entity';
+import { Logger } from '@nestjs/common';
 
 @WebSocketGateway(SOCKET_PORT)
 export class BlackboardGateway extends Gateway {
@@ -25,6 +26,8 @@ export class BlackboardGateway extends Gateway {
   ) {
     super();
   }
+
+  logger: Logger = new Logger('BlackboardGateway');
 
   @SubscribeMessage('BLACKBOARD_CREATE')
   async handleBlackboardCreate(

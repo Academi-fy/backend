@@ -16,6 +16,7 @@ import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 import { Response } from '@/response.entity';
 
 import * as response_codes from '@/response-codes.json';
+import { Logger } from '@nestjs/common';
 
 @WebSocketGateway(SOCKET_PORT)
 export class EventGateway extends Gateway {
@@ -25,6 +26,8 @@ export class EventGateway extends Gateway {
   ) {
     super();
   }
+
+  logger: Logger = new Logger('EventGateway');
 
   @SubscribeMessage('EVENT_CREATE')
   async handleEventCreate(
@@ -38,9 +41,14 @@ export class EventGateway extends Gateway {
     if (data instanceof Error)
       return new Response(true, response_codes.event.creation.failed, data);
 
-    const createdEvent: Event = await this.eventService.createEvent(data.value);
-    if (!createdEvent)
-      return new Response(true, response_codes.event.creation.failed);
+    let createdEvent: Event;
+
+    try {
+      createdEvent = await this.eventService.createEvent(data.value);
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(true, response_codes.event.creation.failed, error);
+    }
 
     const school: School = await this.schoolService.getSchoolById(
       createdEvent.schoolId,
@@ -69,12 +77,14 @@ export class EventGateway extends Gateway {
     const event: Event = await this.eventService.getEventById(eventId);
     if (!event) return new Response(true, response_codes.event.notFound);
 
-    const modifiedEvent: Event = await this.eventService.editEvent(
-      eventId,
-      data.value,
-    );
-    if (!modifiedEvent)
-      return new Response(true, response_codes.event.update.failed);
+    let modifiedEvent: Event;
+
+    try {
+      modifiedEvent = await this.eventService.editEvent(eventId, data.value);
+    } catch (error) {
+      this.logger.error(error);
+      return new Response(true, response_codes.event.update.failed, error);
+    }
 
     const school: School = await this.schoolService.getSchoolById(
       modifiedEvent.schoolId,
