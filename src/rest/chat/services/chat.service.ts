@@ -4,14 +4,10 @@ import { Service } from '@/service';
 import { ChatCacheService } from '@/rest/chat/services/chat-cache.service';
 import { Chat } from '@/@generated-types';
 import { CreateChatDto, EditChatDto } from '@/rest/chat';
-import { ChatDatabaseService } from '@/rest/chat/services/chat-database.service';
 
 @Injectable()
 export class ChatService extends Service {
-  constructor(
-    private chatCacheService: ChatCacheService,
-    private chatDatabaseService: ChatDatabaseService,
-  ) {
+  constructor(private chatCacheService: ChatCacheService) {
     super();
   }
 
@@ -20,7 +16,7 @@ export class ChatService extends Service {
    * the database and store them in cache.
    */
   async getAllChats(): Promise<Chat[]> {
-    return this.chatDatabaseService.getAllChats(); //TODO back to caching
+    return this.chatCacheService.getAllChats();
   }
 
   /**
@@ -28,27 +24,27 @@ export class ChatService extends Service {
    * it from the database and store it in cache.
    */
   async getChatById(id: string): Promise<Chat> {
-    return this.chatDatabaseService.getChatById(id); //TODO back to caching
+    return this.chatCacheService.getChatById(id);
   }
 
   /**
    * @description Create a new chat and store it in cache.
    */
   async createChat(createChatDto: CreateChatDto): Promise<Chat> {
-    return this.chatDatabaseService.createChat(createChatDto); //TODO back to caching
+    return this.chatCacheService.createChat(createChatDto);
   }
 
   /**
    * @description Edit an existing chat and update it in cache.
    */
   async editChat(chatId: string, editChatDto: EditChatDto): Promise<Chat> {
-    return this.chatDatabaseService.editChat(chatId, editChatDto); //TODO back to caching
+    return this.chatCacheService.editChat(chatId, editChatDto);
   }
 
   /**
    * @description Delete a chat from cache.
    */
   async deleteChat(chatId: string): Promise<Chat> {
-    return this.chatDatabaseService.deleteChat(chatId); //TODO back to caching
+    return this.chatCacheService.deleteChat(chatId);
   }
 }

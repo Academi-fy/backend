@@ -10,11 +10,11 @@ import {
 import { Class } from '@/@generated-types';
 
 import { CreateClassDto, EditClassDto } from './dto';
-import { ClassService } from './class.service';
+import { ClassDatabaseService } from './services/class-database.service';
 
 @Controller('classes')
 export class ClassController {
-  constructor(private classService: ClassService) {}
+  constructor(private classService: ClassDatabaseService) {}
 
   @Get()
   async getAllClasses(): Promise<Class[]> {

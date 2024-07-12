@@ -4,11 +4,11 @@ import { ChatActivity } from '@/@generated-types';
 import { Service } from '@/service';
 import { PrismaService } from '@/prisma/prisma.service';
 
-import { chatActivityNesting } from './chat-activity.nesting';
-import { CreateChatActivityDto, EditChatActivityDto } from './dto';
+import { chatActivityNesting } from '@/rest/chat-activity';
+import { CreateChatActivityDto, EditChatActivityDto } from '../dto';
 
 @Injectable()
-export class ChatActivityService extends Service {
+export class ChatActivityDatabaseService extends Service {
   constructor(private prisma: PrismaService) {
     super();
   }

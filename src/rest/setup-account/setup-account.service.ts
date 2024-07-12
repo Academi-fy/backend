@@ -76,7 +76,6 @@ export class SetupAccountService extends Service {
 
   private mapDtoToData(dto: CreateSetupAccountDto | EditSetupAccountDto) {
     return {
-      ...dto,
       school: this.connectSingle(dto.school),
       schoolName: dto.schoolName,
     };

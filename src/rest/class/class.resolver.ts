@@ -1,12 +1,12 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { Class } from '@/@generated-types';
-import { ClassService } from './class.service';
+import { ClassDatabaseService } from './services/class-database.service';
 import { CreateClassDto, EditClassDto } from './dto';
 
 @Resolver(() => Class)
 export class ClassResolver {
-  constructor(private classService: ClassService) {}
+  constructor(private classService: ClassDatabaseService) {}
 
   @Query(() => [Class])
   async getAllClasses(): Promise<Class[]> {

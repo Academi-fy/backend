@@ -10,7 +10,7 @@ import {
 import { ChatActivity } from '@/@generated-types';
 
 import { CreateChatActivityDto, EditChatActivityDto } from './dto';
-import { ChatActivityService } from './chat-activity.service';
+import { ChatActivityService } from '@/rest/chat-activity/services/chat-activity.service';
 
 @Controller('chat-activity')
 export class ChatActivityController {
@@ -26,6 +26,13 @@ export class ChatActivityController {
     @Param('id') chatActivityId: string,
   ): Promise<ChatActivity> {
     return this.chatActivityService.getChatActivityById(chatActivityId);
+  }
+
+  @Get('/chat/:chatId')
+  getChatActivitiesByChatId(
+    @Param('chatId') chatId: string,
+  ): Promise<ChatActivity[]> {
+    return this.chatActivityService.getChatActivitiesByChatId(chatId);
   }
 
   @Post()

@@ -4,11 +4,11 @@ import { Class } from '@prisma/client';
 import { Service } from '@/service';
 import { PrismaService } from '@/prisma/prisma.service';
 
-import { classNesting } from './';
-import { CreateClassDto, EditClassDto } from './dto';
+import { classNesting } from '../index';
+import { CreateClassDto, EditClassDto } from '../dto';
 
 @Injectable()
-export class ClassService extends Service {
+export class ClassDatabaseService extends Service {
   constructor(private prisma: PrismaService) {
     super();
   }

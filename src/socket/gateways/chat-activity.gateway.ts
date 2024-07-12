@@ -5,7 +5,7 @@ import {
 } from '@nestjs/websockets';
 import { SOCKET_PORT } from '@/constants';
 import { Gateway } from '@/socket/entities/gateway.entity';
-import { ChatActivityService } from '@/rest/chat-activity/chat-activity.service';
+import { ChatActivityDatabaseService } from '@/rest/chat-activity/services/chat-activity-database.service';
 import { ChatActivity, ChatActivityType } from '@/@generated-types';
 import { MessageUpdate } from '@/socket/entities/chat-activity/message/message-update.entity';
 import { MessageDelete } from '@/socket/entities/chat-activity/message/message-delete.entity';
@@ -28,7 +28,7 @@ import { Logger } from '@nestjs/common';
 @WebSocketGateway(SOCKET_PORT)
 export class ChatActivityGateway extends Gateway {
   constructor(
-    private readonly chatActivityService: ChatActivityService,
+    private readonly chatActivityService: ChatActivityDatabaseService,
     private readonly handleChatActivityCreateService: HandleChatActivityCreateService,
   ) {
     super();

@@ -8,14 +8,14 @@ import {
 } from '@/rest/blackboard-tag';
 import { CacheService } from '@/rest/CacheService';
 
-const cacheLifetime: number = 1000 * 60 * 5;
-
 @Injectable()
 export class BlackboardTagCacheService implements CacheService {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private blackboardTagDatabaseService: BlackboardTagDatabaseService,
   ) {}
+
+  cacheLifetime: number = 1000 * 60 * 60 * 12; //12 hrs
 
   /**
    * @description Get all blackboard tags from cache. If not found, get them from
@@ -46,7 +46,7 @@ export class BlackboardTagCacheService implements CacheService {
       await this.cacheManager.set(
         'blackboard-tag_ids',
         blackboardTagIds,
-        cacheLifetime,
+        this.cacheLifetime,
       );
 
       return blackboardTags;
@@ -64,7 +64,7 @@ export class BlackboardTagCacheService implements CacheService {
         await this.cacheManager.set(
           `blackboard-tag_${id}`,
           currentBlackboardTag,
-          cacheLifetime,
+          this.cacheLifetime,
         );
       }
       blackboardTags.push(currentBlackboardTag);
@@ -99,7 +99,7 @@ export class BlackboardTagCacheService implements CacheService {
       await this.cacheManager.set(
         `blackboard-tag_${blackboardTagId}`,
         blackboardTag,
-        cacheLifetime,
+        this.cacheLifetime,
       );
 
       /** If the tag's id is not found in the ids list (or the list doesn't exist,
@@ -110,7 +110,7 @@ export class BlackboardTagCacheService implements CacheService {
         await this.cacheManager.set(
           'blackboard-tag_ids',
           blackboardTagIds,
-          cacheLifetime,
+          this.cacheLifetime,
         );
       }
     }
@@ -140,7 +140,7 @@ export class BlackboardTagCacheService implements CacheService {
       await this.cacheManager.set(
         `blackboard-tag_${blackboardTag.id}`,
         blackboardTag,
-        cacheLifetime,
+        this.cacheLifetime,
       );
 
       /** If the blackboard tag's id is not found in the ids list (or the list
@@ -151,7 +151,7 @@ export class BlackboardTagCacheService implements CacheService {
         await this.cacheManager.set(
           'blackboard-tag_ids',
           blackboardTagIds,
-          cacheLifetime,
+          this.cacheLifetime,
         );
       }
     }
@@ -176,7 +176,7 @@ export class BlackboardTagCacheService implements CacheService {
     await this.cacheManager.set(
       `blackboard-tag_${blackboardTag.id}`,
       blackboardTag,
-      cacheLifetime,
+      this.cacheLifetime,
     );
 
     let blackboardTagIds: string[] =
@@ -190,7 +190,7 @@ export class BlackboardTagCacheService implements CacheService {
     await this.cacheManager.set(
       'blackboard-tag_ids',
       blackboardTagIds,
-      cacheLifetime,
+      this.cacheLifetime,
     );
 
     await this.updateRelatedCaches(blackboardTag);
@@ -253,7 +253,7 @@ export class BlackboardTagCacheService implements CacheService {
     await this.cacheManager.set(
       `blackboard-tag_${blackboardTag.id}`,
       blackboardTag,
-      cacheLifetime,
+      this.cacheLifetime,
     );
 
     await this.updateRelatedCaches(blackboardTag);
@@ -315,7 +315,7 @@ export class BlackboardTagCacheService implements CacheService {
     await this.cacheManager.set(
       'blackboard-tag_ids',
       blackboardTagIds,
-      cacheLifetime,
+      this.cacheLifetime,
     );
 
     await this.updateRelatedCaches(blackboardTag);

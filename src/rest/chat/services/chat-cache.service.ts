@@ -5,14 +5,14 @@ import { Chat } from '@/@generated-types';
 import { ChatDatabaseService } from '@/rest/chat/services/chat-database.service';
 import { CreateChatDto, EditChatDto } from '@/rest/chat';
 
-const cacheLifetime: number = 1000 * 60 * 3;
-
 @Injectable()
 export class ChatCacheService implements CacheService {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private chatDatabaseService: ChatDatabaseService,
   ) {}
+
+  cacheLifetime: number = 1000 * 60 * 3;
 
   /**
    * @description Get all chats from cache. If not found, get them from
@@ -38,7 +38,7 @@ export class ChatCacheService implements CacheService {
         })
         .map((chat: Chat) => chat.id);
 
-      await this.cacheManager.set('chat_ids', chatIds, cacheLifetime);
+      await this.cacheManager.set('chat_ids', chatIds, this.cacheLifetime);
 
       return chats;
     }
@@ -49,7 +49,11 @@ export class ChatCacheService implements CacheService {
       let currentChat: Chat = await this.cacheManager.get(`chat_${id}`);
       if (!currentChat) {
         currentChat = await this.chatDatabaseService.getChatById(id);
-        await this.cacheManager.set(`chat_${id}`, currentChat, cacheLifetime);
+        await this.cacheManager.set(
+          `chat_${id}`,
+          currentChat,
+          this.cacheLifetime,
+        );
       }
       chats.push(currentChat);
     }
@@ -68,20 +72,19 @@ export class ChatCacheService implements CacheService {
   async getChatById(chatId: string): Promise<Chat> {
     let chat: Chat = await this.cacheManager.get(`chat_${chatId}`);
 
-    let chatIds: string[] = await this.cacheManager.get('chat_ids');
-
     if (!chat) {
       /** If the chat is not found in cache, get it from the database
        and store it in cache*/
       chat = await this.chatDatabaseService.getChatById(chatId);
-      await this.cacheManager.set(`chat_${chatId}`, chat, cacheLifetime);
+      await this.cacheManager.set(`chat_${chatId}`, chat, this.cacheLifetime);
+      let chatIds: string[] = await this.cacheManager.get('chat_ids');
 
       /** If the chat's id is not found in the ids list (or the list doesn't exist,
        then create it) add it to the list */
       if (!chatIds || !chatIds.includes(chatId)) {
         if (!chatIds) chatIds = [];
         chatIds.push(chatId);
-        await this.cacheManager.set('chat_ids', chatIds, cacheLifetime);
+        await this.cacheManager.set('chat_ids', chatIds, this.cacheLifetime);
       }
     }
     return chat;
@@ -92,13 +95,13 @@ export class ChatCacheService implements CacheService {
    *
    * @param dto The data transfer object (dto) to create the chat.
    *
-   * @caching Chat are stored in cache with the key `chat_ids`
+   * @caching Chats are stored in cache with the key `chat_ids`
    * (containing all chat ids for quick access to all chat) and
    * `chat_${id}` (to access specific chats by id).
    * */
   async createChat(dto: CreateChatDto): Promise<Chat> {
     const chat: Chat = await this.chatDatabaseService.createChat(dto);
-    await this.cacheManager.set(`chat_${chat.id}`, chat, cacheLifetime);
+    await this.cacheManager.set(`chat_${chat.id}`, chat, this.cacheLifetime);
 
     let chatIds: string[] = await this.cacheManager.get('chat_ids');
     if (!chatIds) chatIds = [];
@@ -107,7 +110,7 @@ export class ChatCacheService implements CacheService {
      * update the cache.
      */
     chatIds.unshift(chat.id);
-    await this.cacheManager.set('chat_ids', chatIds, cacheLifetime);
+    await this.cacheManager.set('chat_ids', chatIds, this.cacheLifetime);
 
     await this.updateRelatedCaches(chat);
     return chat;
@@ -126,7 +129,7 @@ export class ChatCacheService implements CacheService {
   async editChat(chatId: string, dto: EditChatDto): Promise<Chat> {
     const chat: Chat = await this.chatDatabaseService.editChat(chatId, dto);
 
-    await this.cacheManager.set(`chat_${chat.id}`, chat, cacheLifetime);
+    await this.cacheManager.set(`chat_${chat.id}`, chat, this.cacheLifetime);
 
     await this.updateRelatedCaches(chat);
     return chat;
@@ -149,7 +152,7 @@ export class ChatCacheService implements CacheService {
     if (!chatIds) return chat;
 
     chatIds = chatIds.filter((id: string) => id !== chatId);
-    await this.cacheManager.set('chat_ids', chatIds, cacheLifetime);
+    await this.cacheManager.set('chat_ids', chatIds, this.cacheLifetime);
 
     await this.updateRelatedCaches(chat);
     return chat;

@@ -5,14 +5,14 @@ import { BlackboardDatabaseService } from '@/rest/blackboard/services/blackboard
 import { CreateBlackboardDto, EditBlackboardDto } from '@/rest/blackboard';
 import { CacheService } from '@/rest/CacheService';
 
-const cacheLifetime: number = 1000 * 60 * 5;
-
 @Injectable()
 export class BlackboardCacheService implements CacheService {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private blackboardDatabaseService: BlackboardDatabaseService,
   ) {}
+
+  cacheLifetime: number = 1000 * 60 * 60 * 3; //3 hrs
 
   /**
    * @description Get all blackboards from cache. If not found, get them from
@@ -41,7 +41,7 @@ export class BlackboardCacheService implements CacheService {
       await this.cacheManager.set(
         'blackboard_ids',
         blackboardIds,
-        cacheLifetime,
+        this.cacheLifetime,
       );
       return blackboards;
     }
@@ -58,7 +58,7 @@ export class BlackboardCacheService implements CacheService {
         await this.cacheManager.set(
           `blackboard_${id}`,
           currentBlackboard,
-          cacheLifetime,
+          this.cacheLifetime,
         );
       }
       blackboards.push(currentBlackboard);
@@ -88,7 +88,7 @@ export class BlackboardCacheService implements CacheService {
       await this.cacheManager.set(
         `blackboard_${id}`,
         blackboard,
-        cacheLifetime,
+        this.cacheLifetime,
       );
 
       if (!blackboardIds || !blackboardIds.includes(id)) {
@@ -97,7 +97,7 @@ export class BlackboardCacheService implements CacheService {
         await this.cacheManager.set(
           'blackboard_ids',
           blackboardIds,
-          cacheLifetime,
+          this.cacheLifetime,
         );
       }
     }
@@ -143,7 +143,7 @@ export class BlackboardCacheService implements CacheService {
     await this.cacheManager.set(
       `blackboard_${blackboard.id}`,
       blackboard,
-      cacheLifetime,
+      this.cacheLifetime,
     );
 
     let blackboardIds: string[] = await this.cacheManager.get('blackboard_ids');
@@ -153,7 +153,11 @@ export class BlackboardCacheService implements CacheService {
      * update the cache.
      */
     blackboardIds.unshift(blackboard.id);
-    await this.cacheManager.set('blackboard_ids', blackboardIds, cacheLifetime);
+    await this.cacheManager.set(
+      'blackboard_ids',
+      blackboardIds,
+      this.cacheLifetime,
+    );
 
     await this.updateRelatedCaches(blackboard);
     return blackboard;
@@ -178,7 +182,7 @@ export class BlackboardCacheService implements CacheService {
     await this.cacheManager.set(
       `blackboard_${blackboard.id}`,
       blackboard,
-      cacheLifetime,
+      this.cacheLifetime,
     );
 
     await this.updateRelatedCaches(blackboard);
@@ -203,7 +207,11 @@ export class BlackboardCacheService implements CacheService {
     if (!blackboardIds) return blackboard;
 
     blackboardIds = blackboardIds.filter((id: string) => id !== blackboardId);
-    await this.cacheManager.set('blackboard_ids', blackboardIds, cacheLifetime);
+    await this.cacheManager.set(
+      'blackboard_ids',
+      blackboardIds,
+      this.cacheLifetime,
+    );
 
     await this.updateRelatedCaches(blackboard);
     return blackboard;

@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { GatewayMessage } from '@/socket/entities/gateway-message.entity';
 import { CreateChatActivityDto } from '@/rest/chat-activity';
 import { Chat, ChatActivity } from '@/@generated-types';
-import { ChatActivityService } from '@/rest/chat-activity/chat-activity.service';
+import { ChatActivityDatabaseService } from '@/rest/chat-activity/services/chat-activity-database.service';
 import { ChatService } from '@/rest/chat/services/chat.service';
 import { Gateway } from '@/socket/entities/gateway.entity';
 
 @Injectable()
 export class HandleChatActivityCreateService extends Gateway {
   constructor(
-    private chatActivityService: ChatActivityService,
+    private chatActivityService: ChatActivityDatabaseService,
     private chatService: ChatService,
   ) {
     super();
